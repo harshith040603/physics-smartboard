@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light only">
+<title>Vernier Calipers — Interactive Lab · Smartboard Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --nine-dark:#295990; --nine-accent:#00A0E3; --nine-deep:#1b3e66; --nine-navy:#0f2647;
+  --ink:#13233b; --paper:#eaf1f9; --paper-2:#f4f8fc; --white:#ffffff;
+  --green:#16a34a; --red:#e11d48; --amber:#f59e0b;
+  --shadow:0 10px 30px rgba(15,38,71,0.14); --shadow-lg:0 20px 60px rgba(15,38,71,0.22);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{min-height:100%;}
+body{
+  font-family:'DM Sans',sans-serif; color:var(--ink); background:var(--paper);
+  background-image:
+    linear-gradient(rgba(41,89,144,0.06) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(41,89,144,0.06) 1px,transparent 1px),
+    linear-gradient(rgba(41,89,144,0.10) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(41,89,144,0.10) 1px,transparent 1px);
+  background-size:28px 28px,28px 28px,140px 140px,140px 140px;
+  overflow-x:hidden; padding:22px 16px 60px;
+}
+.wrap{max-width:1180px;margin:0 auto;}
+
+/* ── header ── */
+.hd{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:20px;}
+.hd .badge{font-family:'Bricolage Grotesque';font-weight:800;font-size:13px;letter-spacing:2px;
+  text-transform:uppercase;color:var(--white);background:var(--nine-navy);padding:8px 14px;border-radius:999px;}
+.hd h1{font-family:'Bricolage Grotesque';font-weight:800;font-size:clamp(24px,4vw,38px);
+  color:var(--nine-navy);line-height:1.02;}
+.hd .sub{color:#5c708a;font-size:15px;margin-top:2px;}
+
+/* ── panels ── */
+.panel{background:var(--white);border-radius:24px;box-shadow:var(--shadow);padding:22px;margin-bottom:20px;}
+.panel-title{font-family:'Bricolage Grotesque';font-weight:800;font-size:18px;color:var(--nine-dark);
+  margin-bottom:14px;display:flex;align-items:center;gap:9px;}
+.panel-title .dot{width:10px;height:10px;border-radius:50%;background:var(--nine-accent);}
+
+/* ── mode tabs ── */
+.tabs{display:flex;gap:8px;background:var(--paper-2);padding:6px;border-radius:16px;flex-wrap:wrap;margin-bottom:18px;}
+.tab{flex:1;min-width:120px;border:none;background:transparent;font-family:'DM Sans',sans-serif;font-weight:700;
+  font-size:15px;color:#5c708a;padding:12px 14px;border-radius:11px;cursor:pointer;transition:.18s;}
+.tab.active{background:var(--white);color:var(--nine-dark);box-shadow:var(--shadow);}
+.tab:hover:not(.active){color:var(--nine-dark);}
+
+/* ── instrument ── */
+.stage{background:linear-gradient(180deg,#f7fbff,#eef5fc);border-radius:18px;padding:10px;overflow-x:auto;border:1px solid rgba(41,89,144,.1);}
+svg.caliper{display:block;width:100%;min-width:680px;height:auto;touch-action:none;}
+.hint{font-size:13px;color:#6a7e96;margin-top:10px;display:flex;align-items:center;gap:7px;}
+.hint b{color:var(--nine-dark);}
+
+/* ── controls ── */
+.controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;margin-top:18px;}
+.ctl label{display:block;font-size:11px;letter-spacing:1.4px;text-transform:uppercase;color:#7689a0;
+  font-weight:700;margin-bottom:8px;}
+.seg{display:flex;gap:6px;flex-wrap:wrap;}
+.seg button{flex:1;min-width:60px;border:2px solid rgba(41,89,144,.16);background:var(--white);
+  font-family:'DM Sans';font-weight:700;font-size:14px;color:var(--nine-dark);padding:10px 8px;border-radius:11px;cursor:pointer;transition:.15s;}
+.seg button.on{background:var(--nine-dark);color:#fff;border-color:var(--nine-dark);}
+.seg button:hover:not(.on){border-color:var(--nine-accent);}
+.nudge{display:flex;gap:8px;align-items:center;}
+.nudge button{width:46px;height:46px;border-radius:12px;border:2px solid rgba(41,89,144,.16);background:#fff;
+  font-size:22px;font-weight:700;color:var(--nine-dark);cursor:pointer;line-height:1;}
+.nudge button:active{background:var(--paper-2);}
+.nudge .val{flex:1;text-align:center;font-family:'JetBrains Mono';font-weight:700;font-size:18px;color:var(--nine-navy);}
+
+.objgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;}
+.obj{border:2px solid rgba(41,89,144,.14);background:var(--white);border-radius:14px;padding:12px;cursor:pointer;
+  text-align:center;transition:.15s;}
+.obj.on{border-color:var(--nine-accent);background:#e9f6fd;box-shadow:0 0 0 3px rgba(0,160,227,.16);}
+.obj:hover:not(.on){transform:translateY(-2px);border-color:var(--nine-accent);}
+.obj .ic{font-size:30px;line-height:1;}
+.obj .nm{font-weight:700;font-size:14px;margin-top:6px;color:var(--nine-navy);}
+.obj .tw{font-size:11px;color:#8295ab;margin-top:1px;font-family:'JetBrains Mono';}
+
+/* ── readout ── */
+.reads{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;}
+.ro{background:var(--paper-2);border-radius:16px;padding:16px;text-align:center;}
+.ro .rl{font-size:10.5px;letter-spacing:1.3px;text-transform:uppercase;color:#7689a0;font-weight:700;}
+.ro .rv{font-family:'Bricolage Grotesque';font-weight:800;font-size:30px;color:var(--nine-dark);margin-top:5px;line-height:1;}
+.ro .ru{font-size:12px;color:#8295ab;margin-top:3px;}
+.ro.accent{background:var(--nine-navy);}
+.ro.accent .rl{color:#8fb6e0;} .ro.accent .rv{color:var(--nine-accent);} .ro.accent .ru{color:#8fb6e0;}
+.ro.green{background:#ecfdf3;} .ro.green .rv{color:var(--green);}
+
+.formula{margin-top:16px;background:#fff8e1;border:1.5px solid #f1d48a;border-radius:14px;padding:16px 18px;
+  font-family:'JetBrains Mono';font-size:15px;color:#7a5b12;line-height:1.7;overflow-x:auto;}
+.formula b{color:#b45309;}
+.formula .em{background:#fde9b8;border-radius:5px;padding:1px 5px;}
+
+/* magnifier */
+.maglayout{display:grid;grid-template-columns:1.1fr .9fr;gap:18px;}
+@media(max-width:760px){.maglayout{grid-template-columns:1fr;}}
+.magbox{background:var(--nine-navy);border-radius:16px;padding:14px;}
+.magbox .mt{font-size:11px;letter-spacing:1.3px;text-transform:uppercase;color:#8fb6e0;font-weight:700;margin-bottom:8px;text-align:center;}
+svg.mag{display:block;width:100%;height:auto;background:#0b1d38;border-radius:10px;}
+
+/* quiz */
+.quiz-row{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;margin-top:8px;}
+.quiz-field{flex:1;min-width:180px;}
+.quiz-field input{width:100%;font-family:'JetBrains Mono';font-weight:700;font-size:20px;color:var(--nine-navy);
+  border:2px solid rgba(41,89,144,.2);border-radius:12px;padding:12px 14px;outline:none;}
+.quiz-field input:focus{border-color:var(--nine-accent);}
+.btn{border:none;border-radius:12px;font-family:'DM Sans';font-weight:700;font-size:15px;cursor:pointer;padding:13px 22px;transition:.15s;}
+.btn.primary{background:var(--nine-accent);color:#fff;}
+.btn.primary:hover{background:#0090cf;}
+.btn.ghost{background:var(--paper-2);color:var(--nine-dark);}
+.btn.ghost:hover{background:#e4edf6;}
+.qfb{margin-top:14px;border-radius:14px;padding:15px 18px;font-weight:600;display:none;}
+.qfb.show{display:block;}
+.qfb.ok{background:#ecfdf3;color:#0f7a3d;border:1.5px solid #9ae6b9;}
+.qfb.no{background:#fff1f3;color:#b21c3c;border:1.5px solid #f4b8c4;}
+.qgiven{background:#eef5fc;border-radius:12px;padding:12px 16px;font-size:14px;color:var(--nine-deep);margin-bottom:6px;}
+.qgiven b{color:var(--nine-dark);}
+.score{font-family:'JetBrains Mono';font-weight:700;color:var(--nine-dark);}
+
+.foot{text-align:center;color:#7689a0;font-size:13px;margin-top:30px;}
+.hide{display:none!important;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hd">
+    <span class="badge">Smartboard Studio</span>
+    <div>
+      <h1>Vernier Calipers — Interactive Lab</h1>
+      <div class="sub">Drag the jaw · read the scales · master least count &amp; zero error</div>
+    </div>
+  </div>
+
+  <div class="tabs" id="tabs">
+    <button class="tab active" data-mode="explore">🔧 Explore &amp; Read</button>
+    <button class="tab" data-mode="measure">📦 Measure Objects</button>
+    <button class="tab" data-mode="quiz">🎯 Quiz Mode</button>
+  </div>
+
+  <!-- INSTRUMENT -->
+  <div class="panel">
+    <div class="panel-title"><span class="dot"></span><span id="stageTitle">The Instrument</span></div>
+    <div class="stage">
+      <svg class="caliper" id="caliper" viewBox="0 0 800 320" preserveAspectRatio="xMidYMid meet"></svg>
+    </div>
+    <div class="hint">👉 <span id="hintText"><b>Drag the moving jaw</b> (or use − / + below) to set an opening, then read the scales.</span></div>
+
+    <!-- explore/measure controls -->
+    <div class="controls" id="explControls">
+      <div class="ctl">
+        <label>Least count (vernier divisions)</label>
+        <div class="seg" id="divSeg">
+          <button data-div="10" class="on">10 → 0.01 cm</button>
+          <button data-div="20">20 → 0.005 cm</button>
+        </div>
+      </div>
+      <div class="ctl">
+        <label>Zero error</label>
+        <div class="seg" id="zeSeg">
+          <button data-ze="-0.2">−0.02</button>
+          <button data-ze="-0.1">−0.01</button>
+          <button data-ze="0" class="on">None</button>
+          <button data-ze="0.1">+0.01</button>
+          <button data-ze="0.2">+0.02</button>
+        </div>
+      </div>
+      <div class="ctl" id="nudgeCtl">
+        <label>Fine adjust (one least count per step)</label>
+        <div class="nudge">
+          <button id="minusBtn">−</button>
+          <div class="val" id="nudgeVal">0.00 cm</div>
+          <button id="plusBtn">+</button>
+        </div>
+      </div>
+      <div class="ctl" id="closeCtl">
+        <label>Demonstrate</label>
+        <div class="seg">
+          <button id="closeBtn">Close jaws (show zero error)</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- object picker -->
+    <div class="controls hide" id="objControls">
+      <div class="ctl" style="grid-column:1/-1">
+        <label>Pick an object — the jaws will clamp onto it</label>
+        <div class="objgrid" id="objGrid"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAGNIFIER + READOUT -->
+  <div class="panel">
+    <div class="panel-title"><span class="dot"></span>Reading the Vernier</div>
+    <div class="maglayout">
+      <div>
+        <div class="reads" id="reads"></div>
+        <div class="formula" id="formula"></div>
+      </div>
+      <div class="magbox">
+        <div class="mt">🔍 Magnifier — which division coincides?</div>
+        <svg class="mag" id="mag" viewBox="0 0 360 200" preserveAspectRatio="xMidYMid meet"></svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="panel hide" id="quizPanel">
+    <div class="panel-title"><span class="dot"></span>Quiz — read the instrument</div>
+    <div class="qgiven" id="qGiven"></div>
+    <div class="quiz-row">
+      <div class="quiz-field">
+        <label style="font-size:11px;letter-spacing:1.3px;text-transform:uppercase;color:#7689a0;font-weight:700;display:block;margin-bottom:6px;">Your answer — corrected reading (cm)</label>
+        <input id="qInput" type="text" inputmode="decimal" placeholder="e.g. 1.24" autocomplete="off">
+      </div>
+      <button class="btn primary" id="qCheck">Check</button>
+      <button class="btn ghost" id="qNew">New question →</button>
+    </div>
+    <div class="qfb" id="qFb"></div>
+    <div style="margin-top:14px" class="score" id="qScore">Score: 0 / 0</div>
+  </div>
+
+  <div class="foot">Units &amp; Dimensions · Vernier Calipers · drag-to-read interactive — built for the classroom smartboard.</div>
+</div>
+
+<script>
+/* ============================================================
+   GEOMETRY & STATE
+   ============================================================ */
+const PX = 10;            // px per mm (main view)
+const OX = 70;            // x of main-scale zero (right face of fixed jaw)
+const MAXMM = 68;         // main scale length (mm)
+// vertical layout (viewBox 800 x 320)
+const BEAM_T = 66, BEAM_B = 112;        // steel beam (top, bottom)
+const MT_MMTOP = 98, MT_CMTOP = 88, MT_B = 112;  // main ticks (mm top, cm top, bottom)
+const VT_T = 112, VT_B = 130;           // vernier ticks (top, bottom)
+const UP_TIP = 28, LO_TIP = 292;        // internal (upper) & external (lower) jaw tips
+
+const state = {
+  mode:'explore',
+  divisions:10,
+  zeroError:0,        // mm (multiple of 0.1)
+  trueWidth:0,        // mm — jaw face separation / object width
+  object:null,
+};
+
+const OBJECTS = [
+  {id:'ball',  ic:'⚪', nm:'Steel ball',   w:12.4, shape:'circle'},
+  {id:'marble',ic:'🔵', nm:'Glass marble', w:16.8, shape:'circle'},
+  {id:'rod',   ic:'➖', nm:'Metal rod',    w:8.3,  shape:'rod'},
+  {id:'block', ic:'🟫', nm:'Wooden block', w:23.6, shape:'rect'},
+  {id:'coin',  ic:'🪙', nm:'Coin (thick.)',w:1.7,  shape:'thin'},
+  {id:'wire',  ic:'🧵', nm:'Thick wire',   w:2.9,  shape:'thin'},
+];
+
+const lc = () => 1/state.divisions;            // mm
+const vernLen = () => state.divisions-1;        // mm (N-1)
+const reading = () => round(state.trueWidth + state.zeroError, 6); // observed (mm)
+
+function round(v,d=6){const f=10**d;return Math.round(v*f)/f;}
+function snapReadingToLC(mm){const L=lc();return round(Math.round(mm/L)*L);}
+function clampW(w){return Math.max(0, Math.min(MAXMM-vernLen()-1, w));}
+
+/* derived reading parts */
+function parts(){
+  const obs = reading();
+  const msr = Math.floor(obs + 1e-9);                 // whole mm
+  const n   = Math.round((obs - msr)/lc());           // coinciding division
+  const vsr = round(n*lc());
+  const corrected = round(obs - state.zeroError);
+  return {obs, msr, n, vsr, corrected};
+}
+
+/* ============================================================
+   SVG HELPERS
+   ============================================================ */
+const NS='http://www.w3.org/2000/svg';
+function el(tag,attrs,txt){
+  const e=document.createElementNS(NS,tag);
+  for(const k in attrs) e.setAttribute(k,attrs[k]);
+  if(txt!=null) e.textContent=txt;
+  return e;
+}
+function line(x1,y1,x2,y2,stroke,w){return el('line',{x1,y1,x2,y2,stroke,'stroke-width':w});}
+
+/* ============================================================
+   MAIN INSTRUMENT RENDER
+   ============================================================ */
+const svg = document.getElementById('caliper');
+
+function ensureDefs(){
+  if(document.getElementById('vcdefs')) return;
+  const defs=el('defs',{id:'vcdefs'});
+  const steel=el('linearGradient',{id:'steel',x1:0,y1:0,x2:0,y2:1});
+  steel.appendChild(el('stop',{offset:'0%','stop-color':'#eef3f8'}));
+  steel.appendChild(el('stop',{offset:'45%','stop-color':'#d4dfea'}));
+  steel.appendChild(el('stop',{offset:'100%','stop-color':'#b6c6d6'}));
+  defs.appendChild(steel);
+  const jaw=el('linearGradient',{id:'jaw',x1:0,y1:0,x2:0,y2:1});
+  jaw.appendChild(el('stop',{offset:'0%','stop-color':'#dfe8f1'}));
+  jaw.appendChild(el('stop',{offset:'100%','stop-color':'#a9bccd'}));
+  defs.appendChild(jaw);
+  const slide=el('linearGradient',{id:'slide',x1:0,y1:0,x2:0,y2:1});
+  slide.appendChild(el('stop',{offset:'0%','stop-color':'#cfe7f6'}));
+  slide.appendChild(el('stop',{offset:'100%','stop-color':'#9cc7e6'}));
+  defs.appendChild(slide);
+  const og=el('radialGradient',{id:'og',cx:'35%',cy:'30%',r:'75%'});
+  og.appendChild(el('stop',{offset:'0%','stop-color':'#eef4fa'}));
+  og.appendChild(el('stop',{offset:'55%','stop-color':'#aebccb'}));
+  og.appendChild(el('stop',{offset:'100%','stop-color':'#7d90a5'}));
+  defs.appendChild(og);
+  svg.appendChild(defs);
+}
+
+function poly(points,fill,stroke,w,parent){
+  (parent||svg).appendChild(el('polygon',{points,fill,stroke,'stroke-width':w,'stroke-linejoin':'round'}));
+}
+
+function renderCaliper(){
+  while(svg.firstChild) svg.removeChild(svg.firstChild);
+  ensureDefs();
+  const p = parts();
+  const jawFaceX = OX + state.trueWidth*PX;
+  const coincX = OX + (p.msr + p.n)*PX;
+  const beamR = OX + MAXMM*PX;
+
+  /* ── fixed (left) jaws — drawn first, behind beam ── */
+  // lower external jaw (big, points down; measuring face vertical at OX)
+  poly(`${OX},${BEAM_B} ${OX},${LO_TIP} ${OX-32},${LO_TIP} ${OX-32},168 ${OX-58},168 ${OX-58},${BEAM_B}`,'url(#jaw)','#8ea5bb',1.4);
+  // upper internal jaw (small, points up)
+  poly(`${OX},${BEAM_T} ${OX},${UP_TIP} ${OX-15},${UP_TIP} ${OX-15},50 ${OX-34},${BEAM_T}`,'url(#jaw)','#8ea5bb',1.4);
+
+  /* ── steel beam ── */
+  svg.appendChild(el('rect',{x:OX-58,y:BEAM_T,width:(beamR+24)-(OX-58),height:BEAM_B-BEAM_T,rx:4,
+    fill:'url(#steel)',stroke:'#8ea5bb','stroke-width':1.2}));
+  // depth-rod stub at right end
+  svg.appendChild(el('rect',{x:beamR+24,y:BEAM_T+7,width:12,height:BEAM_B-BEAM_T-14,rx:2,fill:'#aebccb',stroke:'#8ea5bb','stroke-width':1}));
+
+  /* ── main scale ticks + cm numbers (engraved on beam) ── */
+  for(let m=0;m<=MAXMM;m++){
+    const x=OX+m*PX;
+    if(m%10===0){
+      svg.appendChild(line(x,MT_CMTOP,x,MT_B,'#33506e',1.6));
+      svg.appendChild(el('text',{x,y:MT_CMTOP-3,'text-anchor':'middle',
+        'font-family':'JetBrains Mono','font-size':11,'font-weight':700,fill:'#1b3e66'}, (m/10)));
+    } else if(m%5===0){
+      svg.appendChild(line(x,MT_MMTOP-5,x,MT_B,'#5e7691',1.2));
+    } else {
+      svg.appendChild(line(x,MT_MMTOP,x,MT_B,'#7f93aa',1));
+    }
+  }
+  svg.appendChild(el('text',{x:beamR+8,y:MT_CMTOP-3,'font-family':'DM Sans','font-size':10,
+    'font-weight':700,fill:'#6a7e96'},'cm'));
+
+  /* coincidence highlight line */
+  svg.appendChild(line(coincX,MT_CMTOP-2,coincX,VT_B+3,'rgba(0,160,227,.9)',2.4));
+
+  /* object gripped between the lower external jaws */
+  drawObject();
+
+  /* ── moving slider group (frame + jaws + vernier scale) ── */
+  const g = el('g',{transform:`translate(${jawFaceX},0)`,style:'cursor:grab',id:'slider'});
+  const fw = Math.max(vernLen()*PX, 64);   // slider frame width
+  // moving lower external jaw (points down; measuring face at local 0)
+  poly(`0,${BEAM_B} 0,${LO_TIP} 32,${LO_TIP} 32,168 58,168 58,${BEAM_B}`,'url(#jaw)','#7aa7cc',1.4,g);
+  // moving upper internal jaw (points up)
+  poly(`0,${BEAM_T} 0,${UP_TIP} 15,${UP_TIP} 15,50 34,${BEAM_T}`,'url(#jaw)','#7aa7cc',1.4,g);
+  // sliding frame clasp wrapping the beam
+  g.appendChild(el('rect',{x:-10,y:BEAM_T-8,width:fw+20,height:(VT_B+18)-(BEAM_T-8),rx:7,
+    fill:'rgba(0,160,227,.12)',stroke:'rgba(0,160,227,.6)','stroke-width':1.6}));
+  // thumb screw + grip on top
+  g.appendChild(el('rect',{x:fw-6,y:BEAM_T-20,width:24,height:16,rx:3,fill:'#9cc7e6',stroke:'#6aa3cd','stroke-width':1}));
+  g.appendChild(el('circle',{cx:fw+6,cy:BEAM_T-12,r:4,fill:'#5a86a8'}));
+  // vernier ticks (engraving offset by zeroError)
+  const off = state.zeroError*PX;
+  const sp  = (vernLen()/state.divisions)*PX;
+  for(let k=0;k<=state.divisions;k++){
+    const lx = off + k*sp;
+    const isCo = (k===p.n);
+    const long = (k%5===0)||isCo;
+    g.appendChild(line(lx,VT_T,lx,long?VT_B:VT_B-5, isCo?'#00A0E3':'#234d77', isCo?2.8:1.1));
+    if(k%5===0||k===state.divisions){
+      g.appendChild(el('text',{x:lx,y:VT_B+12,'text-anchor':'middle','font-family':'JetBrains Mono',
+        'font-size':9.5,'font-weight':700,fill:isCo?'#0090cf':'#2d5a86'}, k));
+    }
+  }
+  svg.appendChild(g);
+
+  /* part labels */
+  svg.appendChild(el('text',{x:OX-30,y:LO_TIP-6,'text-anchor':'middle','font-family':'DM Sans','font-size':9.5,'font-weight':700,fill:'#6a7e96'},'fixed jaw'));
+  svg.appendChild(el('text',{x:jawFaceX+30,y:LO_TIP-6,'text-anchor':'middle','font-family':'DM Sans','font-size':9.5,'font-weight':700,fill:'#3a7bb0'},'sliding jaw'));
+  svg.appendChild(el('text',{x:OX-46,y:UP_TIP-4,'font-family':'DM Sans','font-size':9,'font-weight':700,fill:'#9aabbf'},'internal jaws'));
+}
+
+function drawObject(){
+  if(state.mode==='explore' || !state.object) return;
+  const o=state.object;
+  const w=state.trueWidth*PX;
+  const midY=210;                         // centre of the lower-jaw gap
+  const maxR=44;
+  if(o.shape==='circle'){
+    svg.appendChild(el('circle',{cx:OX+w/2,cy:midY,r:Math.min(w/2,maxR),
+      fill:'url(#og)',stroke:'#7f93aa','stroke-width':1.2}));
+  } else if(o.shape==='thin'){
+    svg.appendChild(el('rect',{x:OX,y:midY-40,width:Math.max(w,2),height:80,rx:2,
+      fill:'#b08968',stroke:'#8a6a4f','stroke-width':1}));
+  } else if(o.shape==='rod'){
+    svg.appendChild(el('rect',{x:OX,y:midY-8,width:w,height:16,rx:8,
+      fill:'#9aa7b5',stroke:'#75869a','stroke-width':1.2}));
+  } else {
+    svg.appendChild(el('rect',{x:OX,y:midY-42,width:w,height:84,rx:4,
+      fill:'#c79a6b',stroke:'#9c7a52','stroke-width':1}));
+  }
+  svg.appendChild(el('text',{x:OX+w/2,y:midY+62,'text-anchor':'middle','font-family':'DM Sans',
+    'font-size':10.5,'font-weight':700,fill:'#6a7e96'}, o.nm));
+}
+
+/* ============================================================
+   MAGNIFIER
+   ============================================================ */
+const mag = document.getElementById('mag');
+function renderMag(){
+  while(mag.firstChild) mag.removeChild(mag.firstChild);
+  const p=parts();
+  const Z=42;                      // px per mm (zoom)
+  const center=p.msr+p.n;          // coincidence at this main-mm mark
+  const half=3.2;                  // mm window each side
+  const W=360, H=200, cx=W/2, oy=70;
+  const toX=mm=>cx+(mm-center)*Z;
+
+  mag.appendChild(el('rect',{x:0,y:0,width:W,height:H,fill:'#0b1d38'}));
+  // labels
+  mag.appendChild(el('text',{x:10,y:24,'font-family':'DM Sans','font-size':11,'font-weight':700,fill:'#8fb6e0'},'Main'));
+  mag.appendChild(el('text',{x:10,y:H-12,'font-family':'DM Sans','font-size':11,'font-weight':700,fill:'#8fb6e0'},'Vernier'));
+
+  // coincidence glow
+  mag.appendChild(el('line',{x1:cx,y1:30,x2:cx,y2:H-28,stroke:'rgba(0,160,227,.9)','stroke-width':3}));
+  mag.appendChild(el('text',{x:cx,y:18,'text-anchor':'middle','font-family':'JetBrains Mono','font-size':12,
+    'font-weight':700,fill:'#00A0E3'},'aligned ✓'));
+
+  // main ticks (top, pointing down)
+  for(let m=Math.ceil(center-half);m<=Math.floor(center+half);m++){
+    const x=toX(m); if(x<6||x>W-6)continue;
+    const big=(m%10===0);
+    mag.appendChild(el('line',{x1:x,y1:oy-30,x2:x,y2:oy,stroke:'#dbe8f5','stroke-width':big?2.4:1.6}));
+  }
+  // vernier ticks (bottom, pointing up). Vernier zero sits at obs (= trueWidth + zeroError),
+  // so vernier mark k lies at (obs + k*spacing) on the main scale.
+  const sp=vernLen()/state.divisions;
+  for(let k=0;k<=state.divisions;k++){
+    const mmAbs=p.obs + k*sp;
+    const x=toX(mmAbs); if(x<6||x>W-6)continue;
+    const isCo=(k===p.n);
+    mag.appendChild(el('line',{x1:x,y1:oy+44,x2:x,y2:oy+44+(isCo?34:24),
+      stroke:isCo?'#00A0E3':'#9fc0e0','stroke-width':isCo?3.2:1.6}));
+    if(isCo){
+      mag.appendChild(el('text',{x:x,y:oy+44+50,'text-anchor':'middle','font-family':'JetBrains Mono',
+        'font-size':14,'font-weight':700,fill:'#00A0E3'}, k));
+    } else if(k%5===0){
+      mag.appendChild(el('text',{x:x,y:oy+44+42,'text-anchor':'middle','font-family':'JetBrains Mono',
+        'font-size':10,'font-weight':700,fill:'#6f93ba'}, k));
+    }
+  }
+}
+
+/* ============================================================
+   READOUT + FORMULA
+   ============================================================ */
+function fmt(mm){return (mm/10).toFixed(state.divisions===10?2:3);}  // cm
+function renderReads(){
+  const p=parts();
+  const reads=document.getElementById('reads');
+  reads.innerHTML=`
+    <div class="ro"><div class="rl">Least count</div><div class="rv">${(lc()/10).toFixed(state.divisions===10?2:3)}</div><div class="ru">cm</div></div>
+    <div class="ro"><div class="rl">Main scale (MSR)</div><div class="rv">${(p.msr/10).toFixed(1)}</div><div class="ru">cm</div></div>
+    <div class="ro"><div class="rl">Vernier coincidence</div><div class="rv">${p.n}</div><div class="ru">division</div></div>
+    <div class="ro accent"><div class="rl">Observed reading</div><div class="rv">${fmt(p.obs)}</div><div class="ru">cm</div></div>
+    <div class="ro ${state.zeroError? '':'green'}"><div class="rl">Zero error</div><div class="rv">${state.zeroError>0?'+':''}${(state.zeroError/10).toFixed(2)}</div><div class="ru">cm</div></div>
+    <div class="ro green"><div class="rl">Corrected reading</div><div class="rv">${fmt(p.corrected)}</div><div class="ru">cm</div></div>`;
+
+  const f=document.getElementById('formula');
+  const zeTxt = state.zeroError===0
+    ? `<br>Correct = Observed − Zero&nbsp;error = <b>${fmt(p.obs)} − 0.00 = ${fmt(p.corrected)} cm</b>`
+    : `<br>Correct = Observed − Zero&nbsp;error = ${fmt(p.obs)} − (${state.zeroError>0?'+':''}${(state.zeroError/10).toFixed(2)}) = <b>${fmt(p.corrected)} cm</b>`;
+  f.innerHTML =
+    `Reading = MSR + (coinciding division × LC)<br>`+
+    `&nbsp;&nbsp;= ${(p.msr/10).toFixed(1)} + ( <span class="em">${p.n}</span> × ${(lc()/10).toFixed(state.divisions===10?2:3)} ) `+
+    `= <b>${fmt(p.obs)} cm</b>` + zeTxt;
+}
+
+/* ============================================================
+   RENDER ALL
+   ============================================================ */
+function renderAll(){
+  renderCaliper(); renderMag(); renderReads();
+  document.getElementById('nudgeVal').textContent = fmt(reading())+' cm';
+}
+
+/* ============================================================
+   INTERACTION — drag jaw
+   ============================================================ */
+let dragging=false;
+function clientToMM(clientX){
+  const r=svg.getBoundingClientRect();
+  const vbX=(clientX-r.left)*(820/r.width);
+  return (vbX-OX)/PX;
+}
+function setFromPointer(clientX){
+  const mm=clientToMM(clientX);
+  const desired=snapReadingToLC(mm);              // snap the reading to LC
+  state.trueWidth=clampW(round(desired-state.zeroError));
+  renderAll();
+}
+svg.addEventListener('pointerdown',e=>{
+  if(state.mode==='measure')return;               // jaws fixed on object
+  dragging=true; svg.setPointerCapture(e.pointerId);
+  setFromPointer(e.clientX);
+});
+svg.addEventListener('pointermove',e=>{ if(dragging) setFromPointer(e.clientX); });
+svg.addEventListener('pointerup',()=>dragging=false);
+svg.addEventListener('pointercancel',()=>dragging=false);
+
+document.getElementById('plusBtn').onclick=()=>{ if(state.mode==='measure')return;
+  state.trueWidth=clampW(round(state.trueWidth+lc())); renderAll(); };
+document.getElementById('minusBtn').onclick=()=>{ if(state.mode==='measure')return;
+  state.trueWidth=clampW(round(state.trueWidth-lc())); renderAll(); };
+
+document.getElementById('closeBtn').onclick=()=>{
+  state.object=null; state.trueWidth=0; document.querySelectorAll('.obj').forEach(o=>o.classList.remove('on'));
+  renderAll();
+};
+
+/* division + zero-error segments */
+document.getElementById('divSeg').addEventListener('click',e=>{
+  const b=e.target.closest('button'); if(!b)return;
+  document.querySelectorAll('#divSeg button').forEach(x=>x.classList.remove('on')); b.classList.add('on');
+  state.divisions=+b.dataset.div;
+  // re-snap current reading
+  state.trueWidth=clampW(round(snapReadingToLC(reading())-state.zeroError));
+  renderAll();
+});
+document.getElementById('zeSeg').addEventListener('click',e=>{
+  const b=e.target.closest('button'); if(!b)return;
+  document.querySelectorAll('#zeSeg button').forEach(x=>x.classList.remove('on')); b.classList.add('on');
+  state.zeroError=+b.dataset.ze;
+  renderAll();
+});
+
+/* ============================================================
+   OBJECTS
+   ============================================================ */
+const objGrid=document.getElementById('objGrid');
+OBJECTS.forEach(o=>{
+  const d=document.createElement('div');
+  d.className='obj'; d.dataset.id=o.id;
+  d.innerHTML=`<div class="ic">${o.ic}</div><div class="nm">${o.nm}</div><div class="tw">true: ${(o.w/10).toFixed(2)} cm</div>`;
+  d.onclick=()=>selectObject(o,d);
+  objGrid.appendChild(d);
+});
+function selectObject(o,d){
+  document.querySelectorAll('.obj').forEach(x=>x.classList.remove('on'));
+  d.classList.add('on');
+  state.object=o;
+  // animate jaws onto object
+  animateTo(o.w);
+}
+function animateTo(target){
+  const start=state.trueWidth, t0=performance.now(), dur=520;
+  function step(t){
+    const k=Math.min(1,(t-t0)/dur), e=1-Math.pow(1-k,3);
+    state.trueWidth=round(start+(target-start)*e);
+    renderAll();
+    if(k<1) requestAnimationFrame(step);
+    else { state.trueWidth=clampW(target); renderAll(); }
+  }
+  requestAnimationFrame(step);
+}
+
+/* ============================================================
+   MODE SWITCHING
+   ============================================================ */
+const stageTitle=document.getElementById('stageTitle');
+const hintText=document.getElementById('hintText');
+document.getElementById('tabs').addEventListener('click',e=>{
+  const b=e.target.closest('.tab'); if(!b)return;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); b.classList.add('active');
+  setMode(b.dataset.mode);
+});
+function setMode(m){
+  state.mode=m;
+  const expl=document.getElementById('explControls');
+  const objc=document.getElementById('objControls');
+  const quiz=document.getElementById('quizPanel');
+  const nudge=document.getElementById('nudgeCtl');
+  const closeC=document.getElementById('closeCtl');
+  expl.classList.toggle('hide', m==='measure');
+  objc.classList.toggle('hide', m!=='measure');
+  quiz.classList.toggle('hide', m!=='quiz');
+  nudge.classList.toggle('hide', m==='measure');
+  closeC.classList.toggle('hide', m==='measure');
+
+  if(m==='explore'){
+    stageTitle.textContent='The Instrument — drag to explore';
+    hintText.innerHTML='<b>Drag the moving jaw</b> (or use − / +) to set any opening, then read the scales below.';
+    state.object=null;
+  } else if(m==='measure'){
+    stageTitle.textContent='Measure a real object';
+    hintText.innerHTML='Pick an object below — the jaws <b>clamp onto it</b>. Read the scales, then compare with the true value.';
+  } else {
+    stageTitle.textContent='Quiz — read this measurement';
+    hintText.innerHTML='Read the scales and the magnifier, apply the <b>zero-error correction</b>, then type the corrected reading.';
+    newQuiz();
+  }
+  renderAll();
+}
+
+/* ============================================================
+   QUIZ
+   ============================================================ */
+let qScore=0,qTotal=0,qAns=0;
+const zeChoices=[-0.2,-0.1,0,0,0.1,0.2];
+const divChoices=[10,10,20];
+function newQuiz(){
+  document.getElementById('qFb').classList.remove('show');
+  document.getElementById('qInput').value='';
+  state.divisions=divChoices[Math.floor(Math.random()*divChoices.length)];
+  // sync division seg buttons
+  document.querySelectorAll('#divSeg button').forEach(x=>x.classList.toggle('on',+x.dataset.div===state.divisions));
+  state.zeroError=zeChoices[Math.floor(Math.random()*zeChoices.length)];
+  document.querySelectorAll('#zeSeg button').forEach(x=>x.classList.toggle('on',+x.dataset.ze===state.zeroError));
+  // random target width (multiple of 0.1mm) between 3 and 40 mm
+  const w=round((Math.floor(Math.random()*371)+30)/10);
+  state.object=null; state.trueWidth=clampW(w);
+  const p=parts(); qAns=p.corrected;
+  document.getElementById('qGiven').innerHTML=
+    `Vernier divisions: <b>${state.divisions}</b> &nbsp;·&nbsp; Least count: <b>${(lc()/10).toFixed(state.divisions===10?2:3)} cm</b> `+
+    `&nbsp;·&nbsp; Zero error: <b>${state.zeroError>0?'+':''}${(state.zeroError/10).toFixed(2)} cm</b>`;
+  renderAll();
+}
+document.getElementById('qNew').onclick=newQuiz;
+document.getElementById('qCheck').onclick=()=>{
+  const v=parseFloat(document.getElementById('qInput').value);
+  const fb=document.getElementById('qFb');
+  fb.classList.add('show');
+  qTotal++;
+  if(!isNaN(v) && Math.abs(v-qAns/10) < (lc()/10)/2 + 1e-9){
+    qScore++; fb.className='qfb show ok';
+    fb.innerHTML=`✓ Correct! The corrected reading is <b>${fmt(qAns)} cm</b>.`;
+  } else {
+    fb.className='qfb show no';
+    const p=parts();
+    fb.innerHTML=`✗ Not quite. Observed = ${fmt(p.obs)} cm, zero error = ${state.zeroError>0?'+':''}${(state.zeroError/10).toFixed(2)} cm → `+
+      `corrected = <b>${fmt(qAns)} cm</b>.`;
+  }
+  document.getElementById('qScore').textContent=`Score: ${qScore} / ${qTotal}`;
+};
+document.getElementById('qInput').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('qCheck').click();});
+
+/* init */
+state.trueWidth=12.4;
+renderAll();
+</script>
+</body>
+</html>

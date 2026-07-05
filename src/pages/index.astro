@@ -1,0 +1,42 @@
+---
+import StudioLayout from '../layouts/StudioLayout.astro';
+import { chapters } from '../data/chapters';
+---
+<StudioLayout title="Nine Education — Physics Smartboard Studio" chapterChip="Class 11 · Physics">
+  <section class="screen active">
+    <div class="hero">
+      <h1>Physics <span class="accent">Smartboard Studio</span></h1>
+      <p>Pick a chapter — every card opens a set of touch-first interactives built for the smartboard.</p>
+    </div>
+    <div class="grid">
+      {chapters.map((ch) =>
+        ch.status === 'ready' ? (
+          <a class="tile" href={`/${ch.slug}`} style="text-decoration:none;color:inherit;">
+            <div class="tile-num">{ch.num}</div>
+            <div class="tile-icon ic-build">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            </div>
+            <h3>{ch.title} <span class="accent">{ch.titleAccent}</span></h3>
+            <p>{ch.blurb}</p>
+            <span class="tile-go">{ch.activities} activities — Open ›</span>
+          </a>
+        ) : (
+          <div class="tile tile-soon" aria-disabled="true">
+            <div class="tile-num">{ch.num}</div>
+            <div class="tile-icon ic-build" style="opacity:.45;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+            </div>
+            <h3 style="opacity:.55;">{ch.title} <span class="accent">{ch.titleAccent}</span></h3>
+            <p style="opacity:.55;">{ch.blurb}</p>
+            <span class="tile-go" style="opacity:.5;">Coming soon</span>
+          </div>
+        )
+      )}
+    </div>
+  </section>
+</StudioLayout>
+
+<style>
+  .tile-soon { cursor: default; }
+  .tile-soon:hover { transform: none; }
+</style>

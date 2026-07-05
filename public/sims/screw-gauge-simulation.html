@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light only">
+<title>Screw Gauge (Micrometer) — Interactive Lab · Smartboard Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --nine-dark:#295990; --nine-accent:#00A0E3; --nine-deep:#1b3e66; --nine-navy:#0f2647;
+  --ink:#13233b; --paper:#eaf1f9; --paper-2:#f4f8fc; --white:#ffffff;
+  --green:#16a34a; --red:#e11d48; --amber:#f59e0b;
+  --shadow:0 10px 30px rgba(15,38,71,0.14); --shadow-lg:0 20px 60px rgba(15,38,71,0.22);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{min-height:100%;}
+body{
+  font-family:'DM Sans',sans-serif; color:var(--ink); background:var(--paper);
+  background-image:
+    linear-gradient(rgba(41,89,144,0.06) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(41,89,144,0.06) 1px,transparent 1px),
+    linear-gradient(rgba(41,89,144,0.10) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(41,89,144,0.10) 1px,transparent 1px);
+  background-size:28px 28px,28px 28px,140px 140px,140px 140px;
+  overflow-x:hidden; padding:22px 16px 60px;
+}
+.wrap{max-width:1180px;margin:0 auto;}
+.hd{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:20px;}
+.hd .badge{font-family:'Bricolage Grotesque';font-weight:800;font-size:13px;letter-spacing:2px;
+  text-transform:uppercase;color:var(--white);background:var(--nine-navy);padding:8px 14px;border-radius:999px;}
+.hd h1{font-family:'Bricolage Grotesque';font-weight:800;font-size:clamp(22px,4vw,36px);color:var(--nine-navy);line-height:1.02;}
+.hd .sub{color:#5c708a;font-size:15px;margin-top:2px;}
+.panel{background:var(--white);border-radius:24px;box-shadow:var(--shadow);padding:22px;margin-bottom:20px;}
+.panel-title{font-family:'Bricolage Grotesque';font-weight:800;font-size:18px;color:var(--nine-dark);margin-bottom:14px;display:flex;align-items:center;gap:9px;}
+.panel-title .dot{width:10px;height:10px;border-radius:50%;background:var(--nine-accent);}
+.tabs{display:flex;gap:8px;background:var(--paper-2);padding:6px;border-radius:16px;flex-wrap:wrap;margin-bottom:18px;}
+.tab{flex:1;min-width:120px;border:none;background:transparent;font-family:'DM Sans';font-weight:700;font-size:15px;color:#5c708a;padding:12px 14px;border-radius:11px;cursor:pointer;transition:.18s;}
+.tab.active{background:var(--white);color:var(--nine-dark);box-shadow:var(--shadow);}
+.tab:hover:not(.active){color:var(--nine-dark);}
+.stage{background:linear-gradient(180deg,#f7fbff,#eef5fc);border-radius:18px;padding:10px;overflow-x:auto;border:1px solid rgba(41,89,144,.1);}
+svg.gauge{display:block;width:100%;min-width:680px;height:auto;touch-action:none;}
+.hint{font-size:13px;color:#6a7e96;margin-top:10px;display:flex;align-items:center;gap:7px;}
+.hint b{color:var(--nine-dark);}
+.controls{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;margin-top:18px;}
+.ctl label{display:block;font-size:11px;letter-spacing:1.4px;text-transform:uppercase;color:#7689a0;font-weight:700;margin-bottom:8px;}
+.seg{display:flex;gap:6px;flex-wrap:wrap;}
+.seg button{flex:1;min-width:60px;border:2px solid rgba(41,89,144,.16);background:var(--white);font-family:'DM Sans';font-weight:700;font-size:13.5px;color:var(--nine-dark);padding:10px 8px;border-radius:11px;cursor:pointer;transition:.15s;}
+.seg button.on{background:var(--nine-dark);color:#fff;border-color:var(--nine-dark);}
+.seg button:hover:not(.on){border-color:var(--nine-accent);}
+.nudge{display:flex;gap:8px;align-items:center;}
+.nudge button{width:46px;height:46px;border-radius:12px;border:2px solid rgba(41,89,144,.16);background:#fff;font-size:22px;font-weight:700;color:var(--nine-dark);cursor:pointer;line-height:1;}
+.nudge button:active{background:var(--paper-2);}
+.nudge .val{flex:1;text-align:center;font-family:'JetBrains Mono';font-weight:700;font-size:18px;color:var(--nine-navy);}
+.objgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;}
+.obj{border:2px solid rgba(41,89,144,.14);background:var(--white);border-radius:14px;padding:12px;cursor:pointer;text-align:center;transition:.15s;}
+.obj.on{border-color:var(--nine-accent);background:#e9f6fd;box-shadow:0 0 0 3px rgba(0,160,227,.16);}
+.obj:hover:not(.on){transform:translateY(-2px);border-color:var(--nine-accent);}
+.obj .ic{font-size:30px;line-height:1;} .obj .nm{font-weight:700;font-size:14px;margin-top:6px;color:var(--nine-navy);}
+.obj .tw{font-size:11px;color:#8295ab;margin-top:1px;font-family:'JetBrains Mono';}
+.reads{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;}
+.ro{background:var(--paper-2);border-radius:16px;padding:16px;text-align:center;}
+.ro .rl{font-size:10.5px;letter-spacing:1.3px;text-transform:uppercase;color:#7689a0;font-weight:700;}
+.ro .rv{font-family:'Bricolage Grotesque';font-weight:800;font-size:28px;color:var(--nine-dark);margin-top:5px;line-height:1;}
+.ro .ru{font-size:12px;color:#8295ab;margin-top:3px;}
+.ro.accent{background:var(--nine-navy);} .ro.accent .rl{color:#8fb6e0;} .ro.accent .rv{color:var(--nine-accent);} .ro.accent .ru{color:#8fb6e0;}
+.ro.green{background:#ecfdf3;} .ro.green .rv{color:var(--green);}
+.formula{margin-top:16px;background:#fff8e1;border:1.5px solid #f1d48a;border-radius:14px;padding:16px 18px;font-family:'JetBrains Mono';font-size:15px;color:#7a5b12;line-height:1.7;overflow-x:auto;}
+.formula b{color:#b45309;} .formula .em{background:#fde9b8;border-radius:5px;padding:1px 5px;}
+.maglayout{display:grid;grid-template-columns:1.1fr .9fr;gap:18px;}
+@media(max-width:760px){.maglayout{grid-template-columns:1fr;}}
+.magbox{background:var(--nine-navy);border-radius:16px;padding:14px;}
+.magbox .mt{font-size:11px;letter-spacing:1.3px;text-transform:uppercase;color:#8fb6e0;font-weight:700;margin-bottom:8px;text-align:center;}
+svg.mag{display:block;width:100%;height:auto;background:#0b1d38;border-radius:10px;}
+.quiz-row{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;margin-top:8px;}
+.quiz-field{flex:1;min-width:180px;}
+.quiz-field input{width:100%;font-family:'JetBrains Mono';font-weight:700;font-size:20px;color:var(--nine-navy);border:2px solid rgba(41,89,144,.2);border-radius:12px;padding:12px 14px;outline:none;}
+.quiz-field input:focus{border-color:var(--nine-accent);}
+.btn{border:none;border-radius:12px;font-family:'DM Sans';font-weight:700;font-size:15px;cursor:pointer;padding:13px 22px;transition:.15s;}
+.btn.primary{background:var(--nine-accent);color:#fff;} .btn.primary:hover{background:#0090cf;}
+.btn.ghost{background:var(--paper-2);color:var(--nine-dark);} .btn.ghost:hover{background:#e4edf6;}
+.qfb{margin-top:14px;border-radius:14px;padding:15px 18px;font-weight:600;display:none;}
+.qfb.show{display:block;}
+.qfb.ok{background:#ecfdf3;color:#0f7a3d;border:1.5px solid #9ae6b9;}
+.qfb.no{background:#fff1f3;color:#b21c3c;border:1.5px solid #f4b8c4;}
+.qgiven{background:#eef5fc;border-radius:12px;padding:12px 16px;font-size:14px;color:var(--nine-deep);margin-bottom:6px;}
+.qgiven b{color:var(--nine-dark);}
+.score{font-family:'JetBrains Mono';font-weight:700;color:var(--nine-dark);}
+.foot{text-align:center;color:#7689a0;font-size:13px;margin-top:30px;}
+.hide{display:none!important;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hd">
+    <span class="badge">Smartboard Studio</span>
+    <div>
+      <h1>Screw Gauge (Micrometer) — Interactive Lab</h1>
+      <div class="sub">Turn the thimble · read the sleeve &amp; circular scale · master least count &amp; zero error</div>
+    </div>
+  </div>
+
+  <div class="tabs" id="tabs">
+    <button class="tab active" data-mode="explore">🔧 Explore &amp; Read</button>
+    <button class="tab" data-mode="measure">📦 Measure Objects</button>
+    <button class="tab" data-mode="quiz">🎯 Quiz Mode</button>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title"><span class="dot"></span><span id="stageTitle">The Instrument</span></div>
+    <div class="stage">
+      <svg class="gauge" id="gauge" viewBox="0 0 720 300" preserveAspectRatio="xMidYMid meet"></svg>
+    </div>
+    <div class="hint">👉 <span id="hintText"><b>Drag the thimble</b> (or use − / + below) to turn it. Each full turn advances by one pitch.</span></div>
+
+    <div class="controls" id="explControls">
+      <div class="ctl">
+        <label>Pitch &amp; circular divisions</label>
+        <div class="seg" id="presetSeg">
+          <button data-preset="0" class="on">0.5 mm · 50 div</button>
+          <button data-preset="1">1 mm · 100 div</button>
+        </div>
+      </div>
+      <div class="ctl">
+        <label>Zero error</label>
+        <div class="seg" id="zeSeg">
+          <button data-ze="-0.03">−0.03</button>
+          <button data-ze="-0.02">−0.02</button>
+          <button data-ze="0" class="on">None</button>
+          <button data-ze="0.02">+0.02</button>
+          <button data-ze="0.03">+0.03</button>
+        </div>
+      </div>
+      <div class="ctl" id="nudgeCtl">
+        <label>Fine turn (one least count per step)</label>
+        <div class="nudge">
+          <button id="minusBtn">−</button>
+          <div class="val" id="nudgeVal">0.00 mm</div>
+          <button id="plusBtn">+</button>
+        </div>
+      </div>
+      <div class="ctl" id="closeCtl">
+        <label>Demonstrate</label>
+        <div class="seg"><button id="closeBtn">Close fully (show zero error)</button></div>
+      </div>
+    </div>
+
+    <div class="controls hide" id="objControls">
+      <div class="ctl" style="grid-column:1/-1">
+        <label>Pick an object — the spindle will close onto it</label>
+        <div class="objgrid" id="objGrid"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title"><span class="dot"></span>Reading the Screw Gauge</div>
+    <div class="maglayout">
+      <div>
+        <div class="reads" id="reads"></div>
+        <div class="formula" id="formula"></div>
+      </div>
+      <div class="magbox">
+        <div class="mt">🔍 Magnifier — circular scale at the reference line</div>
+        <svg class="mag" id="mag" viewBox="0 0 360 230" preserveAspectRatio="xMidYMid meet"></svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel hide" id="quizPanel">
+    <div class="panel-title"><span class="dot"></span>Quiz — read the instrument</div>
+    <div class="qgiven" id="qGiven"></div>
+    <div class="quiz-row">
+      <div class="quiz-field">
+        <label style="font-size:11px;letter-spacing:1.3px;text-transform:uppercase;color:#7689a0;font-weight:700;display:block;margin-bottom:6px;">Your answer — corrected reading (mm)</label>
+        <input id="qInput" type="text" inputmode="decimal" placeholder="e.g. 6.35" autocomplete="off">
+      </div>
+      <button class="btn primary" id="qCheck">Check</button>
+      <button class="btn ghost" id="qNew">New question →</button>
+    </div>
+    <div class="qfb" id="qFb"></div>
+    <div style="margin-top:14px" class="score" id="qScore">Score: 0 / 0</div>
+  </div>
+
+  <div class="foot">Units &amp; Dimensions · Screw Gauge / Micrometer · turn-to-read interactive — built for the classroom smartboard.</div>
+</div>
+
+<script>
+/* ============================================================
+   GEOMETRY & STATE
+   ============================================================ */
+const PX = 13;                 // px per mm along the axis
+const XANV = 150;              // anvil measuring face (fixed)
+const XS = 330;                // sleeve zero (main-scale 0)
+const AY = 150;                // axis / datum-line y
+const TH_HW = 115;             // thimble body length
+const MAXW = 13;               // max opening (mm)
+
+const PRESETS = [
+  {pitch:0.5, div:50},         // standard micrometer, LC 0.01 mm
+  {pitch:1.0, div:100},        // LC 0.01 mm, simpler main scale
+];
+
+const state = { mode:'explore', preset:0, zeroError:0, trueWidth:0, object:null };
+
+const OBJECTS = [
+  {id:'wire',  ic:'🧵', nm:'Thin wire',    w:0.42, shape:'thin'},
+  {id:'cu',    ic:'🔌', nm:'Copper wire',  w:1.27, shape:'thin'},
+  {id:'slide', ic:'🟦', nm:'Glass slide',  w:1.05, shape:'sheet'},
+  {id:'paper', ic:'📄', nm:'Paper stack',  w:0.84, shape:'sheet'},
+  {id:'drill', ic:'🪛', nm:'Drill bit',    w:3.50, shape:'rod'},
+  {id:'ball',  ic:'⚪', nm:'Ball bearing', w:6.35, shape:'circle'},
+];
+
+const pitch = () => PRESETS[state.preset].pitch;
+const ndiv  = () => PRESETS[state.preset].div;
+const lc    = () => pitch()/ndiv();
+const reading = () => round(state.trueWidth + state.zeroError, 6);
+
+function round(v,d=6){const f=10**d;return Math.round(v*f)/f;}
+function snapReadingToLC(mm){const L=lc();return round(Math.round(mm/L)*L);}
+function clampW(w){return Math.max(0, Math.min(MAXW, w));}
+
+function parts(){
+  const obs = reading();
+  const P=pitch(), L=lc();
+  const msr = round(Math.floor(obs/P + 1e-9)*P);   // main-scale reading (mm, steps of pitch)
+  const n   = Math.round((obs - msr)/L);            // circular division at reference line
+  const csr = round(n*L);
+  const corrected = round(obs - state.zeroError);
+  return {obs, msr, n, csr, corrected};
+}
+
+/* ============================================================
+   SVG HELPERS
+   ============================================================ */
+const NS='http://www.w3.org/2000/svg';
+function el(tag,attrs,txt){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(txt!=null)e.textContent=txt;return e;}
+function line(x1,y1,x2,y2,stroke,w,parent){(parent||svg).appendChild(el('line',{x1,y1,x2,y2,stroke,'stroke-width':w}));}
+
+const svg = document.getElementById('gauge');
+function ensureDefs(){
+  if(document.getElementById('sgdefs'))return;
+  const defs=el('defs',{id:'sgdefs'});
+  const mk=(id,a,b,c)=>{const g=el('linearGradient',{id,x1:0,y1:0,x2:0,y2:1});
+    g.appendChild(el('stop',{offset:'0%','stop-color':a}));
+    g.appendChild(el('stop',{offset:'50%','stop-color':b}));
+    g.appendChild(el('stop',{offset:'100%','stop-color':c}));defs.appendChild(g);};
+  mk('steel','#eef3f8','#d4dfea','#b6c6d6');
+  mk('thimble','#cfe7f6','#a7d2ef','#7fb6df');
+  const og=el('radialGradient',{id:'og',cx:'35%',cy:'30%',r:'75%'});
+  og.appendChild(el('stop',{offset:'0%','stop-color':'#eef4fa'}));
+  og.appendChild(el('stop',{offset:'55%','stop-color':'#aebccb'}));
+  og.appendChild(el('stop',{offset:'100%','stop-color':'#7d90a5'}));
+  defs.appendChild(og);
+  svg.appendChild(defs);
+}
+
+/* ============================================================
+   MAIN INSTRUMENT RENDER
+   ============================================================ */
+function renderGauge(){
+  while(svg.firstChild) svg.removeChild(svg.firstChild);
+  ensureDefs();
+  const p=parts();
+  const spindleTip = XANV + state.trueWidth*PX;
+  const thEdge = XS + p.obs*PX;                 // thimble bevel position
+  const P=pitch();
+
+  /* C-frame (stroked path) */
+  const fd=`M ${XANV-2},${AY} L 96,${AY} Q 56,${AY} 56,${AY+46} Q 56,${AY+92} 104,${AY+92} L ${XS+44},${AY+92} Q ${XS+66},${AY+92} ${XS+66},${AY+58}`;
+  svg.appendChild(el('path',{d:fd,fill:'none',stroke:'#9fb3c8','stroke-width':22,'stroke-linecap':'round','stroke-linejoin':'round'}));
+  svg.appendChild(el('path',{d:fd,fill:'none',stroke:'#c3d2e0','stroke-width':12,'stroke-linecap':'round','stroke-linejoin':'round'}));
+
+  /* spindle rod (under sleeve) */
+  svg.appendChild(el('rect',{x:spindleTip,y:AY-6,width:(thEdge-spindleTip)+10,height:12,fill:'url(#steel)',stroke:'#9fb3c8','stroke-width':1}));
+  svg.appendChild(el('rect',{x:spindleTip-4,y:AY-9,width:6,height:18,rx:2,fill:'#9aacbe'})); // spindle tip cap
+
+  /* object between anvil and spindle */
+  drawObject(spindleTip);
+
+  /* anvil (fixed) */
+  svg.appendChild(el('rect',{x:XANV-20,y:AY-13,width:20,height:26,rx:3,fill:'url(#steel)',stroke:'#8ea5bb','stroke-width':1.2}));
+  svg.appendChild(line(XANV,AY-13,XANV,AY+13,'#33506e',2));
+
+  /* sleeve (fixed barrel) */
+  svg.appendChild(el('rect',{x:XS-14,y:AY-22,width:340,height:44,rx:8,fill:'url(#steel)',stroke:'#8ea5bb','stroke-width':1.2}));
+  /* reference (index) line */
+  line(XS-6,AY,thEdge+TH_HW,AY,'#33506e',1.4);
+
+  /* main scale on sleeve */
+  const steps=Math.round(14/P);
+  for(let i=0;i<=steps;i++){
+    const v=round(i*P), x=XS+v*PX;
+    const whole=(Math.abs(v-Math.round(v))<1e-9);
+    if(whole){
+      line(x,AY-20,x,AY-2,'#33506e',1.5);
+      if(Math.round(v)%5===0)
+        svg.appendChild(el('text',{x,y:AY-26,'text-anchor':'middle','font-family':'JetBrains Mono','font-size':11,'font-weight':700,fill:'#1b3e66'},Math.round(v)));
+    } else {
+      line(x,AY+2,x,AY+20,'#5e7691',1.2);   // half-mm mark below the line
+    }
+  }
+  svg.appendChild(el('text',{x:XS-2,y:AY-34,'font-family':'DM Sans','font-size':9,'font-weight':700,fill:'#6a7e96'},'SLEEVE (mm)'));
+
+  /* ── thimble (rotates + slides) ── */
+  const g=el('g',{transform:`translate(${thEdge},0)`,style:'cursor:grab',id:'thimble'});
+  g.appendChild(el('rect',{x:0,y:AY-52,width:TH_HW,height:104,rx:12,fill:'url(#thimble)',stroke:'#6aa3cd','stroke-width':1.4}));
+  // bevel face shading
+  g.appendChild(el('rect',{x:0,y:AY-52,width:16,height:104,rx:6,fill:'rgba(255,255,255,.25)'}));
+  // ratchet knob
+  g.appendChild(el('rect',{x:TH_HW,y:AY-16,width:26,height:32,rx:6,fill:'#9cc7e6',stroke:'#6aa3cd','stroke-width':1.2}));
+  for(let i=0;i<5;i++) line(TH_HW+5+i*4,AY-12,TH_HW+5+i*4,AY+12,'#6aa3cd',1,g);
+  // circular scale on bevel (vertical), reading at datum (AY)
+  const csp=15;
+  for(let off=-3;off<=3;off++){
+    const d=((p.n+off)%ndiv()+ndiv())%ndiv();
+    const y=AY - off*csp;
+    if(y<AY-50||y>AY+50)continue;
+    const isCo=(off===0);
+    line(2,y,isCo?22:14,y,isCo?'#00A0E3':'#234d77',isCo?2.8:1.2,g);
+    g.appendChild(el('text',{x:26,y:y+3.5,'font-family':'JetBrains Mono','font-size':isCo?12:10,
+      'font-weight':700,fill:isCo?'#0090cf':'#2d5a86'},d));
+  }
+  svg.appendChild(g);
+
+  /* datum highlight at the reading */
+  line(thEdge-2,AY,thEdge+30,AY,'rgba(0,160,227,.9)',2.6);
+
+  /* labels */
+  svg.appendChild(el('text',{x:XANV-10,y:AY+112,'text-anchor':'middle','font-family':'DM Sans','font-size':9.5,'font-weight':700,fill:'#6a7e96'},'anvil'));
+  svg.appendChild(el('text',{x:thEdge+TH_HW/2,y:AY+70,'text-anchor':'middle','font-family':'DM Sans','font-size':9.5,'font-weight':700,fill:'#3a7bb0'},'thimble'));
+  svg.appendChild(el('text',{x:thEdge+TH_HW+13,y:AY+34,'text-anchor':'middle','font-family':'DM Sans','font-size':9,'font-weight':700,fill:'#6a7e96'},'ratchet'));
+}
+
+function drawObject(spindleTip){
+  if(state.mode==='explore' || !state.object) return;
+  const o=state.object, w=state.trueWidth*PX, midY=AY;
+  if(o.shape==='circle'){
+    svg.appendChild(el('circle',{cx:XANV+w/2,cy:midY,r:Math.min(w/2,26),fill:'url(#og)',stroke:'#7f93aa','stroke-width':1.2}));
+  } else if(o.shape==='thin'){
+    svg.appendChild(el('rect',{x:XANV,y:midY-22,width:Math.max(w,1.5),height:44,rx:1,fill:'#b08968',stroke:'#8a6a4f','stroke-width':1}));
+  } else if(o.shape==='sheet'){
+    svg.appendChild(el('rect',{x:XANV,y:midY-26,width:Math.max(w,1.5),height:52,rx:1,fill:'#bcd2e8',stroke:'#8aa6c4','stroke-width':1}));
+  } else {
+    svg.appendChild(el('rect',{x:XANV,y:midY-9,width:w,height:18,rx:9,fill:'#9aa7b5',stroke:'#75869a','stroke-width':1.2}));
+  }
+  svg.appendChild(el('text',{x:XANV+Math.max(w,12)/2,y:midY-34,'text-anchor':'middle','font-family':'DM Sans','font-size':10.5,'font-weight':700,fill:'#6a7e96'},o.nm));
+}
+
+/* ============================================================
+   MAGNIFIER — circular scale at reference line
+   ============================================================ */
+const mag=document.getElementById('mag');
+function renderMag(){
+  while(mag.firstChild)mag.removeChild(mag.firstChild);
+  const p=parts(); const W=360,H=230, cy=H/2, axisX=150;
+  mag.appendChild(el('rect',{x:0,y:0,width:W,height:H,fill:'#0b1d38'}));
+  // reference line (horizontal index)
+  mag.appendChild(el('line',{x1:20,y1:cy,x2:W-16,y2:cy,stroke:'rgba(0,160,227,.9)','stroke-width':2.4}));
+  mag.appendChild(el('text',{x:W-16,y:cy-8,'text-anchor':'end','font-family':'JetBrains Mono','font-size':12,'font-weight':700,fill:'#00A0E3'},'reference ◄'));
+  // bevel edge
+  mag.appendChild(el('line',{x1:axisX,y1:24,x2:axisX,y2:H-24,stroke:'#3a5d82','stroke-width':2}));
+  const Z=34;
+  for(let off=-3;off<=3;off++){
+    const d=((p.n+off)%ndiv()+ndiv())%ndiv();
+    const y=cy - off*Z;
+    if(y<26||y>H-26)continue;
+    const isCo=(off===0);
+    mag.appendChild(el('line',{x1:axisX,y1:y,x2:axisX+(isCo?40:26),y2:y,stroke:isCo?'#00A0E3':'#9fc0e0','stroke-width':isCo?3.4:1.8}));
+    mag.appendChild(el('text',{x:axisX+52,y:y+5,'font-family':'JetBrains Mono','font-size':isCo?17:13,
+      'font-weight':700,fill:isCo?'#00A0E3':'#9fc0e0'},d));
+  }
+  // main-scale note
+  mag.appendChild(el('text',{x:20,y:30,'font-family':'DM Sans','font-size':12,'font-weight':700,fill:'#8fb6e0'},
+    `Main scale: ${p.msr.toFixed(2)} mm`));
+  if(pitch()===0.5 && Math.abs(p.msr*2-Math.round(p.msr*2))<1e-9 && Math.round(p.msr*2)%2!==0)
+    mag.appendChild(el('text',{x:20,y:H-14,'font-family':'DM Sans','font-size':12,'font-weight':700,fill:'#ffd27a'},'½ mm mark crossed ✓'));
+}
+
+/* ============================================================
+   READOUT + FORMULA
+   ============================================================ */
+function fmm(mm){return mm.toFixed(2);}
+function renderReads(){
+  const p=parts();
+  document.getElementById('reads').innerHTML=`
+    <div class="ro"><div class="rl">Pitch</div><div class="rv">${pitch().toFixed(1)}</div><div class="ru">mm / turn</div></div>
+    <div class="ro"><div class="rl">Least count</div><div class="rv">${lc().toFixed(2)}</div><div class="ru">mm</div></div>
+    <div class="ro"><div class="rl">Main scale (MSR)</div><div class="rv">${fmm(p.msr)}</div><div class="ru">mm</div></div>
+    <div class="ro"><div class="rl">Circular division</div><div class="rv">${p.n}</div><div class="ru">× LC</div></div>
+    <div class="ro accent"><div class="rl">Observed reading</div><div class="rv">${fmm(p.obs)}</div><div class="ru">mm</div></div>
+    <div class="ro ${state.zeroError?'':'green'}"><div class="rl">Zero error</div><div class="rv">${state.zeroError>0?'+':''}${fmm(state.zeroError)}</div><div class="ru">mm</div></div>
+    <div class="ro green"><div class="rl">Corrected reading</div><div class="rv">${fmm(p.corrected)}</div><div class="ru">mm</div></div>`;
+  const zeTxt = state.zeroError===0
+    ? `<br>Correct = Observed − Zero&nbsp;error = <b>${fmm(p.obs)} − 0.00 = ${fmm(p.corrected)} mm</b>`
+    : `<br>Correct = Observed − Zero&nbsp;error = ${fmm(p.obs)} − (${state.zeroError>0?'+':''}${fmm(state.zeroError)}) = <b>${fmm(p.corrected)} mm</b>`;
+  document.getElementById('formula').innerHTML=
+    `Reading = MSR + (circular division × LC)<br>`+
+    `&nbsp;&nbsp;= ${fmm(p.msr)} + ( <span class="em">${p.n}</span> × ${lc().toFixed(2)} ) = <b>${fmm(p.obs)} mm</b>`+zeTxt;
+}
+
+function renderAll(){ renderGauge(); renderMag(); renderReads();
+  document.getElementById('nudgeVal').textContent=fmm(reading())+' mm'; }
+
+/* ============================================================
+   INTERACTION
+   ============================================================ */
+let dragging=false;
+function clientToMM(clientX){const r=svg.getBoundingClientRect();const vbX=(clientX-r.left)*(720/r.width);return (vbX-XS)/PX;}
+function setFromPointer(clientX){
+  const desired=snapReadingToLC(clientToMM(clientX));
+  state.trueWidth=clampW(round(desired-state.zeroError));
+  renderAll();
+}
+svg.addEventListener('pointerdown',e=>{ if(state.mode==='measure')return; dragging=true; svg.setPointerCapture(e.pointerId); setFromPointer(e.clientX); });
+svg.addEventListener('pointermove',e=>{ if(dragging) setFromPointer(e.clientX); });
+svg.addEventListener('pointerup',()=>dragging=false);
+svg.addEventListener('pointercancel',()=>dragging=false);
+document.getElementById('plusBtn').onclick=()=>{ if(state.mode==='measure')return; state.trueWidth=clampW(round(state.trueWidth+lc())); renderAll(); };
+document.getElementById('minusBtn').onclick=()=>{ if(state.mode==='measure')return; state.trueWidth=clampW(round(state.trueWidth-lc())); renderAll(); };
+document.getElementById('closeBtn').onclick=()=>{ state.object=null; state.trueWidth=0; document.querySelectorAll('.obj').forEach(o=>o.classList.remove('on')); renderAll(); };
+
+document.getElementById('presetSeg').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+  document.querySelectorAll('#presetSeg button').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+  state.preset=+b.dataset.preset;
+  state.trueWidth=clampW(round(snapReadingToLC(reading())-state.zeroError)); renderAll();});
+document.getElementById('zeSeg').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+  document.querySelectorAll('#zeSeg button').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+  state.zeroError=+b.dataset.ze; renderAll();});
+
+/* objects */
+const objGrid=document.getElementById('objGrid');
+OBJECTS.forEach(o=>{const d=document.createElement('div');d.className='obj';
+  d.innerHTML=`<div class="ic">${o.ic}</div><div class="nm">${o.nm}</div><div class="tw">true: ${o.w.toFixed(2)} mm</div>`;
+  d.onclick=()=>{document.querySelectorAll('.obj').forEach(x=>x.classList.remove('on'));d.classList.add('on');state.object=o;animateTo(o.w);};
+  objGrid.appendChild(d);});
+function animateTo(target){const start=state.trueWidth,t0=performance.now(),dur=560;
+  function step(t){const k=Math.min(1,(t-t0)/dur),e=1-Math.pow(1-k,3);state.trueWidth=round(start+(target-start)*e);renderAll();
+    if(k<1)requestAnimationFrame(step);else{state.trueWidth=clampW(target);renderAll();}}
+  requestAnimationFrame(step);}
+
+/* modes */
+document.getElementById('tabs').addEventListener('click',e=>{const b=e.target.closest('.tab');if(!b)return;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));b.classList.add('active');setMode(b.dataset.mode);});
+function setMode(m){
+  state.mode=m;
+  document.getElementById('explControls').classList.toggle('hide',m==='measure');
+  document.getElementById('objControls').classList.toggle('hide',m!=='measure');
+  document.getElementById('quizPanel').classList.toggle('hide',m!=='quiz');
+  document.getElementById('nudgeCtl').classList.toggle('hide',m==='measure');
+  document.getElementById('closeCtl').classList.toggle('hide',m==='measure');
+  const st=document.getElementById('stageTitle'),ht=document.getElementById('hintText');
+  if(m==='explore'){st.textContent='The Instrument — turn to explore';ht.innerHTML='<b>Drag the thimble</b> (or use − / +) to turn it; each full turn advances by one pitch. Read the scales below.';state.object=null;}
+  else if(m==='measure'){st.textContent='Measure a real object';ht.innerHTML='Pick an object — the spindle <b>closes onto it</b>. Read the sleeve + circular scale, then compare with the true value.';}
+  else{st.textContent='Quiz — read this measurement';ht.innerHTML='Read the sleeve and the circular scale (use the magnifier), apply the <b>zero-error correction</b>, then type the corrected reading.';newQuiz();}
+  renderAll();
+}
+
+/* quiz */
+let qScore=0,qTotal=0,qAns=0;
+const zeChoices=[-0.03,-0.02,0,0,0.02,0.03];
+function newQuiz(){
+  document.getElementById('qFb').classList.remove('show');
+  document.getElementById('qInput').value='';
+  state.preset=Math.random()<0.6?0:1;
+  document.querySelectorAll('#presetSeg button').forEach(x=>x.classList.toggle('on',+x.dataset.preset===state.preset));
+  state.zeroError=zeChoices[Math.floor(Math.random()*zeChoices.length)];
+  document.querySelectorAll('#zeSeg button').forEach(x=>x.classList.toggle('on',+x.dataset.ze===state.zeroError));
+  const w=round((Math.floor(Math.random()*1100)+30)/100);   // 0.30–11.30 mm, 0.01 steps
+  state.object=null; state.trueWidth=clampW(w);
+  qAns=parts().corrected;
+  document.getElementById('qGiven').innerHTML=
+    `Pitch: <b>${pitch().toFixed(1)} mm</b> &nbsp;·&nbsp; Divisions: <b>${ndiv()}</b> &nbsp;·&nbsp; Least count: <b>${lc().toFixed(2)} mm</b> `+
+    `&nbsp;·&nbsp; Zero error: <b>${state.zeroError>0?'+':''}${fmm(state.zeroError)} mm</b>`;
+  renderAll();
+}
+document.getElementById('qNew').onclick=newQuiz;
+document.getElementById('qCheck').onclick=()=>{
+  const v=parseFloat(document.getElementById('qInput').value), fb=document.getElementById('qFb');
+  fb.classList.add('show'); qTotal++;
+  if(!isNaN(v)&&Math.abs(v-qAns)<lc()/2+1e-9){qScore++;fb.className='qfb show ok';fb.innerHTML=`✓ Correct! The corrected reading is <b>${fmm(qAns)} mm</b>.`;}
+  else{const p=parts();fb.className='qfb show no';
+    fb.innerHTML=`✗ Not quite. Observed = ${fmm(p.obs)} mm, zero error = ${state.zeroError>0?'+':''}${fmm(state.zeroError)} mm → corrected = <b>${fmm(qAns)} mm</b>.`;}
+  document.getElementById('qScore').textContent=`Score: ${qScore} / ${qTotal}`;
+};
+document.getElementById('qInput').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('qCheck').click();});
+
+/* init */
+state.trueWidth=6.35;
+renderAll();
+</script>
+</body>
+</html>

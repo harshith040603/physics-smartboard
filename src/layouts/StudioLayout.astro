@@ -1,0 +1,54 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  chapterChip?: string;
+}
+const { title, chapterChip } = Astro.props;
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light only">
+<title>{title}</title>
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <a class="logo-badge" href="/" style="text-decoration:none;">
+      <div class="logo-mark"><img src="/brand/nine-icon-256.png" alt="Nine Education Logo"></div>
+      <div class="logo-text">Nine Education</div>
+    </a>
+    <div class="topbar-spacer"></div>
+    {chapterChip && <div class="chapter-chip">{chapterChip}</div>}
+    <button class="fs-btn" id="fsBtn" onclick="toggleFS()" title="Toggle fullscreen">
+      <svg id="fsIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/>
+      </svg>
+    </button>
+  </div>
+
+  <slot />
+
+</div>
+
+<div style="display:flex;justify-content:center;align-items:center;gap:18px;
+padding:20px 0 30px 0;font-family:'Bricolage Grotesque',sans-serif;
+color:#295990;font-weight:700;font-size:18px;">
+<span>Nine Education</span>
+<span style="opacity:.45;">•</span>
+<span>Made with love ❤️ by Harshith</span>
+</div>
+
+<script is:inline src="/js/studio-core.js"></script>
+<slot name="scripts" />
+</body>
+</html>
