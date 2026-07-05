@@ -1,0 +1,337 @@
+<!-- ═══════════ REVISION — "RACE DAY" STORY (Lectures 1–4) ═══════════ -->
+<section id="revision" class="screen">
+  <div class="scr-head">
+    <button class="back-btn" onclick="go('home')">‹ Back</button>
+    <div>
+      <div class="scr-title">Race Day — The Revision Story</div>
+      <div class="scr-sub">One athlete · one day · every topic from Lectures 1–4. Answer first, then reveal.</div>
+    </div>
+    <div class="score-pill"><div><div class="s-val" id="revStation">1/10</div><div class="s-lab">Chapter</div></div></div>
+  </div>
+
+  <div class="rev-chips" id="revChips"></div>
+
+  <!-- ─────────── Ch 1 · The Warm-Up Lap — distance vs displacement ─────────── -->
+  <div class="rev-station" id="revS1">
+    <div class="rev-story">
+      <b>6:00 AM — race day.</b> Arjun jogs exactly one lap of the 400&nbsp;m track to warm up.
+      Coach Rao clicks the stopwatch and asks: <b>“So… how far did you actually go?”</b>
+      Drag Arjun around the track and watch the two answers separate.
+    </div>
+    <div class="rev-canvas" id="revLapCanvas"></div>
+    <div class="rev-card">
+      <div class="kin-ctrl" style="max-width:640px;">
+        <label>Metres run <span class="kin-val" id="lapDist">0 m</span></label>
+        <input type="range" id="lapSlider" min="0" max="400" step="5" value="0">
+      </div>
+      <div class="rev-readouts">
+        <div class="rev-readout"><small>DISTANCE (path)</small><span class="ro-accent" id="lapDistRo">0 m</span></div>
+        <div class="rev-readout"><small>DISPLACEMENT (arrow)</small><span class="ro-accent" id="lapDisp">0.0 m</span></div>
+      </div>
+      <p class="rev-note" id="lapMsg"></p>
+      <div class="rev-keybox">Distance ≥ |Displacement| — <b>always</b>. Equal only for straight-line motion with no turn-back.</div>
+    </div>
+  </div>
+
+  <!-- ─────────── Ch 2 · The Bus Ride — speed vs velocity ─────────── -->
+  <div class="rev-station" id="revS2">
+    <div class="rev-story">
+      <b>7:30 AM.</b> The team bus heads to the inter-school meet: <b>100 km east</b> in 2 hours —
+      then a diversion forces it <b>60 km back west</b> in 1 more hour. Coach Rao:
+      <b>“Average speed and average velocity. Work them out before I reveal each step.”</b>
+    </div>
+    <div class="rev-card">
+      <div class="rev-q">The journey: 100 km east (2 h) → 60 km west (1 h)</div>
+      <div class="s2-step rev-step"><b>Step 1 — the two base quantities.</b><br>
+        Total distance = 100 + 60 = <b>160 km</b> · Displacement = 100 − 60 = <b>40 km east</b> · Time = 3 h</div>
+      <div class="s2-step rev-step"><b>Step 2 — speed comes from distance.</b><br>
+        Average speed = 160 / 3 = <b>53.3 km/h</b></div>
+      <div class="s2-step rev-step"><b>Step 3 — velocity comes from displacement.</b><br>
+        Average velocity = 40 / 3 = <b>13.3 km/h east</b> — much smaller, because the bus backtracked.</div>
+      <button class="pf-reveal-btn" id="s2RevealBtn"></button>
+    </div>
+    <div class="rev-card" id="s2Quiz">
+      <div class="rev-q">Quick check: can |average velocity| ever be <b>bigger</b> than average speed?</div>
+      <div class="rev-opts">
+        <button class="rev-opt" data-ok="1">Never</button>
+        <button class="rev-opt">Sometimes</button>
+        <button class="rev-opt">Always</button>
+      </div>
+      <div class="rev-feedback">Never — displacement can’t beat distance, so speed ≥ |velocity|, always. They tie only when the motion never reverses.</div>
+    </div>
+  </div>
+
+  <!-- ─────────── Ch 3 · Which Average? — the averaging trap ─────────── -->
+  <div class="rev-station" id="revS3">
+    <div class="rev-story">
+      Stuck near the stadium, the driver brags: <b>“First half of the distance at 20 m/s, second half at
+      30 — so I averaged 25!”</b> Arjun smiles. Should he trust the driver’s maths?
+    </div>
+    <div class="rev-card" id="avgQuiz1">
+      <div class="rev-q">Equal <b>distances</b> at 20 m/s and 30 m/s. The true average speed is…</div>
+      <div class="rev-opts">
+        <button class="rev-opt">25 m/s</button>
+        <button class="rev-opt" data-ok="1">24 m/s</button>
+        <button class="rev-opt">26 m/s</button>
+      </div>
+      <div class="rev-feedback">Equal distances → harmonic mean: 2(20)(30)/(20+30) = <b>24 m/s</b>.
+        The bus spends <i>more time</i> on the slow leg, so the slow speed drags the average below 25.</div>
+    </div>
+    <div class="rev-card" id="avgQuiz2">
+      <div class="rev-q">Rematch: the return trip runs half the <b>TIME</b> at 40 km/h and half at 60 km/h. Now the average speed is…</div>
+      <div class="rev-opts">
+        <button class="rev-opt">48 km/h</button>
+        <button class="rev-opt" data-ok="1">50 km/h</button>
+        <button class="rev-opt">55 km/h</button>
+      </div>
+      <div class="rev-feedback">Equal times → the simple average <b>is</b> correct: (40+60)/2 = <b>50 km/h</b>.</div>
+    </div>
+    <div class="rev-keybox">Equal <b>distances</b> → 2v₁v₂/(v₁+v₂) &nbsp;·&nbsp; Equal <b>times</b> → (v₁+v₂)/2. <b>THE CONDITION decides the formula.</b></div>
+  </div>
+
+  <!-- ─────────── Ch 4 · The Speedometer — instantaneous velocity ─────────── -->
+  <div class="rev-station" id="revS4">
+    <div class="rev-story">
+      From his window seat Arjun stares at the speedometer needle. It reads a speed <b>right now</b> —
+      no time interval at all. How is that possible? Coach Rao leans over: <b>“Shrink the interval and see.”</b>
+      The bus position follows x = 3t² + 2t.
+    </div>
+    <div class="rev-canvas" id="revTanCanvas"></div>
+    <div class="rev-card">
+      <div class="rev-ctrl-row">
+        <div class="kin-ctrl">
+          <label>Instant t₀ <span class="kin-val" id="tanT0Val">1.5 s</span></label>
+          <input type="range" id="tanT0" min="0" max="3" step="0.1" value="1.5">
+        </div>
+        <div class="kin-ctrl">
+          <label>Interval Δt <span class="kin-val" id="tanDtVal">2.00 s</span></label>
+          <input type="range" id="tanDt" min="0.01" max="2" step="0.01" value="2">
+        </div>
+      </div>
+      <div class="rev-readouts">
+        <div class="rev-readout"><small>AVERAGE v over Δt (secant slope)</small><span class="ro-accent" id="tanAvg">—</span></div>
+        <div class="rev-readout"><small>INSTANTANEOUS v = dx/dt = 6t₀+2</small><span class="ro-accent" id="tanInst">—</span></div>
+      </div>
+      <p class="rev-note" id="tanMsg"></p>
+      <div class="rev-keybox">v = dx/dt — the average velocity over an interval shrunk to a single instant. Instantaneous speed = |v|, <b>always</b>.</div>
+    </div>
+  </div>
+
+  <!-- ─────────── Ch 5 · The Shuttle Drill — momentarily at rest ─────────── -->
+  <div class="rev-station" id="revS5">
+    <div class="rev-story">
+      <b>At the stadium.</b> Warm-up shuttle drill: out, turn, back, turn again — Arjun’s position follows
+      x = t³ − 6t² + 9t. Twice during the drill he is at rest <b>for a single instant</b>… but he never stops.
+      Press play and catch both moments.
+    </div>
+    <div class="rev-canvas" id="revTurnCanvas"></div>
+    <div class="rev-card">
+      <div class="rev-ctrl-row">
+        <button class="check-btn" id="turnPlay">▶ Play</button>
+        <div class="kin-ctrl" style="flex:1;min-width:220px;">
+          <label>Time t <span class="kin-val" id="turnTVal">0.00 s</span></label>
+          <input type="range" id="turnT" min="0" max="4" step="0.01" value="0">
+        </div>
+        <div class="rev-readout"><small>v = 3t² − 12t + 9</small><span class="ro-accent" id="turnVVal">9.00 m/s</span></div>
+      </div>
+      <p class="rev-note">v = 3(t−1)(t−3) → v = 0 at <b>t = 1 s</b> and <b>t = 3 s</b> — the turning points.</p>
+    </div>
+    <div class="rev-card" id="turnQuiz">
+      <div class="rev-q">Coach Rao: “Is this drill <b>uniform motion</b>?”</div>
+      <div class="rev-opts">
+        <button class="rev-opt">Yes — he covers the same track each time</button>
+        <button class="rev-opt" data-ok="1">No — velocity changes at every instant</button>
+      </div>
+      <div class="rev-feedback">Non-uniform: v is different at every instant (a ≠ 0), so average ≠ instantaneous velocity here.
+        Uniform motion means <b>constant velocity</b> — like cruise control, not a shuttle drill.
+        And “momentarily at rest” ≠ stopped: v = 0 for one instant means he’s <b>turning around</b>.</div>
+    </div>
+  </div>
+
+  <!-- ─────────── Ch 6 · The Race — acceleration sign duel ─────────── -->
+  <div class="rev-station" id="revS6">
+    <div class="rev-story">
+      <b>The 200 m final.</b> Out of the blocks, braking into the bend, surging down the straight, jogging back
+      after the finish. For each moment, read v and a — <b>speeding up or slowing down?</b> Fastest hands in the class win.
+    </div>
+    <div class="rev-card" id="duelGame">
+      <div class="rev-ctrl-row" style="justify-content:space-between;">
+        <div class="rev-readout"><small>MOMENT</small><span class="ro-accent" id="duelRound">1/6</span></div>
+        <div class="rev-readout"><small>SCORE</small><span class="ro-accent" id="duelScore">0</span></div>
+      </div>
+      <div class="duel-prompt" id="duelPrompt"></div>
+      <div class="rev-opts" style="justify-content:center;">
+        <button class="rev-opt duel-btn" id="duelUp">🚀 SPEEDING UP</button>
+        <button class="rev-opt duel-btn" id="duelDown">🛑 SLOWING DOWN</button>
+      </div>
+      <p class="rev-note" id="duelFb" style="text-align:center;min-height:26px;font-size:17px;"></p>
+    </div>
+    <div class="rev-card" id="duelEnd" style="display:none;text-align:center;">
+      <div class="rev-q">Race analysed! Score: <span id="duelFinal" style="color:var(--nine-accent);"></span></div>
+      <div class="rev-keybox" style="text-align:left;">
+        SAME signs of v and a → speeding up · OPPOSITE signs → slowing down.<br>
+        <b>Negative acceleration ≠ slowing down</b> — it just points in −x. And fast ≠ accelerating: 200 km/h at constant speed has a = 0.
+      </div>
+      <button class="btn-reset" id="duelRestart" style="margin-top:14px;">↺ Race again</button>
+    </div>
+  </div>
+
+  <!-- ─────────── Ch 7 · Coach's Clipboard — equations of motion ─────────── -->
+  <div class="rev-station" id="revS7">
+    <div class="rev-story">
+      <b>Silver medal!</b> On the ride back Coach Rao opens his clipboard. <b>“Three equations run every
+      constant-acceleration problem in existence. But first — when are you even ALLOWED to use them?”</b>
+    </div>
+    <div class="rev-card">
+      <div class="tb-eqs">
+        <div class="tb-eq" id="tbEq1"></div>
+        <div class="tb-eq" id="tbEq2"></div>
+        <div class="tb-eq" id="tbEq3"></div>
+      </div>
+      <div class="rev-keybox">CONDITION: <b>a must be constant.</b> That single line is the whole licence.</div>
+    </div>
+
+    <div class="rev-card" id="tbUse1">
+      <div class="rev-q">1 · A ball in free fall (ignore air). Equations allowed?</div>
+      <div class="rev-opts">
+        <button class="rev-opt" data-ok="1">✓ Allowed</button>
+        <button class="rev-opt">✗ Not allowed</button>
+      </div>
+      <div class="rev-feedback">Allowed — a = g, constant. Free fall is the most famous constant acceleration of all (that’s the next lecture!).</div>
+    </div>
+    <div class="rev-card" id="tbUse2">
+      <div class="rev-q">2 · A particle with a = 3t. Equations allowed?</div>
+      <div class="rev-opts">
+        <button class="rev-opt">✓ Allowed</button>
+        <button class="rev-opt" data-ok="1">✗ Not allowed</button>
+      </div>
+      <div class="rev-feedback">Not allowed — a changes with time. You must integrate from the definitions instead.</div>
+    </div>
+    <div class="rev-card" id="tbUse3">
+      <div class="rev-q">3 · A train braking uniformly. Equations allowed?</div>
+      <div class="rev-opts">
+        <button class="rev-opt" data-ok="1">✓ Allowed</button>
+        <button class="rev-opt">✗ Not allowed</button>
+      </div>
+      <div class="rev-feedback">Allowed — “uniformly” is the magic word: constant (negative) acceleration.</div>
+    </div>
+    <div class="rev-card" id="tbUse4">
+      <div class="rev-q">4 · A mass on a spring, a = −kx. Equations allowed?</div>
+      <div class="rev-opts">
+        <button class="rev-opt">✓ Allowed</button>
+        <button class="rev-opt" data-ok="1">✗ Not allowed</button>
+      </div>
+      <div class="rev-feedback">Not allowed — a depends on position. This is SHM territory, coming later in the year.</div>
+    </div>
+    <div class="rev-card" id="tbUse5">
+      <div class="rev-q">5 · Constant force on a constant mass. Equations allowed?</div>
+      <div class="rev-opts">
+        <button class="rev-opt" data-ok="1">✓ Allowed</button>
+        <button class="rev-opt">✗ Not allowed</button>
+      </div>
+      <div class="rev-feedback">Allowed — constant F on constant m gives constant a (Newton’s second law, next chapter).</div>
+    </div>
+
+    <div class="rev-story" style="margin-top:22px;">
+      <b>“Now the template,”</b> says Coach. <b>“List u, v, a, s, t. Mark given and asked. Then pick the equation
+      that’s missing the variable you neither know nor want.”</b>
+    </div>
+    <div class="rev-card" id="tbPick1">
+      <div class="rev-q">Given u, a, t — asked v. Which equation?</div>
+      <div class="rev-opts">
+        <button class="rev-opt" data-ok="1">v = u + at</button>
+        <button class="rev-opt">s = ut + ½at²</button>
+        <button class="rev-opt">v² = u² + 2as</button>
+      </div>
+      <div class="rev-feedback">No s anywhere in the problem → use the equation with no s: v = u + at.</div>
+    </div>
+    <div class="rev-card" id="tbPick2">
+      <div class="rev-q">Given u, v, s — asked a. Which equation?</div>
+      <div class="rev-opts">
+        <button class="rev-opt">v = u + at</button>
+        <button class="rev-opt">s = ut + ½at²</button>
+        <button class="rev-opt" data-ok="1">v² = u² + 2as</button>
+      </div>
+      <div class="rev-feedback">No t → use the equation with no t: v² = u² + 2as. (This is the braking-train equation.)</div>
+    </div>
+    <div class="rev-card" id="tbPick3">
+      <div class="rev-q">Given u, a, t — asked s. Which equation?</div>
+      <div class="rev-opts">
+        <button class="rev-opt">v = u + at</button>
+        <button class="rev-opt" data-ok="1">s = ut + ½at²</button>
+        <button class="rev-opt">v² = u² + 2as</button>
+      </div>
+      <div class="rev-feedback">No v → use the equation with no v: s = ut + ½at².</div>
+    </div>
+  </div>
+
+  <!-- ─────────── Ch 8 · The Winning Second — nth second ─────────── -->
+  <div class="rev-station" id="revS8">
+    <div class="rev-story">
+      Coach pulls up Arjun’s start data — from rest at 2 m/s². <b>“Watch what each second contributes.”</b>
+      Advance one second at a time and watch the odd-number pattern build.
+    </div>
+    <div class="rev-card">
+      <div class="nth-formula" id="nthFormula"></div>
+      <div class="nth-bars">
+        <div class="nth-row"><span class="nth-lab">1st s</span><div class="nth-bar" id="nthBar1" style="--w:8%;"><span>1 m</span></div></div>
+        <div class="nth-row"><span class="nth-lab">2nd s</span><div class="nth-bar" id="nthBar2" style="--w:24%;"><span>3 m</span></div></div>
+        <div class="nth-row"><span class="nth-lab">3rd s</span><div class="nth-bar" id="nthBar3" style="--w:40%;"><span>5 m</span></div></div>
+        <div class="nth-row"><span class="nth-lab">4th s</span><div class="nth-bar" id="nthBar4" style="--w:56%;"><span>7 m</span></div></div>
+        <div class="nth-row"><span class="nth-lab">5th s</span><div class="nth-bar" id="nthBar5" style="--w:72%;"><span>9 m</span></div></div>
+      </div>
+      <div class="rev-ctrl-row">
+        <button class="check-btn" id="nthStepBtn">Advance 1 second →</button>
+        <button class="btn-reset" id="nthResetBtn">↺ Reset</button>
+        <span class="rev-note" id="nthCounter" style="margin:0;">press to advance one second</span>
+        <span class="rev-note" id="nthTotal" style="margin:0;font-weight:700;"></span>
+      </div>
+    </div>
+    <div class="rev-card" id="nthQuiz">
+      <div class="rev-q">Coach’s trap: “From rest at 2 m/s² — how far did you go <b>in the 5th second</b>?”</div>
+      <div class="rev-opts">
+        <button class="rev-opt">25 m</button>
+        <button class="rev-opt" data-ok="1">9 m</button>
+        <button class="rev-opt">10 m</button>
+      </div>
+      <div class="rev-feedback"><b>“In the 5th second”</b> = the one-second slice between t = 4 and t = 5:
+        s₅ₜₕ = 0 + (2/2)(2×5−1) = <b>9 m</b>. “In 5 seconds” (the whole journey) would be ½(2)(25) = 25 m —
+        a correct answer to a <i>different</i> question. <b>Underline the wording.</b> And note the units: metres, not m/s!</div>
+    </div>
+  </div>
+
+  <!-- ─────────── Ch 9 · The Team Quiz — rapid fire ─────────── -->
+  <div class="rev-station" id="revS9">
+    <div class="rev-story">
+      On the bus home, Coach Rao fires <b>ten problems</b> at the team — the same day, relived in numbers.
+      Solve each one on the board <b>before</b> revealing the answer.
+    </div>
+    <div class="rev-card">
+      <div class="rf-tag" id="rfTag"></div>
+      <div class="rf-text" id="rfText"></div>
+      <div class="rf-ans rev-step" id="rfAns"></div>
+      <div class="rev-ctrl-row" style="margin-top:16px;">
+        <button class="check-btn" id="rfReveal">Show answer</button>
+        <button class="btn-reset" id="rfPrev">‹ Previous</button>
+        <button class="btn-reset" id="rfNext">Next problem ›</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────────── Ch 10 · The Trophy Wall — formula sheet ─────────── -->
+  <div class="rev-station" id="revS10">
+    <div class="rev-story">
+      <b>Back at school.</b> The team engraves the day’s lessons on the gym wall. Say what’s under each stone
+      <b>before</b> you tap it. Flip all seven and the chapter is yours.
+    </div>
+    <div class="wall-grid" id="wallGrid"></div>
+    <div class="rev-keybox rev-step" id="wallDone" style="margin-top:18px;text-align:center;font-size:18px;">
+      🏆 <b>All seven remembered — Race Day complete.</b> Next stop: Motion Under Gravity, where g takes over as the constant acceleration.
+    </div>
+  </div>
+
+  <div class="rev-nav">
+    <button class="btn-reset" id="revPrev">‹ Previous chapter</button>
+    <button class="check-btn" id="revNext">Next chapter ›</button>
+  </div>
+</section>

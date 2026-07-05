@@ -1,5 +1,6 @@
 ---
 import StudioLayout from '../../layouts/StudioLayout.astro';
+import revisionScreens from '../../snippets/kin-revision.html?raw';
 ---
 <StudioLayout title="Kinematics — Smartboard Studio" chapterChip="Physics · Kinematics">
 
@@ -19,8 +20,16 @@ import StudioLayout from '../../layouts/StudioLayout.astro';
         <span class="tile-go">Start ›</span>
       </div>
 
-      <div class="tile tile-soon">
+      <div class="tile" onclick="go('revision')">
         <div class="tile-num">02</div>
+        <div class="tile-icon ic-sort"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+        <h3>Revision — Race Day</h3>
+        <p>One athlete, one day, every topic from Lectures 1–4 — a ten-chapter story with a challenge at every step.</p>
+        <span class="tile-go">Start ›</span>
+      </div>
+
+      <div class="tile tile-soon">
+        <div class="tile-num">03</div>
         <div class="tile-icon ic-sort" style="opacity:.45;"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M3 17l5-6 4 3 6-8"/><path d="M3 21h18"/></svg></div>
         <h3 style="opacity:.55;">Motion Graphs Matcher</h3>
         <p style="opacity:.55;">Match x–t, v–t and a–t graphs to the same motion. Slope and area, made visible.</p>
@@ -28,7 +37,7 @@ import StudioLayout from '../../layouts/StudioLayout.astro';
       </div>
 
       <div class="tile tile-soon">
-        <div class="tile-num">03</div>
+        <div class="tile-num">04</div>
         <div class="tile-icon ic-vec" style="opacity:.45;"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M4 20c3-2 4-6 3-9 4 2 8 1 10-2"/><path d="M14 5h5v5"/></svg></div>
         <h3 style="opacity:.55;">Distance vs Displacement</h3>
         <p style="opacity:.55;">Draw any path on the grid — watch distance grow while displacement stays a straight arrow.</p>
@@ -36,7 +45,7 @@ import StudioLayout from '../../layouts/StudioLayout.astro';
       </div>
 
       <div class="tile tile-soon">
-        <div class="tile-num">04</div>
+        <div class="tile-num">05</div>
         <div class="tile-icon ic-conv" style="opacity:.45;"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M2 12h20M6 8c2 2 2 6 0 8M18 8c-2 2-2 6 0 8"/></svg></div>
         <h3 style="opacity:.55;">Relative Motion Lab</h3>
         <p style="opacity:.55;">River-boat crossings and the rain-man umbrella — the same vector triangle, two stories.</p>
@@ -44,7 +53,7 @@ import StudioLayout from '../../layouts/StudioLayout.astro';
       </div>
 
       <div class="tile tile-soon">
-        <div class="tile-num">05</div>
+        <div class="tile-num">06</div>
         <div class="tile-icon ic-vec" style="opacity:.45;"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M4 20L18 6"/><path d="M12 6h6v6"/><path d="M4 20h9M4 20V11" stroke-dasharray="2 3"/></svg></div>
         <h3 style="opacity:.55;">Vector Resolver</h3>
         <p style="opacity:.55;">Drag a vector and watch its components, magnitude and angle update live.</p>
@@ -52,7 +61,7 @@ import StudioLayout from '../../layouts/StudioLayout.astro';
       </div>
 
       <div class="tile tile-soon">
-        <div class="tile-num">06</div>
+        <div class="tile-num">07</div>
         <div class="tile-icon ic-grid" style="opacity:.45;"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M12 3v18"/><path d="M8 7h8M7 12h10M6 17h12"/></svg></div>
         <h3 style="opacity:.55;">Free-Fall Visualizer</h3>
         <p style="opacity:.55;">Drop a ball and see the 1 : 3 : 5 odd-number slices appear second by second.</p>
@@ -60,7 +69,7 @@ import StudioLayout from '../../layouts/StudioLayout.astro';
       </div>
 
       <div class="tile tile-soon">
-        <div class="tile-num">07</div>
+        <div class="tile-num">08</div>
         <div class="tile-icon ic-eqcheck" style="opacity:.45;"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
         <h3 style="opacity:.55;">Equation Selector</h3>
         <p style="opacity:.55;">Read the problem, pick the right equation of motion — before you touch the numbers.</p>
@@ -124,6 +133,8 @@ import StudioLayout from '../../layouts/StudioLayout.astro';
     </div>
   </section>
 
+  <Fragment set:html={revisionScreens} />
+
 </StudioLayout>
 
 <script>
@@ -175,5 +186,138 @@ import StudioLayout from '../../layouts/StudioLayout.astro';
   @media (max-width:640px){
     .kin-controls{padding:16px;gap:14px;}
     .kin-stat-val{font-size:28px;}
+  }
+
+  /* ── Revision · Race Day story ── */
+  .rev-chips{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:22px;}
+  .rev-chip{
+    font-family:'Bricolage Grotesque';font-weight:700;font-size:14px;
+    padding:9px 16px;border-radius:999px;border:2px solid rgba(41,89,144,.25);
+    background:var(--white);color:var(--nine-deep);cursor:pointer;transition:.15s;
+  }
+  .rev-chip.active{background:var(--nine-dark);color:#fff;border-color:var(--nine-dark);}
+  .rev-chip.done{border-color:var(--green);color:var(--green);}
+  .rev-station{display:none;}
+  .rev-station.active{display:block;animation:fade .35s ease;}
+
+  .rev-story{
+    background:var(--white);border-left:6px solid var(--nine-accent);
+    border-radius:14px;padding:18px 22px;margin-bottom:16px;
+    font-size:17px;line-height:1.55;color:var(--ink);box-shadow:var(--shadow);
+  }
+  .rev-story b{color:var(--nine-deep);}
+
+  .rev-card{
+    background:var(--white);border-radius:18px;padding:22px 26px;
+    box-shadow:var(--shadow);margin-bottom:16px;
+  }
+  .rev-q{
+    font-family:'Bricolage Grotesque';font-weight:700;font-size:19px;
+    color:var(--nine-navy);margin-bottom:12px;line-height:1.4;
+  }
+  .rev-opts{display:flex;flex-wrap:wrap;gap:12px;margin:12px 0;}
+  .rev-opt{
+    font-family:'DM Sans';font-weight:700;font-size:17px;
+    padding:13px 22px;border-radius:14px;cursor:pointer;transition:.15s;
+    border:2px solid rgba(41,89,144,.3);background:var(--paper-2);color:var(--nine-deep);
+  }
+  .rev-opt:active{transform:scale(.96);}
+  .rev-opt.correct{background:var(--green);color:#fff;border-color:var(--green);}
+  .rev-opt.wrong{background:var(--red);color:#fff;border-color:var(--red);}
+  .rev-opt:disabled{cursor:default;opacity:.92;}
+  .rev-feedback{
+    display:none;margin-top:10px;padding:14px 18px;border-radius:12px;
+    background:var(--paper-2);border-left:4px solid var(--nine-accent);
+    font-size:16px;line-height:1.5;
+  }
+  .rev-feedback.shown{display:block;animation:fade .3s ease;}
+
+  .rev-step{display:none;}
+  .rev-step.shown{display:block;animation:fade .3s ease;}
+  .s2-step{
+    margin:10px 0;padding:14px 18px;border-radius:12px;background:var(--paper-2);
+    font-size:16.5px;line-height:1.55;
+  }
+
+  .rev-canvas{
+    background:var(--white);border-radius:18px;box-shadow:var(--shadow);
+    overflow:hidden;margin-bottom:14px;
+  }
+  .rev-canvas canvas{display:block;}
+  .rev-ctrl-row{display:flex;flex-wrap:wrap;gap:18px;align-items:center;margin-bottom:6px;}
+  .rev-readouts{display:flex;flex-wrap:wrap;gap:14px;margin-top:12px;}
+  .rev-readout{
+    background:var(--paper-2);border-radius:14px;padding:10px 18px;min-width:150px;
+  }
+  .rev-readout small{
+    display:block;font-family:'Bricolage Grotesque';font-weight:700;font-size:11.5px;
+    letter-spacing:1.2px;color:var(--nine-dark);opacity:.7;margin-bottom:2px;
+  }
+  .ro-accent{
+    font-family:'Bricolage Grotesque';font-weight:800;font-size:22px;color:var(--nine-accent);
+  }
+  .rev-note{font-size:15.5px;color:var(--ink);opacity:.8;margin-top:10px;}
+  .rev-keybox{
+    margin-top:14px;padding:14px 18px;border-radius:12px;font-size:16px;line-height:1.5;
+    background:rgba(0,160,227,.08);border:2px dashed rgba(0,160,227,.45);color:var(--nine-navy);
+  }
+  .rev-nav{display:flex;justify-content:space-between;gap:14px;margin-top:10px;}
+
+  .duel-prompt{
+    font-family:'Bricolage Grotesque';font-weight:800;font-size:clamp(22px,3.4vw,34px);
+    color:var(--nine-navy);text-align:center;margin:22px 0 16px;
+  }
+  .duel-arrow{color:var(--nine-accent);}
+  .duel-btn{font-size:19px;padding:16px 28px;}
+
+  .tb-eqs{display:flex;flex-wrap:wrap;gap:20px;justify-content:space-around;align-items:center;}
+  .tb-eq{font-size:21px;color:var(--nine-navy);}
+
+  .nth-formula{font-size:20px;color:var(--nine-navy);margin-bottom:14px;}
+  .nth-bars{display:flex;flex-direction:column;gap:9px;margin-bottom:16px;}
+  .nth-row{display:flex;align-items:center;gap:12px;}
+  .nth-lab{
+    font-family:'Bricolage Grotesque';font-weight:700;font-size:14px;
+    color:var(--nine-deep);width:52px;text-align:right;flex-shrink:0;
+  }
+  .nth-bar{
+    height:34px;width:0;border-radius:8px;background:linear-gradient(90deg,var(--nine-dark),var(--nine-accent));
+    transition:width .8s cubic-bezier(.22,1,.36,1);display:flex;align-items:center;justify-content:flex-end;
+    overflow:hidden;
+  }
+  .nth-bar span{
+    color:#fff;font-family:'Bricolage Grotesque';font-weight:800;font-size:15px;
+    padding-right:10px;white-space:nowrap;
+  }
+  .nth-bar.grown{width:var(--w);}
+
+  .rf-tag{
+    font-family:'Bricolage Grotesque';font-weight:700;font-size:14px;letter-spacing:1.4px;
+    text-transform:uppercase;color:var(--nine-accent);margin-bottom:10px;
+  }
+  .rf-text{font-size:19px;line-height:1.55;color:var(--nine-navy);min-height:60px;}
+  .rf-ans{
+    margin-top:14px;padding:16px 20px;border-radius:12px;background:rgba(22,163,74,.08);
+    border-left:4px solid var(--green);font-size:17px;line-height:1.55;color:var(--ink);
+  }
+
+  .wall-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;}
+  .wall-card{
+    position:relative;min-height:150px;border-radius:18px;cursor:pointer;
+    background:var(--nine-dark);box-shadow:var(--shadow);overflow:hidden;
+    display:flex;align-items:center;justify-content:center;padding:20px;
+  }
+  .wall-card .wall-front{
+    font-family:'Bricolage Grotesque';font-weight:800;font-size:19px;color:#fff;
+    text-align:center;letter-spacing:.3px;
+  }
+  .wall-card .wall-back{display:none;font-size:16.5px;line-height:1.5;color:var(--nine-navy);text-align:center;}
+  .wall-card.flipped{background:var(--white);border:2px solid var(--nine-accent);cursor:default;}
+  .wall-card.flipped .wall-front{display:none;}
+  .wall-card.flipped .wall-back{display:block;animation:fade .35s ease;}
+
+  @media (max-width:640px){
+    .rev-chip{font-size:12.5px;padding:7px 12px;}
+    .duel-btn{font-size:16px;padding:13px 18px;}
   }
 </style>
