@@ -6,7 +6,7 @@ Touch-first interactive physics activities for the smartboard — built for Clas
 
 | Chapter | Route | Activities |
 |---|---|---|
-| Units & Dimensions | `/units-and-dimensions` | 19 (sorts, dimension builder, equation checker, vernier & screw gauge labs…) |
+| Units & Dimensions | `/units-and-dimensions` | 18 (sorts, dimension builder, equation checker, vernier & screw gauge labs…) |
 | Kinematics | `/kinematics` | Projectile Playground live; more coming |
 
 ## Stack

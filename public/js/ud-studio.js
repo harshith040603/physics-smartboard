@@ -1065,32 +1065,6 @@ initConv();
 initDimRef();
 initSameDim();
 
-/* ───────── LECTURE 12 — reveal questions one at a time ───────── */
-const L12Q=[
-  {tag:'JEE Main PYQ · 28 Jan 2026 (Morning)', text:'In a vernier callipers, 50 vernier scale divisions are equal to 48 main scale divisions. If one main scale division = 0.05 mm, then the least count of the vernier callipers is _______ mm.'},
-  {tag:'JEE Main PYQ · 2021 / 2022', text:'When both jaws of a vernier callipers touch each other, the zero mark of the vernier scale is to the RIGHT of the zero mark of the main scale, and the 4th mark on the vernier scale coincides with a certain mark on the main scale. While measuring the length of a cylinder, the observer reads 15 divisions on the main scale and the 5th division of the vernier scale coincides with a main scale division. The measured length of the cylinder is _______ mm.  (Least count of vernier calliper = 0.1 mm)'},
-  {tag:'Drill · Negative zero error (the trap)', text:'With the jaws closed, the 8th division (of 10) coincides and the vernier zero is to the LEFT of the main-scale zero. While measuring an object, the main scale reads 2.0 cm and the 5th vernier division coincides.  (Least count = 0.01 cm.)  Find the corrected length.'},
-  {tag:'Drill · Reading a screw gauge', text:'A screw gauge has pitch = 1 mm and least count = 0.01 mm. The pitch-scale reading is 5 mm and the 28th circular division lies on the reference line (no zero error). Find the reading.'},
-  {tag:'Homework 1', text:'20 vernier divisions coincide with 19 main scale divisions (1 MSD = 1 mm). Find the least count.'},
-  {tag:'Homework 2', text:'Vernier least count = 0.01 cm, positive zero error = 0.05 cm. The main scale reads 2.3 cm and the 7th division coincides. Find the corrected length.'},
-  {tag:'Homework 3', text:'A screw gauge has pitch = 0.5 mm and 50 divisions on the circular scale. Find the least count.'},
-  {tag:'Homework 4', text:'A screw gauge has least count = 0.01 mm and pitch = 1 mm. The pitch scale reads 7 mm and the 45th circular division is on the reference line (no zero error). Find the reading.'}
-];
-let l12i=0;
-function l12Show(){
-  document.getElementById('l12Tag').textContent=L12Q[l12i].tag;
-  document.getElementById('l12Text').textContent=L12Q[l12i].text;
-  document.getElementById('l12Counter').textContent=(l12i+1)+'/'+L12Q.length;
-  document.getElementById('l12Prev').disabled=(l12i===0);
-  document.getElementById('l12Next').textContent=(l12i===L12Q.length-1)?'↺ Restart':'Reveal next question ›';
-}
-function l12Step(d){
-  if(d>0 && l12i===L12Q.length-1){ l12i=0; l12Show(); return; }
-  l12i=Math.max(0,Math.min(L12Q.length-1,l12i+d));
-  l12Show();
-}
-l12Show();
-
 /* ───────── screen-init registry (consumed by studio-core go()) ───────── */
 window.SCREEN_INIT = {
   sortFD: () => initSort('FD'),
