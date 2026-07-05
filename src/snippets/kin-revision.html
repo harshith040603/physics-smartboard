@@ -14,7 +14,7 @@
   <!-- ─────────── Ch 1 · The Warm-Up Lap — distance vs displacement ─────────── -->
   <div class="rev-station" id="revS1">
     <div class="rev-story">
-      <b>6:00 AM — race day.</b> Arjun jogs exactly one lap of the 400&nbsp;m track to warm up.
+      <b>6:00 AM — race day.</b> Arjun jogs exactly one lap of the school’s 300&nbsp;m track to warm up.
       Coach Rao clicks the stopwatch and asks: <b>“So… how far did you actually go?”</b>
       Drag Arjun around the track and watch the two answers separate.
     </div>
@@ -22,7 +22,7 @@
     <div class="rev-card">
       <div class="kin-ctrl" style="max-width:640px;">
         <label>Metres run <span class="kin-val" id="lapDist">0 m</span></label>
-        <input type="range" id="lapSlider" min="0" max="400" step="5" value="0">
+        <input type="range" id="lapSlider" min="0" max="300" step="5" value="0">
       </div>
       <div class="rev-readouts">
         <div class="rev-readout"><small>DISTANCE (path)</small><span class="ro-accent" id="lapDistRo">0 m</span></div>
@@ -36,18 +36,18 @@
   <!-- ─────────── Ch 2 · The Bus Ride — speed vs velocity ─────────── -->
   <div class="rev-station" id="revS2">
     <div class="rev-story">
-      <b>7:30 AM.</b> The team bus heads to the inter-school meet: <b>100 km east</b> in 2 hours —
-      then a diversion forces it <b>60 km back west</b> in 1 more hour. Coach Rao:
+      <b>7:30 AM.</b> The team bus heads to the inter-school meet: <b>90 km east</b> in 2 hours —
+      then a diversion forces it <b>30 km back west</b> in 1 more hour. Coach Rao:
       <b>“Average speed and average velocity. Work them out before I reveal each step.”</b>
     </div>
     <div class="rev-card">
-      <div class="rev-q">The journey: 100 km east (2 h) → 60 km west (1 h)</div>
+      <div class="rev-q">The journey: 90 km east (2 h) → 30 km west (1 h)</div>
       <div class="s2-step rev-step"><b>Step 1 — the two base quantities.</b><br>
-        Total distance = 100 + 60 = <b>160 km</b> · Displacement = 100 − 60 = <b>40 km east</b> · Time = 3 h</div>
+        Total distance = 90 + 30 = <b>120 km</b> · Displacement = 90 − 30 = <b>60 km east</b> · Time = 3 h</div>
       <div class="s2-step rev-step"><b>Step 2 — speed comes from distance.</b><br>
-        Average speed = 160 / 3 = <b>53.3 km/h</b></div>
+        Average speed = 120 / 3 = <b>40 km/h</b></div>
       <div class="s2-step rev-step"><b>Step 3 — velocity comes from displacement.</b><br>
-        Average velocity = 40 / 3 = <b>13.3 km/h east</b> — much smaller, because the bus backtracked.</div>
+        Average velocity = 60 / 3 = <b>20 km/h east</b> — half the speed, because the bus backtracked.</div>
       <button class="pf-reveal-btn" id="s2RevealBtn"></button>
     </div>
     <div class="rev-card" id="s2Quiz">
@@ -64,27 +64,27 @@
   <!-- ─────────── Ch 3 · Which Average? — the averaging trap ─────────── -->
   <div class="rev-station" id="revS3">
     <div class="rev-story">
-      Stuck near the stadium, the driver brags: <b>“First half of the distance at 20 m/s, second half at
-      30 — so I averaged 25!”</b> Arjun smiles. Should he trust the driver’s maths?
+      Stuck near the stadium, the driver brags: <b>“First half of the distance at 30 m/s, second half at
+      60 — so I averaged 45!”</b> Arjun smiles. Should he trust the driver’s maths?
     </div>
     <div class="rev-card" id="avgQuiz1">
-      <div class="rev-q">Equal <b>distances</b> at 20 m/s and 30 m/s. The true average speed is…</div>
+      <div class="rev-q">Equal <b>distances</b> at 30 m/s and 60 m/s. The true average speed is…</div>
       <div class="rev-opts">
-        <button class="rev-opt">25 m/s</button>
-        <button class="rev-opt" data-ok="1">24 m/s</button>
-        <button class="rev-opt">26 m/s</button>
+        <button class="rev-opt">45 m/s</button>
+        <button class="rev-opt" data-ok="1">40 m/s</button>
+        <button class="rev-opt">42 m/s</button>
       </div>
-      <div class="rev-feedback">Equal distances → harmonic mean: 2(20)(30)/(20+30) = <b>24 m/s</b>.
-        The bus spends <i>more time</i> on the slow leg, so the slow speed drags the average below 25.</div>
+      <div class="rev-feedback">Equal distances → harmonic mean: 2(30)(60)/(30+60) = <b>40 m/s</b>.
+        The bus spends <i>twice as long</i> on the slow leg, so the slow speed drags the average well below 45.</div>
     </div>
     <div class="rev-card" id="avgQuiz2">
-      <div class="rev-q">Rematch: the return trip runs half the <b>TIME</b> at 40 km/h and half at 60 km/h. Now the average speed is…</div>
+      <div class="rev-q">Rematch: the return trip runs half the <b>TIME</b> at 25 km/h and half at 35 km/h. Now the average speed is…</div>
       <div class="rev-opts">
-        <button class="rev-opt">48 km/h</button>
-        <button class="rev-opt" data-ok="1">50 km/h</button>
-        <button class="rev-opt">55 km/h</button>
+        <button class="rev-opt">29.2 km/h</button>
+        <button class="rev-opt" data-ok="1">30 km/h</button>
+        <button class="rev-opt">32 km/h</button>
       </div>
-      <div class="rev-feedback">Equal times → the simple average <b>is</b> correct: (40+60)/2 = <b>50 km/h</b>.</div>
+      <div class="rev-feedback">Equal times → the simple average <b>is</b> correct: (25+35)/2 = <b>30 km/h</b>. (29.2 is the harmonic mean — that’s the equal-<i>distances</i> answer. The condition decides!)</div>
     </div>
     <div class="rev-keybox">Equal <b>distances</b> → 2v₁v₂/(v₁+v₂) &nbsp;·&nbsp; Equal <b>times</b> → (v₁+v₂)/2. <b>THE CONDITION decides the formula.</b></div>
   </div>
@@ -94,7 +94,7 @@
     <div class="rev-story">
       From his window seat Arjun stares at the speedometer needle. It reads a speed <b>right now</b> —
       no time interval at all. How is that possible? Coach Rao leans over: <b>“Shrink the interval and see.”</b>
-      The bus position follows x = 3t² + 2t.
+      The bus position follows x = 2t² + 3t.
     </div>
     <div class="rev-canvas" id="revTanCanvas"></div>
     <div class="rev-card">
@@ -110,7 +110,7 @@
       </div>
       <div class="rev-readouts">
         <div class="rev-readout"><small>AVERAGE v over Δt (secant slope)</small><span class="ro-accent" id="tanAvg">—</span></div>
-        <div class="rev-readout"><small>INSTANTANEOUS v = dx/dt = 6t₀+2</small><span class="ro-accent" id="tanInst">—</span></div>
+        <div class="rev-readout"><small>INSTANTANEOUS v = dx/dt = 4t₀+3</small><span class="ro-accent" id="tanInst">—</span></div>
       </div>
       <p class="rev-note" id="tanMsg"></p>
       <div class="rev-keybox">v = dx/dt — the average velocity over an interval shrunk to a single instant. Instantaneous speed = |v|, <b>always</b>.</div>
@@ -121,7 +121,7 @@
   <div class="rev-station" id="revS5">
     <div class="rev-story">
       <b>At the stadium.</b> Warm-up shuttle drill: out, turn, back, turn again — Arjun’s position follows
-      x = t³ − 6t² + 9t. Twice during the drill he is at rest <b>for a single instant</b>… but he never stops.
+      x = t³ − 9t² + 24t. Twice during the drill he is at rest <b>for a single instant</b>… but he never stops.
       Press play and catch both moments.
     </div>
     <div class="rev-canvas" id="revTurnCanvas"></div>
@@ -130,11 +130,11 @@
         <button class="check-btn" id="turnPlay">▶ Play</button>
         <div class="kin-ctrl" style="flex:1;min-width:220px;">
           <label>Time t <span class="kin-val" id="turnTVal">0.00 s</span></label>
-          <input type="range" id="turnT" min="0" max="4" step="0.01" value="0">
+          <input type="range" id="turnT" min="0" max="5" step="0.01" value="0">
         </div>
-        <div class="rev-readout"><small>v = 3t² − 12t + 9</small><span class="ro-accent" id="turnVVal">9.00 m/s</span></div>
+        <div class="rev-readout"><small>v = 3t² − 18t + 24</small><span class="ro-accent" id="turnVVal">24.00 m/s</span></div>
       </div>
-      <p class="rev-note">v = 3(t−1)(t−3) → v = 0 at <b>t = 1 s</b> and <b>t = 3 s</b> — the turning points.</p>
+      <p class="rev-note">v = 3(t−2)(t−4) → v = 0 at <b>t = 2 s</b> and <b>t = 4 s</b> — the turning points.</p>
     </div>
     <div class="rev-card" id="turnQuiz">
       <div class="rev-q">Coach Rao: “Is this drill <b>uniform motion</b>?”</div>
@@ -268,17 +268,17 @@
   <!-- ─────────── Ch 8 · The Winning Second — nth second ─────────── -->
   <div class="rev-station" id="revS8">
     <div class="rev-story">
-      Coach pulls up Arjun’s start data — from rest at 2 m/s². <b>“Watch what each second contributes.”</b>
+      Coach pulls up Arjun’s start data — from rest at 4 m/s². <b>“Watch what each second contributes.”</b>
       Advance one second at a time and watch the odd-number pattern build.
     </div>
     <div class="rev-card">
       <div class="nth-formula" id="nthFormula"></div>
       <div class="nth-bars">
-        <div class="nth-row"><span class="nth-lab">1st s</span><div class="nth-bar" id="nthBar1" style="--w:8%;"><span>1 m</span></div></div>
-        <div class="nth-row"><span class="nth-lab">2nd s</span><div class="nth-bar" id="nthBar2" style="--w:24%;"><span>3 m</span></div></div>
-        <div class="nth-row"><span class="nth-lab">3rd s</span><div class="nth-bar" id="nthBar3" style="--w:40%;"><span>5 m</span></div></div>
-        <div class="nth-row"><span class="nth-lab">4th s</span><div class="nth-bar" id="nthBar4" style="--w:56%;"><span>7 m</span></div></div>
-        <div class="nth-row"><span class="nth-lab">5th s</span><div class="nth-bar" id="nthBar5" style="--w:72%;"><span>9 m</span></div></div>
+        <div class="nth-row"><span class="nth-lab">1st s</span><div class="nth-bar" id="nthBar1" style="--w:8%;"><span>2 m</span></div></div>
+        <div class="nth-row"><span class="nth-lab">2nd s</span><div class="nth-bar" id="nthBar2" style="--w:24%;"><span>6 m</span></div></div>
+        <div class="nth-row"><span class="nth-lab">3rd s</span><div class="nth-bar" id="nthBar3" style="--w:40%;"><span>10 m</span></div></div>
+        <div class="nth-row"><span class="nth-lab">4th s</span><div class="nth-bar" id="nthBar4" style="--w:56%;"><span>14 m</span></div></div>
+        <div class="nth-row"><span class="nth-lab">5th s</span><div class="nth-bar" id="nthBar5" style="--w:72%;"><span>18 m</span></div></div>
       </div>
       <div class="rev-ctrl-row">
         <button class="check-btn" id="nthStepBtn">Advance 1 second →</button>
@@ -288,14 +288,14 @@
       </div>
     </div>
     <div class="rev-card" id="nthQuiz">
-      <div class="rev-q">Coach’s trap: “From rest at 2 m/s² — how far did you go <b>in the 5th second</b>?”</div>
+      <div class="rev-q">Coach’s trap: “From rest at 4 m/s² — how far did you go <b>in the 5th second</b>?”</div>
       <div class="rev-opts">
-        <button class="rev-opt">25 m</button>
-        <button class="rev-opt" data-ok="1">9 m</button>
-        <button class="rev-opt">10 m</button>
+        <button class="rev-opt">50 m</button>
+        <button class="rev-opt" data-ok="1">18 m</button>
+        <button class="rev-opt">20 m</button>
       </div>
       <div class="rev-feedback"><b>“In the 5th second”</b> = the one-second slice between t = 4 and t = 5:
-        s₅ₜₕ = 0 + (2/2)(2×5−1) = <b>9 m</b>. “In 5 seconds” (the whole journey) would be ½(2)(25) = 25 m —
+        s₅ₜₕ = 0 + (4/2)(2×5−1) = <b>18 m</b>. “In 5 seconds” (the whole journey) would be ½(4)(25) = 50 m —
         a correct answer to a <i>different</i> question. <b>Underline the wording.</b> And note the units: metres, not m/s!</div>
     </div>
   </div>

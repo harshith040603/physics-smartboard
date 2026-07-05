@@ -124,11 +124,12 @@ function wireSteps(btnId: string, stepClass: string) {
 
 /* ═══════════════ Station 1 — The Lap (p5) ═══════════════ */
 
-const lap = { d: 0 }; // metres run, 0..400
-const R_REAL = 400 / (2 * Math.PI); // ≈ 63.66 m
+const LAP_LEN = 300; // school track, metres (deliberately NOT the notes' 400 m)
+const lap = { d: 0 }; // metres run, 0..LAP_LEN
+const R_REAL = LAP_LEN / (2 * Math.PI); // ≈ 47.7 m
 
 function lapChord(): number {
-  const th = (lap.d / 400) * 2 * Math.PI;
+  const th = (lap.d / LAP_LEN) * 2 * Math.PI;
   return 2 * R_REAL * Math.sin(th / 2);
 }
 
@@ -137,8 +138,8 @@ function lapUpdateReadouts() {
   $('lapDistRo').textContent = `${lap.d.toFixed(0)} m`;
   $('lapDisp').textContent = `${lapChord().toFixed(1)} m`;
   $('lapMsg').textContent =
-    lap.d >= 400
-      ? 'Full lap: distance 400 m, displacement 0 — back where you started!'
+    lap.d >= LAP_LEN
+      ? `Full lap: distance ${LAP_LEN} m, displacement 0 — back where you started!`
       : lap.d === 0
         ? 'Drag the slider to send the runner around the track.'
         : 'Distance keeps growing… the straight arrow is the displacement.';
@@ -167,7 +168,7 @@ const lapSketch = (p: p5) => {
     p.drawingContext.setLineDash([]);
 
     const a0 = -Math.PI / 2; // start at top
-    const th = a0 + (lap.d / 400) * 2 * Math.PI;
+    const th = a0 + (lap.d / LAP_LEN) * 2 * Math.PI;
     const sx = cx + R * Math.cos(a0), sy = cy + R * Math.sin(a0);
     const rx = cx + R * Math.cos(th), ry = cy + R * Math.sin(th);
 
@@ -223,12 +224,12 @@ function initLap() {
 /* ═══════════════ Station 4 — Secant → Tangent (p5) ═══════════════ */
 
 const tan = { t0: 1.5, dt: 2 };
-const xOf = (t: number) => 3 * t * t + 2 * t;
+const xOf = (t: number) => 2 * t * t + 3 * t; // x = 2t² + 3t (fresh numbers, not the notes')
 
 function tanUpdateReadouts() {
   const t1 = Math.min(tan.t0 + tan.dt, 4);
   const avg = (xOf(t1) - xOf(tan.t0)) / (t1 - tan.t0 || 1e-9);
-  const inst = 6 * tan.t0 + 2;
+  const inst = 4 * tan.t0 + 3; // dx/dt of 2t² + 3t
   $('tanT0Val').textContent = `${tan.t0.toFixed(1)} s`;
   $('tanDtVal').textContent = `${tan.dt.toFixed(2)} s`;
   $('tanAvg').textContent = `${avg.toFixed(2)} m/s`;
@@ -257,7 +258,7 @@ const tanSketch = (p: p5) => {
     p.line(M.l, M.t, M.l, p.height - M.b);
     p.noStroke(); p.fill(C.dark); p.textFont('DM Sans'); p.textSize(13);
     p.textAlign(p.CENTER, p.TOP); p.text('t (s)', p.width - M.r - 16, p.height - M.b + 8);
-    p.textAlign(p.LEFT, p.BOTTOM); p.text('x (m)   x = 3t² + 2t', M.l + 8, M.t + 16);
+    p.textAlign(p.LEFT, p.BOTTOM); p.text('x (m)   x = 2t² + 3t', M.l + 8, M.t + 16);
     p.textAlign(p.CENTER, p.TOP);
     for (let t = 0; t <= 4; t++) p.text(`${t}`, X(t), p.height - M.b + 8);
 
@@ -301,9 +302,12 @@ function initTan() {
 
 /* ═══════════════ Station 5 — Turning Points (p5) ═══════════════ */
 
+/* x = t³ − 9t² + 24t → v = 3t² − 18t + 24 = 3(t−2)(t−4)
+   turns at t = 2 s (x = 20 m) and t = 4 s (x = 16 m)  (fresh numbers,
+   different turning times from the notes' example)                    */
 const turn = { t: 0, playing: false };
-const turnX = (t: number) => t ** 3 - 6 * t * t + 9 * t;
-const turnV = (t: number) => 3 * t * t - 12 * t + 9;
+const turnX = (t: number) => t ** 3 - 9 * t * t + 24 * t;
+const turnV = (t: number) => 3 * t * t - 18 * t + 24;
 
 function turnUpdateReadouts() {
   $('turnTVal').textContent = `${turn.t.toFixed(2)} s`;
@@ -320,13 +324,13 @@ const turnSketch = (p: p5) => {
   p.windowResized = () => p.resizeCanvas(holder.clientWidth, h());
   p.draw = () => {
     p.background(C.paper);
-    const XMAX = 5;
+    const XMAX = 21;
     const X = (x: number) => M.l + (x / XMAX) * (p.width - M.l - M.r);
     const ly = p.height - 60;
 
     if (turn.playing) {
-      turn.t += (p.deltaTime / 1000) * 0.6; // slow motion
-      if (turn.t >= 4) { turn.t = 4; turn.playing = false; $('turnPlay').textContent = '↺ Replay'; }
+      turn.t += (p.deltaTime / 1000) * 0.7; // slow motion
+      if (turn.t >= 5) { turn.t = 5; turn.playing = false; $('turnPlay').textContent = '↺ Replay'; }
       ($('turnT') as HTMLInputElement).value = String(turn.t);
       turnUpdateReadouts();
     }
@@ -336,23 +340,23 @@ const turnSketch = (p: p5) => {
     p.line(X(0), ly, X(XMAX), ly);
     p.textFont('DM Sans'); p.textSize(13); p.fill(C.dark); p.noStroke();
     p.textAlign(p.CENTER, p.TOP);
-    for (let x = 0; x <= XMAX; x++) {
+    for (let x = 0; x <= XMAX; x += 3) {
       p.stroke(C.navy); p.strokeWeight(2); p.line(X(x), ly - 6, X(x), ly + 6);
       p.noStroke(); p.text(`${x} m`, X(x), ly + 12);
     }
 
-    // turning point flags: t=1 → x=4 · t=3 → x=0
+    // turning point flags: t=2 → x=20 · t=4 → x=16 (staggered so labels don't collide)
     p.textSize(12.5);
     p.fill(C.red);
-    p.text('turns here (t = 1 s)', X(4), ly - 52);
-    p.text('turns here (t = 3 s)', X(0), ly - 52);
+    p.text('turns here (t = 2 s)', X(20), ly - 72);
+    p.text('turns here (t = 4 s)', X(16), ly - 46);
 
     // particle + velocity arrow
     const px = X(turnX(turn.t));
     const v = turnV(turn.t);
     p.stroke(Math.abs(v) < 0.15 ? C.red : C.green);
     p.strokeWeight(3.5);
-    const alen = Math.max(-90, Math.min(90, v * 9));
+    const alen = Math.max(-90, Math.min(90, v * 4));
     p.line(px, ly - 34, px + alen, ly - 34);
     if (Math.abs(alen) > 3) {
       const dir = Math.sign(alen);
@@ -382,7 +386,7 @@ function initTurn() {
     turnUpdateReadouts();
   });
   $('turnPlay').addEventListener('click', () => {
-    if (turn.t >= 4) turn.t = 0;
+    if (turn.t >= 5) turn.t = 0;
     turn.playing = !turn.playing;
     $('turnPlay').textContent = turn.playing ? '⏸ Pause' : '▶ Play';
   });
@@ -393,12 +397,12 @@ function initTurn() {
 /* ═══════════════ Station 6 — Sign Duel ═══════════════ */
 
 const DUEL_ROUNDS = [
-  { v: 12, a: 3, up: true },
-  { v: 12, a: -3, up: false },
-  { v: -8, a: -2, up: true },
-  { v: -8, a: 2, up: false },
-  { v: -15, a: -5, up: true },
-  { v: 6, a: -2, up: false },
+  { v: 15, a: 4, up: true },
+  { v: 18, a: -6, up: false },
+  { v: -9, a: -3, up: true },
+  { v: -12, a: 3, up: false },
+  { v: -20, a: -4, up: true },
+  { v: 7, a: -2, up: false },
 ];
 let duelI = 0, duelScore = 0, duelLock = false;
 
@@ -463,7 +467,7 @@ function initToolbox() {
 /* ═══════════════ Station 8 — The nth Second ═══════════════ */
 
 let nthSec = 0;
-const NTH_SLICES = [1, 3, 5, 7, 9]; // from rest, a = 2
+const NTH_SLICES = [2, 6, 10, 14, 18]; // from rest, a = 4 (same 1:3:5:7:9 ratio, fresh numbers)
 
 function nthStep() {
   if (nthSec >= 5) return;
@@ -502,26 +506,26 @@ function initNth() {
 /* ═══════════════ Station 9 — Rapid Fire ═══════════════ */
 
 const RF: Array<{ q: string; a: string }> = [
-  { q: 'A cyclist travels 60 km north in 3 h, then 20 km south in 1 h. Find the average speed and average velocity for the whole trip.',
-    a: 'Distance 80 km, displacement 40 km north, time 4 h → avg speed = 20 km/h, avg velocity = 10 km/h north.' },
-  { q: 'A car covers the first half of a journey (by DISTANCE) at 40 km/h and the second half at 60 km/h. Find the average speed.',
-    a: 'Equal distances → harmonic mean: 2(40)(60)/(40+60) = 48 km/h. NOT 50!' },
-  { q: 'A car covers the first half of the TIME at 40 km/h and the second half at 60 km/h. Find the average speed.',
-    a: 'Equal times → simple average: (40+60)/2 = 50 km/h.' },
-  { q: 'x = 2t³ − 3t² (SI). Find the instantaneous velocity at t = 2 s.',
-    a: 'v = dx/dt = 6t² − 6t → at t = 2: 24 − 12 = 12 m/s.' },
-  { q: 'x = t³ − 12t (SI). Find the time(s) when the particle is momentarily at rest.',
-    a: 'v = 3t² − 12 = 0 → t² = 4 → t = 2 s (positive root only).' },
-  { q: 'A particle has u = −5 m/s and a = +2 m/s². Speeding up or slowing down?',
+  { q: 'A cyclist travels 80 km north in 2 h, then 30 km south in 2 h. Find the average speed and average velocity for the whole trip.',
+    a: 'Distance 110 km, displacement 50 km north, time 4 h → avg speed = 27.5 km/h, avg velocity = 12.5 km/h north.' },
+  { q: 'A car covers the first half of a journey (by DISTANCE) at 20 km/h and the second half at 60 km/h. Find the average speed.',
+    a: 'Equal distances → harmonic mean: 2(20)(60)/(20+60) = 30 km/h. NOT 40!' },
+  { q: 'A car covers the first half of the TIME at 30 km/h and the second half at 50 km/h. Find the average speed.',
+    a: 'Equal times → simple average: (30+50)/2 = 40 km/h.' },
+  { q: 'x = t³ + 2t² (SI). Find the instantaneous velocity at t = 2 s.',
+    a: 'v = dx/dt = 3t² + 4t → at t = 2: 12 + 8 = 20 m/s.' },
+  { q: 'x = t³ − 27t (SI). Find the time(s) when the particle is momentarily at rest.',
+    a: 'v = 3t² − 27 = 0 → t² = 9 → t = 3 s (positive root only).' },
+  { q: 'A particle has u = +8 m/s and a = −3 m/s². Speeding up or slowing down?',
     a: 'Opposite signs → SLOWING DOWN. It will stop momentarily, then reverse.' },
-  { q: 'A bike accelerates uniformly from 4 m/s to 16 m/s in 6 s. Find a and the distance covered.',
-    a: 'a = (16−4)/6 = 2 m/s² ; s = 4(6) + ½(2)(36) = 24 + 36 = 60 m.' },
-  { q: 'u = 2 m/s, a = 3 m/s² (uniform). Find the displacement in the 4th second.',
-    a: 's₄th = u + (a/2)(2·4−1) = 2 + 1.5(7) = 12.5 m. (Units: metres!)' },
-  { q: 'A car moving at 25 m/s brakes uniformly and stops in 62.5 m. Find the deceleration and time to stop.',
-    a: 'v² = u² + 2as → 0 = 625 + 125a → a = −5 m/s² ; t = 25/5 = 5 s.' },
-  { q: 'Uniform acceleration: 15 m in the 2nd second and 23 m in the 4th second. Find u and a.',
-    a: 'u + (a/2)(3) = 15 and u + (a/2)(7) = 23 → subtract: 2a = 8 → a = 4 ; u = 9 m/s.' },
+  { q: 'A bike accelerates uniformly from 5 m/s to 25 m/s in 5 s. Find a and the distance covered.',
+    a: 'a = (25−5)/5 = 4 m/s² ; s = 5(5) + ½(4)(25) = 25 + 50 = 75 m.' },
+  { q: 'u = 3 m/s, a = 2 m/s² (uniform). Find the displacement in the 6th second.',
+    a: 's₆th = u + (a/2)(2·6−1) = 3 + 1(11) = 14 m. (Units: metres!)' },
+  { q: 'A car moving at 30 m/s brakes uniformly and stops in 90 m. Find the deceleration and time to stop.',
+    a: 'v² = u² + 2as → 0 = 900 + 180a → a = −5 m/s² ; t = 30/5 = 6 s.' },
+  { q: 'Uniform acceleration: 10 m in the 2nd second and 22 m in the 5th second. Find u and a.',
+    a: 'u + (a/2)(3) = 10 and u + (a/2)(9) = 22 → subtract: 3a = 12 → a = 4 ; u = 4 m/s.' },
 ];
 let rfI = 0;
 
