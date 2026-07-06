@@ -1,4 +1,4 @@
-/* ═══════════ Studio core — shared across all chapter studios ═══════════ */
+/* ═══════════ Studio core - shared across all chapter studios ═══════════ */
 
 /* ───────── navigation ─────────
    Each chapter script registers per-screen init hooks on window.SCREEN_INIT:

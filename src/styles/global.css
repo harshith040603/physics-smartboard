@@ -561,7 +561,7 @@ input[type=range]::-moz-range-thumb{width:38px;height:38px;border-radius:50%;bac
 .df-formula{font-family:'Bricolage Grotesque';font-weight:800;font-size:17px;color:var(--nine-accent);margin-top:auto;padding-top:10px;border-top:1px solid rgba(41,89,144,.1);}
 .df-card.tricky .df-formula{color:#b45309;}
 .df-tap-hint{font-size:10px;color:#b0c0d0;font-weight:600;letter-spacing:.8px;text-transform:uppercase;margin-top:8px;}
-/* hidden state — before tapped */
+/* hidden state - before tapped */
 .df-card:not(.revealed) .df-formula{
   color:transparent;background:rgba(41,89,144,.1);border-radius:6px;
   user-select:none;letter-spacing:0;

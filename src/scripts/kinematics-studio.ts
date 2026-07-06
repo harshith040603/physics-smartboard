@@ -1,4 +1,4 @@
-/* ═══════════ Kinematics Studio — chapter script ═══════════
+/* ═══════════ Kinematics Studio - chapter script ═══════════
    Projectile Playground: p5.js canvas + KaTeX formulas.
    The p5 instance is created lazily on first open, because .screen
    sections are display:none and the canvas needs a real width.      */
@@ -204,7 +204,7 @@ const sketch = (p: p5) => {
         p.textAlign(p.CENTER, p.TOP);
         p.textSize(17);
         p.fill(C.green);
-        p.text('Landed! Same u — try a complementary angle.', p.width / 2, M.t + 26);
+        p.text('Landed! Same u - try a complementary angle.', p.width / 2, M.t + 26);
       }
     } else {
       /* launcher hint */

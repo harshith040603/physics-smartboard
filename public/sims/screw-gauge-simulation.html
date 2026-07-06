@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="light only">
-<title>Screw Gauge (Micrometer) — Interactive Lab · Smartboard Studio</title>
+<title>Screw Gauge (Micrometer) - Interactive Lab · Smartboard Studio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
@@ -98,7 +98,7 @@ svg.mag{display:block;width:100%;height:auto;background:#0b1d38;border-radius:10
   <div class="hd">
     <span class="badge">Smartboard Studio</span>
     <div>
-      <h1>Screw Gauge (Micrometer) — Interactive Lab</h1>
+      <h1>Screw Gauge (Micrometer) - Interactive Lab</h1>
       <div class="sub">Turn the thimble · read the sleeve &amp; circular scale · master least count &amp; zero error</div>
     </div>
   </div>
@@ -150,7 +150,7 @@ svg.mag{display:block;width:100%;height:auto;background:#0b1d38;border-radius:10
 
     <div class="controls hide" id="objControls">
       <div class="ctl" style="grid-column:1/-1">
-        <label>Pick an object — the spindle will close onto it</label>
+        <label>Pick an object - the spindle will close onto it</label>
         <div class="objgrid" id="objGrid"></div>
       </div>
     </div>
@@ -164,18 +164,18 @@ svg.mag{display:block;width:100%;height:auto;background:#0b1d38;border-radius:10
         <div class="formula" id="formula"></div>
       </div>
       <div class="magbox">
-        <div class="mt">🔍 Magnifier — circular scale at the reference line</div>
+        <div class="mt">🔍 Magnifier - circular scale at the reference line</div>
         <svg class="mag" id="mag" viewBox="0 0 360 230" preserveAspectRatio="xMidYMid meet"></svg>
       </div>
     </div>
   </div>
 
   <div class="panel hide" id="quizPanel">
-    <div class="panel-title"><span class="dot"></span>Quiz — read the instrument</div>
+    <div class="panel-title"><span class="dot"></span>Quiz - read the instrument</div>
     <div class="qgiven" id="qGiven"></div>
     <div class="quiz-row">
       <div class="quiz-field">
-        <label style="font-size:11px;letter-spacing:1.3px;text-transform:uppercase;color:#7689a0;font-weight:700;display:block;margin-bottom:6px;">Your answer — corrected reading (mm)</label>
+        <label style="font-size:11px;letter-spacing:1.3px;text-transform:uppercase;color:#7689a0;font-weight:700;display:block;margin-bottom:6px;">Your answer - corrected reading (mm)</label>
         <input id="qInput" type="text" inputmode="decimal" placeholder="e.g. 6.35" autocomplete="off">
       </div>
       <button class="btn primary" id="qCheck">Check</button>
@@ -185,7 +185,7 @@ svg.mag{display:block;width:100%;height:auto;background:#0b1d38;border-radius:10
     <div style="margin-top:14px" class="score" id="qScore">Score: 0 / 0</div>
   </div>
 
-  <div class="foot">Units &amp; Dimensions · Screw Gauge / Micrometer · turn-to-read interactive — built for the classroom smartboard.</div>
+  <div class="foot">Units &amp; Dimensions · Screw Gauge / Micrometer · turn-to-read interactive - built for the classroom smartboard.</div>
 </div>
 
 <script>
@@ -352,7 +352,7 @@ function drawObject(spindleTip){
 }
 
 /* ============================================================
-   MAGNIFIER — circular scale at reference line
+   MAGNIFIER - circular scale at reference line
    ============================================================ */
 const mag=document.getElementById('mag');
 function renderMag(){
@@ -454,9 +454,9 @@ function setMode(m){
   document.getElementById('nudgeCtl').classList.toggle('hide',m==='measure');
   document.getElementById('closeCtl').classList.toggle('hide',m==='measure');
   const st=document.getElementById('stageTitle'),ht=document.getElementById('hintText');
-  if(m==='explore'){st.textContent='The Instrument — turn to explore';ht.innerHTML='<b>Drag the thimble</b> (or use − / +) to turn it; each full turn advances by one pitch. Read the scales below.';state.object=null;}
-  else if(m==='measure'){st.textContent='Measure a real object';ht.innerHTML='Pick an object — the spindle <b>closes onto it</b>. Read the sleeve + circular scale, then compare with the true value.';}
-  else{st.textContent='Quiz — read this measurement';ht.innerHTML='Read the sleeve and the circular scale (use the magnifier), apply the <b>zero-error correction</b>, then type the corrected reading.';newQuiz();}
+  if(m==='explore'){st.textContent='The Instrument - turn to explore';ht.innerHTML='<b>Drag the thimble</b> (or use − / +) to turn it; each full turn advances by one pitch. Read the scales below.';state.object=null;}
+  else if(m==='measure'){st.textContent='Measure a real object';ht.innerHTML='Pick an object - the spindle <b>closes onto it</b>. Read the sleeve + circular scale, then compare with the true value.';}
+  else{st.textContent='Quiz - read this measurement';ht.innerHTML='Read the sleeve and the circular scale (use the magnifier), apply the <b>zero-error correction</b>, then type the corrected reading.';newQuiz();}
   renderAll();
 }
 

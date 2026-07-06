@@ -1,7 +1,7 @@
 export interface Chapter {
   slug: string;
   num: string;
-  title: string;          // rendered directly before titleAccent — include any needed trailing space
+  title: string;          // rendered directly before titleAccent - include any needed trailing space
   titleAccent: string;    // part of the title rendered in accent colour
   blurb: string;
   status: 'ready' | 'soon';
@@ -23,7 +23,7 @@ export const chapters: Chapter[] = [
     num: '02',
     title: 'Kine',
     titleAccent: 'matics',
-    blurb: 'Projectiles, motion graphs, relative motion — watch motion happen, then control it.',
+    blurb: 'Projectiles, motion graphs, relative motion - watch motion happen, then control it.',
     status: 'ready',
     activities: 9,
   },

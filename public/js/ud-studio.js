@@ -221,7 +221,7 @@ function checkBuild(){
     v.className='verdict ok'; v.textContent='✓ Correct! That\'s '+q.name+'.';
     if(!q._done){q._done=true;bSolved++;document.getElementById('bScore').textContent=bSolved;}
   } else {
-    v.className='verdict no'; v.textContent='Not quite — adjust the powers and try again.';
+    v.className='verdict no'; v.textContent='Not quite - adjust the powers and try again.';
   }
 }
 function nextQ(){ qi=(qi+1)%BUILD_Q.length; loadQ(); }
@@ -299,10 +299,10 @@ function updateError(){
   ctr.style.left=centerPct+'%';
   const msg=document.getElementById('errMsg');
   let verdict;
-  if(pct>=15) verdict='That\'s a <b>large</b> relative error — the uncertainty is a big slice of the measurement.';
-  else if(pct>=5) verdict='A <b>moderate</b> relative error — noticeable but workable.';
-  else verdict='A <b>small</b> relative error — the measurement is quite precise.';
-  msg.innerHTML='An absolute error of <b>±'+err.toFixed(1)+' cm</b> on a <b>'+val+' cm</b> measurement is <b>'+pct.toFixed(1)+'%</b>. '+verdict+' Try keeping the error fixed and growing the measurement — watch the percentage shrink.';
+  if(pct>=15) verdict='That\'s a <b>large</b> relative error - the uncertainty is a big slice of the measurement.';
+  else if(pct>=5) verdict='A <b>moderate</b> relative error - noticeable but workable.';
+  else verdict='A <b>small</b> relative error - the measurement is quite precise.';
+  msg.innerHTML='An absolute error of <b>±'+err.toFixed(1)+' cm</b> on a <b>'+val+' cm</b> measurement is <b>'+pct.toFixed(1)+'%</b>. '+verdict+' Try keeping the error fixed and growing the measurement - watch the percentage shrink.';
 }
 document.getElementById('valSlider').addEventListener('input',updateError);
 document.getElementById('errSlider').addEventListener('input',updateError);
@@ -362,7 +362,7 @@ const FORGE_DATA=[
    ],
    solution:{m:0,l:0.5,g:-0.5},
    formula:'T = k · √( l / g )',
-   note:'Mass dropped out (power 0) — which is exactly why a heavy and a light pendulum swing at the same rate! The constant k = 2π cannot be found by dimensions.'},
+   note:'Mass dropped out (power 0) - which is exactly why a heavy and a light pendulum swing at the same rate! The constant k = 2π cannot be found by dimensions.'},
   {name:'Speed of Sound',sym:'v',target:{M:0,L:1,T:-1},targetStr:'[ M⁰ L¹ T⁻¹ ]',
    vars:[
      {sym:'P',name:'pressure',dim:{M:1,L:-1,T:-2},dimStr:'[ML⁻¹T⁻²]'},
@@ -370,7 +370,7 @@ const FORGE_DATA=[
    ],
    solution:{P:0.5,'ρ':-0.5},
    formula:'v = k · √( P / ρ )',
-   note:'Matches the real formula v = √(γP/ρ), where γ is a dimensionless constant — completely invisible to dimensional analysis.'},
+   note:'Matches the real formula v = √(γP/ρ), where γ is a dimensionless constant - completely invisible to dimensional analysis.'},
   {name:'Centripetal Force',sym:'F',target:{M:1,L:1,T:-2},targetStr:'[ M¹ L¹ T⁻² ]',
    vars:[
      {sym:'m',name:'mass',dim:{M:1,L:0,T:0},dimStr:'[M]'},
@@ -388,7 +388,7 @@ const FORGE_DATA=[
    ],
    solution:{G:0.5,M:0.5,R:-0.5},
    formula:'vₑ = k · √( GM / R )',
-   note:'The real formula is vₑ = √(2GM/R). The factor √2 is dimensionless — dimensional analysis cannot reveal it.'},
+   note:'The real formula is vₑ = √(2GM/R). The factor √2 is dimensionless - dimensional analysis cannot reveal it.'},
 ];
 let forgeIdx=0, forgePowers={};
 function fracStr(v){
@@ -513,11 +513,11 @@ const EQ_DATA=[
   {eq:'v = u + at²',label:'Spot the Error ✗',
     terms:['[v] = [LT⁻¹]','[u] = [LT⁻¹]','[at²] = [LT⁻²][T²] = [L]  ← ✗'],
     match:false,trap:false,group:'lecture',
-    note:'The correct equation is v = u + at. Here at² gives [L] but v and u are [LT⁻¹]. Terms don\'t match — definitely wrong.'},
+    note:'The correct equation is v = u + at. Here at² gives [L] but v and u are [LT⁻¹]. Terms don\'t match - definitely wrong.'},
   {eq:'v = u + 2at',label:'The Trap ⚠',
     terms:['[v] = [LT⁻¹]','[u] = [LT⁻¹]','[2at] = [LT⁻²][T] = [LT⁻¹]','(2 is dimensionless)'],
     match:true,trap:true,group:'lecture',
-    note:'⚠ Dimensionally correct — but physically WRONG. The correct equation is v = u + at with no 2. Dimensional analysis cannot detect errors hidden in dimensionless numbers.'},
+    note:'⚠ Dimensionally correct - but physically WRONG. The correct equation is v = u + at with no 2. Dimensional analysis cannot detect errors hidden in dimensionless numbers.'},
   // Practice problems
   {eq:'F = mv²/r',label:'Centripetal Force',
     terms:['[mv²/r] = [M][L²T⁻²] / [L]','= [MLT⁻²]','[F] = [MLT⁻²]'],
@@ -566,7 +566,7 @@ function openEqModal(i){
     el.textContent=t; termsEl.appendChild(el);
   });
   const v=document.getElementById('emVerdict');
-  if(d.trap){v.className='em-verdict trap';v.textContent='⚠ Dimensionally Correct — but Physically Wrong!';}
+  if(d.trap){v.className='em-verdict trap';v.textContent='⚠ Dimensionally Correct - but Physically Wrong!';}
   else if(d.match){v.className='em-verdict ok';v.textContent='✓ Possibly Correct';}
   else{v.className='em-verdict no';v.textContent='✗ Definitely Wrong';}
   const noteEl=document.getElementById('emNote');
@@ -591,7 +591,7 @@ function closeEqModal(e){
   eqActiveCard=null;
 }
 
-/* ───────── REVISION (Lecture 7 — mixed problem set) ───────── */
+/* ───────── REVISION (Lecture 7 - mixed problem set) ───────── */
 const REV_DATA=[
   {num:1,label:'Problem 1 · Scalar vs Vector (Lecture 1)',
     eq:'Classify each as scalar or vector: electrostatic potential, momentum, work, magnetic moment.',
@@ -613,19 +613,19 @@ const REV_DATA=[
     eq:'Convert G = 6.67 × 10⁻¹¹ N·m²·kg⁻² (SI) into CGS units.',
     terms:['[G] = [M⁻¹L³T⁻²]','1 m³ = 10⁶ cm³  and  1 kg⁻¹ = 10⁻³ g⁻¹','G(CGS) = 6.67×10⁻¹¹ × 10⁶ × 10⁻³'],
     vclass:'ok',tag:'✓ Answer',verdict:'G = 6.67 × 10⁻⁸ (CGS units)',
-    note:'Common slip: forgetting the power on a conversion factor — an L³ quantity needs (10²)³, not just 10².'},
+    note:'Common slip: forgetting the power on a conversion factor - an L³ quantity needs (10²)³, not just 10².'},
 
   {num:5,label:'Problem 5 · Deriving a Formula (Lecture 5/6)',
     eq:'The frequency f of a vibrating string depends on its length L, tension T, and linear mass density μ. Find the form of f.',
     terms:['Assume f = k · Lᵃ · Tᵇ · μᶜ (3 unknowns)','[T] = [MLT⁻²], [μ] = [ML⁻¹], [f] = [T⁻¹]','Matching powers of M, L, T → a = −1, b = ½, c = −½'],
     vclass:'ok',tag:'✓ Answer',verdict:'f = (k/L) · √(T/μ)',
-    note:'Matches the real formula f = (1/2L)√(T/μ) — dimensional analysis finds the form but never the constant 1/2.'},
+    note:'Matches the real formula f = (1/2L)√(T/μ) - dimensional analysis finds the form but never the constant 1/2.'},
 
   {num:6,label:'Problem 6 · A Limitation (Lecture 6)',
     eq:'Two students write Q = Av²ρ and Q = 2Av²ρ. Both check out dimensionally. What does this demonstrate?',
     terms:['Both expressions have identical dimensions','The factor of 2 is dimensionless','Dimensional analysis cannot tell the two apart'],
     vclass:'trap',tag:'⚠ Limitation',verdict:'Dimensional analysis can’t detect dimensionless constants',
-    note:'This is Limitation 1 from Lecture 6 — a dimensionally correct equation can still be physically wrong (or incomplete) by a pure number.'},
+    note:'This is Limitation 1 from Lecture 6 - a dimensionally correct equation can still be physically wrong (or incomplete) by a pure number.'},
 
   {num:7,label:'Problem 7 · Dimensions of a Constant (Lecture 4)',
     eq:'In the Van der Waals equation (P + a/V²)(V − b) = RT, find the dimensions of a.',
@@ -669,20 +669,20 @@ function toggleRevSolution(){
 function nextRev(){ revIndex=(revIndex+1)%REV_DATA.length; renderRev(); }
 function prevRev(){ revIndex=(revIndex-1+REV_DATA.length)%REV_DATA.length; renderRev(); }
 
-/* ───────── SIGNIFICANT FIGURES — counting rules ───────── */
+/* ───────── SIGNIFICANT FIGURES - counting rules ───────── */
 const SF_RULES=[
   {symbol:'234',name:'Non-zero digits',power:'3 sf',symbol2:'5923',power2:'4 sf',
     example:'Every non-zero digit always counts as significant.'},
   {symbol:'205',name:'Captive zeros',power:'3 sf',symbol2:'7.024',power2:'4 sf',
     example:'Zeros sitting between two non-zero digits always count.'},
   {symbol:'0.005',name:'Leading zeros',power:'1 sf',symbol2:'0.00042',power2:'2 sf',
-    example:'Zeros before the first non-zero digit never count — they only fix the decimal point.'},
+    example:'Zeros before the first non-zero digit never count - they only fix the decimal point.'},
   {symbol:'2.50',name:'Trailing zeros (decimal)',power:'3 sf',symbol2:'100.0',power2:'4 sf',
-    example:'Trailing zeros count when there is a decimal point — they show real precision.'},
+    example:'Trailing zeros count when there is a decimal point - they show real precision.'},
   {symbol:'2500',name:'Trailing zeros (no decimal)',power:'unclear',symbol2:'3.0 × 10³',power2:'2 sf',
     example:'Ambiguous without a decimal point. Scientific notation resolves it: 3×10³ → 1 sf, 3.0×10³ → 2 sf, 3.00×10³ → 3 sf.'},
   {symbol:'12 eggs',name:'Exact / counted numbers',power:'∞ sf',symbol2:'60 min/hr',power2:'∞ sf',
-    example:'Counted or defined quantities are exact — infinite significant figures.'},
+    example:'Counted or defined quantities are exact - infinite significant figures.'},
 ];
 let sfRevealIndex=0, sfCards=[];
 function initSF(){
@@ -715,18 +715,18 @@ function revealNextSF(){
   }
 }
 
-/* ───────── THE TRAP — add vs multiply ───────── */
+/* ───────── THE TRAP - add vs multiply ───────── */
 const TRAP_DATA=[
   {rule:'Multiply / Divide → match SIG FIGS',
     eq:'5.7 × 3.4 = 19.38',
     sub:'Both factors have 2 sig figs. How many sig figs should the answer keep?',
     options:[{text:'19.38',correct:false},{text:'19.4',correct:false},{text:'19',correct:true}],
-    note:'Multiplication/division rule: match the SIG FIGS of the least precise factor. Both 5.7 and 3.4 have 2 sig figs, so the answer is 19. Writing 19.4 applies the addition (decimal-place) rule by mistake — the single most common slip in this chapter.'},
+    note:'Multiplication/division rule: match the SIG FIGS of the least precise factor. Both 5.7 and 3.4 have 2 sig figs, so the answer is 19. Writing 19.4 applies the addition (decimal-place) rule by mistake - the single most common slip in this chapter.'},
   {rule:'Add / Subtract → match DECIMAL PLACES',
     eq:'12.11 + 18.0 + 1.013 = 31.123',
     sub:'18.0 has only 1 decimal place. How many decimal places should the answer keep?',
     options:[{text:'31.123',correct:false},{text:'31.12',correct:false},{text:'31.1',correct:true}],
-    note:'Addition/subtraction rule: match the DECIMAL PLACES of the least precise term. 18.0 has 1 decimal place, so the answer is 31.1 — even though it has fewer sig figs than the other terms.'},
+    note:'Addition/subtraction rule: match the DECIMAL PLACES of the least precise term. 18.0 has 1 decimal place, so the answer is 31.1 - even though it has fewer sig figs than the other terms.'},
 ];
 let trapAnswered=[];
 function initTrap(){
@@ -754,26 +754,26 @@ function trapGuess(i,j,btn){
   noteEl.style.display='block';
 }
 
-/* ───────── TYPES OF ERROR — classifier ───────── */
+/* ───────── TYPES OF ERROR - classifier ───────── */
 const ERR_DATA=[
   {prompt:'A voltmeter that was never zeroed reads 0.5 V too high on every measurement.',
     answer:'Systematic',
-    note:'Caused by a faulty/uncalibrated instrument — every reading is biased in the same direction. More readings won\'t fix this; only recalibration or a better instrument will.'},
+    note:'Caused by a faulty/uncalibrated instrument - every reading is biased in the same direction. More readings won\'t fix this; only recalibration or a better instrument will.'},
   {prompt:'A student times the same pendulum swing 10 times and gets slightly different values each time, due to reaction-time variation in starting/stopping the stopwatch.',
     answer:'Random',
     note:'Unpredictable fluctuations in both directions. Taking more readings and averaging reduces this kind of error.'},
   {prompt:'While copying down a reading of 53 cm, a student accidentally writes 35 cm.',
     answer:'Gross',
-    note:'An outright mistake — misreading or miscopying. Fixed by care and cross-checking, not by statistics.'},
+    note:'An outright mistake - misreading or miscopying. Fixed by care and cross-checking, not by statistics.'},
   {prompt:'A metre scale has worn down at the zero end, so every length measured with it comes out slightly shorter than the true value.',
     answer:'Systematic',
-    note:'A consistent instrumental bias in one direction — recalibrating or replacing the scale is the only fix.'},
+    note:'A consistent instrumental bias in one direction - recalibrating or replacing the scale is the only fix.'},
   {prompt:'Room temperature fluctuations cause a resistance measurement to drift up and down slightly across repeated trials.',
     answer:'Random',
-    note:'Uncontrollable environmental fluctuation, varying in both directions — averaging many readings reduces it.'},
+    note:'Uncontrollable environmental fluctuation, varying in both directions - averaging many readings reduces it.'},
   {prompt:'A student reads "9.8" off the result but writes "8.9" in their notebook by transposing the digits.',
     answer:'Gross',
-    note:'A careless transcription mistake — a gross error, not a measurement uncertainty at all.'},
+    note:'A careless transcription mistake - a gross error, not a measurement uncertainty at all.'},
 ];
 let errIndex=0;
 function initErr(){ errIndex=0; renderErr(); }
@@ -803,7 +803,7 @@ function errGuess(label,btn){
   const v=document.getElementById('errVerdict');
   const correct=label===d.answer;
   v.className='em-verdict '+(correct?'ok':'no');
-  v.textContent=correct?('✓ Correct — '+d.answer):('✗ Not quite — it\'s '+d.answer);
+  v.textContent=correct?('✓ Correct - '+d.answer):('✗ Not quite - it\'s '+d.answer);
   v.style.display='block';
   const noteEl=document.getElementById('errNote');
   noteEl.textContent=d.note;
@@ -862,7 +862,7 @@ function renderConvTable(){
   const data=CONV_DATA[convCat];
   const fromUnit=data.units.find(u=>u.label===convFrom)||data.units[0];
   const baseVal=val*fromUnit.factor;
-  document.getElementById('convFromLabel').textContent='Converting from '+convFrom+' — tap any card to switch input unit';
+  document.getElementById('convFromLabel').textContent='Converting from '+convFrom+' - tap any card to switch input unit';
   const grid=document.getElementById('convGrid'); grid.innerHTML='';
   data.units.forEach(u=>{
     const converted=baseVal/u.factor;
@@ -897,10 +897,10 @@ const DIM_REF_DATA=[
     formula:'[M¹ L² T⁻³]',group:'core',note:null},
   {name:'Impulse',eq:'J = Force × Time',
     steps:['Impulse = Force × Time','= [MLT⁻²] × [T]'],
-    formula:'[M¹ L¹ T⁻¹]',group:'core',note:'Same as Momentum — because Impulse = Change in Momentum (F·t = Δmv).'},
+    formula:'[M¹ L¹ T⁻¹]',group:'core',note:'Same as Momentum - because Impulse = Change in Momentum (F·t = Δmv).'},
   {name:'Torque',eq:'τ = Force × Distance',
     steps:['Torque = Force × perpendicular distance','= [MLT⁻²] × [L]'],
-    formula:'[M¹ L² T⁻²]',group:'core',note:'Same as Work — but Work is a scalar (energy), Torque is a vector (turning effect). Same dimensions, different physics.'},
+    formula:'[M¹ L² T⁻²]',group:'core',note:'Same as Work - but Work is a scalar (energy), Torque is a vector (turning effect). Same dimensions, different physics.'},
   {name:'Surface Tension',eq:'γ = Force / Length',
     steps:['Surface Tension = Force per unit length','= [MLT⁻²] / [L]'],
     formula:'[M¹ L⁰ T⁻²]',group:'core',note:null},
@@ -912,10 +912,10 @@ const DIM_REF_DATA=[
     formula:'[M¹ L⁻³ T⁰]',group:'core',note:null},
   {name:'Gravitational Constant G',eq:'F = G·m₁m₂ / r²',
     steps:['From Newton\'s law of gravitation: F = G·m₁m₂ / r²','Rearrange: G = F·r² / (m₁·m₂)','= [MLT⁻²] × [L²] / [M²]','= [ML³T⁻²] / [M²]'],
-    formula:'[M⁻¹ L³ T⁻²]',group:'tricky',note:'The negative power of mass is correct — G is tiny because gravity is extremely weak relative to the masses involved.'},
+    formula:'[M⁻¹ L³ T⁻²]',group:'tricky',note:'The negative power of mass is correct - G is tiny because gravity is extremely weak relative to the masses involved.'},
   {name:"Planck's Constant h",eq:'E = h·f',
     steps:['From E = hf, rearrange: h = E / f','= [ML²T⁻²] / [T⁻¹]','= [ML²T⁻²] × [T]'],
-    formula:'[M¹ L² T⁻¹]',group:'tricky',note:"Same as Angular Momentum [ML²T⁻¹] — a deep connection at the heart of quantum mechanics (L = nℏ)."},
+    formula:'[M¹ L² T⁻¹]',group:'tricky',note:"Same as Angular Momentum [ML²T⁻¹] - a deep connection at the heart of quantum mechanics (L = nℏ)."},
   {name:'Viscosity η',eq:'F = η · A · (dv/dx)',
     steps:['Viscous force: F = η · A · (dv/dx)','Rearrange: η = F / (A · dv/dx)','velocity gradient dv/dx = [LT⁻¹]/[L] = [T⁻¹]','= [MLT⁻²] / ([L²] × [T⁻¹])','= [MLT⁻²] / [L²T⁻¹]'],
     formula:'[M¹ L⁻¹ T⁻¹]',group:'tricky',note:null},
@@ -923,7 +923,7 @@ const DIM_REF_DATA=[
     steps:['From E = kT, rearrange: k = E / T','T here is temperature in Kelvin','= [ML²T⁻²] / [K]'],
     formula:'[M¹ L² T⁻² K⁻¹]',group:'tricky',note:null},
 ];
-const GROUP_TAG={basic:'Basic — Lecture 2 homework',core:'Core Mechanics',tricky:'Tricky — JEE favourite'};
+const GROUP_TAG={basic:'Basic - Lecture 2 homework',core:'Core Mechanics',tricky:'Tricky - JEE favourite'};
 let dfCards=[];
 function initDimRef(){
   dfCards=[];
@@ -970,11 +970,11 @@ function closeDimModal(e){
 
 /* ───────── SAME DIMENSIONS ───────── */
 const SAME_DIM_DATA=[
-  {formula:'[M¹ L² T⁻²]',items:['Work','Kinetic Energy','Potential Energy','Torque','Heat'],note:'Same structure — but Work is energy transferred, Torque is a turning effect. Completely different physics.'},
-  {formula:'[M¹ L¹ T⁻¹]',items:['Momentum','Impulse'],note:'Impulse changes momentum — their shared dimensions reflect that F·t = Δ(mv).'},
-  {formula:'[M⁰ L⁰ T⁻¹]',items:['Frequency','Angular Velocity'],note:'Both are "per second" quantities — but one counts cycles, the other measures rotation rate.'},
-  {formula:'[M¹ L⁻¹ T⁻²]',items:['Pressure','Stress','Elastic Modulus'],note:'All measure force per unit area — different contexts, same dimensional structure.'},
-  {formula:'[M¹ L² T⁻¹]',items:["Planck's Constant h",'Angular Momentum'],note:'A deep connection — quantum mechanics links these two directly through ℏ = h/2π.'},
+  {formula:'[M¹ L² T⁻²]',items:['Work','Kinetic Energy','Potential Energy','Torque','Heat'],note:'Same structure - but Work is energy transferred, Torque is a turning effect. Completely different physics.'},
+  {formula:'[M¹ L¹ T⁻¹]',items:['Momentum','Impulse'],note:'Impulse changes momentum - their shared dimensions reflect that F·t = Δ(mv).'},
+  {formula:'[M⁰ L⁰ T⁻¹]',items:['Frequency','Angular Velocity'],note:'Both are "per second" quantities - but one counts cycles, the other measures rotation rate.'},
+  {formula:'[M¹ L⁻¹ T⁻²]',items:['Pressure','Stress','Elastic Modulus'],note:'All measure force per unit area - different contexts, same dimensional structure.'},
+  {formula:'[M¹ L² T⁻¹]',items:["Planck's Constant h",'Angular Momentum'],note:'A deep connection - quantum mechanics links these two directly through ℏ = h/2π.'},
 ];
 let sdRevealIndex=0, sdGroups=[];
 function initSameDim(){
@@ -1004,21 +1004,21 @@ function revealNextGroup(){
 
 /* ───────── SI PREFIX REFERENCE ───────── */
 const PREFIX_DATA=[
-  {sym:'k', name:'Kilo',  power:'10³',  exp:'1 km — a walkable distance',        size:'large'},
+  {sym:'k', name:'Kilo',  power:'10³',  exp:'1 km - a walkable distance',        size:'large'},
   {sym:'M', name:'Mega',  power:'10⁶',  exp:'100 Mbps internet speed',           size:'large'},
   {sym:'G', name:'Giga',  power:'10⁹',  exp:'128 GB phone storage',              size:'large'},
   {sym:'T', name:'Tera',  power:'10¹²', exp:'1 TB hard drive',                   size:'large'},
-  {sym:'P', name:'Peta',  power:'10¹⁵', exp:'1 PB — large data centre storage',  size:'large'},
+  {sym:'P', name:'Peta',  power:'10¹⁵', exp:'1 PB - large data centre storage',  size:'large'},
   {sym:'E', name:'Exa',   power:'10¹⁸', exp:'global internet data per year',     size:'large'},
-  {sym:'d', name:'Deci',  power:'10⁻¹', exp:'1 dm — 10 centimetres',            size:'small'},
-  {sym:'c', name:'Centi', power:'10⁻²', exp:'1 cm — width of a fingernail',     size:'small'},
-  {sym:'m', name:'Milli', power:'10⁻³', exp:'1 mm — thickness of a coin',       size:'small'},
-  {sym:'μ', name:'Micro', power:'10⁻⁶', exp:'70 μm — width of a human hair',   size:'small'},
-  {sym:'n', name:'Nano',  power:'10⁻⁹', exp:'100 nm — size of a virus',         size:'small'},
+  {sym:'d', name:'Deci',  power:'10⁻¹', exp:'1 dm - 10 centimetres',            size:'small'},
+  {sym:'c', name:'Centi', power:'10⁻²', exp:'1 cm - width of a fingernail',     size:'small'},
+  {sym:'m', name:'Milli', power:'10⁻³', exp:'1 mm - thickness of a coin',       size:'small'},
+  {sym:'μ', name:'Micro', power:'10⁻⁶', exp:'70 μm - width of a human hair',   size:'small'},
+  {sym:'n', name:'Nano',  power:'10⁻⁹', exp:'100 nm - size of a virus',         size:'small'},
   {sym:'p', name:'Pico',  power:'10⁻¹²',exp:'atomic spacing in crystals',        size:'small'},
-  {sym:'f', name:'Femto', power:'10⁻¹⁵',exp:'~1 fm — radius of a proton',       size:'small'},
+  {sym:'f', name:'Femto', power:'10⁻¹⁵',exp:'~1 fm - radius of a proton',       size:'small'},
   {sym:'a', name:'Atto',  power:'10⁻¹⁸',exp:'timescale of electron motion',      size:'small'},
-  {sym:'Å', name:'Angstrom', power:'10⁻¹⁰ m', exp:'atomic & molecular sizes — H atom radius ≈ 0.5 Å', size:'special'},
+  {sym:'Å', name:'Angstrom', power:'10⁻¹⁰ m', exp:'atomic & molecular sizes - H atom radius ≈ 0.5 Å', size:'special'},
 ];
 let pfRevealIndex=0, pfAllCards=[];
 function initPrefix(){

@@ -1,5 +1,5 @@
-/* ═══════════ "Race Day" — Kinematics L1–4 Revision Story ═══════════
-   One connected story, ten chapters — each chapter revises one topic
+/* ═══════════ "Race Day" - Kinematics L1–4 Revision Story ═══════════
+   One connected story, ten chapters - each chapter revises one topic
    cluster of the revision notes, in order:
    1 Warm-Up Lap (distance/displacement) · 2 Bus Ride (speed/velocity)
    3 Which Average? (averaging trap) · 4 Speedometer (instantaneous v)
@@ -128,7 +128,7 @@ function wireSteps(btnId: string, stepClass: string) {
   update();
 }
 
-/* ═══════════════ Station 1 — The Lap (p5) ═══════════════ */
+/* ═══════════════ Station 1 - The Lap (p5) ═══════════════ */
 
 const LAP_LEN = 300; // school track, metres (deliberately NOT the notes' 400 m)
 const lap = { d: 0 }; // metres run, 0..LAP_LEN
@@ -145,7 +145,7 @@ function lapUpdateReadouts() {
   $('lapDisp').textContent = `${lapChord().toFixed(1)} m`;
   $('lapMsg').textContent =
     lap.d >= LAP_LEN
-      ? `Full lap: distance ${LAP_LEN} m, displacement 0 — back where you started!`
+      ? `Full lap: distance ${LAP_LEN} m, displacement 0 - back where you started!`
       : lap.d === 0
         ? 'Drag the slider to send the runner around the track.'
         : 'Distance keeps growing… the straight arrow is the displacement.';
@@ -227,7 +227,7 @@ function initLap() {
   lapUpdateReadouts();
 }
 
-/* ═══════════════ Station 4 — Secant → Tangent (p5) ═══════════════ */
+/* ═══════════════ Station 4 - Secant → Tangent (p5) ═══════════════ */
 
 const tan = { t0: 1.5, dt: 2 };
 const xOf = (t: number) => 2 * t * t + 3 * t; // x = 2t² + 3t (fresh numbers, not the notes')
@@ -242,7 +242,7 @@ function tanUpdateReadouts() {
   $('tanInst').textContent = `${inst.toFixed(2)} m/s`;
   $('tanMsg').textContent =
     tan.dt <= 0.05
-      ? 'Δt ≈ 0 — the secant has become the tangent. Average → instantaneous!'
+      ? 'Δt ≈ 0 - the secant has become the tangent. Average → instantaneous!'
       : 'Shrink Δt and watch the average velocity approach dx/dt.';
 }
 
@@ -306,7 +306,7 @@ function initTan() {
   tanUpdateReadouts();
 }
 
-/* ═══════════════ Station 5 — Turning Points (p5) ═══════════════ */
+/* ═══════════════ Station 5 - Turning Points (p5) ═══════════════ */
 
 /* x = t³ − 9t² + 24t → v = 3t² − 18t + 24 = 3(t−2)(t−4)
    turns at t = 2 s (x = 20 m) and t = 4 s (x = 16 m)  (fresh numbers,
@@ -377,7 +377,7 @@ const turnSketch = (p: p5) => {
       p.fill(C.red);
       p.textSize(16);
       p.textAlign(p.CENTER, p.BOTTOM);
-      p.text('v = 0 — momentarily at rest, TURNING AROUND', p.width / 2, 30);
+      p.text('v = 0 - momentarily at rest, TURNING AROUND', p.width / 2, 30);
     }
   };
 };
@@ -400,7 +400,7 @@ function initTurn() {
   turnUpdateReadouts();
 }
 
-/* ═══════════════ Station 6 — Sign Duel ═══════════════ */
+/* ═══════════════ Station 6 - Sign Duel ═══════════════ */
 
 const DUEL_ROUNDS = [
   { v: 15, a: 4, up: true },
@@ -458,7 +458,7 @@ function initDuel() {
   duelShow();
 }
 
-/* ═══════════════ Station 7 — The Toolbox ═══════════════ */
+/* ═══════════════ Station 7 - The Toolbox ═══════════════ */
 
 function initToolbox() {
   const k = (tex: string, id: string) =>
@@ -470,7 +470,7 @@ function initToolbox() {
   ['tbPick1', 'tbPick2', 'tbPick3'].forEach(wireQuiz);
 }
 
-/* ═══════════════ Station 8 — The nth Second ═══════════════ */
+/* ═══════════════ Station 8 - The nth Second ═══════════════ */
 
 let nthSec = 0;
 const NTH_SLICES = [2, 6, 10, 14, 18]; // from rest, a = 4 (same 1:3:5:7:9 ratio, fresh numbers)
@@ -509,7 +509,7 @@ function initNth() {
   });
 }
 
-/* ═══════════════ Station 9 — Rapid Fire ═══════════════ */
+/* ═══════════════ Station 9 - Rapid Fire ═══════════════ */
 
 const RF: Array<{ q: string; a: string }> = [
   { q: 'A cyclist travels 80 km north in 2 h, then 30 km south in 2 h. Find the average speed and average velocity for the whole trip.',
@@ -559,11 +559,11 @@ function initRapidFire() {
   rfShow();
 }
 
-/* ═══════════════ Station 10 — Formula Wall ═══════════════ */
+/* ═══════════════ Station 10 - Formula Wall ═══════════════ */
 
 const WALL: Array<{ front: string; tex?: string; text?: string }> = [
   { front: 'Distance vs Displacement',
-    text: 'Distance ≥ |Displacement| — equal only for straight-line motion with no reversal.' },
+    text: 'Distance ≥ |Displacement| - equal only for straight-line motion with no reversal.' },
   { front: 'Average speed & velocity',
     text: 'avg speed = total distance / total time · avg velocity = displacement / time · avg speed ≥ |avg velocity|' },
   { front: 'The Averaging Trap',
@@ -631,7 +631,7 @@ export function revisionScreenInit(opts?: RevisionOptions) {
     wireQuiz('avgQuiz1');
     wireQuiz('avgQuiz2');
 
-    /* lazy stations (p5 / KaTeX) — created on first visit */
+    /* lazy stations (p5 / KaTeX) - created on first visit */
     lazyInits[0] = initLap;
     lazyInits[3] = initTan;
     lazyInits[4] = initTurn;

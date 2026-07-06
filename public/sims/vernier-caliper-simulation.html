@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="light only">
-<title>Vernier Calipers — Interactive Lab · Smartboard Studio</title>
+<title>Vernier Calipers - Interactive Lab · Smartboard Studio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
@@ -131,7 +131,7 @@ svg.mag{display:block;width:100%;height:auto;background:#0b1d38;border-radius:10
   <div class="hd">
     <span class="badge">Smartboard Studio</span>
     <div>
-      <h1>Vernier Calipers — Interactive Lab</h1>
+      <h1>Vernier Calipers - Interactive Lab</h1>
       <div class="sub">Drag the jaw · read the scales · master least count &amp; zero error</div>
     </div>
   </div>
@@ -188,7 +188,7 @@ svg.mag{display:block;width:100%;height:auto;background:#0b1d38;border-radius:10
     <!-- object picker -->
     <div class="controls hide" id="objControls">
       <div class="ctl" style="grid-column:1/-1">
-        <label>Pick an object — the jaws will clamp onto it</label>
+        <label>Pick an object - the jaws will clamp onto it</label>
         <div class="objgrid" id="objGrid"></div>
       </div>
     </div>
@@ -203,7 +203,7 @@ svg.mag{display:block;width:100%;height:auto;background:#0b1d38;border-radius:10
         <div class="formula" id="formula"></div>
       </div>
       <div class="magbox">
-        <div class="mt">🔍 Magnifier — which division coincides?</div>
+        <div class="mt">🔍 Magnifier - which division coincides?</div>
         <svg class="mag" id="mag" viewBox="0 0 360 200" preserveAspectRatio="xMidYMid meet"></svg>
       </div>
     </div>
@@ -211,11 +211,11 @@ svg.mag{display:block;width:100%;height:auto;background:#0b1d38;border-radius:10
 
   <!-- QUIZ -->
   <div class="panel hide" id="quizPanel">
-    <div class="panel-title"><span class="dot"></span>Quiz — read the instrument</div>
+    <div class="panel-title"><span class="dot"></span>Quiz - read the instrument</div>
     <div class="qgiven" id="qGiven"></div>
     <div class="quiz-row">
       <div class="quiz-field">
-        <label style="font-size:11px;letter-spacing:1.3px;text-transform:uppercase;color:#7689a0;font-weight:700;display:block;margin-bottom:6px;">Your answer — corrected reading (cm)</label>
+        <label style="font-size:11px;letter-spacing:1.3px;text-transform:uppercase;color:#7689a0;font-weight:700;display:block;margin-bottom:6px;">Your answer - corrected reading (cm)</label>
         <input id="qInput" type="text" inputmode="decimal" placeholder="e.g. 1.24" autocomplete="off">
       </div>
       <button class="btn primary" id="qCheck">Check</button>
@@ -225,7 +225,7 @@ svg.mag{display:block;width:100%;height:auto;background:#0b1d38;border-radius:10
     <div style="margin-top:14px" class="score" id="qScore">Score: 0 / 0</div>
   </div>
 
-  <div class="foot">Units &amp; Dimensions · Vernier Calipers · drag-to-read interactive — built for the classroom smartboard.</div>
+  <div class="foot">Units &amp; Dimensions · Vernier Calipers · drag-to-read interactive - built for the classroom smartboard.</div>
 </div>
 
 <script>
@@ -245,7 +245,7 @@ const state = {
   mode:'explore',
   divisions:10,
   zeroError:0,        // mm (multiple of 0.1)
-  trueWidth:0,        // mm — jaw face separation / object width
+  trueWidth:0,        // mm - jaw face separation / object width
   object:null,
 };
 
@@ -329,7 +329,7 @@ function renderCaliper(){
   const coincX = OX + (p.msr + p.n)*PX;
   const beamR = OX + MAXMM*PX;
 
-  /* ── fixed (left) jaws — drawn first, behind beam ── */
+  /* ── fixed (left) jaws - drawn first, behind beam ── */
   // lower external jaw (big, points down; measuring face vertical at OX)
   poly(`${OX},${BEAM_B} ${OX},${LO_TIP} ${OX-32},${LO_TIP} ${OX-32},168 ${OX-58},168 ${OX-58},${BEAM_B}`,'url(#jaw)','#8ea5bb',1.4);
   // upper internal jaw (small, points up)
@@ -502,7 +502,7 @@ function renderAll(){
 }
 
 /* ============================================================
-   INTERACTION — drag jaw
+   INTERACTION - drag jaw
    ============================================================ */
 let dragging=false;
 function clientToMM(clientX){
@@ -605,14 +605,14 @@ function setMode(m){
   closeC.classList.toggle('hide', m==='measure');
 
   if(m==='explore'){
-    stageTitle.textContent='The Instrument — drag to explore';
+    stageTitle.textContent='The Instrument - drag to explore';
     hintText.innerHTML='<b>Drag the moving jaw</b> (or use − / +) to set any opening, then read the scales below.';
     state.object=null;
   } else if(m==='measure'){
     stageTitle.textContent='Measure a real object';
-    hintText.innerHTML='Pick an object below — the jaws <b>clamp onto it</b>. Read the scales, then compare with the true value.';
+    hintText.innerHTML='Pick an object below - the jaws <b>clamp onto it</b>. Read the scales, then compare with the true value.';
   } else {
-    stageTitle.textContent='Quiz — read this measurement';
+    stageTitle.textContent='Quiz - read this measurement';
     hintText.innerHTML='Read the scales and the magnifier, apply the <b>zero-error correction</b>, then type the corrected reading.';
     newQuiz();
   }
