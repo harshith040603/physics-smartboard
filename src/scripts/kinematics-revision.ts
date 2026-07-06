@@ -42,6 +42,12 @@ const visited = new Set<number>();
 const lazyInits: Record<number, () => void> = {};
 const lazyDone = new Set<number>();
 
+/* labels are overridable so the same engine can run the story version
+   (Race Day) and the plain no-story version (Revision Drill)          */
+let chipLabels: string[] = STATIONS.map((s) => s.chip);
+let nextLabel = 'Next chapter ›';
+let endLabel = 'The End 🏆';
+
 function showStation(i: number) {
   current = Math.max(0, Math.min(STATIONS.length - 1, i));
   visited.add(current);
@@ -54,7 +60,7 @@ function showStation(i: number) {
   $('revStation').textContent = `${current + 1}/${STATIONS.length}`;
   ($('revPrev') as HTMLButtonElement).disabled = current === 0;
   $('revNext').textContent =
-    current === STATIONS.length - 1 ? 'The End 🏆' : 'Next chapter ›';
+    current === STATIONS.length - 1 ? endLabel : nextLabel;
   if (lazyInits[current] && !lazyDone.has(current)) {
     lazyDone.add(current);
     lazyInits[current]();
@@ -65,11 +71,11 @@ function showStation(i: number) {
 function buildChips() {
   const holder = $('revChips');
   holder.innerHTML = '';
-  STATIONS.forEach((s, k) => {
+  STATIONS.forEach((_s, k) => {
     const b = document.createElement('button');
     b.className = 'rev-chip';
     b.id = `revChip${k}`;
-    b.textContent = s.chip;
+    b.textContent = chipLabels[k];
     b.onclick = () => showStation(k);
     holder.appendChild(b);
   });
@@ -603,7 +609,16 @@ function initWall() {
 
 let revBuilt = false;
 
-export function revisionScreenInit() {
+export interface RevisionOptions {
+  chips?: string[];
+  nextLabel?: string;
+  endLabel?: string;
+}
+
+export function revisionScreenInit(opts?: RevisionOptions) {
+  if (opts?.chips) chipLabels = opts.chips;
+  if (opts?.nextLabel) nextLabel = opts.nextLabel;
+  if (opts?.endLabel) endLabel = opts.endLabel;
   if (!revBuilt) {
     revBuilt = true;
     buildChips();

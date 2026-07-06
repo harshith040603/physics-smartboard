@@ -1,0 +1,28 @@
+---
+import StudioLayout from '../../layouts/StudioLayout.astro';
+import drillScreens from '../../snippets/kin-revision-drill.html?raw';
+import '../../styles/kinematics.css';
+---
+<StudioLayout title="Revision Drill — Kinematics L1–4" chapterChip="Physics · Kinematics · Revision">
+  <Fragment set:html={drillScreens} />
+</StudioLayout>
+
+<script>
+  import { revisionScreenInit } from '../../scripts/kinematics-revision';
+  revisionScreenInit({
+    chips: [
+      '1 · Distance & Displacement',
+      '2 · Speed & Velocity',
+      '3 · Averaging Trap',
+      '4 · Instantaneous v',
+      '5 · At Rest for an Instant',
+      '6 · Sign Rule',
+      '7 · Equations of Motion',
+      '8 · nth Second',
+      '9 · Mixed Problems',
+      '10 · Formula Sheet',
+    ],
+    nextLabel: 'Next topic ›',
+    endLabel: 'Done ✓',
+  });
+</script>
