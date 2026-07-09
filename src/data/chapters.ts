@@ -25,6 +25,6 @@ export const chapters: Chapter[] = [
     titleAccent: 'matics',
     blurb: 'Projectiles, motion graphs, relative motion - watch motion happen, then control it.',
     status: 'ready',
-    activities: 9,
+    activities: 10,
   },
 ];

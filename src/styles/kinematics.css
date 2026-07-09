@@ -176,3 +176,15 @@
   .rev-chip{font-size:12.5px;padding:7px 12px;}
   .duel-btn{font-size:16px;padding:13px 18px;}
 }
+
+/* ── Practice · 50 questions ── */
+.pr-grid{display:flex;flex-wrap:wrap;gap:8px;}
+.pr-num{
+  width:46px;height:46px;border-radius:10px;cursor:pointer;transition:.12s;
+  border:2px solid rgba(41,89,144,.25);background:var(--paper-2);
+  font-family:'Bricolage Grotesque';font-weight:700;font-size:15px;color:var(--nine-deep);
+}
+.pr-num:active{transform:scale(.94);}
+.pr-num.seen{border-color:rgba(22,163,74,.5);color:var(--green);}
+.pr-num.active{background:var(--nine-dark);color:#fff;border-color:var(--nine-dark);}
+@media (max-width:640px){.pr-num{width:40px;height:40px;font-size:13.5px;}}
