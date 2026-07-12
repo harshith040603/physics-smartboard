@@ -43,8 +43,7 @@ export const chapterResources: ChapterResources[] = [
     titleAccent: 'matics',
     notes: { label: 'Class Notes', url: '/downloads/kinematics/notes.pdf' },
     worksheets: [
-      { label: 'Worksheet 1', url: '/downloads/kinematics/worksheet-1.pdf' },
-      { label: 'Worksheet 2', url: '/downloads/kinematics/worksheet-2.pdf' },
+      { label: 'Practice 50 Questions', url: '/downloads/kinematics/worksheet-1.pdf' },
     ],
   },
 ];
