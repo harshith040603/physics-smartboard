@@ -31,7 +31,6 @@ export const chapterResources: ChapterResources[] = [
     title: 'Vec',
     titleAccent: 'tors',
     worksheets: [
-      { label: 'Vector Addition & Resultant', url: '/downloads/vectors/worksheet-1.pdf' },
       { label: 'Vector Resultant', url: '/downloads/vectors/worksheet-2.pdf' },
       { label: 'Trigonometric Ratios', url: '/downloads/vectors/worksheet-3.pdf' },
     ],
