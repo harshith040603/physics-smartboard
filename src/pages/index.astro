@@ -2,11 +2,11 @@
 import StudioLayout from '../layouts/StudioLayout.astro';
 import { chapters } from '../data/chapters';
 ---
-<StudioLayout title="Nine Education - Physics Smartboard Studio" chapterChip="Class 11 · Physics">
+<StudioLayout title="Nine Education - Physics with Harshith" chapterChip="Class 11 · Physics">
   <section class="screen active">
     <div class="hero">
-      <h1>Physics <span class="accent">Smartboard Studio</span></h1>
-      <p>Pick a chapter - every card opens a set of touch-first interactives built for the smartboard.</p>
+      <h1>Physics with <span class="accent">Harshith</span></h1>
+      <p>Your one stop for physics - interactives for the smartboard, chapter notes, and worksheets, all in one place.</p>
     </div>
     <div class="grid">
       {chapters.map((ch) =>
@@ -33,10 +33,31 @@ import { chapters } from '../data/chapters';
         )
       )}
     </div>
+
+    <h2 class="section-head">Study <span class="accent">Material</span></h2>
+    <div class="grid">
+      <a class="tile" href="/resources" style="text-decoration:none;color:inherit;">
+        <div class="tile-icon ic-sheet">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+        </div>
+        <h3>Notes & <span class="accent">Worksheets</span></h3>
+        <p>Scanned chapter notes and practice worksheets - download and print anytime.</p>
+        <span class="tile-go">Open ›</span>
+      </a>
+    </div>
   </section>
 </StudioLayout>
 
 <style>
   .tile-soon { cursor: default; }
   .tile-soon:hover { transform: none; }
+  .section-head {
+    font-family: 'Bricolage Grotesque';
+    font-weight: 800;
+    font-size: clamp(24px, 3vw, 34px);
+    color: var(--nine-navy);
+    letter-spacing: -0.8px;
+    margin: 44px 0 20px;
+  }
+  .section-head .accent { color: var(--nine-accent); }
 </style>

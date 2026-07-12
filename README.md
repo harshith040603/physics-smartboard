@@ -1,4 +1,4 @@
-# Physics Smartboard Studio
+# Physics with Harshith
 
 Touch-first interactive physics activities for the smartboard — built for Class 11 (JEE level) students at Nine Education.
 
