@@ -26,6 +26,15 @@ export const chapterResources: ChapterResources[] = [
     ],
   },
   {
+    slug: 'matrices-and-determinants',
+    num: '05',
+    title: 'Matrices & ',
+    titleAccent: 'Determinants',
+    worksheets: [
+      { label: 'Determinants - 55 Questions', url: '/downloads/matrices-and-determinants/worksheet-1.pdf' },
+    ],
+  },
+  {
     slug: 'sequence-and-series',
     num: '04',
     title: 'Sequence & ',
