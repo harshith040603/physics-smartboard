@@ -33,6 +33,7 @@ export const chapterResources: ChapterResources[] = [
     worksheets: [
       { label: 'Vector Resultant', url: '/downloads/vectors/worksheet-2.pdf' },
       { label: 'Trigonometric Ratios', url: '/downloads/vectors/worksheet-3.pdf' },
+      { label: 'Differentiation Practice Sheet 2', url: '/downloads/vectors/worksheet-4.pdf' },
     ],
   },
   {
