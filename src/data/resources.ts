@@ -22,6 +22,7 @@ export const chapterResources: ChapterResources[] = [
     worksheets: [
       { label: 'Vernier Advanced Problems', url: '/downloads/units-and-dimensions/worksheet-1.pdf' },
       { label: 'Vernier & Screw Gauge Problems', url: '/downloads/units-and-dimensions/worksheet-2.pdf' },
+      { label: 'Units & Dimensions Worksheet', url: '/downloads/units-and-dimensions/worksheet-3.pdf' },
     ],
   },
   {
