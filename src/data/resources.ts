@@ -32,6 +32,7 @@ export const chapterResources: ChapterResources[] = [
     titleAccent: 'Series',
     worksheets: [
       { label: 'Sequence & Series - 100 Questions', url: '/downloads/sequence-and-series/worksheet-1.pdf' },
+      { label: 'Sequence & Series - 67 Problems', url: '/downloads/sequence-and-series/worksheet-2.pdf' },
     ],
   },
   {
