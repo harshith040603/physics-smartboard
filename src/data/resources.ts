@@ -26,6 +26,15 @@ export const chapterResources: ChapterResources[] = [
     ],
   },
   {
+    slug: 'sequence-and-series',
+    num: '04',
+    title: 'Sequence & ',
+    titleAccent: 'Series',
+    worksheets: [
+      { label: 'Sequence & Series - 100 Questions', url: '/downloads/sequence-and-series/worksheet-1.pdf' },
+    ],
+  },
+  {
     slug: 'vectors',
     num: '03',
     title: 'Basic ',
