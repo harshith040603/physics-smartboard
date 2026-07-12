@@ -18,7 +18,7 @@ export const chapterResources: ChapterResources[] = [
     num: '01',
     title: 'Units & ',
     titleAccent: 'Dimensions',
-    notes: { label: 'Chapter Notes', url: '/downloads/units-and-dimensions/notes.pdf' },
+    notes: { label: 'Class Notes', url: '/downloads/units-and-dimensions/notes.pdf' },
     worksheets: [
       { label: 'Worksheet 1', url: '/downloads/units-and-dimensions/worksheet-1.pdf' },
       { label: 'Worksheet 2', url: '/downloads/units-and-dimensions/worksheet-2.pdf' },
@@ -29,7 +29,7 @@ export const chapterResources: ChapterResources[] = [
     num: '02',
     title: 'Kine',
     titleAccent: 'matics',
-    notes: { label: 'Chapter Notes', url: '/downloads/kinematics/notes.pdf' },
+    notes: { label: 'Class Notes', url: '/downloads/kinematics/notes.pdf' },
     worksheets: [
       { label: 'Worksheet 1', url: '/downloads/kinematics/worksheet-1.pdf' },
       { label: 'Worksheet 2', url: '/downloads/kinematics/worksheet-2.pdf' },
