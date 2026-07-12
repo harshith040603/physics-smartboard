@@ -177,6 +177,10 @@
   .duel-btn{font-size:16px;padding:13px 18px;}
 }
 
+/* ── Motion Under Gravity ── */
+.grav-pane{display:none;}
+.grav-pane.active{display:block;animation:fade .35s ease;}
+
 /* ── Practice · 50 questions ── */
 .pr-grid{display:flex;flex-wrap:wrap;gap:8px;}
 .pr-num{

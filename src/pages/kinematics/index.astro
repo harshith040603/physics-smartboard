@@ -45,8 +45,16 @@ import '../../styles/kinematics.css';
         <span class="tile-go">Start ›</span>
       </div>
 
-      <div class="tile tile-soon">
+      <div class="tile" onclick="go('gravity')">
         <div class="tile-num">05</div>
+        <div class="tile-icon ic-grid"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="4.6" r="2.2"/><path d="M12 9v7"/><path d="M8.5 12.8L12 16.3l3.5-3.5"/><path d="M4 21h16"/></svg></div>
+        <h3>Motion Under Gravity</h3>
+        <p>Drop it, throw it down, throw it up - one acceleration, one sign convention, every trap on screen.</p>
+        <span class="tile-go">Start ›</span>
+      </div>
+
+      <div class="tile tile-soon">
+        <div class="tile-num">06</div>
         <div class="tile-icon ic-sort" style="opacity:.45;"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M3 17l5-6 4 3 6-8"/><path d="M3 21h18"/></svg></div>
         <h3 style="opacity:.55;">Motion Graphs Matcher</h3>
         <p style="opacity:.55;">Match x–t, v–t and a–t graphs to the same motion. Slope and area, made visible.</p>
@@ -54,7 +62,7 @@ import '../../styles/kinematics.css';
       </div>
 
       <div class="tile tile-soon">
-        <div class="tile-num">06</div>
+        <div class="tile-num">07</div>
         <div class="tile-icon ic-vec" style="opacity:.45;"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M4 20c3-2 4-6 3-9 4 2 8 1 10-2"/><path d="M14 5h5v5"/></svg></div>
         <h3 style="opacity:.55;">Distance vs Displacement</h3>
         <p style="opacity:.55;">Draw any path on the grid - watch distance grow while displacement stays a straight arrow.</p>
@@ -62,7 +70,7 @@ import '../../styles/kinematics.css';
       </div>
 
       <div class="tile tile-soon">
-        <div class="tile-num">07</div>
+        <div class="tile-num">08</div>
         <div class="tile-icon ic-conv" style="opacity:.45;"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M2 12h20M6 8c2 2 2 6 0 8M18 8c-2 2-2 6 0 8"/></svg></div>
         <h3 style="opacity:.55;">Relative Motion Lab</h3>
         <p style="opacity:.55;">River-boat crossings and the rain-man umbrella - the same vector triangle, two stories.</p>
@@ -70,18 +78,10 @@ import '../../styles/kinematics.css';
       </div>
 
       <div class="tile tile-soon">
-        <div class="tile-num">08</div>
+        <div class="tile-num">09</div>
         <div class="tile-icon ic-vec" style="opacity:.45;"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M4 20L18 6"/><path d="M12 6h6v6"/><path d="M4 20h9M4 20V11" stroke-dasharray="2 3"/></svg></div>
         <h3 style="opacity:.55;">Vector Resolver</h3>
         <p style="opacity:.55;">Drag a vector and watch its components, magnitude and angle update live.</p>
-        <span class="tile-go" style="opacity:.5;">Coming soon</span>
-      </div>
-
-      <div class="tile tile-soon">
-        <div class="tile-num">09</div>
-        <div class="tile-icon ic-grid" style="opacity:.45;"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M12 3v18"/><path d="M8 7h8M7 12h10M6 17h12"/></svg></div>
-        <h3 style="opacity:.55;">Free-Fall Visualizer</h3>
-        <p style="opacity:.55;">Drop a ball and see the 1 : 3 : 5 odd-number slices appear second by second.</p>
         <span class="tile-go" style="opacity:.5;">Coming soon</span>
       </div>
 
@@ -178,6 +178,145 @@ import '../../styles/kinematics.css';
     <div class="rev-card">
       <div class="rev-q" style="font-size:16px;">Jump to a question</div>
       <div class="pr-grid" id="prGrid"></div>
+    </div>
+  </section>
+
+  <!-- =========== MOTION UNDER GRAVITY =========== -->
+  <section id="gravity" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">Motion Under Gravity</div>
+        <div class="scr-sub">UP is positive, so a = −g = −10 m/s², always. Get the signs right and every problem is the same problem.</div>
+      </div>
+    </div>
+
+    <div class="rev-chips" id="gravTabs">
+      <button class="rev-chip active" data-pane="gravSign">1 · Sign Ritual</button>
+      <button class="rev-chip" data-pane="gravDrop">2 · Drop It</button>
+      <button class="rev-chip" data-pane="gravUp">3 · Throw It Up</button>
+      <button class="rev-chip" data-pane="gravChase">4 · Two-Ball Chase</button>
+    </div>
+
+    <!-- ── Pane 1 · Sign Ritual ── -->
+    <div class="grav-pane active" id="gravSign">
+      <div class="rev-keybox">
+        <b>The ritual:</b> choose UP = positive once, then obey it for <b>every</b> quantity, for the <b>entire</b> problem.
+        Up is +, down is −, and a = −10 m/s² no matter which way the ball moves.
+        Most free-fall mistakes are convention violations, not algebra errors.
+      </div>
+      <div class="rev-card">
+        <div class="rf-tag" id="gsTag">Sign ritual · Question 1 / 8</div>
+        <div class="rev-q" id="gsQ"></div>
+        <div class="rev-opts" id="gsOpts"></div>
+        <div class="rev-feedback" id="gsFb"></div>
+        <div class="rev-nav">
+          <button class="btn-reset" id="gsPrev">‹ Previous</button>
+          <button class="btn-reset" id="gsNext">Next ›</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Pane 2 · Drop It ── -->
+    <div class="grav-pane" id="gravDrop">
+      <div class="kin-controls">
+        <div class="kin-ctrl">
+          <label>Tower height h <span class="kin-val" id="gdHVal">45 m</span></label>
+          <input type="range" id="gdH" min="20" max="80" step="5" value="45">
+        </div>
+        <div class="kin-ctrl">
+          <label>Throw-down speed <span class="kin-val" id="gdUVal">0 m/s (dropped)</span></label>
+          <input type="range" id="gdU" min="0" max="15" step="1" value="0">
+        </div>
+        <div class="kin-btns">
+          <button class="check-btn" id="gdGo">Release</button>
+          <button class="btn-reset" id="gdReset">↺ Reset</button>
+        </div>
+      </div>
+      <div class="kin-canvas" id="gdCanvas"></div>
+      <div class="kin-stats">
+        <div class="kin-stat">
+          <div class="kin-stat-name">Time to land</div>
+          <div class="kin-formula" id="gdFT"></div>
+          <div class="kin-stat-val" id="gdVT">-</div>
+        </div>
+        <div class="kin-stat">
+          <div class="kin-stat-name">Impact speed</div>
+          <div class="kin-formula" id="gdFV"></div>
+          <div class="kin-stat-val" id="gdVV">-</div>
+        </div>
+      </div>
+      <div class="rev-keybox" style="margin-top:16px;">
+        Watch the amber slices: a <b>dropped</b> ball covers 5 m, then 15 m, then 25 m in successive seconds -
+        the <b>1 : 3 : 5 odd-number pattern</b>. Nudge the throw-down speed and see the pattern shift.
+      </div>
+    </div>
+
+    <!-- ── Pane 3 · Throw It Up ── -->
+    <div class="grav-pane" id="gravUp">
+      <div class="kin-controls">
+        <div class="kin-ctrl">
+          <label>Launch speed u <span class="kin-val" id="guUVal">20 m/s</span></label>
+          <input type="range" id="guU" min="10" max="30" step="1" value="20">
+        </div>
+        <div class="kin-btns">
+          <button class="check-btn" id="guGo">Throw</button>
+          <button class="btn-reset" id="guReset">↺ Reset</button>
+        </div>
+      </div>
+      <div class="kin-canvas" id="guCanvas"></div>
+      <div class="kin-stats">
+        <div class="kin-stat">
+          <div class="kin-stat-name">Time to top</div>
+          <div class="kin-formula" id="guFT"></div>
+          <div class="kin-stat-val" id="guVT">-</div>
+        </div>
+        <div class="kin-stat">
+          <div class="kin-stat-name">Maximum height</div>
+          <div class="kin-formula" id="guFH"></div>
+          <div class="kin-stat-val" id="guVH">-</div>
+        </div>
+        <div class="kin-stat">
+          <div class="kin-stat-name">Total flight time</div>
+          <div class="kin-formula" id="guFTT"></div>
+          <div class="kin-stat-val" id="guVTT">-</div>
+        </div>
+      </div>
+      <div class="rev-keybox" style="margin-top:16px;">
+        The flight <b>freezes at the top</b> so you can see it: v = 0, but a = −g, still.
+        And symmetry only works when start and end heights are the <b>same</b> - a cliff or a rooftop breaks it.
+      </div>
+    </div>
+
+    <!-- ── Pane 4 · Two-Ball Chase ── -->
+    <div class="grav-pane" id="gravChase">
+      <div class="rev-card">
+        <div class="rev-q">Ball A is dropped. One second later, ball B is dropped from the same point. As they fall, the gap between them...</div>
+        <div class="rev-opts" id="gcOpts">
+          <button class="rev-opt" data-ans="const">Stays constant</button>
+          <button class="rev-opt" data-ans="grow">Keeps growing</button>
+          <button class="rev-opt" data-ans="shrink">Shrinks</button>
+        </div>
+        <div class="rev-feedback" id="gcFb">
+          Both have the same acceleration g - but A has been falling longer, so A is <b>always faster</b> than B.
+          A keeps pulling away, so the gap keeps growing. Now run it and watch.
+        </div>
+      </div>
+      <div class="kin-controls">
+        <div class="kin-ctrl">
+          <label>Release gap <span class="kin-val" id="gcGapVal">1 s</span></label>
+          <input type="range" id="gcGap" min="0.5" max="2" step="0.5" value="1">
+        </div>
+        <div class="kin-btns">
+          <button class="check-btn" id="gcGo">Drop Both</button>
+          <button class="btn-reset" id="gcReset">↺ Reset</button>
+        </div>
+      </div>
+      <div class="kin-canvas" id="gcCanvas"></div>
+      <div class="rev-keybox" style="margin-top:16px;" id="gcLog">
+        <b>The two-body method:</b> one common origin, one common clock t, write each ball's position on that clock, then subtract.
+        The same recipe solves lifts, windows and every meeting problem.
+      </div>
     </div>
   </section>
 

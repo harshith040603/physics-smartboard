@@ -8,6 +8,7 @@ import katex from 'katex';
 import 'katex/dist/katex.min.css';
 import { revisionScreenInit } from './kinematics-revision';
 import { practiceScreenInit } from './kinematics-practice';
+import { gravityScreenInit } from './kinematics-gravity';
 
 /* ───────── brand palette (matches global.css tokens) ───────── */
 const C = {
@@ -269,6 +270,7 @@ function wireControls() {
   },
   revision: revisionScreenInit,
   practice50: practiceScreenInit,
+  gravity: gravityScreenInit,
 };
 
 /* ───────── boot ───────── */
