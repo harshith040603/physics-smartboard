@@ -20,8 +20,7 @@ export const chapterResources: ChapterResources[] = [
     titleAccent: 'Dimensions',
     notes: { label: 'Class Notes', url: '/downloads/units-and-dimensions/notes.pdf' },
     worksheets: [
-      { label: 'Worksheet 1', url: '/downloads/units-and-dimensions/worksheet-1.pdf' },
-      { label: 'Worksheet 2', url: '/downloads/units-and-dimensions/worksheet-2.pdf' },
+      { label: 'Vernier Advanced Problems', url: '/downloads/units-and-dimensions/worksheet-1.pdf' },
     ],
   },
   {
