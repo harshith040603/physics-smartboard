@@ -13,7 +13,7 @@ import { chapterResources } from '../../data/resources';
     </div>
 
     <div class="res-grid">
-      {chapterResources.map((ch) => (
+      {chapterResources.filter((ch) => ch.notes !== undefined).map((ch) => (
         <div class="res-card">
 
           <h3>{ch.title}<span class="res-accent">{ch.titleAccent}</span></h3>
