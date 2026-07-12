@@ -28,8 +28,8 @@ export const chapterResources: ChapterResources[] = [
   {
     slug: 'vectors',
     num: '03',
-    title: 'Vec',
-    titleAccent: 'tors',
+    title: 'Basic ',
+    titleAccent: 'Math',
     worksheets: [
       { label: 'Vector Resultant', url: '/downloads/vectors/worksheet-2.pdf' },
       { label: 'Trigonometric Ratios', url: '/downloads/vectors/worksheet-3.pdf' },
