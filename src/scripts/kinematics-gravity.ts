@@ -1,8 +1,10 @@
 /* ═══════════ Motion Under Gravity - four-pane teaching lab ═══════════
    Pane 1: sign-ritual quiz (convention drill)
-   Pane 2: drop / throw-down sim with per-second marks (1:3:5 slices)
-   Pane 3: throw-up sim with an apex freeze (v = 0 but a = -g)
-   Pane 4: two-ball chase (gap keeps growing)
+   Pane 2: drop / throw-down sim with strobe ghosts, 1:3:5 slices and
+           a live v-t inset graph
+   Pane 3: throw-up sim with apex freeze (v = 0 but a = -g), mirrored
+           up/down strobe columns and a v-t line crossing zero
+   Pane 4: two-ball chase with ghost-pair ladder and gap-vs-t graph
    p5 instances are created lazily per pane - hidden panes have zero
    width, same constraint as the projectile canvas.                    */
 
@@ -164,16 +166,107 @@ function ball(p: p5, x: number, y: number) {
   p.circle(x, y, 11);
 }
 
+/* faded multiple-exposure snapshot */
+function ghostBall(p: p5, x: number, y: number) {
+  p.noStroke();
+  p.fill(15, 38, 71, 55);
+  p.circle(x, y, 15);
+  p.fill(0, 160, 227, 85);
+  p.circle(x, y, 9);
+}
+
+/* landing squash, k goes 1 → 0 */
+function squashBall(p: p5, x: number, y: number, k: number) {
+  p.noStroke();
+  p.fill(C.navy);
+  p.ellipse(x, y + 4, 18 + 14 * k, 18 - 11 * k);
+  p.fill(C.accent);
+  p.ellipse(x, y + 4, 11 + 9 * k, 11 - 7 * k);
+}
+
+/* impact dust burst */
+interface Spark { x: number; y: number; vx: number; vy: number; life: number; }
+
+function spawnBurst(arr: Spark[], x: number, y: number) {
+  for (let i = 0; i < 16; i++) {
+    const a = -Math.PI * Math.random();
+    const sp = 70 + Math.random() * 160;
+    arr.push({ x, y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, life: 0.5 + Math.random() * 0.3 });
+  }
+}
+
+function drawBurst(p: p5, arr: Spark[]) {
+  const dt = p.deltaTime / 1000;
+  for (let i = arr.length - 1; i >= 0; i--) {
+    const b = arr[i];
+    b.life -= dt;
+    if (b.life <= 0) { arr.splice(i, 1); continue; }
+    b.x += b.vx * dt;
+    b.y += b.vy * dt;
+    b.vy += 520 * dt;
+    p.noStroke();
+    p.fill(41, 89, 144, Math.min(255, b.life * 420));
+    p.circle(b.x, b.y, 5);
+  }
+}
+
+/* inset graph frame */
+function insetFrame(p: p5, gx: number, gy: number, gw: number, gh: number, title: string) {
+  p.fill(255);
+  p.stroke(41, 89, 144, 70);
+  p.strokeWeight(1.5);
+  p.rect(gx, gy, gw, gh, 12);
+  p.noStroke();
+  p.fill(C.dark);
+  p.textSize(11.5);
+  p.textAlign(p.LEFT, p.TOP);
+  p.text(title, gx + 10, gy + 7);
+}
+
+function pausedBadge(p: p5) {
+  p.noStroke();
+  p.fill(C.amber);
+  p.textSize(17);
+  p.textAlign(p.CENTER, p.TOP);
+  p.text('⏸ PAUSED - read the vectors', p.width / 2, 8);
+}
+
+/* pause toggle wiring, shared by all three sims */
+function wirePause(btnId: string, st: { paused: boolean }) {
+  const btn = document.getElementById(btnId)!;
+  btn.addEventListener('click', () => {
+    st.paused = !st.paused;
+    btn.textContent = st.paused ? '▶ Resume' : '⏸ Pause';
+  });
+}
+
+function clearPause(btnId: string, st: { paused: boolean }) {
+  st.paused = false;
+  document.getElementById(btnId)!.textContent = '⏸ Pause';
+}
+
 /* ═════════ Pane 2 · Drop It ═════════ */
 const drop = {
   h: 45,          // tower height (m)
   ud: 0,          // throw-down speed, magnitude (m/s); 0 = dropped
   phase: 'ready' as 'ready' | 'falling' | 'landed',
   t: 0,
+  paused: false,
+  ghosts: [] as Array<{ y: number }>,
+  burst: [] as Spark[],
+  squash: 0,
 };
 
 const dropLandTime = () => (-drop.ud + Math.sqrt(drop.ud * drop.ud + 20 * drop.h)) / G;
 const dropImpactSpeed = () => Math.sqrt(drop.ud * drop.ud + 20 * drop.h);
+
+function dropClear() {
+  drop.t = 0;
+  drop.ghosts.length = 0;
+  drop.burst.length = 0;
+  drop.squash = 0;
+  clearPause('gdPause', drop);
+}
 
 function dropStats() {
   document.getElementById('gdVT')!.textContent = `${dropLandTime().toFixed(2)} s`;
@@ -192,6 +285,7 @@ const dropSketch = (p: p5) => {
     const worldH = drop.h * 1.08;
     const Y = (wy: number) => p.height - M.b - (wy / worldH) * (p.height - M.t - M.b);
     const lane = M.l + (p.width - M.l - M.r) * 0.32;
+    const tl = dropLandTime();
 
     p.background(C.paper);
     ruler(p, worldH, Y, M.l);
@@ -207,7 +301,6 @@ const dropSketch = (p: p5) => {
     p.text(`h = ${drop.h} m`, lane - 48, Y(drop.h) - 6);
 
     /* per-second marks + slice labels */
-    const tl = dropLandTime();
     let prevFallen = 0;
     for (let k = 1; k <= Math.floor(tl); k++) {
       const fallen = drop.ud * k + 5 * k * k;
@@ -232,10 +325,31 @@ const dropSketch = (p: p5) => {
       prevFallen = fallen;
     }
 
-    /* advance */
-    if (drop.phase === 'falling') {
+    /* advance + strobe snapshots every 0.25 s */
+    if (drop.phase === 'falling' && !drop.paused) {
+      const tPrev = drop.t;
       drop.t += p.deltaTime / 1000;
-      if (drop.t >= tl) { drop.t = tl; drop.phase = 'landed'; }
+      const iv = 0.25;
+      for (let k = Math.floor(tPrev / iv) + 1; k * iv <= Math.min(drop.t, tl); k++) {
+        const tg = k * iv;
+        drop.ghosts.push({ y: Math.max(drop.h - (drop.ud * tg + 5 * tg * tg), 0) });
+      }
+      if (drop.t >= tl) {
+        drop.t = tl;
+        drop.phase = 'landed';
+        drop.squash = 0.4;
+        spawnBurst(drop.burst, lane, Y(0));
+      }
+    }
+
+    /* strobe ghosts (multiple-exposure photo) */
+    for (const gh of drop.ghosts) ghostBall(p, lane, Y(gh.y));
+    if (drop.ghosts.length > 2) {
+      p.noStroke();
+      p.fill(C.dark);
+      p.textSize(12.5);
+      p.textAlign(p.LEFT, p.TOP);
+      p.text('strobe photo: equal time steps,\ngrowing gaps = acceleration', M.l + 10, M.t + 24);
     }
 
     /* ball + vectors */
@@ -248,7 +362,9 @@ const dropSketch = (p: p5) => {
       /* velocity arrow (down = red) */
       p.stroke(C.red);
       p.strokeWeight(2.6);
-      if (v > 0.5) arrow(p, lane, by + 12, lane, by + 12 + Math.min(v * 2.4, 110));
+      if (v > 0.5 && drop.phase === 'falling') {
+        arrow(p, lane, by + 12, lane, by + 12 + Math.min(v * 2.4, 110));
+      }
       p.noStroke();
       p.fill(C.red);
       p.textSize(13);
@@ -265,7 +381,51 @@ const dropSketch = (p: p5) => {
     p.textAlign(p.RIGHT, p.CENTER);
     p.text('a = −g', lane - 52, by + 4);
 
-    ball(p, lane, by);
+    if (drop.squash > 0 && drop.phase === 'landed') {
+      drop.squash = Math.max(0, drop.squash - p.deltaTime / 1000);
+      squashBall(p, lane, by, drop.squash / 0.4);
+    } else {
+      ball(p, lane, by);
+    }
+    drawBurst(p, drop.burst);
+
+    /* v-t inset graph - the bridge to motion graphs */
+    if (p.width > 780) {
+      const gw = 224, gh = 132;
+      const gx = p.width - gw - 16;
+      const gy = p.height - M.b - gh - 12;
+      insetFrame(p, gx, gy, gw, gh, 'v-t graph: straight line, slope = −10');
+      const x0 = gx + 34, x1 = gx + gw - 14;
+      const y0 = gy + 32, y1 = gy + gh - 16;
+      const vEnd = dropImpactSpeed();
+      const IX = (tt: number) => x0 + (tt / tl) * (x1 - x0);
+      const IY = (spd: number) => y0 + (spd / vEnd) * (y1 - y0);
+      p.stroke(41, 89, 144, 90);
+      p.strokeWeight(1);
+      p.line(x0, y0, x0, y1);
+      p.line(x0, y0, x1, y0);
+      /* predicted line, dashed */
+      p.stroke(C.dark);
+      p.strokeWeight(1.6);
+      p.drawingContext.setLineDash([4, 4]);
+      p.line(IX(0), IY(drop.ud), IX(tl), IY(vEnd));
+      p.drawingContext.setLineDash([]);
+      /* progress */
+      const spdNow = Math.min(drop.ud + G * drop.t, vEnd);
+      p.stroke(C.red);
+      p.strokeWeight(2.5);
+      p.line(IX(0), IY(drop.ud), IX(Math.min(drop.t, tl)), IY(spdNow));
+      p.noStroke();
+      p.fill(C.red);
+      p.circle(IX(Math.min(drop.t, tl)), IY(spdNow), 7);
+      p.fill(C.dark);
+      p.textSize(11);
+      p.textAlign(p.RIGHT, p.CENTER);
+      p.text('0', x0 - 5, y0);
+      p.text(`−${vEnd.toFixed(0)}`, x0 - 5, y1);
+      p.textAlign(p.RIGHT, p.TOP);
+      p.text('t →', x1, y0 + 4);
+    }
 
     /* HUD */
     p.fill(C.navy);
@@ -275,6 +435,7 @@ const dropSketch = (p: p5) => {
       `t = ${drop.t.toFixed(2)} s   fallen = ${Math.min(fallenNow, drop.h).toFixed(1)} m`,
       p.width - M.r - 6, M.t + 2
     );
+    if (drop.phase === 'falling' && drop.paused) pausedBadge(p);
     if (drop.phase === 'landed') {
       p.textAlign(p.CENTER, p.TOP);
       p.textSize(17);
@@ -298,22 +459,27 @@ function dropWire() {
   h.addEventListener('input', () => {
     drop.h = +h.value;
     document.getElementById('gdHVal')!.textContent = `${h.value} m`;
-    drop.phase = 'ready'; drop.t = 0;
+    drop.phase = 'ready';
+    dropClear();
     dropStats();
   });
   u.addEventListener('input', () => {
     drop.ud = +u.value;
     document.getElementById('gdUVal')!.textContent =
       drop.ud === 0 ? '0 m/s (dropped)' : `${u.value} m/s down (u = −${u.value})`;
-    drop.phase = 'ready'; drop.t = 0;
+    drop.phase = 'ready';
+    dropClear();
     dropStats();
   });
   document.getElementById('gdGo')!.addEventListener('click', () => {
-    drop.t = 0; drop.phase = 'falling';
+    dropClear();
+    drop.phase = 'falling';
   });
   document.getElementById('gdReset')!.addEventListener('click', () => {
-    drop.t = 0; drop.phase = 'ready';
+    dropClear();
+    drop.phase = 'ready';
   });
+  wirePause('gdPause', drop);
   dropStats();
 }
 
@@ -324,7 +490,20 @@ const up = {
   t: 0,
   froze: false,       // apex freeze already happened this flight
   freezeLeft: 0,
+  paused: false,
+  ghosts: [] as Array<{ y: number; side: number }>,
+  burst: [] as Spark[],
+  squash: 0,
 };
+
+function upClear() {
+  up.t = 0;
+  up.froze = false;
+  up.ghosts.length = 0;
+  up.burst.length = 0;
+  up.squash = 0;
+  clearPause('guPause', up);
+}
 
 function upStats() {
   const tUp = up.u / G;
@@ -379,12 +558,27 @@ const upSketch = (p: p5) => {
     p.textAlign(p.CENTER, p.BOTTOM);
     p.text(`up: ${tUp.toFixed(1)} s`, (tx1 + TX(tUp)) / 2, ty - 6);
     p.text(`down: ${tUp.toFixed(1)} s`, (TX(tUp) + tx2) / 2, ty - 6);
+    /* progress marker on the timeline */
+    if (up.phase !== 'ready') {
+      p.noStroke();
+      p.fill(C.accent);
+      p.circle(TX(Math.min(up.t, T)), ty, 9);
+    }
 
-    /* advance */
-    if (up.phase === 'flying') {
+    /* advance + mirrored strobe snapshots every 0.3 s */
+    if (up.phase === 'flying' && !up.paused) {
+      const tPrev = up.t;
       const v = up.u - G * up.t;
       const slow = Math.abs(v) < 4 ? 0.3 : 1;
       up.t += (p.deltaTime / 1000) * slow;
+      const iv = 0.3;
+      for (let k = Math.floor(tPrev / iv) + 1; k * iv <= Math.min(up.t, T); k++) {
+        const tg = k * iv;
+        up.ghosts.push({
+          y: Math.max(up.u * tg - 5 * tg * tg, 0),
+          side: tg <= tUp ? -1 : 1,
+        });
+      }
       const vNew = up.u - G * up.t;
       if (!up.froze && vNew <= 0) {
         up.t = tUp;
@@ -392,10 +586,25 @@ const upSketch = (p: p5) => {
         up.froze = true;
         up.freezeLeft = 1.8;
       }
-      if (up.t >= T) { up.t = T; up.phase = 'landed'; }
-    } else if (up.phase === 'frozen') {
+      if (up.t >= T) {
+        up.t = T;
+        up.phase = 'landed';
+        up.squash = 0.4;
+        spawnBurst(up.burst, lane, Y(0));
+      }
+    } else if (up.phase === 'frozen' && !up.paused) {
       up.freezeLeft -= p.deltaTime / 1000;
       if (up.freezeLeft <= 0) up.phase = 'flying';
+    }
+
+    /* strobe ghosts: way up on the left column, way down on the right */
+    for (const gh of up.ghosts) ghostBall(p, lane + gh.side * 32, Y(gh.y));
+    if (up.ghosts.some((g) => g.side === 1)) {
+      p.noStroke();
+      p.fill(C.dark);
+      p.textSize(12.5);
+      p.textAlign(p.LEFT, p.TOP);
+      p.text('mirror images: same heights\non the way up and down', M.l + 10, M.t + 24);
     }
 
     /* ball + vectors */
@@ -404,7 +613,7 @@ const upSketch = (p: p5) => {
     const by = Y(yNow);
 
     if (up.phase !== 'ready') {
-      if (Math.abs(v) > 0.5) {
+      if (Math.abs(v) > 0.5 && up.phase !== 'landed') {
         p.strokeWeight(2.6);
         if (v > 0) {
           p.stroke(C.green);
@@ -430,7 +639,24 @@ const upSketch = (p: p5) => {
     p.textAlign(p.RIGHT, p.CENTER);
     p.text('a = −g', lane - 52, by + 4);
 
-    ball(p, lane, by);
+    /* pulsing rings at the apex while frozen */
+    if (up.phase === 'frozen') {
+      const ph = (p.millis() % 1100) / 1100;
+      p.noFill();
+      p.stroke(0, 160, 227, 210 * (1 - ph));
+      p.strokeWeight(2.5);
+      p.circle(lane, by, 26 + ph * 52);
+      p.stroke(0, 160, 227, 120 * (1 - ph));
+      p.circle(lane, by, 26 + ph * 84);
+    }
+
+    if (up.squash > 0 && up.phase === 'landed') {
+      up.squash = Math.max(0, up.squash - p.deltaTime / 1000);
+      squashBall(p, lane, by, up.squash / 0.4);
+    } else {
+      ball(p, lane, by);
+    }
+    drawBurst(p, up.burst);
 
     /* apex freeze callout */
     if (up.phase === 'frozen') {
@@ -452,6 +678,53 @@ const upSketch = (p: p5) => {
       p.text('Gravity never switches off.', cx + 14, cy + 57);
     }
 
+    /* v-t inset: one straight line, right through zero */
+    if (p.width > 780) {
+      const gw = 224, gh = 138;
+      const gx = p.width - gw - 16;
+      const gy = p.height - M.b - gh - 14;
+      insetFrame(p, gx, gy, gw, gh, 'v-t graph: one line through zero');
+      const x0 = gx + 38, x1 = gx + gw - 14;
+      const y0 = gy + 30, y1 = gy + gh - 16;
+      const ymid = (y0 + y1) / 2;
+      const IX = (tt: number) => x0 + (tt / T) * (x1 - x0);
+      const IY = (vv: number) => ymid - (vv / up.u) * (ymid - y0);
+      p.stroke(41, 89, 144, 90);
+      p.strokeWeight(1);
+      p.line(x0, y0, x0, y1);
+      p.drawingContext.setLineDash([3, 4]);
+      p.line(x0, ymid, x1, ymid);                     // v = 0 line
+      p.drawingContext.setLineDash([]);
+      /* predicted line, dashed */
+      p.stroke(C.dark);
+      p.strokeWeight(1.6);
+      p.drawingContext.setLineDash([4, 4]);
+      p.line(IX(0), IY(up.u), IX(T), IY(-up.u));
+      p.drawingContext.setLineDash([]);
+      /* apex marker */
+      p.noStroke();
+      p.fill(C.amber);
+      p.circle(IX(tUp), ymid, 7);
+      p.textSize(11);
+      p.textAlign(p.LEFT, p.BOTTOM);
+      p.text('v = 0 at the top', IX(tUp) + 6, ymid - 4);
+      /* progress */
+      const tNow = Math.min(up.t, T);
+      const vNow = up.u - G * tNow;
+      p.stroke(C.red);
+      p.strokeWeight(2.5);
+      p.line(IX(0), IY(up.u), IX(tNow), IY(vNow));
+      p.noStroke();
+      p.fill(C.red);
+      p.circle(IX(tNow), IY(vNow), 7);
+      p.fill(C.dark);
+      p.textSize(11);
+      p.textAlign(p.RIGHT, p.CENTER);
+      p.text(`+${up.u}`, x0 - 5, y0);
+      p.text('0', x0 - 5, ymid);
+      p.text(`−${up.u}`, x0 - 5, y1);
+    }
+
     /* HUD */
     p.fill(C.navy);
     p.textAlign(p.RIGHT, p.TOP);
@@ -462,6 +735,7 @@ const upSketch = (p: p5) => {
       p.textAlign(p.RIGHT, p.TOP);
       p.text('SLOW MOTION', p.width - M.r - 6, M.t + 24);
     }
+    if ((up.phase === 'flying' || up.phase === 'frozen') && up.paused) pausedBadge(p);
     if (up.phase === 'landed') {
       p.textAlign(p.CENTER, p.TOP);
       p.textSize(17);
@@ -484,15 +758,19 @@ function upWire() {
   u.addEventListener('input', () => {
     up.u = +u.value;
     document.getElementById('guUVal')!.textContent = `${u.value} m/s`;
-    up.phase = 'ready'; up.t = 0; up.froze = false;
+    up.phase = 'ready';
+    upClear();
     upStats();
   });
   document.getElementById('guGo')!.addEventListener('click', () => {
-    up.t = 0; up.froze = false; up.phase = 'flying';
+    upClear();
+    up.phase = 'flying';
   });
   document.getElementById('guReset')!.addEventListener('click', () => {
-    up.t = 0; up.froze = false; up.phase = 'ready';
+    upClear();
+    up.phase = 'ready';
   });
+  wirePause('guPause', up);
   upStats();
 }
 
@@ -501,15 +779,25 @@ const chase = {
   gap: 1,
   phase: 'ready' as 'ready' | 'running' | 'done',
   t: 0,
+  paused: false,
+  ghosts: [] as Array<{ yA: number; yB: number }>,
+  burst: [] as Spark[],
 };
 const CHASE_H = 125;                       // tall tower: A lands at t = 5 s
 const chaseYA = (t: number) => Math.max(CHASE_H - 5 * t * t, 0);
 const chaseYB = (t: number) => (t <= chase.gap ? CHASE_H : Math.max(CHASE_H - 5 * (t - chase.gap) ** 2, 0));
 
+function chaseClear() {
+  chase.t = 0;
+  chase.ghosts.length = 0;
+  chase.burst.length = 0;
+  clearPause('gcPause', chase);
+}
+
 function chaseLog() {
   const el = document.getElementById('gcLog')!;
   const parts: string[] = [];
-  for (let k = 1; k * 1 <= 5; k++) {
+  for (let k = 1; k <= 5; k++) {
     if (k <= chase.gap) continue;
     const gapM = chaseYB(k) - chaseYA(k);
     parts.push(`t = ${k} s → gap ${gapM.toFixed(1)} m`);
@@ -544,10 +832,32 @@ const chaseSketch = (p: p5) => {
     p.textAlign(p.LEFT, p.BOTTOM);
     p.text(`both released here, ${chase.gap} s apart`, laneA - 40, Y(CHASE_H) - 14);
 
-    /* advance */
-    if (chase.phase === 'running') {
+    /* advance + ghost pairs every 0.5 s */
+    if (chase.phase === 'running' && !chase.paused) {
+      const tPrev = chase.t;
       chase.t += p.deltaTime / 1000;
-      if (chase.t >= 5) { chase.t = 5; chase.phase = 'done'; chaseLog(); }
+      const iv = 0.5;
+      for (let k = Math.floor(tPrev / iv) + 1; k * iv <= Math.min(chase.t, 5); k++) {
+        const tg = k * iv;
+        chase.ghosts.push({ yA: chaseYA(tg), yB: chaseYB(tg) });
+      }
+      if (chase.t >= 5) {
+        chase.t = 5;
+        chase.phase = 'done';
+        spawnBurst(chase.burst, laneA, Y(0));
+        chaseLog();
+      }
+    }
+
+    /* ghost-pair ladder: each rung is one instant - watch it tilt open */
+    for (const gh of chase.ghosts) {
+      p.stroke(41, 89, 144, 55);
+      p.strokeWeight(1.6);
+      p.line(laneA, Y(gh.yA), laneB, Y(gh.yB));
+      ghostBall(p, laneA, Y(gh.yA));
+      p.noStroke();
+      p.fill(245, 158, 11, 80);
+      p.circle(laneB, Y(gh.yB), 15);
     }
 
     const yA = chaseYA(chase.t);
@@ -587,6 +897,53 @@ const chaseSketch = (p: p5) => {
     p.textAlign(p.CENTER, p.BOTTOM);
     p.text('B', laneB, Y(yB) - 12);
 
+    drawBurst(p, chase.burst);
+
+    /* gap-vs-t inset: a straight line after B lets go */
+    if (p.width > 780) {
+      const gw = 224, gh = 132;
+      const gx = p.width - gw - 16;
+      const gy = p.height - M.b - gh - 12;
+      insetFrame(p, gx, gy, gw, gh, 'gap-t graph: grows every second');
+      const x0 = gx + 34, x1 = gx + gw - 14;
+      const y0 = gy + 30, y1 = gy + gh - 16;
+      const gapMax = 5 * 25 - 5 * (5 - chase.gap) ** 2;
+      const IX = (tt: number) => x0 + (tt / 5) * (x1 - x0);
+      const IY = (gm: number) => y1 - (gm / gapMax) * (y1 - y0);
+      p.stroke(41, 89, 144, 90);
+      p.strokeWeight(1);
+      p.line(x0, y0, x0, y1);
+      p.line(x0, y1, x1, y1);
+      /* predicted, dashed: flat 0 until the gap, then straight up */
+      p.stroke(C.dark);
+      p.strokeWeight(1.6);
+      p.drawingContext.setLineDash([4, 4]);
+      p.line(IX(0), IY(0), IX(chase.gap), IY(0));
+      p.line(IX(chase.gap), IY(0), IX(5), IY(gapMax));
+      p.drawingContext.setLineDash([]);
+      /* progress */
+      const tNow = Math.min(chase.t, 5);
+      const gapNow = chaseYB(tNow) - chaseYA(tNow);
+      p.stroke(C.amber);
+      p.strokeWeight(2.5);
+      if (tNow > chase.gap) {
+        p.line(IX(0), IY(0), IX(chase.gap), IY(0));
+        p.line(IX(chase.gap), IY(0), IX(tNow), IY(gapNow));
+      } else {
+        p.line(IX(0), IY(0), IX(tNow), IY(0));
+      }
+      p.noStroke();
+      p.fill(C.amber);
+      p.circle(IX(tNow), IY(Math.max(gapNow, 0)), 7);
+      p.fill(C.dark);
+      p.textSize(11);
+      p.textAlign(p.RIGHT, p.CENTER);
+      p.text('0', x0 - 5, y1);
+      p.text(`${gapMax.toFixed(0)}`, x0 - 5, y0);
+      p.textAlign(p.RIGHT, p.BOTTOM);
+      p.text('t →', x1, y1 - 3);
+    }
+
     /* HUD */
     p.fill(C.navy);
     p.textAlign(p.RIGHT, p.TOP);
@@ -595,6 +952,7 @@ const chaseSketch = (p: p5) => {
       `t = ${chase.t.toFixed(2)} s   vA = ${vA.toFixed(0)}   vB = ${vB.toFixed(0)} m/s`,
       p.width - M.r - 6, M.t + 2
     );
+    if (chase.phase === 'running' && chase.paused) pausedBadge(p);
     if (chase.phase === 'done') {
       p.textAlign(p.CENTER, p.TOP);
       p.textSize(17);
@@ -614,14 +972,18 @@ function chaseWire() {
   g.addEventListener('input', () => {
     chase.gap = +g.value;
     document.getElementById('gcGapVal')!.textContent = `${g.value} s`;
-    chase.phase = 'ready'; chase.t = 0;
+    chase.phase = 'ready';
+    chaseClear();
   });
   document.getElementById('gcGo')!.addEventListener('click', () => {
-    chase.t = 0; chase.phase = 'running';
+    chaseClear();
+    chase.phase = 'running';
   });
   document.getElementById('gcReset')!.addEventListener('click', () => {
-    chase.t = 0; chase.phase = 'ready';
+    chaseClear();
+    chase.phase = 'ready';
   });
+  wirePause('gcPause', chase);
 
   /* prediction buttons */
   const fb = document.getElementById('gcFb')!;
