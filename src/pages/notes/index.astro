@@ -1,0 +1,42 @@
+---
+import StudioLayout from '../../layouts/StudioLayout.astro';
+import { chapterResources } from '../../data/resources';
+---
+<StudioLayout title="Chapter Notes - Physics with Harshith" chapterChip="Class 11 · Physics">
+  <section class="screen active">
+    <div class="scr-head">
+      <a class="back-btn" href="/" style="text-decoration:none;">‹ Home</a>
+      <div>
+        <div class="scr-title">Chapter <span class="res-accent">Notes</span></div>
+        <div class="scr-sub">Scanned notes for every chapter - download, print, revise.</div>
+      </div>
+    </div>
+
+    <div class="res-grid">
+      {chapterResources.map((ch) => (
+        <div class="res-card">
+          <div class="tile-num">{ch.num}</div>
+          <h3>{ch.title}<span class="res-accent">{ch.titleAccent}</span></h3>
+
+          {ch.notes ? (
+            <a class="res-row" href={ch.notes.url} target="_blank" rel="noopener">
+              <span class="res-ic res-ic-notes">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+              </span>
+              <span class="res-label">{ch.notes.label}</span>
+              <span class="res-dl">Download ↓</span>
+            </a>
+          ) : (
+            <div class="res-row res-row-soon">
+              <span class="res-ic res-ic-notes" style="opacity:.45;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>
+              </span>
+              <span class="res-label" style="opacity:.55;">Chapter Notes</span>
+              <span class="res-dl" style="opacity:.5;">Coming soon</span>
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  </section>
+</StudioLayout>
