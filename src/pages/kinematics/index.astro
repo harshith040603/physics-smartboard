@@ -29,6 +29,14 @@ import '../../styles/kinematics.css';
         <span class="tile-go">Start ›</span>
       </div>
 
+      <div class="tile" onclick="go('graphs')">
+        <div class="tile-num">03</div>
+        <div class="tile-icon ic-sort"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M3 17l5-6 4 3 6-8"/><path d="M3 21h18"/></svg></div>
+        <h3>Motion Graphs</h3>
+        <p>Slope going down, area going up - read tangents, watch areas fill, and climb the shape ladder.</p>
+        <span class="tile-go">Start ›</span>
+      </div>
+
     </div>
   </section>
 
@@ -255,6 +263,133 @@ import '../../styles/kinematics.css';
       <div class="rev-keybox" style="margin-top:16px;" id="gcLog">
         <b>The two-body method:</b> one common origin, one common clock t, write each ball's position on that clock, then subtract.
         The same recipe solves lifts, windows and every meeting problem.
+      </div>
+    </div>
+  </section>
+
+  <!-- =========== MOTION GRAPHS =========== -->
+  <section id="graphs" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">Motion Graphs</div>
+        <div class="scr-sub">Two keys unlock every graph: SLOPE going down the chain (x → v → a), AREA going up (a → v → x).</div>
+      </div>
+    </div>
+
+    <div class="rev-chips" id="mgTabs">
+      <button class="rev-chip active" data-pane="mgSlope">1 · Slope Reader</button>
+      <button class="rev-chip" data-pane="mgPath">2 · Not the Path!</button>
+      <button class="rev-chip" data-pane="mgArea">3 · Area Builder</button>
+      <button class="rev-chip" data-pane="mgLadder">4 · Shape Ladder</button>
+      <button class="rev-chip" data-pane="mgQuiz">5 · Rapid Fire</button>
+    </div>
+
+    <!-- ── Pane 1 · Slope Reader ── -->
+    <div class="grav-pane active" id="mgSlope">
+      <div class="kin-controls">
+        <div class="kin-ctrl" style="flex:2;">
+          <label>Drag along the curve <span class="kin-val">tangent follows you</span></label>
+          <input type="range" id="mgsT" min="0" max="10" step="0.05" value="0">
+        </div>
+        <div class="kin-btns">
+          <button class="check-btn" id="mgsPlay">▶ Play</button>
+          <button class="btn-reset" id="mgsReset">↺ Reset</button>
+        </div>
+      </div>
+      <div class="kin-canvas" id="mgsCanvas"></div>
+      <div class="rev-keybox" style="margin-top:16px;">
+        <b>The first key:</b> slope of x-t = velocity. Steep = fast, flat = at rest, downhill = moving backward.
+        And watch the rest segment: it is the <b>highest</b> part of the graph, yet the speed there is <b>zero</b> - height is not speed.
+      </div>
+    </div>
+
+    <!-- ── Pane 2 · Not the Path ── -->
+    <div class="grav-pane" id="mgPath">
+      <div class="kin-controls">
+        <div class="kin-ctrl">
+          <label>Motion of the car <span class="kin-val">same road every time</span></label>
+          <select id="mgpMode">
+            <option value="accel" selected>Speeding up on a flat road</option>
+            <option value="uniform">Uniform velocity</option>
+            <option value="return">Out and back</option>
+          </select>
+        </div>
+        <div class="kin-btns">
+          <button class="check-btn" id="mgpPlay">▶ Play</button>
+          <button class="btn-reset" id="mgpReset">↺ Reset</button>
+        </div>
+      </div>
+      <div class="kin-canvas" id="mgpCanvas"></div>
+      <div class="rev-keybox" style="margin-top:16px;">
+        The road is flat and straight - but the graph <b>curves</b>. An x-t graph is <b>never a picture of the path</b>:
+        it plots the position coordinate against time. A rising graph does not mean the object goes "up".
+      </div>
+    </div>
+
+    <!-- ── Pane 3 · Area Builder ── -->
+    <div class="grav-pane" id="mgArea">
+      <div class="kin-controls">
+        <div class="kin-ctrl">
+          <label>v-t graph <span class="kin-val">area fills as time runs</span></label>
+          <select id="mgaPreset">
+            <option value="ramp" selected>Ramp up, then cruise (0→20 in 4 s, flat 6 s)</option>
+            <option value="tri">Triangle (0→30 in 3 s, back to 0 at 9 s)</option>
+            <option value="rev">Forward then reverse (+5 for 4 s, −5 for 2 s)</option>
+          </select>
+        </div>
+        <div class="kin-btns">
+          <button class="check-btn" id="mgaPlay">▶ Play</button>
+          <button class="btn-reset" id="mgaReset">↺ Reset</button>
+        </div>
+      </div>
+      <div class="kin-canvas" id="mgaCanvas"></div>
+      <div class="rev-keybox" style="margin-top:16px;">
+        <b>The second key:</b> area under v-t = displacement, and the area <b>carries a sign</b>.
+        Green area above the axis counts positive, red area below counts negative -
+        so displacement subtracts while distance adds. Distance vs displacement from day one, drawn as regions.
+      </div>
+    </div>
+
+    <!-- ── Pane 4 · Shape Ladder ── -->
+    <div class="grav-pane" id="mgLadder">
+      <div class="kin-controls">
+        <div class="kin-ctrl">
+          <label>Motion type <span class="kin-val">all three graphs, one motion</span></label>
+          <select id="mglMode">
+            <option value="rest">At rest</option>
+            <option value="uniform">Uniform velocity</option>
+            <option value="accel" selected>Uniform acceleration (from rest)</option>
+            <option value="slow">Slowing down</option>
+          </select>
+        </div>
+        <div class="kin-btns">
+          <button class="check-btn" id="mglPlay">▶ Play</button>
+          <button class="btn-reset" id="mglReset">↺ Reset</button>
+        </div>
+      </div>
+      <div class="kin-canvas" id="mglCanvas"></div>
+      <div class="rev-keybox" style="margin-top:16px;">
+        The shape ladder: slope (differentiate) <b>lowers</b> the degree - parabola → line → flat.
+        Area (integrate) <b>raises</b> it - flat → line → parabola.
+        Once this is automatic, you can sketch any graph from any other with zero numbers.
+      </div>
+    </div>
+
+    <!-- ── Pane 5 · Rapid Fire quiz ── -->
+    <div class="grav-pane" id="mgQuiz">
+      <div class="rev-keybox">
+        Ten quick readings, zero algebra. Every one of these is a guaranteed-marks exam question.
+      </div>
+      <div class="rev-card">
+        <div class="rf-tag" id="mgqTag">Graph rapid fire · Question 1 / 10</div>
+        <div class="rev-q" id="mgqQ"></div>
+        <div class="rev-opts" id="mgqOpts"></div>
+        <div class="rev-feedback" id="mgqFb"></div>
+        <div class="rev-nav">
+          <button class="btn-reset" id="mgqPrev">‹ Previous</button>
+          <button class="btn-reset" id="mgqNext">Next ›</button>
+        </div>
       </div>
     </div>
   </section>
