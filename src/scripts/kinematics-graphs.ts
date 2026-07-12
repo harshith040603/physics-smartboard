@@ -35,6 +35,26 @@ function playBtnLabel(id: string, playing: boolean) {
   document.getElementById(id)!.textContent = playing ? '⏸ Pause' : '▶ Play';
 }
 
+/* text on a white chip - always readable over grid lines */
+function chip(
+  p: p5, txt: string, x: number, y: number,
+  align: 'left' | 'right' | 'center' = 'left', size = 14, col = C.navy
+) {
+  p.textSize(size);
+  const lines = txt.split('\n');
+  const w = Math.max(...lines.map((l) => p.textWidth(l)));
+  const lh = size * 1.32;
+  let bx = x;
+  if (align === 'right') bx = x - w;
+  if (align === 'center') bx = x - w / 2;
+  p.noStroke();
+  p.fill(255, 255, 255, 228);
+  p.rect(bx - 7, y - 4, w + 14, lh * lines.length + 8, 8);
+  p.fill(col);
+  p.textAlign(p.LEFT, p.TOP);
+  lines.forEach((l, i) => p.text(l, bx, y + i * lh));
+}
+
 /* ═════════ Pane 1 · Slope Reader ═════════
    Piecewise x-t over 10 s:
    A 0-3 s  speed up      x = t²            v = 2t
@@ -69,7 +89,7 @@ const slope = { t: 0, playing: false };
 
 const slopeSketch = (p: p5) => {
   const holder = document.getElementById('mgsCanvas')!;
-  const M = { l: 60, r: 24, t: 34, b: 46 };
+  const M = { l: 60, r: 24, t: 66, b: 46 };
   const canvasH = () => Math.max(400, Math.min(540, Math.round(holder.clientWidth * 0.48)));
 
   p.setup = () => { p.createCanvas(holder.clientWidth, canvasH()); };
@@ -110,10 +130,8 @@ const slopeSketch = (p: p5) => {
     for (let t = 0; t <= SL_T; t += 2) p.text(`${t}`, GX(t), p.height - M.b + 8);
     p.textAlign(p.RIGHT, p.CENTER);
     for (let x = 0; x <= SL_XMAX; x += 8) p.text(`${x}`, M.l - 8, GY(x));
-    p.textAlign(p.LEFT, p.TOP);
-    p.text('x (m)', M.l + 6, M.t - 22);
-    p.textAlign(p.RIGHT, p.BOTTOM);
-    p.text('t (s)', p.width - M.r, p.height - M.b - 6);
+    chip(p, 'x (m)', M.l + 6, M.t - 24, 'left', 12.5, C.dark);
+    chip(p, 't (s)', p.width - M.r - 4, p.height - M.b - 28, 'right', 12.5, C.dark);
 
     /* the x-t curve */
     p.noFill();
@@ -127,14 +145,10 @@ const slopeSketch = (p: p5) => {
     p.endShape();
 
     /* segment captions */
-    p.noStroke();
-    p.fill(C.dark);
-    p.textSize(12);
-    p.textAlign(p.CENTER, p.BOTTOM);
-    p.text('speeding up', GX(1.5), GY(slX(1.5)) - 12);
-    p.text('cruise', GX(4), GY(slX(4)) - 12);
-    p.text('rest', GX(6), GY(21) - 12);
-    p.text('reversing', GX(8.5), GY(slX(8.5)) - 12);
+    chip(p, 'speeding up', GX(1.5), GY(slX(1.5)) - 30, 'center', 12, C.dark);
+    chip(p, 'cruise', GX(4), GY(slX(4)) - 30, 'center', 12, C.dark);
+    chip(p, 'rest', GX(6), GY(21) - 30, 'center', 12, C.dark);
+    chip(p, 'reversing', GX(8.5), GY(slX(8.5)) - 30, 'center', 12, C.dark);
 
     /* tangent + cursor */
     const t = slope.t;
@@ -153,17 +167,9 @@ const slopeSketch = (p: p5) => {
 
     /* readouts */
     const st = slStatus(t);
-    p.fill(C.navy);
-    p.textSize(15);
-    p.textAlign(p.RIGHT, p.TOP);
-    p.text(`t = ${t.toFixed(1)} s   x = ${slX(t).toFixed(1)} m`, p.width - M.r - 4, 8);
-    p.textSize(19);
-    p.fill(C.red);
-    p.text(`slope = v = ${v >= 0 ? '+' : ''}${v.toFixed(1)} m/s`, p.width - M.r - 4, 30);
-    p.fill(st.col);
-    p.textSize(15);
-    p.textAlign(p.LEFT, p.TOP);
-    p.text(st.msg, M.l + 8, 8);
+    chip(p, `t = ${t.toFixed(1)} s   x = ${slX(t).toFixed(1)} m`, p.width - M.r - 4, 6, 'right', 14, C.navy);
+    chip(p, `slope = v = ${v >= 0 ? '+' : ''}${v.toFixed(1)} m/s`, p.width - M.r - 4, 32, 'right', 18, C.red);
+    chip(p, st.msg, M.l + 8, 6, 'left', 14.5, st.col);
   };
 };
 
@@ -310,23 +316,15 @@ const pathSketch = (p: p5) => {
 
     /* the message */
     if (path.t > PATH_T * 0.45) {
-      p.noStroke();
-      p.fill(C.navy);
-      p.textSize(14.5);
-      p.textAlign(p.RIGHT, p.TOP);
       const msg = path.mode === 'accel'
         ? 'The road is FLAT. The graph CURVES.\nThe graph is not a picture of the path.'
         : path.mode === 'return'
           ? 'The car never leaves the road,\nyet the graph rises and falls.'
           : 'Straight line: equal metres\nin equal seconds.';
-      p.text(msg, p.width - M.r - 4, M.t + 8);
+      chip(p, msg, p.width - M.r - 4, M.t + 8, 'right', 14.5, C.navy);
     }
     if (path.t === 0) {
-      p.noStroke();
-      p.fill(C.dark);
-      p.textSize(14);
-      p.textAlign(p.RIGHT, p.TOP);
-      p.text('Press Play', p.width - 34, 12);
+      chip(p, 'Press Play', p.width - 34, 12, 'right', 14, C.dark);
     }
   };
 };
@@ -398,7 +396,7 @@ function areaReset() {
 
 const areaSketch = (p: p5) => {
   const holder = document.getElementById('mgaCanvas')!;
-  const M = { l: 64, r: 24, t: 58, b: 46 };
+  const M = { l: 64, r: 24, t: 84, b: 46 };
   const canvasH = () => Math.max(400, Math.min(540, Math.round(holder.clientWidth * 0.48)));
 
   p.setup = () => { p.createCanvas(holder.clientWidth, canvasH()); };
@@ -447,10 +445,8 @@ const areaSketch = (p: p5) => {
     p.textSize(12);
     p.textAlign(p.CENTER, p.TOP);
     for (let t = 0; t <= D.T; t += 1) p.text(`${t}`, GX(t), p.height - M.b + 8);
-    p.textAlign(p.LEFT, p.TOP);
-    p.text('v (m/s)', M.l + 6, M.t - 20);
-    p.textAlign(p.RIGHT, p.TOP);
-    p.text('t (s)', p.width - M.r, GY(0) + 6);
+    chip(p, 'v (m/s)', M.l + 6, M.t - 24, 'left', 12.5, C.dark);
+    chip(p, 't (s)', p.width - M.r - 4, GY(0) + 8, 'right', 12.5, C.dark);
     p.textAlign(p.RIGHT, p.CENTER);
     p.text(`${D.vMax - 2}`, M.l - 6, GY(D.vMax - 2));
     if (D.vMin < 0) p.text(`${D.vMin + 2}`, M.l - 6, GY(D.vMin + 2));
@@ -494,28 +490,18 @@ const areaSketch = (p: p5) => {
     }
 
     /* counters */
-    p.noStroke();
-    p.textSize(17);
-    p.textAlign(p.LEFT, p.TOP);
-    p.fill(C.green);
-    p.text(`displacement = ${area.disp.toFixed(1)} m`, M.l + 8, 8);
-    p.fill(C.red);
-    p.text(`distance = ${area.dist.toFixed(1)} m`, M.l + 8, 30);
-    p.fill(C.dark);
-    p.textSize(13);
-    p.textAlign(p.RIGHT, p.TOP);
-    p.text(
+    chip(p, `displacement = ${area.disp.toFixed(1)} m`, M.l + 8, 6, 'left', 16, C.green);
+    chip(p, `distance = ${area.dist.toFixed(1)} m`, M.l + 8, 34, 'left', 16, C.red);
+    chip(
+      p,
       area.preset === 'rev'
-        ? 'below the axis: displacement falls, distance keeps rising'
-        : 'all above the axis: displacement = distance',
-      p.width - M.r - 4, 10
+        ? 'below the axis: displacement falls,\ndistance keeps rising'
+        : 'all above the axis:\ndisplacement = distance',
+      p.width - M.r - 4, 6, 'right', 13, C.dark
     );
 
     if (area.t >= AREAS[area.preset].T) {
-      p.fill(C.navy);
-      p.textSize(15);
-      p.textAlign(p.CENTER, p.TOP);
-      p.text(AREAS[area.preset].summary, p.width / 2, 34);
+      chip(p, AREAS[area.preset].summary, p.width / 2, p.height - M.b - 34, 'center', 14.5, C.navy);
     }
   };
 };
@@ -670,10 +656,7 @@ const ladderSketch = (p: p5) => {
     );
 
     if (ladder.t === 0) {
-      p.fill(C.dark);
-      p.textSize(14);
-      p.textAlign(p.LEFT, p.TOP);
-      p.text('Press Play', outer + 4, 6);
+      chip(p, 'Press Play', outer + 4, 6, 'left', 14, C.dark);
     }
   };
 };
