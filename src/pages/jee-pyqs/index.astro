@@ -1,0 +1,27 @@
+---
+import StudioLayout from '../../layouts/StudioLayout.astro';
+import { PYQS } from '../../data/pyq-units-dimensions';
+---
+<StudioLayout title="JEE Main PYQs - Physics with Harshith" chapterChip="JEE Main · PYQs">
+  <section class="screen active">
+    <div class="scr-head">
+      <a class="back-btn" href="/" style="text-decoration:none;">‹ Home</a>
+      <div>
+        <div class="scr-title">JEE Main <span class="res-accent">PYQs</span></div>
+        <div class="scr-sub">Previous-year questions, topic-wise. Solve them first, then check.</div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <a class="tile" href="/jee-pyqs/units-and-dimensions" style="text-decoration:none;color:inherit;">
+        <div class="tile-num">01</div>
+        <div class="tile-icon ic-err">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l2.5 2.5M16.5 16.5L19 19M19 5l-2.5 2.5M7.5 16.5L5 19"/><circle cx="12" cy="12" r="3"/></svg>
+        </div>
+        <h3>Units & <span class="accent">Dimensions</span></h3>
+        <p>Significant figures, dimensional formulas, screw gauge & vernier - straight from JEE Main 2025 & 2026 papers.</p>
+        <span class="tile-go">{PYQS.length} questions - Open ›</span>
+      </a>
+    </div>
+  </section>
+</StudioLayout>
