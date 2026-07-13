@@ -788,8 +788,273 @@ function mgqWire() {
   mgqRender();
 }
 
+/* ═════════ Pane 6 · Worked Examples ═════════
+   A step-through solver. Each example is a v-t graph plus an ordered
+   list of solution steps; each step can reveal a slope triangle, grow
+   the shaded area, or drop a final answer. The canvas animates the
+   newest area fill so the "area = displacement" idea is felt, not told. */
+interface WStep {
+  text: string;
+  fillTo?: number;             // grow signed area fill from 0 to this t
+  slopeTri?: [number, number]; // draw a rise/run slope triangle t=a..b
+  flatSeg?: [number, number];  // highlight a flat (zero-slope) segment
+  answer?: string;             // big answer chip on the canvas
+}
+interface WEx {
+  tag: string;
+  problem: string;
+  T: number;
+  vMin: number;
+  vMax: number;
+  v: (t: number) => number;
+  steps: WStep[];
+}
+
+const WORKED: Record<string, WEx> = {
+  slope: {
+    tag: 'Lecture 6 · Slope of a v-t graph',
+    problem: 'A v-t graph rises straight from 0 to 20 m/s in the first 4 s, then stays flat at 20 m/s. Find the acceleration in each phase.',
+    T: 10, vMin: 0, vMax: 24,
+    v: (t) => (t < 4 ? 5 * t : 20),
+    steps: [
+      { text: 'Going DOWN the chain (v → a), acceleration is the SLOPE of the v-t graph. Read each phase separately.' },
+      { text: 'Phase 1 (0-4 s): a = slope = rise / run = (20 − 0) / (4 − 0) = 5 m/s².', slopeTri: [0, 4] },
+      { text: 'Phase 2 (4-10 s): the line is flat, so slope = 0 and a = 0. Uniform velocity at 20 m/s.', flatSeg: [4, 10] },
+      { text: 'Trap: zero acceleration does not mean zero velocity - the body keeps cruising at 20 m/s.', answer: 'a = 5 m/s², then 0' },
+    ],
+  },
+  tri: {
+    tag: 'Lecture 7 · Displacement from a triangle',
+    problem: 'A v-t graph rises 0 → 30 m/s over 3 s, then falls 30 → 0 m/s over 6 s. How far does the body travel?',
+    T: 9, vMin: 0, vMax: 32,
+    v: (t) => (t < 3 ? 10 * t : 30 - 5 * (t - 3)),
+    steps: [
+      { text: 'Going UP the chain (v → x), displacement is the AREA under the v-t graph.' },
+      { text: 'The whole shape is one triangle: base = 3 + 6 = 9 s, height = 30 m/s.', fillTo: 9 },
+      { text: 'Displacement = area = ½ · base · height = ½ · 9 · 30 = 135 m.', answer: '135 m' },
+      { text: 'The graph never dips below the axis, so distance = displacement = 135 m.' },
+    ],
+  },
+  sign: {
+    tag: 'Lecture 7 · The sign of area',
+    problem: 'A v-t graph is +5 m/s for 4 s, then −5 m/s for 2 s. Find the displacement and the distance.',
+    T: 6, vMin: -7, vMax: 7,
+    v: (t) => (t < 4 ? 5 : -5),
+    steps: [
+      { text: 'Area under v-t is displacement - and the area carries a sign.' },
+      { text: 'Above the axis (green): 5 × 4 = +20 m.', fillTo: 4 },
+      { text: 'Below the axis (red): 5 × 2 = −10 m.', fillTo: 6 },
+      { text: 'Displacement = +20 − 10 = 10 m. The signs subtract.', answer: 'disp 10 m · dist 30 m' },
+      { text: 'Distance = 20 + 10 = 30 m. Magnitudes add. This is distance vs displacement, drawn as regions.' },
+    ],
+  },
+  ramp: {
+    tag: 'Lecture 7 · Mixed problem',
+    problem: 'A v-t graph rises 0 → 20 m/s over 4 s, then holds 20 m/s for 6 s. Find the acceleration in the first phase and the total displacement.',
+    T: 10, vMin: 0, vMax: 24,
+    v: (t) => (t < 4 ? 5 * t : 20),
+    steps: [
+      { text: 'One problem, both keys: acceleration is the slope of the ramp, displacement is the area under the whole graph.' },
+      { text: 'Phase 1: a = slope = 20 / 4 = 5 m/s².', slopeTri: [0, 4] },
+      { text: 'Triangle (0-4 s): area = ½ · 4 · 20 = 40 m.', fillTo: 4 },
+      { text: 'Rectangle (4-10 s): area = 6 · 20 = 120 m.', fillTo: 10 },
+      { text: 'Total displacement = 40 + 120 = 160 m.', answer: 'a = 5 m/s² · s = 160 m' },
+    ],
+  },
+  conv: {
+    tag: 'Lecture 7 · Convert one graph to the others',
+    problem: 'A v-t graph is a straight line from (0, 0) to (5 s, 10 m/s). Find the a-t and x-t graphs.',
+    T: 5, vMin: 0, vMax: 12,
+    v: (t) => 2 * t,
+    steps: [
+      { text: 'Slope going down gives a; area going up gives x. One motion, three graphs.' },
+      { text: 'a = slope = 10 / 5 = 2 m/s². Constant, so the a-t graph is a flat line at 2.', slopeTri: [0, 5] },
+      { text: 'Area up to time t = ½ · t · (2t) = t². So x = t².', fillTo: 5 },
+      { text: 'x-t is a parabola opening upward. Flat a → sloped v → parabolic x: the shape ladder, climbed.', answer: 'a = 2 m/s² · x = t²' },
+    ],
+  },
+};
+
+const worked = { key: 'slope', idx: 0, fill: 0 };
+
+function workedRevealedSteps(): WStep[] {
+  return WORKED[worked.key].steps.slice(0, worked.idx + 1);
+}
+
+function workedFillTarget(): number {
+  let target = 0;
+  for (const s of workedRevealedSteps()) if (s.fillTo !== undefined) target = Math.max(target, s.fillTo);
+  return target;
+}
+
+function workedRenderSteps() {
+  const D = WORKED[worked.key];
+  document.getElementById('mgwTag')!.textContent = D.tag;
+  document.getElementById('mgwProblem')!.textContent = D.problem;
+  const holder = document.getElementById('mgwSteps')!;
+  holder.innerHTML = '';
+  workedRevealedSteps().forEach((s, i) => {
+    const el = document.createElement('div');
+    el.className = 'mgw-step';
+    if (s.answer) el.classList.add('answer');
+    else if (i === worked.idx) el.classList.add('latest');
+    el.innerHTML = s.answer ? `<b>${s.text}</b>` : s.text;
+    holder.appendChild(el);
+  });
+  const next = document.getElementById('mgwNext') as HTMLButtonElement;
+  next.disabled = worked.idx >= D.steps.length - 1;
+  next.textContent = worked.idx >= D.steps.length - 1 ? 'Solved ✓' : 'Next step ›';
+  (document.getElementById('mgwPrev') as HTMLButtonElement).disabled = worked.idx <= 0;
+}
+
+const workedSketch = (p: p5) => {
+  const holder = document.getElementById('mgwCanvas')!;
+  const M = { l: 64, r: 24, t: 60, b: 46 };
+  const canvasH = () => Math.max(400, Math.min(540, Math.round(holder.clientWidth * 0.48)));
+
+  p.setup = () => { p.createCanvas(holder.clientWidth, canvasH()); };
+  p.windowResized = () => { p.resizeCanvas(holder.clientWidth, canvasH()); };
+
+  p.draw = () => {
+    const D = WORKED[worked.key];
+
+    /* ease the shaded area toward the revealed target */
+    const target = workedFillTarget();
+    worked.fill += (target - worked.fill) * Math.min(1, (p.deltaTime / 1000) * 5);
+    if (Math.abs(target - worked.fill) < 0.02) worked.fill = target;
+
+    const GX = (t: number) => M.l + (t / D.T) * (p.width - M.l - M.r);
+    const GY = (v: number) => {
+      const span = D.vMax - D.vMin;
+      return p.height - M.b - ((v - D.vMin) / span) * (p.height - M.t - M.b);
+    };
+
+    p.background(C.paper);
+    p.textFont('DM Sans');
+
+    /* grid + axes (time axis sits at v = 0) */
+    p.stroke(41, 89, 144, 30);
+    p.strokeWeight(1);
+    for (let t = 0; t <= D.T; t += 1) p.line(GX(t), M.t, GX(t), p.height - M.b);
+    p.stroke(C.navy);
+    p.strokeWeight(2);
+    p.line(M.l, GY(0), p.width - M.r, GY(0));
+    p.line(M.l, M.t, M.l, p.height - M.b);
+    p.noStroke();
+    p.fill(C.dark);
+    p.textSize(12);
+    p.textAlign(p.CENTER, p.TOP);
+    for (let t = 0; t <= D.T; t += 1) p.text(`${t}`, GX(t), p.height - M.b + 8);
+    chip(p, 'v (m/s)', M.l + 6, M.t - 24, 'left', 12.5, C.dark);
+    chip(p, 't (s)', p.width - M.r - 4, GY(0) + 8, 'right', 12.5, C.dark);
+
+    /* shaded signed area up to the eased fill boundary */
+    if (worked.fill > 0.001) {
+      p.noStroke();
+      const n = Math.max(2, Math.floor(worked.fill * 40));
+      for (let i = 0; i < n; i++) {
+        const t1 = (i / n) * worked.fill;
+        const t2 = ((i + 1) / n) * worked.fill;
+        const vv = D.v((t1 + t2) / 2);
+        p.fill(vv >= 0 ? p.color(22, 163, 74, 70) : p.color(225, 29, 72, 70));
+        p.rect(GX(t1), Math.min(GY(0), GY(vv)), GX(t2) - GX(t1) + 0.7, Math.abs(GY(vv) - GY(0)));
+      }
+    }
+
+    /* the full v-t curve */
+    p.noFill();
+    p.stroke(C.dark);
+    p.strokeWeight(3);
+    p.beginShape();
+    for (let i = 0; i <= 300; i++) {
+      const t = (i / 300) * D.T;
+      p.vertex(GX(t), GY(D.v(t)));
+    }
+    p.endShape();
+
+    /* revealed slope triangles + flat-segment highlights */
+    let answer = '';
+    for (const s of workedRevealedSteps()) {
+      if (s.answer) answer = s.answer;
+      if (s.flatSeg) {
+        const [a, b] = s.flatSeg;
+        p.stroke(C.amber);
+        p.strokeWeight(5);
+        p.line(GX(a), GY(D.v((a + b) / 2)), GX(b), GY(D.v((a + b) / 2)));
+        chip(p, 'slope 0', GX((a + b) / 2), GY(D.v((a + b) / 2)) - 30, 'center', 12.5, C.amber);
+      }
+      if (s.slopeTri) {
+        const [a, b] = s.slopeTri;
+        const va = D.v(a), vb = D.v(b);
+        p.stroke(C.red);
+        p.strokeWeight(2);
+        p.drawingContext.setLineDash([5, 5]);
+        p.line(GX(a), GY(va), GX(b), GY(va));   // run
+        p.line(GX(b), GY(va), GX(b), GY(vb));   // rise
+        p.drawingContext.setLineDash([]);
+        chip(p, `run ${b - a} s`, GX((a + b) / 2), GY(va) + 6, 'center', 12, C.red);
+        const nearRight = b > D.T * 0.7;
+        chip(
+          p, `rise ${vb - va} m/s`,
+          nearRight ? GX(b) - 8 : GX(b) + 8, GY((va + vb) / 2),
+          nearRight ? 'right' : 'left', 12, C.red
+        );
+      }
+    }
+
+    /* answer chip */
+    if (answer) chip(p, answer, p.width - M.r - 4, 8, 'right', 17, C.green);
+    chip(p, `step ${worked.idx + 1} / ${D.steps.length}`, M.l + 8, 8, 'left', 13, C.dark);
+  };
+};
+
+function workedResetFill() {
+  worked.fill = workedFillTarget();
+}
+
+function workedWire() {
+  const sel = document.getElementById('mgwPick') as HTMLSelectElement;
+  sel.addEventListener('change', () => {
+    worked.key = sel.value;
+    worked.idx = 0;
+    worked.fill = 0;
+    workedRenderSteps();
+  });
+  document.getElementById('mgwNext')!.addEventListener('click', () => {
+    if (worked.idx < WORKED[worked.key].steps.length - 1) {
+      worked.idx++;
+      workedRenderSteps();
+    }
+  });
+  document.getElementById('mgwPrev')!.addEventListener('click', () => {
+    if (worked.idx > 0) {
+      worked.idx--;
+      workedResetFill();
+      workedRenderSteps();
+    }
+  });
+  document.getElementById('mgwReset')!.addEventListener('click', () => {
+    worked.idx = 0;
+    worked.fill = 0;
+    workedRenderSteps();
+  });
+  workedRenderSteps();
+}
+
+/* ═════════ Pane 7 · Homework (reveal toggles) ═════════ */
+function homeworkWire() {
+  document.querySelectorAll<HTMLButtonElement>('#mgHwk .hw-reveal').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const ans = btn.nextElementSibling as HTMLElement | null;
+      if (!ans) return;
+      const shown = ans.classList.toggle('shown');
+      btn.textContent = shown ? 'Hide solution' : 'Show solution';
+    });
+  });
+}
+
 /* ═════════ pane switching + init ═════════ */
-const paneIds = ['mgSlope', 'mgPath', 'mgArea', 'mgLadder', 'mgQuiz'] as const;
+const paneIds = ['mgSlope', 'mgPath', 'mgArea', 'mgLadder', 'mgQuiz', 'mgWorked', 'mgHwk'] as const;
 type PaneId = (typeof paneIds)[number];
 let currentPane: PaneId = 'mgSlope';
 const sketches: Partial<Record<PaneId, p5>> = {};
@@ -799,6 +1064,7 @@ const paneSketch: Partial<Record<PaneId, { sketch: (p: p5) => void; holder: stri
   mgPath: { sketch: pathSketch, holder: 'mgpCanvas' },
   mgArea: { sketch: areaSketch, holder: 'mgaCanvas' },
   mgLadder: { sketch: ladderSketch, holder: 'mglCanvas' },
+  mgWorked: { sketch: workedSketch, holder: 'mgwCanvas' },
 };
 
 function activatePane(id: PaneId) {
@@ -827,6 +1093,8 @@ export function graphsScreenInit() {
     areaWire();
     ladderWire();
     mgqWire();
+    workedWire();
+    homeworkWire();
     document.querySelectorAll<HTMLButtonElement>('#mgTabs .rev-chip').forEach((b) => {
       b.addEventListener('click', () => activatePane(b.dataset.pane as PaneId));
     });

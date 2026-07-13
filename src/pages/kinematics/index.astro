@@ -283,6 +283,8 @@ import '../../styles/kinematics.css';
       <button class="rev-chip" data-pane="mgArea">3 · Area Builder</button>
       <button class="rev-chip" data-pane="mgLadder">4 · Shape Ladder</button>
       <button class="rev-chip" data-pane="mgQuiz">5 · Rapid Fire</button>
+      <button class="rev-chip" data-pane="mgWorked">6 · Worked Examples</button>
+      <button class="rev-chip" data-pane="mgHwk">7 · Homework</button>
     </div>
 
     <!-- ── Pane 1 · Slope Reader ── -->
@@ -389,6 +391,132 @@ import '../../styles/kinematics.css';
         <div class="rev-nav">
           <button class="btn-reset" id="mgqPrev">‹ Previous</button>
           <button class="btn-reset" id="mgqNext">Next ›</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Pane 6 · Worked Examples ── -->
+    <div class="grav-pane" id="mgWorked">
+      <div class="kin-controls">
+        <div class="kin-ctrl" style="flex:2;">
+          <label>Worked example <span class="kin-val">step through the solution</span></label>
+          <select id="mgwPick">
+            <option value="slope" selected>L6 · Read acceleration from a v-t graph</option>
+            <option value="tri">L7 · Displacement from a v-t triangle</option>
+            <option value="sign">L7 · Sign of area: distance vs displacement</option>
+            <option value="ramp">L7 · Mixed problem: ramp then cruise</option>
+            <option value="conv">L7 · Convert a v-t line into a and x</option>
+          </select>
+        </div>
+        <div class="kin-btns">
+          <button class="btn-reset" id="mgwPrev">‹ Back</button>
+          <button class="check-btn" id="mgwNext">Next step ›</button>
+          <button class="btn-reset" id="mgwReset">↺ Restart</button>
+        </div>
+      </div>
+      <div class="kin-canvas" id="mgwCanvas"></div>
+      <div class="rev-card">
+        <div class="rf-tag" id="mgwTag"></div>
+        <div class="rf-text" id="mgwProblem"></div>
+        <div id="mgwSteps" style="margin-top:8px;"></div>
+      </div>
+    </div>
+
+    <!-- ── Pane 7 · Homework ── -->
+    <div class="grav-pane" id="mgHwk">
+      <div class="rev-keybox">
+        Homework for both graph lectures. <b>Sketch first, then reveal</b> - graphs reward the student
+        who draws before they compute. Slope going down the chain, area going up.
+      </div>
+
+      <h3 class="hw-head">Lecture 6 · Reading slopes</h3>
+
+      <div class="rev-card">
+        <div class="rf-tag">Lecture 6 · Q1 · Sketch</div>
+        <div class="rf-text">Sketch the x-t and v-t graphs for a ball thrown straight up and caught at the same height. Mark the highest point on each.</div>
+        <button class="check-btn hw-reveal">Show solution</button>
+        <div class="rf-ans rev-step">
+          <b>x-t:</b> a downward parabola - position rises, curves over at the top, then falls back to the start height.
+          The <b>highest point of the parabola</b> is the peak of the throw.<br>
+          <b>v-t:</b> a straight line of slope −g, starting at +u, passing through zero, ending at −u.
+          The highest point of the flight is where this line <b>crosses the time axis (v = 0)</b> - not the top of any curve.
+        </div>
+      </div>
+
+      <div class="rev-card">
+        <div class="rf-tag">Lecture 6 · Q2</div>
+        <div class="rf-text">An x-t graph is a straight line from (0, 2 m) to (4 s, 10 m). Find the velocity. Is the motion uniform?</div>
+        <button class="check-btn hw-reveal">Show solution</button>
+        <div class="rf-ans rev-step">
+          v = slope = (10 − 2) / (4 − 0) = <b>2 m/s</b>.
+          The graph is a straight line, so the slope is constant everywhere: <b>yes, uniform velocity</b>.
+        </div>
+      </div>
+
+      <div class="rev-card">
+        <div class="rf-tag">Lecture 6 · Q3</div>
+        <div class="rf-text">A v-t graph rises 0 → 30 m/s in 3 s, then falls 30 → 0 m/s in 6 s. Find the acceleration in each phase (slope only).</div>
+        <button class="check-btn hw-reveal">Show solution</button>
+        <div class="rf-ans rev-step">
+          Phase 1: a = slope = (30 − 0) / 3 = <b>+10 m/s²</b>.<br>
+          Phase 2: a = slope = (0 − 30) / 6 = <b>−5 m/s²</b> (still moving forward, but slowing down).
+        </div>
+      </div>
+
+      <div class="rev-card">
+        <div class="rf-tag">Lecture 6 · Q4 · Conceptual</div>
+        <div class="rf-text">What motion gives a horizontal x-t line? A straight slanted x-t line? A parabolic x-t curve?</div>
+        <button class="check-btn hw-reveal">Show solution</button>
+        <div class="rf-ans rev-step">
+          Horizontal x-t → position not changing → <b>at rest</b>.<br>
+          Straight slanted x-t → equal metres in equal seconds → <b>uniform velocity</b>.<br>
+          Parabolic x-t → slope changing steadily → <b>uniform acceleration</b>.
+        </div>
+      </div>
+
+      <h3 class="hw-head">Lecture 7 · The area method</h3>
+
+      <div class="rev-card">
+        <div class="rf-tag">Lecture 7 · Q1</div>
+        <div class="rf-text">A v-t graph: 0 → 30 m/s over 3 s, then 30 → 0 m/s over 6 s. Find total displacement, total distance, and the acceleration in each phase.</div>
+        <button class="check-btn hw-reveal">Show solution</button>
+        <div class="rf-ans rev-step">
+          Displacement = area = ½ · (base 9 s) · (height 30) = <b>135 m</b>.
+          The graph never dips below the axis, so <b>distance = 135 m</b> too.<br>
+          Acceleration: phase 1 = 30/3 = <b>+10 m/s²</b>; phase 2 = −30/6 = <b>−5 m/s²</b>.
+        </div>
+      </div>
+
+      <div class="rev-card">
+        <div class="rf-tag">Lecture 7 · Q2</div>
+        <div class="rf-text">A v-t graph spends 4 s at +6 m/s, then 3 s at −4 m/s. Find the displacement and the distance.</div>
+        <button class="check-btn hw-reveal">Show solution</button>
+        <div class="rf-ans rev-step">
+          Area above = 6 · 4 = +24 m. Area below = 4 · 3 = −12 m.<br>
+          Displacement = 24 − 12 = <b>12 m</b> (signs subtract).
+          Distance = 24 + 12 = <b>36 m</b> (magnitudes add).
+        </div>
+      </div>
+
+      <div class="rev-card">
+        <div class="rf-tag">Lecture 7 · Q3</div>
+        <div class="rf-text">An a-t graph is constant at 3 m/s² for 4 s (body starts from rest). Find the change in velocity and the displacement.</div>
+        <button class="check-btn hw-reveal">Show solution</button>
+        <div class="rf-ans rev-step">
+          Δv = area under a-t = 3 · 4 = <b>12 m/s</b>. From rest, final velocity = 12 m/s.<br>
+          That builds a v-t line 0 → 12 m/s over 4 s, whose area is the displacement:
+          ½ · 4 · 12 = <b>24 m</b>.
+        </div>
+      </div>
+
+      <div class="rev-card">
+        <div class="rf-tag">Lecture 7 · Q4 · Conceptual</div>
+        <div class="rf-text">On a curved x-t graph, how do you find the instant of maximum speed? Why is "highest point" the wrong answer?</div>
+        <button class="check-btn hw-reveal">Show solution</button>
+        <div class="rf-ans rev-step">
+          Maximum speed is where the x-t curve is <b>steepest</b> - largest magnitude of slope.
+          "Highest point" is the largest <b>value of x</b>, which measures how far the object is, not how fast.
+          At a smooth highest point the slope is actually <b>zero</b> (momentarily at rest), the opposite of fast.
         </div>
       </div>
     </div>

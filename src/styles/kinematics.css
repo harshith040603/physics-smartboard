@@ -181,6 +181,26 @@
 .grav-pane{display:none;}
 .grav-pane.active{display:block;animation:fade .35s ease;}
 
+/* ── Motion Graphs · homework + worked-example steps ── */
+.hw-head{
+  font-family:'Bricolage Grotesque';font-weight:800;font-size:20px;
+  color:var(--nine-navy);letter-spacing:-.4px;margin:24px 0 14px;
+}
+.hw-head:first-child{margin-top:6px;}
+.hw-reveal{margin-top:14px;}
+.mgw-step{
+  margin:10px 0;padding:13px 18px;border-radius:12px;background:var(--paper-2);
+  font-size:16.5px;line-height:1.55;color:var(--ink);
+  border-left:4px solid rgba(41,89,144,.3);animation:fade .3s ease;
+}
+.mgw-step.latest{
+  background:rgba(0,160,227,.08);border-left-color:var(--nine-accent);
+  color:var(--nine-navy);font-weight:600;
+}
+.mgw-step.answer{
+  background:rgba(22,163,74,.1);border-left-color:var(--green);font-weight:700;color:var(--nine-navy);
+}
+
 /* ── Practice · 50 questions ── */
 .pr-grid{display:flex;flex-wrap:wrap;gap:8px;}
 .pr-num{
