@@ -22,12 +22,25 @@ function setSection(sec: string) {
   updateCount();
 }
 
+function gradeOptions(card: HTMLElement, on: boolean) {
+  const opts = card.querySelectorAll<HTMLElement>('.pyq-opt');
+  opts.forEach((opt) => {
+    opt.classList.remove('correct', 'wrong');
+    if (!on) return;
+    const isCorrect = opt.dataset.correct === 'true';
+    const isSelected = opt.classList.contains('selected');
+    if (isCorrect) opt.classList.add('correct');
+    else if (isSelected) opt.classList.add('wrong');
+  });
+}
+
 function toggleCard(card: HTMLElement, show?: boolean) {
   const ans = card.querySelector<HTMLElement>('.pyq-answer');
   const btn = card.querySelector<HTMLButtonElement>('.pyq-reveal');
   if (!ans || !btn) return;
   const open = show === undefined ? !card.classList.contains('open') : show;
   card.classList.toggle('open', open);
+  gradeOptions(card, open);
   btn.textContent = open ? 'Hide answer' : 'Check answer';
 }
 
@@ -42,6 +55,16 @@ export function pyqViewerInit() {
   document.querySelectorAll<HTMLElement>('.pyq-card').forEach((card) => {
     const btn = card.querySelector<HTMLButtonElement>('.pyq-reveal');
     btn?.addEventListener('click', () => toggleCard(card));
+
+    const opts = card.querySelectorAll<HTMLElement>('.pyq-opt');
+    opts.forEach((opt) => {
+      opt.addEventListener('click', () => {
+        // pick this option (single-select); regrade if the answer is showing
+        opts.forEach((o) => o.classList.remove('selected'));
+        opt.classList.add('selected');
+        if (card.classList.contains('open')) gradeOptions(card, true);
+      });
+    });
   });
 
   const allBtn = document.getElementById('pyqRevealAll');

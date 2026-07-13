@@ -48,9 +48,14 @@ import { PYQS, SECTIONS } from '../../data/pyq-units-dimensions';
           )}
 
           {qn.options && (
-            <ul class="pyq-opts">
-              {qn.options.map((opt) => <li>{opt}</li>)}
-            </ul>
+            <div class="pyq-opts">
+              {qn.options.map((opt) => (
+                <button class="pyq-opt" type="button" data-correct={opt.startsWith(qn.answer) ? 'true' : undefined}>
+                  <span class="pyq-opt-mark"></span>
+                  <span class="pyq-opt-text">{opt}</span>
+                </button>
+              ))}
+            </div>
           )}
 
           <button class="pyq-reveal">Check answer</button>
@@ -95,12 +100,16 @@ import { PYQS, SECTIONS } from '../../data/pyq-units-dimensions';
   .pyq-allbtn:active { transform: scale(.96); }
   .pyq-count { font-size: 13px; color: #7185a0; font-weight: 600; margin-bottom: 20px; }
 
-  .pyq-list { display: flex; flex-direction: column; gap: 18px; }
+  .pyq-list {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 18px; align-items: start;
+  }
   .pyq-card {
     background: #fff; border: 1.5px solid #e4ebf3; border-radius: 18px;
     padding: 22px 24px; box-shadow: var(--shadow);
   }
   .pyq-card.hide { display: none; }
+  @media (max-width: 900px) { .pyq-list { grid-template-columns: 1fr; } }
   .pyq-top {
     display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 12px;
   }
@@ -125,11 +134,28 @@ import { PYQS, SECTIONS } from '../../data/pyq-units-dimensions';
     border: 1px solid #dde6ef; padding: 8px 14px; color: #33475f; font-weight: 500;
   }
   .pyq-table td:first-child { width: 55%; }
-  .pyq-opts { list-style: none; display: grid; gap: 7px; margin: 0 0 16px; padding: 0; }
-  .pyq-opts li {
-    font-size: 15px; color: #33475f; font-weight: 500;
-    background: #f5f8fc; border-radius: 10px; padding: 9px 14px;
+  .pyq-opts { display: grid; gap: 8px; margin: 0 0 16px; padding: 0; }
+  .pyq-opt {
+    display: flex; align-items: center; gap: 12px; width: 100%; text-align: left;
+    font-family: 'DM Sans', sans-serif; font-size: 15px; color: #33475f; font-weight: 500;
+    background: #f5f8fc; border: 1.5px solid transparent; border-radius: 10px;
+    padding: 11px 14px; cursor: pointer; transition: background .15s, border-color .15s;
   }
+  .pyq-opt:hover { background: #eaf1fa; border-color: #cfe0f0; }
+  .pyq-opt-mark {
+    flex-shrink: 0; width: 18px; height: 18px; border-radius: 50%;
+    border: 2px solid #b6c6d8; transition: border-color .15s, background .15s;
+  }
+  .pyq-opt.selected { border-color: var(--nine-accent); background: #e8f4fc; }
+  .pyq-opt.selected .pyq-opt-mark {
+    border-color: var(--nine-accent);
+    background: radial-gradient(circle, var(--nine-accent) 0 42%, transparent 46%);
+  }
+  /* graded states (added on Check answer) */
+  .pyq-opt.correct { border-color: #38b676; background: #e8f7ee; color: #14603c; }
+  .pyq-opt.correct .pyq-opt-mark { border-color: #38b676; background: #38b676; }
+  .pyq-opt.wrong { border-color: #e2698a; background: #fdecf1; color: #9a3450; }
+  .pyq-opt.wrong .pyq-opt-mark { border-color: #e2698a; background: #e2698a; }
   .pyq-reveal {
     font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 14px;
     padding: 10px 20px; border-radius: 12px; cursor: pointer;
