@@ -64,6 +64,7 @@ export const chapterResources: ChapterResources[] = [
     notes: { label: 'Class Notes', url: '/downloads/kinematics/notes.pdf' },
     worksheets: [
       { label: 'Practice 50 Questions', url: '/downloads/kinematics/worksheet-1.pdf' },
+      { label: 'Combined Practice Sheet', url: '/downloads/kinematics/worksheet-2.pdf' },
     ],
   },
 ];
