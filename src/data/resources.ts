@@ -71,6 +71,7 @@ export const chapterResources: ChapterResources[] = [
       { label: 'Practice 50 Questions', url: '/downloads/kinematics/worksheet-1.pdf' },
       { label: 'Combined Practice Sheet', url: '/downloads/kinematics/worksheet-2.pdf' },
       { label: 'Motion Graphs Worksheet', url: '/downloads/kinematics/worksheet-3.pdf' },
+      { label: 'Motion Under Gravity Worksheet', url: '/downloads/kinematics/worksheet-4.pdf' },
     ],
   },
 ];
