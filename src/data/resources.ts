@@ -3,6 +3,11 @@ export interface Worksheet {
   url: string;
 }
 
+export const satPapers: Worksheet[] = [
+  { label: 'Set A - Physics Test', url: '/downloads/sat-papers/set-a.pdf' },
+  { label: 'Set B - Physics Test', url: '/downloads/sat-papers/set-b.pdf' },
+];
+
 export interface ChapterResources {
   slug: string;
   num: string;

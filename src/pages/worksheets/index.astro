@@ -1,6 +1,6 @@
 ---
 import StudioLayout from '../../layouts/StudioLayout.astro';
-import { chapterResources } from '../../data/resources';
+import { chapterResources, satPapers } from '../../data/resources';
 ---
 <StudioLayout title="Worksheets - Physics with Harshith" chapterChip="Class 11 · Physics">
   <section class="screen active">
@@ -40,5 +40,32 @@ import { chapterResources } from '../../data/resources';
         </div>
       ))}
     </div>
+
+    <h2 class="res-section-head">SAT <span class="res-accent">Papers</span></h2>
+    <div class="res-grid">
+      <div class="res-card">
+        <h3>Physics <span class="res-accent">Tests</span></h3>
+        {satPapers.map((paper) => (
+          <a class="res-row" href={paper.url} target="_blank" rel="noopener">
+            <span class="res-ic res-ic-notes">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13l2 2 4-4"/></svg>
+            </span>
+            <span class="res-label">{paper.label}</span>
+            <span class="res-dl">Download ↓</span>
+          </a>
+        ))}
+      </div>
+    </div>
   </section>
 </StudioLayout>
+
+<style>
+  .res-section-head {
+    font-family: 'Bricolage Grotesque';
+    font-weight: 800;
+    font-size: clamp(24px, 3vw, 34px);
+    color: var(--nine-navy);
+    letter-spacing: -0.8px;
+    margin: 44px 0 20px;
+  }
+</style>
