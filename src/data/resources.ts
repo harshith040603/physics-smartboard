@@ -72,6 +72,7 @@ export const chapterResources: ChapterResources[] = [
       { label: 'Combined Practice Sheet', url: '/downloads/kinematics/worksheet-2.pdf' },
       { label: 'Motion Graphs Worksheet', url: '/downloads/kinematics/worksheet-3.pdf' },
       { label: 'Motion Under Gravity Worksheet', url: '/downloads/kinematics/worksheet-4.pdf' },
+      { label: 'Non-Uniform Acceleration Worksheet', url: '/downloads/kinematics/worksheet-5.pdf' },
     ],
   },
 ];
