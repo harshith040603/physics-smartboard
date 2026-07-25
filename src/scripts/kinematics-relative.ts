@@ -422,16 +422,23 @@ const frameSketch = (p: p5) => {
     const vAshown = frame.view === 'B' ? relV : frame.vA;
     const vBshown = frame.view === 'B' ? 0 : frame.vB;
 
-    /* gap bracket */
+    /* gap bracket - between the cars, well clear of the header label */
     const gapNow = xb - xa;
     if (gapNow > 1) {
-      const y = top - 22;
+      const ax = SX(xa), bx = SX(xb);
+      const bry = (top + baseY) / 2 + 6;      // mid-height of the road band
       p.stroke(C.amber);
-      p.strokeWeight(2);
-      p.line(SX(xa), y, SX(xb), y);
-      p.line(SX(xa), y - 6, SX(xa), y + 6);
-      p.line(SX(xb), y - 6, SX(xb), y + 6);
-      chip(p, `gap = ${gapNow.toFixed(0)} m`, (SX(xa) + SX(xb)) / 2, y - 22, 'center', 13.5, C.amber);
+      p.strokeWeight(2.6);
+      p.line(ax, bry, bx, bry);
+      p.line(ax, bry - 8, ax, bry + 8);
+      p.line(bx, bry - 8, bx, bry + 8);
+      /* dashed drop-lines pointing down at each car */
+      p.strokeWeight(1.3);
+      p.drawingContext.setLineDash([4, 5]);
+      p.line(ax, bry + 8, ax, baseY - 46);
+      p.line(bx, bry + 8, bx, baseY - 46);
+      p.drawingContext.setLineDash([]);
+      chip(p, `gap = ${gapNow.toFixed(0)} m`, (ax + bx) / 2, bry - 30, 'center', 16, C.amber);
     }
 
     /* cars - in B frame, B is drawn pinned & greyed to read as "at rest" */
