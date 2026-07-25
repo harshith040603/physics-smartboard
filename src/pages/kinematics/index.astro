@@ -37,6 +37,14 @@ import '../../styles/kinematics.css';
         <span class="tile-go">Start ›</span>
       </div>
 
+      <div class="tile" onclick="go('relative')">
+        <div class="tile-num">04</div>
+        <div class="tile-icon ic-sort"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h13"/><path d="M13 5l3 3-3 3"/><path d="M21 16H8"/><path d="M11 13l-3 3 3 3"/></svg></div>
+        <h3>Relative Motion</h3>
+        <p>v_AB = v_A − v_B. Read the subscripts, jump into one car's frame, and watch a chase become one line of algebra.</p>
+        <span class="tile-go">Start ›</span>
+      </div>
+
     </div>
   </section>
 
@@ -517,6 +525,164 @@ import '../../styles/kinematics.css';
           Maximum speed is where the x-t curve is <b>steepest</b> - largest magnitude of slope.
           "Highest point" is the largest <b>value of x</b>, which measures how far the object is, not how fast.
           At a smooth highest point the slope is actually <b>zero</b> (momentarily at rest), the opposite of fast.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========== RELATIVE MOTION (1D) =========== -->
+  <section id="relative" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">Relative Motion</div>
+        <div class="scr-sub">One equation runs the whole show: v_AB = v_A − v_B, the velocity of A as B sees it. Keep the signs honest.</div>
+      </div>
+    </div>
+
+    <div class="rev-chips" id="relTabs">
+      <button class="rev-chip active" data-pane="relRule">1 · The Rule</button>
+      <button class="rev-chip" data-pane="relDir">2 · Same vs Opposite</button>
+      <button class="rev-chip" data-pane="relFrame">3 · Frame Switch</button>
+      <button class="rev-chip" data-pane="relWork">4 · Worked Problems</button>
+      <button class="rev-chip" data-pane="relQuiz">5 · Rapid Fire</button>
+    </div>
+
+    <!-- ── Pane 1 · The Rule ── -->
+    <div class="grav-pane active" id="relRule">
+      <div class="kin-controls">
+        <div class="kin-ctrl">
+          <label>Velocity of A <span class="kin-val" id="relVAVal">+60 m/s</span></label>
+          <input type="range" id="relVA" min="-60" max="60" step="5" value="60">
+        </div>
+        <div class="kin-ctrl">
+          <label>Velocity of B <span class="kin-val" id="relVBVal">+40 m/s</span></label>
+          <input type="range" id="relVB" min="-60" max="60" step="5" value="40">
+        </div>
+        <div class="kin-btns">
+          <button class="check-btn" id="relPlay">⏸ Pause</button>
+          <button class="btn-reset" id="relReset">↺ Reset</button>
+        </div>
+      </div>
+      <div class="kin-canvas" id="relRuleCanvas"></div>
+      <div class="rev-readouts" style="margin-top:14px;">
+        <div class="rev-readout" id="relRuleEq"></div>
+        <div class="rev-readout" id="relRuleEq2"></div>
+      </div>
+      <div class="rev-keybox" id="relRuleSay" style="margin-top:12px;"></div>
+      <div class="rev-keybox" style="margin-top:12px;">
+        <b>Subscript grammar is the whole battle.</b> v<sub>AB</sub> = "velocity of A relative to B" = v<sub>A</sub> − v<sub>B</sub>.
+        Swap the subscripts and you flip the sign: v<sub>AB</sub> = −v<sub>BA</sub>. Drag the sliders below zero to send a car left -
+        the one subtraction handles every direction on its own.
+      </div>
+    </div>
+
+    <!-- ── Pane 2 · Same vs Opposite ── -->
+    <div class="grav-pane" id="relDir">
+      <div class="kin-controls">
+        <div class="kin-ctrl">
+          <label>Directions <span class="kin-val">same road</span></label>
+          <select id="relDirMode">
+            <option value="opposite" selected>Opposite (head-on)</option>
+            <option value="same">Same direction</option>
+          </select>
+        </div>
+        <div class="kin-ctrl">
+          <label>Speed of A <span class="kin-val" id="relDirAVal">60 m/s</span></label>
+          <input type="range" id="relDirA" min="20" max="80" step="5" value="60">
+        </div>
+        <div class="kin-ctrl">
+          <label>Speed of B <span class="kin-val" id="relDirBVal">40 m/s</span></label>
+          <input type="range" id="relDirB" min="20" max="80" step="5" value="40">
+        </div>
+        <div class="kin-btns">
+          <button class="btn-reset" id="relDirReset">↺ Replay</button>
+        </div>
+      </div>
+      <div class="kin-canvas" id="relDirCanvas"></div>
+      <div class="rev-readouts" style="margin-top:14px;">
+        <div class="rev-readout" id="relDirEq"></div>
+      </div>
+      <div class="rev-keybox" id="relDirNote" style="margin-top:12px;"></div>
+      <div class="rev-keybox" style="margin-top:12px;">
+        <b>One rule, not two.</b> "Same direction subtracts, opposite adds" are not two facts to memorise -
+        they both fall straight out of v<sub>A</sub> − v<sub>B</sub> once the signs are right. Flip the dropdown and watch the same
+        subtraction do both jobs.
+      </div>
+    </div>
+
+    <!-- ── Pane 3 · Frame Switch ── -->
+    <div class="grav-pane" id="relFrame">
+      <div class="kin-controls">
+        <div class="kin-ctrl">
+          <label>Speed of A (behind) <span class="kin-val" id="relFVAVal">30 m/s</span></label>
+          <input type="range" id="relFVA" min="10" max="50" step="5" value="30">
+        </div>
+        <div class="kin-ctrl">
+          <label>Speed of B (ahead) <span class="kin-val" id="relFVBVal">20 m/s</span></label>
+          <input type="range" id="relFVB" min="5" max="45" step="5" value="20">
+        </div>
+        <div class="kin-ctrl">
+          <label>Head start of B <span class="kin-val" id="relFGapVal">100 m</span></label>
+          <input type="range" id="relFGap" min="40" max="160" step="10" value="100">
+        </div>
+        <div class="kin-btns">
+          <button class="duel-btn" id="relFrameToggle">View: Ground ⇄ B's frame</button>
+          <button class="check-btn" id="relFPlay">▶ Run</button>
+          <button class="btn-reset" id="relFPause">⏸ Pause</button>
+          <button class="btn-reset" id="relFReset">↺ Reset</button>
+        </div>
+      </div>
+      <div class="kin-canvas" id="relFrameCanvas"></div>
+      <div class="rev-keybox" id="relFCatch" style="margin-top:14px;"></div>
+      <div class="rev-keybox" style="margin-top:12px;">
+        <b>The frame-switch is the marks-saver.</b> Run the chase, then hit the frame toggle mid-motion.
+        In B's frame B is nailed to the spot and A simply approaches at v<sub>AB</sub> = v<sub>A</sub> − v<sub>B</sub> -
+        a two-body chase collapses into one body closing a fixed gap. t = gap / v<sub>AB</sub>, one line.
+      </div>
+    </div>
+
+    <!-- ── Pane 4 · Worked Problems ── -->
+    <div class="grav-pane" id="relWork">
+      <div class="kin-controls">
+        <div class="kin-ctrl" style="flex:2;">
+          <label>Worked example <span class="kin-val">step through it</span></label>
+          <select id="relwPick">
+            <option value="trains" selected>Two trains approaching (opposite)</option>
+            <option value="chase">Police chases a thief (overtaking)</option>
+            <option value="river">Swimmer in a river (1D preview)</option>
+          </select>
+        </div>
+        <div class="kin-btns">
+          <button class="btn-reset" id="relwPrev">‹ Back</button>
+          <button class="check-btn" id="relwNext">Next step ›</button>
+          <button class="btn-reset" id="relwReset">↺ Restart</button>
+        </div>
+      </div>
+      <div class="rev-card">
+        <div class="rf-tag" id="relwTag"></div>
+        <div class="rf-text" id="relwProblem"></div>
+        <div id="relwSteps" style="margin-top:8px;"></div>
+      </div>
+      <div class="rev-keybox" style="margin-top:12px;">
+        Problem 3 is deliberate: "velocity relative to water" + "velocity of water relative to ground" = "velocity relative to ground".
+        In 1D it is plain addition; next phase it becomes vector addition - the river-boat problem. Same idea, more dimensions.
+      </div>
+    </div>
+
+    <!-- ── Pane 5 · Rapid Fire ── -->
+    <div class="grav-pane" id="relQuiz">
+      <div class="rev-keybox">
+        Eight quick readings, all sign discipline and subscript grammar. Every one is a guaranteed-marks exam question.
+      </div>
+      <div class="rev-card">
+        <div class="rf-tag" id="relqTag"></div>
+        <div class="rev-q" id="relqQ"></div>
+        <div class="rev-opts" id="relqOpts"></div>
+        <div class="rev-feedback" id="relqFb"></div>
+        <div class="rev-nav">
+          <button class="btn-reset" id="relqPrev">‹ Previous</button>
+          <button class="btn-reset" id="relqNext">Next ›</button>
         </div>
       </div>
     </div>

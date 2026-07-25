@@ -10,6 +10,7 @@ import { revisionScreenInit } from './kinematics-revision';
 import { practiceScreenInit } from './kinematics-practice';
 import { gravityScreenInit } from './kinematics-gravity';
 import { graphsScreenInit } from './kinematics-graphs';
+import { relativeScreenInit } from './kinematics-relative';
 
 /* ───────── brand palette (matches global.css tokens) ───────── */
 const C = {
@@ -273,6 +274,7 @@ function wireControls() {
   practice50: practiceScreenInit,
   gravity: gravityScreenInit,
   graphs: graphsScreenInit,
+  relative: relativeScreenInit,
 };
 
 /* ───────── boot ───────── */
