@@ -27,4 +27,13 @@ export const chapters: Chapter[] = [
     status: 'ready',
     activities: 5,
   },
+  {
+    slug: 'periodic-classification',
+    num: '03',
+    title: 'Periodic ',
+    titleAccent: 'Classification',
+    blurb: 'Triads, octaves, Mendeleev to Moseley - trace how the periodic table was built, then explore blocks, groups and IUPAC names.',
+    status: 'ready',
+    activities: 9,
+  },
 ];

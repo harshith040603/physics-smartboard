@@ -1,0 +1,225 @@
+/* ═══════════ Periodic Classification - chapter styles ═══════════
+   Reuses global.css tokens only. Layout helpers specific to this chapter. */
+
+/* ── shared section intro text ── */
+.chem-lead{
+  font-size:16px;color:var(--nine-deep);font-weight:500;line-height:1.6;
+  max-width:820px;margin-bottom:22px;
+}
+.chem-lead b{color:var(--nine-dark);}
+.chem-note{
+  margin-top:20px;background:var(--paper-2);border-left:5px solid var(--nine-accent);
+  border-radius:0 12px 12px 0;padding:16px 22px;font-size:15px;font-weight:500;
+  color:var(--nine-deep);line-height:1.55;
+}
+.chem-note b{color:var(--nine-dark);}
+.chem-sublabel{
+  font-family:'Bricolage Grotesque';font-weight:800;font-size:13px;letter-spacing:2px;
+  text-transform:uppercase;color:#7689a0;margin:26px 0 12px;
+}
+
+/* ════ METAL vs NON-METAL COMPARISON ════ */
+.cmp-table{
+  background:#fff;border-radius:18px;overflow:hidden;
+  box-shadow:var(--shadow);border:1px solid rgba(41,89,144,.08);
+}
+.cmp-head{display:grid;grid-template-columns:1fr 1fr;}
+.cmp-head>div{
+  padding:15px 22px;color:#fff;font-family:'Bricolage Grotesque';
+  font-weight:800;font-size:19px;letter-spacing:.3px;
+}
+.cmp-head .metal{background:var(--nine-dark);}
+.cmp-head .nonmetal{background:var(--nine-accent);}
+.cmp-row{display:grid;grid-template-columns:1fr 1fr;}
+.cmp-row>div{
+  padding:13px 22px;border-bottom:1px dashed rgba(41,89,144,.13);
+  font-weight:500;font-size:15.5px;color:var(--ink);line-height:1.4;
+}
+.cmp-row>div:first-child{border-right:1px dashed rgba(41,89,144,.13);}
+.cmp-row:last-child>div{border-bottom:none;}
+
+/* ════ DÖBEREINER TRIADS ════ */
+.chem-chips{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:22px;}
+.chem-chip{
+  font-family:'Bricolage Grotesque';font-weight:700;font-size:15px;
+  padding:10px 18px;border-radius:999px;border:2px solid rgba(41,89,144,.25);
+  background:#fff;color:var(--nine-deep);cursor:pointer;transition:.15s;
+}
+.chem-chip:hover{border-color:var(--nine-accent);}
+.chem-chip.active{background:var(--nine-dark);color:#fff;border-color:var(--nine-dark);}
+.triad-stage{background:#fff;border-radius:24px;padding:30px;box-shadow:var(--shadow);}
+.triad-elements{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px;}
+.triad-el{
+  background:var(--paper-2);border-radius:16px;padding:22px 12px;text-align:center;
+  border:2px solid transparent;transition:.2s;
+}
+.triad-el.mid{border-color:var(--nine-accent);background:#e2f4fd;}
+.triad-sym{font-family:'Bricolage Grotesque';font-weight:800;font-size:42px;color:var(--nine-navy);line-height:1;}
+.triad-mass{font-family:'Bricolage Grotesque';font-weight:800;font-size:24px;color:var(--nine-accent);margin-top:10px;}
+.triad-role{font-size:12px;color:#7689a0;font-weight:700;margin-top:6px;text-transform:uppercase;letter-spacing:1px;}
+.triad-calc{
+  text-align:center;font-family:'Bricolage Grotesque';font-weight:700;
+  font-size:clamp(20px,3vw,28px);color:var(--nine-deep);margin-bottom:20px;line-height:1.4;
+}
+.triad-calc .hl{color:var(--nine-accent);}
+
+/* ════ NEWLANDS OCTAVES ════ */
+.oct-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-bottom:20px;}
+.oct-cell{
+  background:#fff;border-radius:12px;padding:14px 4px 10px;text-align:center;
+  cursor:pointer;border:2px solid transparent;box-shadow:var(--shadow);transition:.15s;
+}
+.oct-cell:hover{border-color:var(--nine-accent);transform:translateY(-2px);}
+.oct-sym{font-family:'Bricolage Grotesque';font-weight:800;font-size:22px;color:var(--nine-navy);line-height:1;}
+.oct-idx{display:block;font-size:11px;font-weight:700;color:#7689a0;margin-top:5px;}
+.oct-cell.selected{background:var(--nine-dark);}
+.oct-cell.selected .oct-sym{color:#fff;}
+.oct-cell.selected .oct-idx{color:#cfe2f4;}
+.oct-cell.eighth{background:var(--nine-accent);box-shadow:0 0 0 4px rgba(0,160,227,.25),var(--shadow);}
+.oct-cell.eighth .oct-sym{color:#fff;}
+.oct-cell.eighth .oct-idx{color:#eaf6ff;}
+.oct-readout{
+  background:var(--nine-navy);border-radius:16px;padding:20px 24px;text-align:center;
+  font-family:'Bricolage Grotesque';font-weight:700;font-size:clamp(16px,2.4vw,22px);color:#fff;
+}
+.oct-readout .hl{color:var(--nine-accent);}
+.oct-readout.empty{background:var(--paper-2);color:#7689a0;font-weight:600;font-size:16px;}
+
+/* ════ MENDELEEV GROUP TABLE ════ */
+.mnd-scroll{overflow-x:auto;padding-bottom:6px;}
+.mnd-table{display:grid;grid-template-columns:repeat(8,minmax(96px,1fr));gap:10px;min-width:820px;}
+.mnd-col{background:#fff;border-radius:14px;box-shadow:var(--shadow);overflow:hidden;}
+.mnd-col-head{
+  background:var(--nine-navy);color:#fff;text-align:center;padding:10px;
+  font-family:'Bricolage Grotesque';font-weight:800;font-size:18px;letter-spacing:1px;
+}
+.mnd-col-body{
+  padding:12px 8px;text-align:center;font-family:'Bricolage Grotesque';
+  font-weight:700;color:var(--nine-deep);font-size:15px;line-height:2;
+}
+
+/* ════ MENDELEEV PREDICTIONS (reveal) ════ */
+.pred-wrap{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+@media(max-width:900px){.pred-wrap{grid-template-columns:1fr;}}
+.pred-card{background:#fff;border-radius:24px;padding:26px;box-shadow:var(--shadow);}
+.pred-card h3{
+  font-family:'Bricolage Grotesque';font-weight:800;font-size:22px;
+  color:var(--nine-navy);margin-bottom:4px;letter-spacing:-.3px;
+}
+.pred-card .pred-sub{font-size:13px;color:#7689a0;font-weight:600;margin-bottom:16px;}
+.pred-row{
+  display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:12px;align-items:center;
+  padding:11px 0;border-bottom:1px dashed rgba(41,89,144,.13);
+}
+.pred-row:last-child{border-bottom:none;}
+.pred-row.head>div{
+  font-family:'DM Sans';font-weight:700;font-size:11px;letter-spacing:1px;
+  text-transform:uppercase;color:#7689a0;
+}
+.pred-prop{font-weight:600;font-size:14px;color:var(--nine-deep);}
+.pred-pred{font-family:'Bricolage Grotesque';font-weight:800;font-size:17px;color:var(--nine-dark);}
+.pred-found{font-family:'Bricolage Grotesque';font-weight:800;font-size:17px;color:var(--nine-accent);transition:color .25s;}
+.pred-card:not(.revealed) .pred-found{
+  color:transparent;background:rgba(41,89,144,.1);border-radius:6px;user-select:none;
+}
+.pred-card.revealed{border:2px solid rgba(0,160,227,.3);}
+.pred-reveal{margin-top:18px;width:100%;}
+
+/* ════ MOSELEY PLOTS ════ */
+.mos-eq{
+  background:var(--nine-navy);border-radius:18px;padding:22px;text-align:center;
+  margin-bottom:22px;box-shadow:var(--shadow);
+}
+.mos-eq .k{font-size:30px;color:#fff;}
+.mos-plots{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+@media(max-width:640px){.mos-plots{grid-template-columns:1fr;}}
+.mos-plot{background:#fff;border-radius:20px;padding:22px;box-shadow:var(--shadow);text-align:center;}
+.mos-plot svg{width:100%;height:auto;display:block;}
+.mos-cap{font-size:13.5px;color:#7689a0;font-weight:600;margin-top:12px;}
+
+/* ════ MODERN LAW - PERIODS ════ */
+.per-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;margin-bottom:22px;}
+.per-cell{background:#fff;border-radius:14px;box-shadow:var(--shadow);overflow:hidden;text-align:center;}
+.per-num{background:var(--nine-navy);color:#fff;padding:8px;font-family:'Bricolage Grotesque';font-weight:800;font-size:15px;letter-spacing:.5px;}
+.per-count{padding:16px 8px;font-family:'Bricolage Grotesque';font-weight:800;font-size:28px;color:var(--nine-accent);}
+.per-desc{
+  display:flex;align-items:baseline;justify-content:space-between;gap:14px;
+  background:#fff;border-radius:12px;box-shadow:var(--shadow);
+  padding:13px 20px;margin-bottom:9px;
+}
+.per-desc b{color:var(--nine-navy);font-family:'Bricolage Grotesque';font-weight:800;font-size:16px;}
+.per-desc span{color:var(--nine-deep);font-weight:500;font-size:15px;text-align:right;}
+
+/* ════ CLASSIFICATION - BLOCK TREE ════ */
+.block-root-wrap{text-align:center;margin-bottom:22px;}
+.block-root{
+  display:inline-block;background:var(--nine-navy);color:#fff;
+  padding:14px 30px;border-radius:14px;box-shadow:var(--shadow);
+  font-family:'Bricolage Grotesque';font-weight:800;font-size:20px;letter-spacing:.3px;
+}
+.block-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+@media(max-width:640px){.block-cols{grid-template-columns:1fr;}}
+.block-col{background:#fff;border-radius:18px;padding:24px 20px;box-shadow:var(--shadow);text-align:center;}
+.block-col h4{font-family:'Bricolage Grotesque';font-weight:800;font-size:19px;color:var(--nine-navy);margin-bottom:8px;}
+.block-tag{font-family:'Bricolage Grotesque';font-weight:800;font-size:24px;color:var(--nine-accent);margin:6px 0;}
+.block-sub{font-size:14px;color:#7689a0;font-weight:500;line-height:1.5;}
+
+/* ════ IUPAC NOMENCLATURE ════ */
+.digit-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:8px;}
+@media(max-width:640px){.digit-grid{grid-template-columns:repeat(2,1fr);}}
+.digit-card{background:#fff;border-radius:14px;padding:16px 10px;text-align:center;box-shadow:var(--shadow);}
+.digit-num{font-family:'Bricolage Grotesque';font-weight:800;font-size:28px;color:var(--nine-navy);line-height:1;}
+.digit-root{font-family:'Bricolage Grotesque';font-weight:700;font-size:16px;color:var(--nine-accent);margin-top:6px;}
+.digit-abbr{font-size:12px;color:#7689a0;font-weight:600;margin-top:2px;letter-spacing:.5px;}
+
+.iupac-builder{background:var(--nine-navy);border-radius:24px;padding:28px;box-shadow:var(--shadow);text-align:center;margin:8px 0 8px;}
+.iupac-builder .lead{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#8fb6e0;font-weight:700;margin-bottom:14px;}
+.iupac-input{
+  font-family:'Bricolage Grotesque';font-weight:800;font-size:36px;color:var(--nine-navy);
+  background:#fff;border:3px solid var(--nine-accent);border-radius:16px;
+  padding:12px 18px;width:180px;text-align:center;outline:none;
+}
+.iupac-out{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:22px;}
+@media(max-width:640px){.iupac-out{grid-template-columns:1fr;}}
+.iupac-out-card{background:rgba(255,255,255,.06);border:1px solid rgba(0,160,227,.3);border-radius:16px;padding:20px;}
+.iupac-out-lead{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#8fb6e0;font-weight:700;margin-bottom:8px;}
+.iupac-out-name{font-family:'Bricolage Grotesque';font-weight:800;font-size:clamp(20px,3vw,26px);color:#fff;line-height:1.2;}
+.iupac-out-name .sym{color:var(--nine-accent);}
+.iupac-hint{color:#8fb6e0;font-size:13px;font-weight:500;margin-top:14px;}
+
+.iupac-ref{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;}
+.iupac-ref-card{background:#fff;border-radius:14px;padding:14px 12px;box-shadow:var(--shadow);text-align:center;}
+.iref-z{font-size:12px;color:#7689a0;font-weight:700;letter-spacing:.5px;}
+.iref-name{font-family:'Bricolage Grotesque';font-weight:800;font-size:16px;color:var(--nine-navy);margin:5px 0 2px;}
+.iref-sym{font-family:'Bricolage Grotesque';font-weight:800;font-size:20px;color:var(--nine-accent);}
+.iref-sys{font-size:11px;color:#7689a0;font-weight:500;margin-top:4px;font-style:italic;}
+
+/* ── mobile ── */
+@media(max-width:640px){
+  .cmp-head>div{font-size:15px;padding:12px 14px;}
+  .cmp-row>div{font-size:13px;padding:11px 14px;}
+  .triad-stage{padding:20px 16px;}
+  .triad-elements{gap:10px;margin-bottom:18px;}
+  .triad-el{padding:16px 6px;}
+  .triad-sym{font-size:32px;}
+  .triad-mass{font-size:20px;}
+  .oct-grid{gap:5px;}
+  .oct-cell{padding:10px 2px 8px;border-radius:10px;}
+  .oct-sym{font-size:16px;}
+  .oct-idx{font-size:9px;}
+  .pred-card{padding:20px 16px;}
+  .pred-row{gap:8px;}
+  .pred-pred,.pred-found{font-size:15px;}
+  .pred-prop{font-size:13px;}
+  .per-grid{gap:6px;}
+  .per-num{font-size:12px;padding:6px;}
+  .per-count{font-size:20px;padding:12px 4px;}
+  .per-desc{padding:11px 14px;}
+  .per-desc b{font-size:14px;}
+  .per-desc span{font-size:13px;}
+  .block-col{padding:18px 16px;}
+  .iupac-builder{padding:20px 16px;}
+  .iupac-input{font-size:28px;width:150px;}
+  .digit-card{padding:12px 8px;}
+  .digit-num{font-size:22px;}
+}

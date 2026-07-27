@@ -1,0 +1,427 @@
+---
+import StudioLayout from '../../layouts/StudioLayout.astro';
+import '../../styles/chemistry.css';
+---
+<StudioLayout title="Periodic Classification - Chemistry with Harshith" chapterChip="Class 11 · Chemistry">
+
+  <!-- =========== HOME =========== -->
+  <section id="home" class="screen active">
+    <div class="hero">
+      <h1>Periodic <span class="accent">Classification</span></h1>
+      <p>Trace how the periodic table was built - from triads and octaves to Mendeleev, Moseley and the modern law - then explore blocks, groups and IUPAC names.</p>
+    </div>
+    <div class="grid">
+
+      <div class="tile" onclick="go('history')">
+        <div class="tile-num">01</div>
+        <div class="tile-icon ic-sheet"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+        <h3>History &amp; Lavoisier</h3>
+        <p>Where classification began - Lavoisier's split of the elements into metals and non-metals.</p>
+        <span class="tile-go">Open ›</span>
+      </div>
+
+      <div class="tile" onclick="go('triads')">
+        <div class="tile-num">02</div>
+        <div class="tile-icon ic-grid"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="5" height="16" rx="1"/><rect x="9.5" y="4" width="5" height="16" rx="1"/><rect x="16" y="4" width="5" height="16" rx="1"/></svg></div>
+        <h3>Döbereiner's Triads</h3>
+        <p>Pick a triad and check the rule live - is the middle mass really the average of the other two?</p>
+        <span class="tile-go">Start ›</span>
+      </div>
+
+      <div class="tile" onclick="go('octaves')">
+        <div class="tile-num">03</div>
+        <div class="tile-icon ic-sort"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg></div>
+        <h3>Newlands' Octaves</h3>
+        <p>Tap any element and watch the eighth one light up - the note that repeats, like a musical octave.</p>
+        <span class="tile-go">Start ›</span>
+      </div>
+
+      <div class="tile" onclick="go('mendeleev')">
+        <div class="tile-num">04</div>
+        <div class="tile-icon ic-build"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/></svg></div>
+        <h3>Mendeleev's Table</h3>
+        <p>The periodic law by atomic mass, and the eight-group table that left gaps for the unknown.</p>
+        <span class="tile-go">Open ›</span>
+      </div>
+
+      <div class="tile" onclick="go('predictions')">
+        <div class="tile-num">05</div>
+        <div class="tile-icon ic-vec"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 3h5l-1 6h4l-9 12 2-8H6.5z"/></svg></div>
+        <h3>Mendeleev's Predictions</h3>
+        <p>He predicted Eka-aluminium and Eka-silicon before they existed. Reveal how close he was.</p>
+        <span class="tile-go">Start ›</span>
+      </div>
+
+      <div class="tile" onclick="go('moseley')">
+        <div class="tile-num">06</div>
+        <div class="tile-icon ic-err"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V4M4 20h16"/><path d="M6 17l4-6 3 3 5-8"/></svg></div>
+        <h3>Moseley's Contribution</h3>
+        <p>Why atomic number, not mass, is the true order - straight from his X-ray spectra graphs.</p>
+        <span class="tile-go">Open ›</span>
+      </div>
+
+      <div class="tile" onclick="go('modern')">
+        <div class="tile-num">07</div>
+        <div class="tile-icon ic-lec12"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 18 0 9 9 0 1 0-18 0"/><path d="M3 12h18"/><path d="M12 3a15 15 0 0 1 0 18a15 15 0 0 1 0-18"/></svg></div>
+        <h3>Modern Law &amp; Periods</h3>
+        <p>Periodicity by atomic number, and how the seven periods fill with 2, 8, 8, 18, 18, 32, 32 elements.</p>
+        <span class="tile-go">Open ›</span>
+      </div>
+
+      <div class="tile" onclick="go('classification')">
+        <div class="tile-num">08</div>
+        <div class="tile-icon ic-vernier"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="4" height="16" rx="1"/><rect x="10" y="4" width="4" height="16" rx="1"/><rect x="17" y="4" width="4" height="16" rx="1"/></svg></div>
+        <h3>Blocks, Groups &amp; Sets</h3>
+        <p>s, p, d and f blocks, the named groups from alkali to noble gases, and special families.</p>
+        <span class="tile-go">Open ›</span>
+      </div>
+
+      <div class="tile" onclick="go('iupac')">
+        <div class="tile-num">09</div>
+        <div class="tile-icon ic-prefix"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></svg></div>
+        <h3>IUPAC Nomenclature</h3>
+        <p>Type an atomic number and build its systematic name and symbol, then reveal the official one.</p>
+        <span class="tile-go">Start ›</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========== 01 HISTORY & LAVOISIER =========== -->
+  <section id="history" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">History &amp; Lavoisier</div>
+        <div class="scr-sub">The first broad grouping of the elements.</div>
+      </div>
+    </div>
+
+    <p class="chem-lead">Early attempts classified elements by their <b>properties</b> and <b>atomic mass</b>. Lavoisier made the first broad grouping, splitting every known element into just two categories - <b>metals</b> and <b>non-metals</b>.</p>
+
+    <div class="chem-sublabel">Lavoisier's two categories</div>
+    <div class="cmp-table">
+      <div class="cmp-head">
+        <div class="metal">Metals</div>
+        <div class="nonmetal">Non-metals</div>
+      </div>
+      <div class="cmp-row"><div>Hard, but not brittle</div><div>Soft and brittle</div></div>
+      <div class="cmp-row"><div>Conduct heat and electricity</div><div>Generally do not conduct heat and electricity</div></div>
+      <div class="cmp-row"><div>Have a metallic lustre</div><div>No lustrous property</div></div>
+      <div class="cmp-row"><div>Sonorous (ring when struck)</div><div>Not sonorous</div></div>
+    </div>
+
+    <div class="chem-note">This simple two-way split could not organise the growing list of elements. The next attempts looked for patterns in <b>atomic mass</b> - starting with Döbereiner's triads.</div>
+  </section>
+
+  <!-- =========== 02 DÖBEREINER'S TRIADS =========== -->
+  <section id="triads" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">Döbereiner's Triads</div>
+        <div class="scr-sub">Groups of three where the middle mass ≈ average of the outer two.</div>
+      </div>
+    </div>
+
+    <p class="chem-lead">Döbereiner arranged similar elements in groups of three - <b>triads</b> - in which the atomic mass of the <b>central element</b> is roughly the <b>arithmetic mean</b> of the other two. Pick a triad and check the rule.</p>
+
+    <div class="chem-chips" id="triadChips"></div>
+
+    <div class="triad-stage">
+      <div class="triad-elements" id="triadEls"></div>
+      <div class="triad-calc" id="triadCalc"></div>
+      <div class="verdict" id="triadVerdict"></div>
+    </div>
+
+    <div class="chem-note">The rule held for some sets but broke for others (like H · Li · Na and O · S · Se), so it could not classify every element - but it was the first hint that mass and properties are linked.</div>
+  </section>
+
+  <!-- =========== 03 NEWLANDS' OCTAVES =========== -->
+  <section id="octaves" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">Newlands' Law of Octaves</div>
+        <div class="scr-sub">Every eighth element repeats properties - like notes in music.</div>
+      </div>
+    </div>
+
+    <p class="chem-lead">Newlands arranged elements in order of increasing atomic mass and noticed that <b>every eighth element</b> resembled the first - just like the eighth note in a musical octave. Tap any element to see its octave partner.</p>
+
+    <div class="oct-grid" id="octGrid"></div>
+    <div class="oct-readout empty" id="octReadout">Tap an element above to highlight the eighth element after it.</div>
+
+    <div class="chem-note">The law worked well for the lighter elements but failed for heavier ones, where no eighth-element pattern held. Still, it was the first to link properties to a repeating (periodic) order.</div>
+  </section>
+
+  <!-- =========== 04 MENDELEEV'S TABLE =========== -->
+  <section id="mendeleev" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">Mendeleev's Periodic Law</div>
+        <div class="scr-sub">Properties as a periodic function of atomic mass.</div>
+      </div>
+    </div>
+
+    <div class="rev-card" style="margin-bottom:22px;">
+      <div class="chem-sublabel" style="margin-top:0;">Mendeleev's Periodic Law</div>
+      <p style="font-family:'Bricolage Grotesque';font-weight:700;font-size:clamp(20px,2.6vw,26px);color:var(--nine-navy);line-height:1.45;">The physical and chemical properties of the elements are a <span style="color:var(--nine-accent);">periodic function of their atomic masses</span>.</p>
+    </div>
+
+    <p class="chem-lead">He arranged the elements into <b>eight vertical groups (I - VIII)</b> and horizontal periods, and boldly <b>left gaps</b> for elements not yet discovered.</p>
+
+    <div class="mnd-scroll">
+      <div class="mnd-table">
+        <div class="mnd-col"><div class="mnd-col-head">I</div><div class="mnd-col-body">H<br>Li<br>Na<br>K<br>Cu?<br>Rb<br>Ag?<br>Cs<br>Au?</div></div>
+        <div class="mnd-col"><div class="mnd-col-head">II</div><div class="mnd-col-body">Be<br>Mg<br>Ca<br>Zn<br>Sr<br>Cd<br>Ba<br>Hg</div></div>
+        <div class="mnd-col"><div class="mnd-col-head">III</div><div class="mnd-col-body">B<br>Al<br>Yt<br>In<br>Er<br>Tl</div></div>
+        <div class="mnd-col"><div class="mnd-col-head">IV</div><div class="mnd-col-body">C<br>Si<br>Ti<br>Zr<br>Sn<br>Ce<br>La<br>Pb<br>Th</div></div>
+        <div class="mnd-col"><div class="mnd-col-head">V</div><div class="mnd-col-body">N<br>P<br>V<br>As<br>Nb<br>Sb<br>Ta<br>Bi</div></div>
+        <div class="mnd-col"><div class="mnd-col-head">VI</div><div class="mnd-col-body">O<br>S<br>Cr<br>Se<br>Mo<br>Te<br>W<br>U</div></div>
+        <div class="mnd-col"><div class="mnd-col-head">VII</div><div class="mnd-col-body">F<br>Cl<br>Mn<br>Br<br>I</div></div>
+        <div class="mnd-col"><div class="mnd-col-head">VIII</div><div class="mnd-col-body">Fe Co Ni<br>Ru Rh Pd<br>Os Ir Pt</div></div>
+      </div>
+    </div>
+
+    <div class="chem-note">Because he trusted properties over mass, Mendeleev even <b>predicted the missing elements</b> - see the next section.</div>
+  </section>
+
+  <!-- =========== 05 MENDELEEV'S PREDICTIONS =========== -->
+  <section id="predictions" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">Mendeleev's Predictions</div>
+        <div class="scr-sub">Predicted properties vs the elements later discovered.</div>
+      </div>
+    </div>
+
+    <p class="chem-lead">For each gap, Mendeleev predicted detailed properties. Years later the real elements were found and matched almost exactly. The <b>predicted</b> values are shown - tap <b>Reveal</b> to compare with what was actually <b>found</b>.</p>
+
+    <div class="pred-wrap">
+      <div class="pred-card" id="predGa">
+        <h3>Eka-aluminium → Gallium</h3>
+        <div class="pred-sub">Predicted 1871 · Found 1875</div>
+        <div class="pred-row head"><div>Property</div><div>Predicted</div><div>Found</div></div>
+        <div class="pred-row"><div class="pred-prop">Atomic mass</div><div class="pred-pred">68</div><div class="pred-found">70</div></div>
+        <div class="pred-row"><div class="pred-prop">Density (g/cm³)</div><div class="pred-pred">5.9</div><div class="pred-found">5.94</div></div>
+        <div class="pred-row"><div class="pred-prop">Melting point (K)</div><div class="pred-pred">Low</div><div class="pred-found">302.9</div></div>
+        <div class="pred-row"><div class="pred-prop">Formula of oxide</div><div class="pred-pred">E₂O₃</div><div class="pred-found">Ga₂O₃</div></div>
+        <div class="pred-row"><div class="pred-prop">Formula of chloride</div><div class="pred-pred">ECl₃</div><div class="pred-found">GaCl₃</div></div>
+        <button class="check-btn pred-reveal" onclick="this.closest('.pred-card').classList.add('revealed'); this.disabled=true; this.textContent='Revealed ✓';">Reveal found values</button>
+      </div>
+
+      <div class="pred-card" id="predGe">
+        <h3>Eka-silicon → Germanium</h3>
+        <div class="pred-sub">Predicted 1871 · Found 1886</div>
+        <div class="pred-row head"><div>Property</div><div>Predicted</div><div>Found</div></div>
+        <div class="pred-row"><div class="pred-prop">Atomic mass</div><div class="pred-pred">72</div><div class="pred-found">72.6</div></div>
+        <div class="pred-row"><div class="pred-prop">Density (g/cm³)</div><div class="pred-pred">5.5</div><div class="pred-found">5.36</div></div>
+        <div class="pred-row"><div class="pred-prop">Melting point (K)</div><div class="pred-pred">High</div><div class="pred-found">1231</div></div>
+        <div class="pred-row"><div class="pred-prop">Formula of oxide</div><div class="pred-pred">EO₂</div><div class="pred-found">GeO₂</div></div>
+        <div class="pred-row"><div class="pred-prop">Formula of chloride</div><div class="pred-pred">ECl₄</div><div class="pred-found">GeCl₄</div></div>
+        <button class="check-btn pred-reveal" onclick="this.closest('.pred-card').classList.add('revealed'); this.disabled=true; this.textContent='Revealed ✓';">Reveal found values</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========== 06 MOSELEY =========== -->
+  <section id="moseley" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">Moseley's Contribution</div>
+        <div class="scr-sub">Atomic number, not mass, is the true basis of order.</div>
+      </div>
+    </div>
+
+    <p class="chem-lead">In 1913, Henry Moseley bombarded metal surfaces with high-speed electrons and studied the resulting <b>X-ray spectra</b>. He found the frequency of the characteristic X-rays followed a clean rule with the <b>atomic number Z</b>:</p>
+
+    <div class="mos-eq"><span class="k" id="mosEq"></span></div>
+
+    <div class="mos-plots">
+      <div class="mos-plot">
+        <svg viewBox="0 0 260 200" role="img" aria-label="Root frequency versus relative atomic mass - scattered">
+          <line x1="40" y1="20" x2="40" y2="170" stroke="#0f2647" stroke-width="2"/>
+          <line x1="40" y1="170" x2="240" y2="170" stroke="#0f2647" stroke-width="2"/>
+          <polyline points="50,158 72,150 92,138 112,132 132,116 150,112 168,92 182,86 198,72 212,58 226,40"
+            fill="none" stroke="#e11d48" stroke-width="2"/>
+          <g fill="#295990">
+            <circle cx="50" cy="158" r="3.2"/><circle cx="72" cy="146" r="3.2"/><circle cx="92" cy="140" r="3.2"/>
+            <circle cx="112" cy="126" r="3.2"/><circle cx="132" cy="120" r="3.2"/><circle cx="150" cy="106" r="3.2"/>
+            <circle cx="168" cy="98" r="3.2"/><circle cx="182" cy="82" r="3.2"/><circle cx="198" cy="76" r="3.2"/>
+            <circle cx="212" cy="54" r="3.2"/><circle cx="226" cy="44" r="3.2"/>
+          </g>
+          <text x="140" y="192" text-anchor="middle" font-size="11" fill="#7689a0" font-family="DM Sans">Relative atomic mass (A)</text>
+          <text x="16" y="96" text-anchor="middle" font-size="11" fill="#7689a0" font-family="DM Sans" transform="rotate(-90 16 96)">√ν</text>
+        </svg>
+        <div class="mos-cap">√ν vs atomic mass (A) - kinks and jumps</div>
+      </div>
+      <div class="mos-plot">
+        <svg viewBox="0 0 260 200" role="img" aria-label="Root frequency versus atomic number - straight line">
+          <line x1="40" y1="20" x2="40" y2="170" stroke="#0f2647" stroke-width="2"/>
+          <line x1="40" y1="170" x2="240" y2="170" stroke="#0f2647" stroke-width="2"/>
+          <line x1="50" y1="160" x2="228" y2="40" stroke="#00A0E3" stroke-width="2.4"/>
+          <g fill="#295990">
+            <circle cx="50" cy="160" r="3.2"/><circle cx="68" cy="148" r="3.2"/><circle cx="86" cy="136" r="3.2"/>
+            <circle cx="104" cy="124" r="3.2"/><circle cx="122" cy="112" r="3.2"/><circle cx="140" cy="100" r="3.2"/>
+            <circle cx="158" cy="88" r="3.2"/><circle cx="176" cy="76" r="3.2"/><circle cx="194" cy="64" r="3.2"/>
+            <circle cx="212" cy="52" r="3.2"/><circle cx="228" cy="40" r="3.2"/>
+          </g>
+          <text x="140" y="192" text-anchor="middle" font-size="11" fill="#7689a0" font-family="DM Sans">Atomic number (Z)</text>
+          <text x="16" y="96" text-anchor="middle" font-size="11" fill="#7689a0" font-family="DM Sans" transform="rotate(-90 16 96)">√ν</text>
+        </svg>
+        <div class="mos-cap">√ν vs atomic number (Z) - a straight line</div>
+      </div>
+    </div>
+
+    <div class="chem-note">Because √ν plots as a <b>straight line against Z</b> but not against mass, Moseley concluded that <b>atomic number</b> - not atomic mass - is the fundamental property that orders the elements. This fixed the anomalies in Mendeleev's table.</div>
+  </section>
+
+  <!-- =========== 07 MODERN LAW & PERIODS =========== -->
+  <section id="modern" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">Modern Law &amp; Periods</div>
+        <div class="scr-sub">Periodicity by atomic number, and the seven periods.</div>
+      </div>
+    </div>
+
+    <div class="rev-card" style="margin-bottom:18px;">
+      <div class="chem-sublabel" style="margin-top:0;">Modern Periodic Law</div>
+      <p style="font-family:'Bricolage Grotesque';font-weight:700;font-size:clamp(19px,2.5vw,25px);color:var(--nine-navy);line-height:1.45;">Physical and chemical properties of the elements are a <span style="color:var(--nine-accent);">periodic function of their atomic number</span>. Arranged by increasing atomic number, elements with similar properties recur after regular intervals.</p>
+    </div>
+
+    <p class="chem-lead"><b>Periodicity</b> is the repetition of properties at regular intervals when elements are arranged by increasing atomic number.</p>
+
+    <div class="chem-sublabel">Elements per period</div>
+    <div class="per-grid">
+      <div class="per-cell"><div class="per-num">Period 1</div><div class="per-count">2</div></div>
+      <div class="per-cell"><div class="per-num">Period 2</div><div class="per-count">8</div></div>
+      <div class="per-cell"><div class="per-num">Period 3</div><div class="per-count">8</div></div>
+      <div class="per-cell"><div class="per-num">Period 4</div><div class="per-count">18</div></div>
+      <div class="per-cell"><div class="per-num">Period 5</div><div class="per-count">18</div></div>
+      <div class="per-cell"><div class="per-num">Period 6</div><div class="per-count">32</div></div>
+      <div class="per-cell"><div class="per-num">Period 7</div><div class="per-count">32</div></div>
+    </div>
+
+    <div class="per-desc"><b>First period</b><span>2 elements · very short period</span></div>
+    <div class="per-desc"><b>Second period</b><span>8 elements · first short period</span></div>
+    <div class="per-desc"><b>Third period</b><span>8 elements · second short period</span></div>
+    <div class="per-desc"><b>Fourth period</b><span>18 elements · first long period</span></div>
+    <div class="per-desc"><b>Fifth period</b><span>18 elements · second long period</span></div>
+    <div class="per-desc"><b>Sixth period</b><span>32 elements · very long period</span></div>
+    <div class="per-desc"><b>Seventh period</b><span>Incomplete period</span></div>
+  </section>
+
+  <!-- =========== 08 BLOCKS, GROUPS & SETS =========== -->
+  <section id="classification" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">Blocks, Groups &amp; Sets</div>
+        <div class="scr-sub">How the modern table is divided and named.</div>
+      </div>
+    </div>
+
+    <div class="chem-sublabel" style="margin-top:0;">Classification by block</div>
+    <div class="block-root-wrap"><div class="block-root">Periodic Table</div></div>
+    <div class="block-cols">
+      <div class="block-col">
+        <h4>Representative</h4>
+        <div class="block-tag">s + p block</div>
+        <div class="block-sub">Groups 1-2 and 13-18</div>
+      </div>
+      <div class="block-col">
+        <h4>Transition</h4>
+        <div class="block-tag">d block</div>
+        <div class="block-sub">Groups 3-12</div>
+      </div>
+      <div class="block-col">
+        <h4>Inner Transition</h4>
+        <div class="block-tag">f block</div>
+        <div class="block-sub">Lanthanides - 4f<br>Actinides - 5f</div>
+      </div>
+    </div>
+
+    <div class="chem-sublabel">Vertical columns (groups)</div>
+    <div class="ds-block">
+      <div class="ds-rows">
+        <div class="ds-row"><span class="ds-name">Group 1</span><span class="ds-formula">Alkali metals</span></div>
+        <div class="ds-row"><span class="ds-name">Group 2</span><span class="ds-formula">Alkaline earth metals</span></div>
+        <div class="ds-row"><span class="ds-name">Group 15</span><span class="ds-formula">Pnictogens</span></div>
+        <div class="ds-row"><span class="ds-name">Group 16</span><span class="ds-formula">Chalcogens</span></div>
+        <div class="ds-row"><span class="ds-name">Group 17</span><span class="ds-formula">Halogens</span></div>
+        <div class="ds-row"><span class="ds-name">Group 18</span><span class="ds-formula">Noble gases</span></div>
+        <div class="ds-row"><span class="ds-name">Group 3 (f-block)</span><span class="ds-formula">Rare earth elements</span></div>
+      </div>
+    </div>
+
+    <div class="chem-sublabel">Named element sets</div>
+    <div class="ds-block">
+      <div class="ds-rows">
+        <div class="ds-row"><span class="ds-name">Lanthanoids (rare earths)</span><span class="ds-formula">Ce (58) → Lu (71)</span></div>
+        <div class="ds-row"><span class="ds-name">Actinoids</span><span class="ds-formula">Th (90) → Lr (103)</span></div>
+        <div class="ds-row"><span class="ds-name">Coinage metals</span><span class="ds-formula">Cu, Ag, Au</span></div>
+        <div class="ds-row"><span class="ds-name">Noble metals</span><span class="ds-formula">Ag, Au, Pt, Hg</span></div>
+        <div class="ds-row"><span class="ds-name">Transuranium metals</span><span class="ds-formula">beyond U (92)</span></div>
+        <div class="ds-row"><span class="ds-name">Bridging elements</span><span class="ds-formula">third period</span></div>
+        <div class="ds-row"><span class="ds-name">Diagonal relationship</span><span class="ds-formula">(Li,Mg) (Be,Al) (B,Si)</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========== 09 IUPAC NOMENCLATURE =========== -->
+  <section id="iupac" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">IUPAC Nomenclature</div>
+        <div class="scr-sub">Build systematic names for elements beyond 100.</div>
+      </div>
+    </div>
+
+    <p class="chem-lead">Elements are named systematically from the digits of their <b>atomic number</b>, using these Latin/Greek roots. Join the roots and add <b>-ium</b>; the symbol is the first letter of each root.</p>
+
+    <div class="chem-sublabel" style="margin-top:0;">Digit roots</div>
+    <div class="digit-grid">
+      <div class="digit-card"><div class="digit-num">0</div><div class="digit-root">nil</div><div class="digit-abbr">n</div></div>
+      <div class="digit-card"><div class="digit-num">1</div><div class="digit-root">un</div><div class="digit-abbr">u</div></div>
+      <div class="digit-card"><div class="digit-num">2</div><div class="digit-root">bi</div><div class="digit-abbr">b</div></div>
+      <div class="digit-card"><div class="digit-num">3</div><div class="digit-root">tri</div><div class="digit-abbr">t</div></div>
+      <div class="digit-card"><div class="digit-num">4</div><div class="digit-root">quad</div><div class="digit-abbr">q</div></div>
+      <div class="digit-card"><div class="digit-num">5</div><div class="digit-root">pent</div><div class="digit-abbr">p</div></div>
+      <div class="digit-card"><div class="digit-num">6</div><div class="digit-root">hex</div><div class="digit-abbr">h</div></div>
+      <div class="digit-card"><div class="digit-num">7</div><div class="digit-root">sept</div><div class="digit-abbr">s</div></div>
+      <div class="digit-card"><div class="digit-num">8</div><div class="digit-root">oct</div><div class="digit-abbr">o</div></div>
+      <div class="digit-card"><div class="digit-num">9</div><div class="digit-root">enn</div><div class="digit-abbr">e</div></div>
+    </div>
+
+    <div class="chem-sublabel">Build it yourself</div>
+    <div class="iupac-builder">
+      <div class="lead">Enter an atomic number (100 - 999)</div>
+      <input class="iupac-input" id="iupacInput" type="number" min="100" max="999" value="118" inputmode="numeric" />
+      <div class="iupac-out">
+        <div class="iupac-out-card">
+          <div class="iupac-out-lead">Systematic (IUPAC)</div>
+          <div class="iupac-out-name" id="iupacSys">-</div>
+        </div>
+        <div class="iupac-out-card">
+          <div class="iupac-out-lead">Official name</div>
+          <div class="iupac-out-name" id="iupacOfficial">-</div>
+        </div>
+      </div>
+      <div class="iupac-hint">Official names exist for 101-118; other numbers show the systematic name only.</div>
+    </div>
+
+    <div class="chem-sublabel">Elements 101 - 118</div>
+    <div class="iupac-ref" id="iupacRef"></div>
+  </section>
+
+  <script>
+    import '../../scripts/periodic-classification';
+  </script>
+</StudioLayout>
