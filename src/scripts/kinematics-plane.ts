@@ -101,9 +101,10 @@ const vecSketch = (p: p5) => {
 
   p.draw = () => {
     p.background(C.paper);
-    const ox = M.l, oy = p.height - M.b;                    // origin
     const span = 44;                                         // world units across
     const s = Math.min((p.width - M.l - M.r) / span, (p.height - M.t - M.b) / span);
+    const oy = p.height - M.b;                               // origin y (bottom)
+    const ox = Math.max(M.l, (p.width - span * s) / 2);      // centre the diagram
     const X = (wx: number) => ox + wx * s;
     const Y = (wy: number) => oy - wy * s;
 
@@ -218,8 +219,9 @@ const kinSketch = (p: p5) => {
 
   p.draw = () => {
     p.background(C.paper);
-    const ox = M.l, oy = p.height - M.b;
     const s = Math.min((p.width - M.l - M.r) / worldW, (p.height - M.t - M.b) / worldH);
+    const oy = p.height - M.b;
+    const ox = Math.max(M.l, (p.width - worldW * s) / 2);   // centre the diagram
     const X = (wx: number) => ox + wx * s;
     const Y = (wy: number) => oy - wy * s;
 
@@ -329,8 +331,9 @@ const indSketch = (p: p5) => {
     p.background(C.paper);
     const worldW = Math.max(ind.vx * indTland * 1.12, 12);
     const worldH = IND_H * 1.12;
-    const ox = M.l, oy = p.height - M.b;
     const s = Math.min((p.width - M.l - M.r) / worldW, (p.height - M.t - M.b) / worldH);
+    const oy = p.height - M.b;
+    const ox = Math.max(M.l, (p.width - worldW * s) / 2);   // centre the diagram
     const X = (wx: number) => ox + wx * s;
     const Y = (wy: number) => oy - wy * s;
 
