@@ -181,6 +181,25 @@
 .grav-pane{display:none;}
 .grav-pane.active{display:block;animation:fade .35s ease;}
 
+/* ── Motion in a Plane · per-axis equation table ── */
+.pl-eqtable{
+  display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px;
+}
+@media (max-width:640px){ .pl-eqtable{grid-template-columns:1fr;} }
+.pl-eqcol{
+  padding:14px 16px;border-radius:14px;background:var(--paper-2);
+  border:1px solid rgba(41,89,144,.16);
+}
+.pl-eqhead{
+  font-family:'Bricolage Grotesque';font-weight:800;font-size:16px;
+  letter-spacing:-.3px;margin-bottom:8px;
+}
+.pl-eqrow{
+  font-size:15.5px;line-height:1.7;color:var(--ink);
+  font-variant-numeric:tabular-nums;
+}
+.pl-eqrow b{color:var(--nine-navy);}
+
 /* ── Motion Graphs · homework + worked-example steps ── */
 .hw-head{
   font-family:'Bricolage Grotesque';font-weight:800;font-size:20px;

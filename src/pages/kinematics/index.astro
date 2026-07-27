@@ -45,6 +45,14 @@ import '../../styles/kinematics.css';
         <span class="tile-go">Start ›</span>
       </div>
 
+      <div class="tile" onclick="go('plane')">
+        <div class="tile-num">05</div>
+        <div class="tile-icon ic-build"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V4"/><path d="M4 20h16"/><path d="M4 20L18 6"/><path d="M18 6v5"/><path d="M18 6h-5"/></svg></div>
+        <h3>Motion in a Plane</h3>
+        <p>Two dimensions are one dimension twice, sharing a clock. Resolve, solve each axis, and see why a thrown ball and a dropped ball land together.</p>
+        <span class="tile-go">Start ›</span>
+      </div>
+
     </div>
   </section>
 
@@ -683,6 +691,138 @@ import '../../styles/kinematics.css';
         <div class="rev-nav">
           <button class="btn-reset" id="relqPrev">‹ Previous</button>
           <button class="btn-reset" id="relqNext">Next ›</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========== MOTION IN A PLANE (2D) =========== -->
+  <section id="plane" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">Motion in a Plane</div>
+        <div class="scr-sub">Promote r, v, a to vectors, differentiate componentwise, and lean on one principle: perpendicular motions are independent.</div>
+      </div>
+    </div>
+
+    <div class="rev-chips" id="plTabs">
+      <button class="rev-chip active" data-pane="plVec">1 · Vector Recap</button>
+      <button class="rev-chip" data-pane="plKin">2 · Vectors in Motion</button>
+      <button class="rev-chip" data-pane="plInd">3 · Independence</button>
+      <button class="rev-chip" data-pane="plEqn">4 · Equations Per Axis</button>
+      <button class="rev-chip" data-pane="plQuiz">5 · Rapid Fire</button>
+    </div>
+
+    <!-- ── Pane 1 · Vector Recap ── -->
+    <div class="grav-pane active" id="plVec">
+      <div class="kin-controls">
+        <div class="kin-ctrl">
+          <label>Magnitude A <span class="kin-val" id="plVecMagVal">25</span></label>
+          <input type="range" id="plVecMag" min="10" max="40" step="1" value="25">
+        </div>
+        <div class="kin-ctrl">
+          <label>Angle θ <span class="kin-val" id="plVecAngVal">37°</span></label>
+          <input type="range" id="plVecAng" min="0" max="90" step="1" value="37">
+        </div>
+      </div>
+      <div class="kin-canvas" id="plVecCanvas"></div>
+      <div class="rev-readouts" style="margin-top:14px;">
+        <div class="rev-readout" id="plVecResolve"></div>
+        <div class="rev-readout" id="plVecRecombine"></div>
+      </div>
+      <div class="rev-keybox" style="margin-top:12px;">
+        <b>Resolve before you compute.</b> Any vector at angle θ splits into Aₓ = A cos θ (green) and A_y = A sin θ (red).
+        Recombine with Pythagoras for the magnitude and tan⁻¹ for the direction. We always work along the axes, never along the slant.
+      </div>
+    </div>
+
+    <!-- ── Pane 2 · Vectors in Motion ── -->
+    <div class="grav-pane" id="plKin">
+      <div class="kin-controls">
+        <div class="kin-ctrl">
+          <label>A particle runs a 2D path <span class="kin-val">r, v tracked live</span></label>
+        </div>
+        <div class="kin-btns">
+          <button class="check-btn" id="plKinPlay">⏸ Pause</button>
+          <button class="btn-reset" id="plKinReset">↺ Reset</button>
+        </div>
+      </div>
+      <div class="kin-canvas" id="plKinCanvas"></div>
+      <div class="rev-readouts" style="margin-top:14px;">
+        <div class="rev-readout" id="plKinR"></div>
+        <div class="rev-readout" id="plKinV"></div>
+      </div>
+      <div class="rev-keybox" style="margin-top:12px;">
+        <b>Vectors in motion.</b> The position vector r = x î + y ĵ points from the origin to the particle.
+        Velocity v = dr/dt is <b>always tangent to the path</b>, and its components vₓ, v_y are just its shadows on each axis.
+        Differentiation is componentwise - differentiate the x-part for the x-answer, the y-part for the y-answer.
+      </div>
+    </div>
+
+    <!-- ── Pane 3 · Independence ── -->
+    <div class="grav-pane" id="plInd">
+      <div class="kin-controls">
+        <div class="kin-ctrl">
+          <label>Horizontal launch speed <span class="kin-val" id="plIndVxVal">12 m/s</span></label>
+          <input type="range" id="plIndVx" min="4" max="24" step="2" value="12">
+        </div>
+        <div class="kin-btns">
+          <button class="check-btn" id="plIndGo">Drop &amp; Throw</button>
+          <button class="btn-reset" id="plIndPause">⏸ Pause</button>
+          <button class="btn-reset" id="plIndReset">↺ Reset</button>
+        </div>
+      </div>
+      <div class="kin-canvas" id="plIndCanvas"></div>
+      <div class="rev-keybox" style="margin-top:14px;">
+        <b>The marker demo, made a principle.</b> One ball is thrown horizontally, one is dropped, at the same instant.
+        The amber connectors prove they are at the <b>same height at every tick</b> - the horizontal velocity never delays the fall.
+        The x-motion cannot touch the y-motion. Crank the launch speed up: they still land together.
+      </div>
+    </div>
+
+    <!-- ── Pane 4 · Equations Per Axis ── -->
+    <div class="grav-pane" id="plEqn">
+      <div class="kin-controls">
+        <div class="kin-ctrl">
+          <label>uₓ (start vₓ) <span class="kin-val" id="plEqUxVal">3 m/s</span></label>
+          <input type="range" id="plEqUx" min="0" max="8" step="1" value="3">
+        </div>
+        <div class="kin-ctrl">
+          <label>u_y (start v_y) <span class="kin-val" id="plEqUyVal">4 m/s</span></label>
+          <input type="range" id="plEqUy" min="0" max="14" step="1" value="4">
+        </div>
+        <div class="kin-ctrl">
+          <label>a_y (only y accelerates) <span class="kin-val" id="plEqAyVal">-2 m/s²</span></label>
+          <input type="range" id="plEqAy" min="-4" max="-1" step="1" value="-2">
+        </div>
+        <div class="kin-ctrl" style="flex:2;">
+          <label>Scrub time t <span class="kin-val" id="plEqTVal">0.00 s</span></label>
+          <input type="range" id="plEqT" min="0" max="4" step="0.05" value="0">
+        </div>
+      </div>
+      <div class="kin-canvas" id="plEqCanvas"></div>
+      <div class="pl-eqtable" id="plEqTable"></div>
+      <div class="rev-keybox" id="plEqNote" style="margin-top:12px;"></div>
+      <div class="rev-keybox" style="margin-top:12px;">
+        The same three equations of motion run <b>independently on each axis</b>. Here aₓ = 0 (constant vₓ) and only y accelerates -
+        which is exactly a projectile. Scrub to where v_y = 0 and you have found the top of the trajectory, without ever calling it one.
+      </div>
+    </div>
+
+    <!-- ── Pane 5 · Rapid Fire ── -->
+    <div class="grav-pane" id="plQuiz">
+      <div class="rev-keybox">
+        Eight quick questions on vectors, independence and the resolve-solve-recombine strategy. All guaranteed-marks exam readings.
+      </div>
+      <div class="rev-card">
+        <div class="rf-tag" id="plqTag"></div>
+        <div class="rev-q" id="plqQ"></div>
+        <div class="rev-opts" id="plqOpts"></div>
+        <div class="rev-feedback" id="plqFb"></div>
+        <div class="rev-nav">
+          <button class="btn-reset" id="plqPrev">‹ Previous</button>
+          <button class="btn-reset" id="plqNext">Next ›</button>
         </div>
       </div>
     </div>
