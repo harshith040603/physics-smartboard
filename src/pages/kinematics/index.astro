@@ -716,6 +716,25 @@ import '../../styles/kinematics.css';
 
     <!-- ── Pane 1 · Vector Recap ── -->
     <div class="grav-pane active" id="plVec">
+      <div class="pl-notes">
+        <div class="pl-notes-body">
+          <h4>1 · Vector Recap</h4>
+          <p>A vector A at angle θ to the x-axis resolves into components:</p>
+          <div class="pl-nf">A<sub>x</sub> = A cos θ &nbsp;&nbsp;·&nbsp;&nbsp; A<sub>y</sub> = A sin θ</div>
+          <p>To recombine the components back into the full vector:</p>
+          <div class="pl-nf">|A| = √(A<sub>x</sub>² + A<sub>y</sub>²) &nbsp;&nbsp;·&nbsp;&nbsp; θ = tan⁻¹(A<sub>y</sub> / A<sub>x</sub>)</div>
+          <div class="pl-nbox">
+            <b>Rule:</b> Always resolve a vector into perpendicular (x, y) components before doing kinematics.
+            We solve along the axes, never along a slanted direction directly.
+          </div>
+          <div class="pl-neg">
+            <span class="pl-eglab">Example</span>
+            Resolve 10 m/s directed at 37° above the horizontal (sin 37° ≈ 0.6, cos 37° ≈ 0.8):<br>
+            v<sub>x</sub> = 10 cos 37° = 10 × 0.8 = 8 m/s &nbsp;·&nbsp; v<sub>y</sub> = 10 sin 37° = 10 × 0.6 = 6 m/s
+          </div>
+        </div>
+      </div>
+
       <div class="kin-controls">
         <div class="kin-ctrl">
           <label>Magnitude A <span class="kin-val" id="plVecMagVal">25</span></label>
@@ -732,13 +751,34 @@ import '../../styles/kinematics.css';
         <div class="rev-readout" id="plVecRecombine"></div>
       </div>
       <div class="rev-keybox" style="margin-top:12px;">
-        <b>Resolve before you compute.</b> Any vector at angle θ splits into Aₓ = A cos θ (green) and A_y = A sin θ (red).
+        <b>Resolve before you compute.</b> Any vector at angle θ splits into A<sub>x</sub> = A cos θ (green) and A<sub>y</sub> = A sin θ (red).
         Recombine with Pythagoras for the magnitude and tan⁻¹ for the direction. We always work along the axes, never along the slant.
       </div>
     </div>
 
     <!-- ── Pane 2 · Vectors in Motion ── -->
     <div class="grav-pane" id="plKin">
+      <div class="pl-notes">
+        <div class="pl-notes-body">
+          <h4>2 · Vectors in Motion</h4>
+          <div class="pl-nf">Position: &nbsp; r = x î + y ĵ</div>
+          <div class="pl-nf">Velocity: &nbsp; v = dr/dt = v<sub>x</sub> î + v<sub>y</sub> ĵ</div>
+          <div class="pl-nf">Acceleration: &nbsp; a = dv/dt = a<sub>x</sub> î + a<sub>y</sub> ĵ</div>
+          <div class="pl-nbox">
+            <b>Differentiation in 2D is componentwise.</b> The x-part of v depends only on the x-part of r,
+            and the y-part of v only on the y-part of r. They never interact.
+          </div>
+          <p>The velocity vector always points <b>tangent to the path</b>, in the direction of motion.</p>
+          <div class="pl-nf">Speed = |v| = √(v<sub>x</sub>² + v<sub>y</sub>²)</div>
+          <div class="pl-neg">
+            <span class="pl-eglab">Example</span>
+            r(t) = 3t î + (4t - t²) ĵ<br>
+            v = dr/dt = 3 î + (4 - 2t) ĵ &nbsp;·&nbsp; a = dv/dt = 0 î - 2 ĵ<br>
+            a<sub>x</sub> = 0, a<sub>y</sub> = -2: this is exactly what a projectile looks like.
+          </div>
+        </div>
+      </div>
+
       <div class="kin-controls">
         <div class="kin-ctrl">
           <label>A particle runs a 2D path <span class="kin-val">r, v tracked live</span></label>
@@ -755,13 +795,35 @@ import '../../styles/kinematics.css';
       </div>
       <div class="rev-keybox" style="margin-top:12px;">
         <b>Vectors in motion.</b> The position vector r = x î + y ĵ points from the origin to the particle.
-        Velocity v = dr/dt is <b>always tangent to the path</b>, and its components vₓ, v_y are just its shadows on each axis.
+        Velocity v = dr/dt is <b>always tangent to the path</b>, and its components v<sub>x</sub>, v<sub>y</sub> are just its shadows on each axis.
         Differentiation is componentwise - differentiate the x-part for the x-answer, the y-part for the y-answer.
       </div>
     </div>
 
     <!-- ── Pane 3 · Independence ── -->
     <div class="grav-pane" id="plInd">
+      <div class="pl-notes">
+        <div class="pl-notes-body">
+          <h4>3 · The Independence Principle</h4>
+          <p>Motion along perpendicular axes is <b>independent</b>. The x-motion proceeds as if y did not exist,
+          and vice versa. The only thing the two share is the clock: time t is common to both.</p>
+          <div class="pl-neg">
+            <span class="pl-eglab">Thrown horizontally vs dropped straight down</span>
+            Thrown ball: v<sub>x</sub> ≠ 0, but its vertical motion is identical to the dropped ball's.<br>
+            Dropped ball: v<sub>x</sub> = 0, same vertical motion.<br>
+            Same g, same start height, same fall time → they land together. Horizontal velocity does not delay the fall.
+          </div>
+          <p><b>Solve any 2D problem in three steps:</b></p>
+          <div class="pl-nstep"><b>Step 1</b> · Resolve into x and y components.</div>
+          <div class="pl-nstep"><b>Step 2</b> · Solve each axis as a separate 1D problem.</div>
+          <div class="pl-nstep"><b>Step 3</b> · Recombine the results, linked by the shared time t.</div>
+          <div class="pl-nbox">
+            <b>TIME IS THE BRIDGE.</b> The x-problem and y-problem are solved separately, but both must use the same t.
+            Almost every 2D question is: find t from one axis, use it in the other.
+          </div>
+        </div>
+      </div>
+
       <div class="kin-controls">
         <div class="kin-ctrl">
           <label>Horizontal launch speed <span class="kin-val" id="plIndVxVal">12 m/s</span></label>
@@ -783,17 +845,46 @@ import '../../styles/kinematics.css';
 
     <!-- ── Pane 4 · Equations Per Axis ── -->
     <div class="grav-pane" id="plEqn">
+      <div class="pl-notes">
+        <div class="pl-notes-body">
+          <h4>4 · Equations of Motion, Per Axis</h4>
+          <p>For constant acceleration, the three equations apply to each axis independently:</p>
+          <div class="pl-ncols">
+            <div class="pl-eqcol">
+              <div class="pl-eqhead" style="color:#16a34a">x-axis</div>
+              <div class="pl-eqrow">v<sub>x</sub> = u<sub>x</sub> + a<sub>x</sub>t</div>
+              <div class="pl-eqrow">x = u<sub>x</sub>t + ½a<sub>x</sub>t²</div>
+              <div class="pl-eqrow">v<sub>x</sub>² = u<sub>x</sub>² + 2a<sub>x</sub>x</div>
+            </div>
+            <div class="pl-eqcol">
+              <div class="pl-eqhead" style="color:#e11d48">y-axis</div>
+              <div class="pl-eqrow">v<sub>y</sub> = u<sub>y</sub> + a<sub>y</sub>t</div>
+              <div class="pl-eqrow">y = u<sub>y</sub>t + ½a<sub>y</sub>t²</div>
+              <div class="pl-eqrow">v<sub>y</sub>² = u<sub>y</sub>² + 2a<sub>y</sub>y</div>
+            </div>
+          </div>
+          <div class="pl-neg">
+            <span class="pl-eglab">Worked example</span>
+            A particle starts at the origin with u = (3î + 4ĵ) m/s and constant a = (0î - 2ĵ) m/s². Find v and r at t = 2 s.<br>
+            <b>x-axis:</b> v<sub>x</sub> = 3 + 0 = 3 m/s &nbsp;·&nbsp; x = 3(2) = 6 m<br>
+            <b>y-axis:</b> v<sub>y</sub> = 4 - 2(2) = 0 &nbsp;·&nbsp; y = 4(2) - ½(2)(2²) = 8 - 4 = 4 m<br>
+            <b>Answer:</b> v = 3î + 0ĵ (purely horizontal) &nbsp;·&nbsp; r = 6î + 4ĵ → position (6, 4) m.<br>
+            At t = 2 s, v<sub>y</sub> = 0: that is the top of a trajectory. A projectile solved without naming it.
+          </div>
+        </div>
+      </div>
+
       <div class="kin-controls">
         <div class="kin-ctrl">
-          <label>uₓ (start vₓ) <span class="kin-val" id="plEqUxVal">3 m/s</span></label>
+          <label>u<sub>x</sub> (start v<sub>x</sub>) <span class="kin-val" id="plEqUxVal">3 m/s</span></label>
           <input type="range" id="plEqUx" min="0" max="8" step="1" value="3">
         </div>
         <div class="kin-ctrl">
-          <label>u_y (start v_y) <span class="kin-val" id="plEqUyVal">4 m/s</span></label>
+          <label>u<sub>y</sub> (start v<sub>y</sub>) <span class="kin-val" id="plEqUyVal">4 m/s</span></label>
           <input type="range" id="plEqUy" min="0" max="14" step="1" value="4">
         </div>
         <div class="kin-ctrl">
-          <label>a_y (only y accelerates) <span class="kin-val" id="plEqAyVal">-2 m/s²</span></label>
+          <label>a<sub>y</sub> (only y accelerates) <span class="kin-val" id="plEqAyVal">-2 m/s²</span></label>
           <input type="range" id="plEqAy" min="-4" max="-1" step="1" value="-2">
         </div>
         <div class="kin-ctrl" style="flex:2;">
@@ -805,14 +896,30 @@ import '../../styles/kinematics.css';
       <div class="pl-eqtable" id="plEqTable"></div>
       <div class="rev-keybox" id="plEqNote" style="margin-top:12px;"></div>
       <div class="rev-keybox" style="margin-top:12px;">
-        The same three equations of motion run <b>independently on each axis</b>. Here aₓ = 0 (constant vₓ) and only y accelerates -
-        which is exactly a projectile. Scrub to where v_y = 0 and you have found the top of the trajectory, without ever calling it one.
+        The same three equations of motion run <b>independently on each axis</b>. Here a<sub>x</sub> = 0 (constant v<sub>x</sub>) and only y accelerates -
+        which is exactly a projectile. Scrub to where v<sub>y</sub> = 0 and you have found the top of the trajectory, without ever calling it one.
       </div>
     </div>
 
     <!-- ── Pane 5 · Rapid Fire ── -->
     <div class="grav-pane" id="plQuiz">
-      <div class="rev-keybox">
+      <div class="pl-notes">
+        <div class="pl-notes-body">
+          <h4>Homework · due next class</h4>
+          <ol class="pl-nol">
+            <li>A particle has velocity u = (6î + 8ĵ) m/s and acceleration a = (-1î - 2ĵ) m/s². Find its velocity and position at t = 3 s (starting from the origin).</li>
+            <li>A ball is thrown horizontally at 10 m/s from a 20 m cliff (g = 10). Using independence, find the time to land and the horizontal distance covered.</li>
+            <li>In two sentences, explain why a bullet fired horizontally and a bullet dropped from the same height hit the ground at the same instant.</li>
+            <li>Resolve a velocity of 20 m/s directed at 37° above the horizontal into components (sin 37° ≈ 0.6, cos 37° ≈ 0.8).</li>
+          </ol>
+          <div class="pl-nbox">
+            <b>Lecture in one line:</b> two dimensions are one dimension twice, sharing a clock. Resolve, solve each axis as a 1D problem,
+            recombine through the shared time t.
+          </div>
+        </div>
+      </div>
+
+      <div class="rev-keybox" style="margin-top:18px;">
         Eight quick questions on vectors, independence and the resolve-solve-recombine strategy. All guaranteed-marks exam readings.
       </div>
       <div class="rev-card">

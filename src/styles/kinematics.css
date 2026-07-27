@@ -200,6 +200,44 @@
 }
 .pl-eqrow b{color:var(--nine-navy);}
 
+/* ── Motion in a Plane · copy-into-your-notebook cards ── */
+.pl-notes{
+  margin-top:18px;border-radius:16px;overflow:hidden;background:#fff;
+  border:1.5px solid rgba(0,160,227,.4);
+  box-shadow:0 3px 14px rgba(41,89,144,.08);
+}
+.pl-notes-body{padding:18px 22px 20px;color:var(--ink);}
+.pl-notes-body h4{
+  font-family:'Bricolage Grotesque';font-weight:800;font-size:19px;
+  color:var(--nine-navy);letter-spacing:-.3px;margin:0 0 12px;
+}
+.pl-notes-body h4:not(:first-child){margin-top:22px;}
+.pl-notes-body p{font-size:16.5px;line-height:1.72;margin:8px 0;}
+.pl-nf{
+  font-size:18px;font-weight:600;color:var(--nine-navy);
+  font-variant-numeric:tabular-nums;margin:8px 0;letter-spacing:.2px;
+}
+.pl-nbox{
+  margin:14px 0;padding:13px 17px;border-radius:12px;
+  background:rgba(0,160,227,.09);border-left:4px solid var(--nine-accent);
+  font-size:16.5px;line-height:1.68;
+}
+.pl-nbox b{color:var(--nine-navy);}
+.pl-neg{
+  margin:12px 0 2px;padding:13px 17px;border-radius:12px;
+  background:var(--paper-2);border-left:4px solid #f59e0b;
+  font-size:15.5px;line-height:1.62;font-variant-numeric:tabular-nums;
+}
+.pl-neg .pl-eglab{font-weight:700;color:#b45309;display:block;margin-bottom:4px;}
+.pl-ncols{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:12px 0;}
+@media (max-width:640px){ .pl-ncols{grid-template-columns:1fr;} }
+.pl-nstep{
+  margin:7px 0;padding-left:14px;font-size:16.5px;line-height:1.6;
+  border-left:3px solid rgba(41,89,144,.25);
+}
+.pl-nol{margin:8px 0;padding-left:22px;font-size:16px;line-height:1.7;}
+.pl-nol li{margin:7px 0;}
+
 /* ── Motion Graphs · homework + worked-example steps ── */
 .hw-head{
   font-family:'Bricolage Grotesque';font-weight:800;font-size:20px;
