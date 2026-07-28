@@ -717,6 +717,19 @@ function activatePane(id: PaneId) {
   }
 }
 
+function exampleWire() {
+  document.querySelectorAll<HTMLElement>('#plane .pl-egtap').forEach((box) => {
+    const toggle = () => box.classList.toggle('revealed');
+    box.addEventListener('click', toggle);
+    box.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggle();
+      }
+    });
+  });
+}
+
 let inited = false;
 
 export function planeScreenInit() {
@@ -727,6 +740,7 @@ export function planeScreenInit() {
     indWire();
     eqnWire();
     rqWire();
+    exampleWire();
     document.querySelectorAll<HTMLButtonElement>('#plTabs .rev-chip').forEach((b) => {
       b.addEventListener('click', () => activatePane(b.dataset.pane as PaneId));
     });
