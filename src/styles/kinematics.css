@@ -281,3 +281,30 @@
 .pr-num.seen{border-color:rgba(22,163,74,.5);color:var(--green);}
 .pr-num.active{background:var(--nine-dark);color:#fff;border-color:var(--nine-dark);}
 @media (max-width:640px){.pr-num{width:40px;height:40px;font-size:13.5px;}}
+
+/* ── Motion in a Plane · larger type for back-of-room legibility ── */
+#plane .rev-chip{font-size:16.5px;padding:10px 18px;}
+#plane .pl-notes-body h4{font-size:23px;}
+#plane .pl-notes-body p{font-size:19.5px;line-height:1.7;}
+#plane .pl-nf{font-size:21.5px;}
+#plane .pl-nbox{font-size:19.5px;line-height:1.66;}
+#plane .pl-neg{font-size:18.5px;line-height:1.6;}
+#plane .pl-neg .pl-eglab{font-size:19px;}
+#plane .pl-eghint{font-size:15.5px;}
+#plane .pl-nstep{font-size:19.5px;line-height:1.58;}
+#plane .pl-nol{font-size:19px;line-height:1.68;}
+#plane .pl-eqhead{font-size:18.5px;}
+#plane .pl-eqrow{font-size:18px;}
+#plane .rev-q{font-size:22.5px;}
+#plane .rev-opt{font-size:20px;padding:14px 24px;}
+#plane .rev-feedback{font-size:19px;line-height:1.5;}
+#plane .rev-keybox{font-size:19px;}
+#plane .kin-ctrl label{font-size:18px;}
+#plane .kin-val{font-size:19.5px;}
+#plane .rev-readout small{font-size:13px;}
+#plane .ro-accent{font-size:25px;}
+@media (max-width:640px){
+  #plane .rev-chip{font-size:13.5px;padding:8px 13px;}
+  #plane .pl-nf{font-size:19px;}
+  #plane .rev-q{font-size:20px;}
+}
