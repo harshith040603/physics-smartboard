@@ -28,12 +28,12 @@ export const chapters: Chapter[] = [
     activities: 5,
   },
   {
-    slug: 'periodic-classification',
+    slug: 'chemistry',
     num: '03',
-    title: 'Periodic ',
-    titleAccent: 'Classification',
-    blurb: 'Triads, octaves, Mendeleev to Moseley - trace how the periodic table was built, then explore blocks, groups and IUPAC names.',
+    title: 'Chem',
+    titleAccent: 'istry',
+    blurb: 'Classification of elements - from how the periodic table was built to effective nuclear charge, shielding and atomic & ionic size trends.',
     status: 'ready',
-    activities: 9,
+    activities: 16,
   },
 ];

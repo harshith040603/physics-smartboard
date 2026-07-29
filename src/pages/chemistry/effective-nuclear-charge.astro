@@ -1,0 +1,311 @@
+---
+import StudioLayout from '../../layouts/StudioLayout.astro';
+import '../../styles/chemistry.css';
+---
+<StudioLayout title="Effective Nuclear Charge & Atomic Size - Chemistry with Harshith" chapterChip="Class 11 · Chemistry">
+
+  <!-- =========== HOME =========== -->
+  <section id="home" class="screen active">
+    <div class="scr-head">
+      <a class="back-btn" href="/chemistry/classification-of-elements" style="text-decoration:none;">‹ Back</a>
+      <div>
+        <div class="scr-title">Effective Nuclear Charge &amp; <span style="color:var(--nine-accent);">Atomic Size</span></div>
+        <div class="scr-sub">How nuclear charge, shielding and electron configuration govern the size of atoms and ions.</div>
+      </div>
+    </div>
+
+    <div class="grid">
+
+      <div class="tile" onclick="go('enc')">
+        <div class="tile-num">01</div>
+        <div class="tile-icon ic-build"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><ellipse cx="12" cy="12" rx="10" ry="4.5"/><ellipse cx="12" cy="12" rx="10" ry="4.5" transform="rotate(60 12 12)"/></svg></div>
+        <h3>Effective Nuclear Charge</h3>
+        <p>Attraction vs inner-electron repulsion, the screening effect, and the definition Z<sub>eff</sub> = Z - &sigma;.</p>
+        <span class="tile-go">Open ›</span>
+      </div>
+
+      <div class="tile" onclick="go('slater')">
+        <div class="tile-num">02</div>
+        <div class="tile-icon ic-grid"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 4v16"/></svg></div>
+        <h3>Z<sub>eff</sub> Trend &amp; Slater's Rules</h3>
+        <p>Zeff across period 2, the five Slater rules, and a live calculator to find &sigma; and Zeff for any element.</p>
+        <span class="tile-go">Start ›</span>
+      </div>
+
+      <div class="tile" onclick="go('radius')">
+        <div class="tile-num">03</div>
+        <div class="tile-icon ic-vernier"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="12" r="5"/><circle cx="16" cy="12" r="5"/></svg></div>
+        <h3>Types of Atomic Radius</h3>
+        <p>Covalent, metallic and van der Waals radii - the definitions and the formulas that measure each one.</p>
+        <span class="tile-go">Open ›</span>
+      </div>
+
+      <div class="tile" onclick="go('variation')">
+        <div class="tile-num">04</div>
+        <div class="tile-icon ic-sort"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V4M4 20h16"/><path d="M7 15l4-4 3 2 5-7"/></svg></div>
+        <h3>Variation of Atomic Size</h3>
+        <p>Size decreases across a period but increases down a group - see the real radii, period by period.</p>
+        <span class="tile-go">Open ›</span>
+      </div>
+
+      <div class="tile" onclick="go('exceptions')">
+        <div class="tile-num">05</div>
+        <div class="tile-icon ic-err"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg></div>
+        <h3>Exceptions in Atomic Size</h3>
+        <p>Why noble gases are the largest in a period, and the irregular jumps across the d-block and group 13.</p>
+        <span class="tile-go">Open ›</span>
+      </div>
+
+      <div class="tile" onclick="go('ionic')">
+        <div class="tile-num">06</div>
+        <div class="tile-icon ic-vec"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="12" r="4"/><path d="M5 12h4"/><circle cx="17" cy="12" r="4"/><path d="M15 12h4M17 10v4"/></svg></div>
+        <h3>Ionic Radius &amp; Lanthanoid Contraction</h3>
+        <p>How losing or gaining electrons changes size, the size order of ions, and the lanthanoid contraction.</p>
+        <span class="tile-go">Open ›</span>
+      </div>
+
+      <div class="tile" onclick="go('practice')">
+        <div class="tile-num">07</div>
+        <div class="tile-icon ic-lec12"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+        <h3>Practice Questions</h3>
+        <p>Rank each set of ions by size, then reveal the answer with a one-line reason for each.</p>
+        <span class="tile-go">Solve ›</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========== 01 EFFECTIVE NUCLEAR CHARGE =========== -->
+  <section id="enc" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">Effective Nuclear Charge</div>
+        <div class="scr-sub">The net pull the nucleus actually exerts on the outer electrons.</div>
+      </div>
+    </div>
+
+    <p class="chem-lead">An outer electron feels the full nuclear charge only in part. It is <b>attracted</b> inward by the nucleus, but simultaneously <b>pushed outward</b> by the repulsion of the inner electrons.</p>
+
+    <div class="enc-two">
+      <div class="enc-card pull">
+        <h4>Attraction</h4>
+        <p>Outer electrons are pulled <b>towards the nucleus</b> by the nuclear charge.</p>
+      </div>
+      <div class="enc-card">
+        <h4>Repulsion</h4>
+        <p>They are pushed <b>away from the nucleus</b> by the repulsion of the inner electrons.</p>
+      </div>
+    </div>
+
+    <div class="chem-sublabel">Screening (shielding) effect</div>
+    <div class="chem-note">The decrease in the force of attraction exerted by the nucleus on the valence electrons, caused by the inner electrons, is called the <b>shielding</b> or <b>screening effect</b>.</div>
+
+    <div class="chem-sublabel">Effective nuclear charge</div>
+    <div class="mos-eq"><span class="k" id="encEq"></span></div>
+    <div class="chem-note">where <b>Z</b> is the actual nuclear charge (atomic number) and <b>&sigma;</b> (sigma) is the <b>screening constant</b> - the shielding contributed by the other electrons.</div>
+  </section>
+
+  <!-- =========== 02 ZEFF TREND & SLATER'S RULES =========== -->
+  <section id="slater" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">Z<sub>eff</sub> Trend &amp; Slater's Rules</div>
+        <div class="scr-sub">Effective nuclear charge rises across a period; Slater's rules estimate &sigma;.</div>
+      </div>
+    </div>
+
+    <div class="chem-sublabel" style="margin-top:0;">Variation of Z<sub>eff</sub> across period 2</div>
+    <div class="data-scroll">
+      <table class="data-table" id="zeffTable"></table>
+    </div>
+    <div class="chem-note">Across a period the nuclear charge <b>Z</b> rises but the shielding stays almost the same, so <b>Z<sub>eff</sub> increases</b> - the outer electrons are held more tightly and the atom gets smaller.</div>
+
+    <div class="chem-sublabel">Slater's rules for the screening constant &sigma;</div>
+    <ol class="chem-ol">
+      <li>Electrons in shells <b>higher</b> than the electron of interest contribute <b>0</b> to &sigma;.</li>
+      <li>Each other electron in the <b>same</b> principal shell contributes <b>0.35</b> (an electron in 1s contributes 0.30).</li>
+      <li>For an s or p electron, each electron in the <b>(n-1)</b> shell contributes <b>0.85</b>.</li>
+      <li>For an s or p electron, each electron in <b>(n-2)</b> or deeper shells contributes <b>1.00</b>.</li>
+      <li>For a d or f electron, every electron to its left (same shell others at 0.35) contributes <b>1.00</b>.</li>
+    </ol>
+
+    <div class="chem-sublabel">Calculate it - Slater's rules estimate</div>
+    <div class="slater">
+      <div class="lead">Pick an element to shield its valence electron</div>
+      <div class="slater-chips" id="slaterChips"></div>
+      <div class="slater-out">
+        <div class="slater-config" id="slaterConfig"></div>
+        <div class="slater-work" id="slaterWork"></div>
+        <div class="slater-res" id="slaterRes"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========== 03 TYPES OF ATOMIC RADIUS =========== -->
+  <section id="radius" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">Types of Atomic Radius</div>
+        <div class="scr-sub">Different bonding situations call for different ways to measure radius.</div>
+      </div>
+    </div>
+
+    <p class="chem-lead"><b>Atomic radius</b> is the distance from the nucleus to the outermost electron, or up to the point where the probability of finding the electron is maximum. Because atoms are not hard spheres, it is measured differently in different bonds.</p>
+
+    <div class="def-stack">
+      <div class="def-card">
+        <h4>Covalent radius</h4>
+        <p>Half the internuclear distance between two identical atoms joined by a single covalent bond (a homonuclear diatomic molecule).</p>
+        <div class="formula"><span class="k" id="rcEq"></span></div>
+        <div class="def-eg">e.g. Cl₂, Br₂, H₂, O₂, N₂. For a heteronuclear bond A-B (with electronegativity difference &Delta;&chi;):</div>
+        <div class="formula"><span class="k" id="rabEq"></span></div>
+      </div>
+      <div class="def-card">
+        <h4>Metallic radius</h4>
+        <p>Half of the internuclear distance between two adjacent metal atoms in a metallic lattice.</p>
+        <div class="formula"><span class="k" id="rmEq"></span></div>
+        <div class="def-eg">e.g. adjacent Al atoms are 286 pm apart, so the metallic radius of Al is 143 pm.</div>
+      </div>
+      <div class="def-card">
+        <h4>Van der Waals radius</h4>
+        <p>Half the shortest distance between two adjacent atoms of neighbouring molecules that are <b>not</b> bonded to each other. It is the largest of the radii, and is the one defined for the noble gases.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========== 04 VARIATION OF ATOMIC SIZE =========== -->
+  <section id="variation" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">Variation of Atomic Size</div>
+        <div class="scr-sub">Decreases across a period, increases down a group.</div>
+      </div>
+    </div>
+
+    <div class="chem-sublabel" style="margin-top:0;">Across a period - size decreases (Z<sub>eff</sub> increases)</div>
+    <div class="data-scroll">
+      <table class="data-table" id="periodTable"></table>
+    </div>
+    <div class="chem-note">Across a period electrons enter the <b>same shell</b> while nuclear charge rises, so Z<sub>eff</sub> increases and the shell is pulled in - the atom gets smaller. For d-block elements the radius first decreases, then stays nearly constant, then increases again.</div>
+
+    <div class="chem-sublabel">Down a group - size increases (new shell added)</div>
+    <div class="data-scroll">
+      <table class="data-table" id="groupTable"></table>
+    </div>
+    <div class="chem-note">Down a group a <b>new shell</b> is added each period, so despite the higher nuclear charge the outermost electron sits farther out and the atom gets larger.</div>
+  </section>
+
+  <!-- =========== 05 EXCEPTIONS IN ATOMIC SIZE =========== -->
+  <section id="exceptions" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">Exceptions in Atomic Size</div>
+        <div class="scr-sub">Where the neat period and group trends break down.</div>
+      </div>
+    </div>
+
+    <div class="ds-block">
+      <div class="ds-rows">
+        <div class="ds-row"><span class="ds-name"><b>Noble gases are largest in a period</b> - their radius is a van der Waals radius (measured between non-bonded atoms), which is inherently larger, and electron-electron repulsion in the full shell dominates.</span></div>
+        <div class="ds-row"><span class="ds-name"><b>Transition (d-block) elements</b> do not follow a regular size trend - the radius stays nearly constant across the middle of a series.</span></div>
+      </div>
+    </div>
+
+    <div class="chem-sublabel">Group 13 anomaly</div>
+    <div class="mos-eq"><span class="k" style="font-family:'Bricolage Grotesque';font-weight:800;font-size:26px;color:#fff;">B &lt; Ga &lt; Al &lt; In &asymp; Tl</span></div>
+    <div class="data-scroll">
+      <table class="data-table" id="g13Table"></table>
+    </div>
+    <div class="chem-note">Gallium is <b>smaller than aluminium</b> above it, because the poorly shielding 3d electrons in Ga let the nucleus pull the outer shell in more strongly. The heavier In and Tl are almost the same size for a similar reason (d- and f-block contraction).</div>
+  </section>
+
+  <!-- =========== 06 IONIC RADIUS =========== -->
+  <section id="ionic" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">Ionic Radius &amp; Lanthanoid Contraction</div>
+        <div class="scr-sub">How losing or gaining electrons changes the size of an atom.</div>
+      </div>
+    </div>
+
+    <p class="chem-lead">A <b>cation</b> (loses electrons) is <b>smaller</b> than its atom - fewer electrons feel a stronger pull per electron, and a whole shell may be lost. An <b>anion</b> (gains electrons) is <b>larger</b> - extra electron-electron repulsion swells the shell.</p>
+
+    <div class="chem-sublabel" style="margin-top:0;">Size order for one element</div>
+    <div class="mos-eq"><span class="k" id="ionEq"></span></div>
+
+    <div class="chem-sublabel">Atom vs ion - real data (pm)</div>
+    <div class="data-scroll">
+      <table class="data-table" id="ionicTable"></table>
+    </div>
+
+    <div class="chem-sublabel">Lanthanoid contraction</div>
+    <div class="chem-note">Because the 4f electrons shield very poorly, the nucleus pulls the outer shell in strongly and the radius contracts steadily across the lanthanoids. This <b>lanthanoid contraction</b> makes the second and third transition series almost the same size.</div>
+  </section>
+
+  <!-- =========== 07 PRACTICE QUESTIONS =========== -->
+  <section id="practice" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">Practice Questions</div>
+        <div class="scr-sub">Rank each set in order of decreasing size, then reveal the answer.</div>
+      </div>
+    </div>
+
+    <p class="chem-lead">Work out each ranking on paper first. Tap <b>Reveal ranking</b> to check the decreasing-size order and the reason.</p>
+
+    <div class="pq-wrap">
+
+      <div class="pq-card">
+        <div class="pq-q">1. Group 2 cations</div>
+        <div class="pq-set">Ca²⁺, Sr²⁺, Mg²⁺</div>
+        <div class="pq-ans">
+          <div class="pq-order">Sr²⁺ &gt; Ca²⁺ &gt; Mg²⁺</div>
+          <div class="pq-why">Same charge, same group - size increases down the group as shells are added, so Sr²⁺ (largest) &gt; Ca²⁺ &gt; Mg²⁺ (smallest).</div>
+        </div>
+        <button class="check-btn pq-reveal">Reveal ranking</button>
+      </div>
+
+      <div class="pq-card">
+        <div class="pq-q">2. Same period, mixed charge</div>
+        <div class="pq-set">K⁺, S²⁻, Cl⁻</div>
+        <div class="pq-ans">
+          <div class="pq-order">S²⁻ &gt; Cl⁻ &gt; K⁺</div>
+          <div class="pq-why">All are isoelectronic (18 electrons). More protons pulling the same electrons means a smaller ion, so the most positive nucleus wins: S²⁻ (16 p) &gt; Cl⁻ (17 p) &gt; K⁺ (19 p).</div>
+        </div>
+        <button class="check-btn pq-reveal">Reveal ranking</button>
+      </div>
+
+      <div class="pq-card">
+        <div class="pq-q">3. Isoelectronic series (10 electrons)</div>
+        <div class="pq-set">N³⁻, O²⁻, F⁻, Na⁺, Mg²⁺, Al³⁺</div>
+        <div class="pq-ans">
+          <div class="pq-order">N³⁻ &gt; O²⁻ &gt; F⁻ &gt; Na⁺ &gt; Mg²⁺ &gt; Al³⁺</div>
+          <div class="pq-why">All have 10 electrons. As nuclear charge rises from N (7 p) to Al (13 p), the same 10 electrons are pulled in harder, so size falls steadily along the series.</div>
+        </div>
+        <button class="check-btn pq-reveal">Reveal ranking</button>
+      </div>
+
+      <div class="pq-card">
+        <div class="pq-q">4. Same element, different charge</div>
+        <div class="pq-set">Cr²⁺, Cr³⁺</div>
+        <div class="pq-ans">
+          <div class="pq-order">Cr²⁺ &gt; Cr³⁺</div>
+          <div class="pq-why">Same nucleus - the ion with fewer electrons (Cr³⁺) is held more tightly per electron, so it is smaller. A higher positive charge means a smaller ion.</div>
+        </div>
+        <button class="check-btn pq-reveal">Reveal ranking</button>
+      </div>
+
+    </div>
+  </section>
+
+  <script>
+    import '../../scripts/effective-nuclear-charge';
+  </script>
+</StudioLayout>
