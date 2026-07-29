@@ -138,6 +138,39 @@ function showSlater(z: number) {
 
   document.getElementById('slaterRes')!.innerHTML =
     `Z<sub>eff</sub> = Z &minus; &sigma; = ${z} &minus; ${sigma.toFixed(2)} = <span class="hl">${zeff.toFixed(2)}</span>`;
+
+  const legend = v === 1
+    ? `<span><i style="background:#00A0E3"></i>1s electron · others shield ×0.30</span>`
+    : [`<span><i style="background:#00A0E3"></i>same shell ×0.35</span>`,
+       `<span><i style="background:#f59e0b"></i>n&minus;1 shell ×0.85</span>`,
+       v >= 3 ? `<span><i style="background:#e11d48"></i>deeper ×1.00</span>` : ''].filter(Boolean).join('');
+  const fig = document.getElementById('shellFig');
+  if (fig) fig.innerHTML = drawShells(sh, v) + `<div class="shell-legend">${legend}</div>`;
+}
+
+/** electron-shell diagram, colour-coded by Slater contribution */
+function drawShells(sh: number[], v: number): string {
+  const cx = 110, cy = 110;
+  let rings = '';
+  let dots = '';
+  sh.forEach((count, i) => {
+    const r = 30 + i * 25;
+    rings += `<circle class="shell-ring" cx="${cx}" cy="${cy}" r="${r}"/>`;
+    const color = i === v - 1 ? '#00A0E3' : i === v - 2 ? '#f59e0b' : '#e11d48';
+    for (let j = 0; j < count; j++) {
+      const ang = (-90 + (360 / count) * j) * Math.PI / 180;
+      const x = cx + r * Math.cos(ang);
+      const y = cy + r * Math.sin(ang);
+      const one = i === v - 1 && j === 0;
+      dots += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${one ? 6.5 : 5}" fill="${color}"${one ? ' stroke="#fff" stroke-width="2"' : ''}/>`;
+    }
+  });
+  return `<svg viewBox="0 0 220 220" role="img" aria-label="Electron shells coloured by Slater contribution">
+    ${rings}
+    <circle class="shell-nuc" cx="${cx}" cy="${cy}" r="14"/>
+    <text x="${cx}" y="${cy + 5}" text-anchor="middle" font-size="15" font-weight="800" fill="#0f2647" font-family="Bricolage Grotesque">+</text>
+    ${dots}
+  </svg>`;
 }
 
 function initSlater() {
@@ -153,6 +186,107 @@ function initSlater() {
     chips.appendChild(b);
   }
   showSlater(11); // Na - a clear worked example
+}
+
+/* ───────── scaled-atom size explorer ───────── */
+const SIZE_SETS: Record<string, { tab: string; trend: string; rev: boolean; els: Array<[string, number]> }> = {
+  period2: {
+    tab: 'Across Period 2', rev: false,
+    trend: 'Left → right: size <b>shrinks</b> - same shell, rising Z<sub>eff</sub> pulls it in',
+    els: [['Li', 152], ['Be', 111], ['B', 88], ['C', 77], ['N', 74], ['O', 66], ['F', 64]],
+  },
+  group1: {
+    tab: 'Down Group 1', rev: true,
+    trend: 'Top → bottom: size <b>grows</b> - a new shell is added each period',
+    els: [['Li', 152], ['Na', 186], ['K', 231], ['Rb', 244], ['Cs', 262]],
+  },
+  group17: {
+    tab: 'Down Group 17', rev: true,
+    trend: 'Top → bottom: size <b>grows</b> - a new shell is added each period',
+    els: [['F', 72], ['Cl', 99], ['Br', 114], ['I', 133], ['At', 140]],
+  },
+};
+
+/** map a real radius (pm) to a pixel diameter on one shared scale (64→30px, 262→130px) */
+function scaleDia(pm: number): number {
+  return Math.round(30 + (pm - 64) * (100 / (262 - 64)));
+}
+
+function renderSizeRow(el: HTMLElement, els: Array<[string, number]>, highlight: string[] = []) {
+  el.innerHTML = els.map(([sym, pm], i) => {
+    const d = scaleDia(pm);
+    const hl = highlight.includes(sym) ? ' hl' : '';
+    return `<div class="size-atom${hl}">
+      <div class="size-circle" style="width:${d}px;height:${d}px;animation-delay:${i * 70}ms"></div>
+      <div class="size-meta"><div class="size-sym">${sym}</div><div class="size-val">${pm} pm</div></div>
+    </div>`;
+  }).join('');
+  el.querySelectorAll<HTMLElement>('.size-atom').forEach((a) => {
+    a.addEventListener('click', () => {
+      const on = a.classList.contains('hl');
+      el.querySelectorAll('.size-atom').forEach((x) => x.classList.remove('hl'));
+      if (!on) a.classList.add('hl');
+    });
+  });
+}
+
+function initSizeExplorer() {
+  const tabs = document.getElementById('sizeTabs');
+  const row = document.getElementById('sizeRow');
+  const trend = document.getElementById('sizeTrend');
+  if (!tabs || !row || !trend) return;
+  const keys = Object.keys(SIZE_SETS);
+  const show = (k: string) => {
+    const set = SIZE_SETS[k];
+    tabs.querySelectorAll('.size-tab').forEach((t) =>
+      t.classList.toggle('active', (t as HTMLElement).dataset.k === k));
+    renderSizeRow(row, set.els);
+    trend.innerHTML = `<span class="size-arrow${set.rev ? ' rev' : ''}"></span><span>${set.trend}</span>`;
+  };
+  tabs.innerHTML = keys.map((k) =>
+    `<button class="size-tab" data-k="${k}">${SIZE_SETS[k].tab}</button>`).join('');
+  tabs.querySelectorAll<HTMLElement>('.size-tab').forEach((t) =>
+    t.addEventListener('click', () => show(t.dataset.k!)));
+  show('period2');
+}
+
+function initG13Viz() {
+  const row = document.getElementById('g13Row');
+  if (!row) return;
+  renderSizeRow(row as HTMLElement,
+    [['B', 88], ['Ga', 135], ['Al', 143], ['In', 167], ['Tl', 170]], ['Ga', 'Al']);
+}
+
+/* ───────── ion (cation / anion) interactive ───────── */
+function initIon() {
+  const disc = document.getElementById('ionDisc');
+  const scene = document.getElementById('ionScene');
+  const label = document.getElementById('ionLabel');
+  if (!disc || !scene || !label) return;
+  const STATES: Record<string, { d: number; cls: string; sym: string; text: string }> = {
+    neutral: { d: 120, cls: '', sym: 'A', text: 'Neutral atom <span class="sz">A</span>' },
+    cat: { d: 78, cls: 'cat', sym: 'A⁺', text: 'Cation <span class="sz">A⁺</span> - lost an electron, so the same Z<sub>eff</sub> pulls a smaller cloud in tighter' },
+    an: { d: 150, cls: 'an', sym: 'A⁻', text: 'Anion <span class="sz">A⁻</span> - gained an electron, so extra repulsion swells the cloud outward' },
+  };
+  const fly = (kind: 'out' | 'in') => {
+    const e = document.createElement('div');
+    e.className = 'ion-e';
+    e.style.animation = `${kind === 'out' ? 'eOut' : 'eIn'} .7s ease forwards`;
+    scene.appendChild(e);
+    setTimeout(() => e.remove(), 760);
+  };
+  const set = (k: string) => {
+    const s = STATES[k];
+    disc.className = 'ion-disc' + (s.cls ? ' ' + s.cls : '');
+    disc.style.width = s.d + 'px';
+    disc.style.height = s.d + 'px';
+    disc.textContent = s.sym;
+    label.innerHTML = s.text;
+    if (k === 'cat') fly('out');
+    if (k === 'an') fly('in');
+  };
+  document.querySelectorAll<HTMLElement>('.ion-btn').forEach((b) =>
+    b.addEventListener('click', () => set(b.dataset.ion!)));
 }
 
 /* ───────── practice reveal ───────── */
@@ -173,6 +307,9 @@ function boot() {
   buildG13Table();
   buildIonicTable();
   initSlater();
+  initSizeExplorer();
+  initG13Viz();
+  initIon();
   initPractice();
 }
 

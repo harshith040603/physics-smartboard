@@ -294,3 +294,76 @@
   .def-card{padding:18px 16px;}
   .pq-card{padding:18px 16px;}
 }
+
+/* ═══════════ Animated visuals ═══════════ */
+
+/* ── ENC tug-of-war diagram ── */
+.enc-stage{background:#fff;border-radius:22px;padding:20px 16px 14px;box-shadow:var(--shadow);margin-bottom:22px;text-align:center;}
+.enc-stage svg{width:100%;max-width:460px;height:auto;display:block;margin:0 auto;}
+.enc-attract{stroke:var(--nine-accent);stroke-width:3.2;animation:pulseArrow 3s ease-in-out infinite;}
+.enc-repel{stroke:#e11d48;stroke-width:2.6;animation:pulseArrow 3s ease-in-out infinite;animation-delay:1.5s;}
+.enc-e{fill:#295990;}
+.enc-e.val{fill:var(--nine-accent);animation:valPulse 3s ease-in-out infinite;transform-box:fill-box;transform-origin:center;}
+@keyframes pulseArrow{0%,100%{opacity:.3;}50%{opacity:1;}}
+@keyframes valPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.35);}}
+.enc-legend{display:flex;justify-content:center;gap:22px;margin-top:10px;flex-wrap:wrap;font-family:'Bricolage Grotesque';font-weight:700;font-size:13px;}
+.enc-legend .a{color:var(--nine-accent);}
+.enc-legend .r{color:#e11d48;}
+
+/* ── radius measurement figures ── */
+.radius-fig{margin:14px 0 4px;}
+.radius-fig svg{width:100%;max-width:300px;height:auto;display:block;}
+.rf-atom{fill:none;stroke:var(--nine-deep);stroke-width:2;}
+.rf-fill{fill:rgba(0,160,227,.10);stroke:var(--nine-accent);stroke-width:2;}
+.rf-dash{stroke:#7689a0;stroke-width:1.4;stroke-dasharray:4 4;}
+.rf-measure{stroke:var(--nine-accent);stroke-width:2.4;animation:pulseArrow 2.6s ease-in-out infinite;}
+.rf-dot{fill:#e11d48;}
+.rf-lbl{font-family:'Bricolage Grotesque';font-weight:800;font-size:15px;fill:var(--nine-navy);}
+
+/* ── scaled-atom size explorer (variation / exceptions) ── */
+.size-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+.size-tab{font-family:'Bricolage Grotesque';font-weight:700;font-size:14px;padding:8px 16px;border-radius:999px;border:2px solid rgba(41,89,144,.25);background:#fff;color:var(--nine-deep);cursor:pointer;transition:.15s;}
+.size-tab:hover{border-color:var(--nine-accent);}
+.size-tab.active{background:var(--nine-dark);color:#fff;border-color:var(--nine-dark);}
+.size-stage{background:#fff;border-radius:22px;padding:26px 18px 20px;box-shadow:var(--shadow);}
+.size-row{display:flex;align-items:flex-end;justify-content:center;gap:16px;flex-wrap:wrap;min-height:150px;}
+.size-atom{display:flex;flex-direction:column;align-items:center;gap:9px;cursor:pointer;}
+.size-circle{border-radius:50%;background:radial-gradient(circle at 34% 28%,#4cc6ff,var(--nine-dark));box-shadow:var(--shadow);flex:none;animation:popIn .5s cubic-bezier(.2,.85,.3,1) both;transition:transform .18s;}
+.size-atom:hover .size-circle{transform:scale(1.06);}
+.size-atom.hl .size-circle{background:radial-gradient(circle at 34% 28%,#ffd36b,#e11d48);}
+.size-meta{text-align:center;line-height:1.25;}
+.size-sym{font-family:'Bricolage Grotesque';font-weight:800;font-size:16px;color:var(--nine-navy);}
+.size-val{font-size:12px;color:#7689a0;font-weight:700;}
+.size-trend{margin-top:18px;display:flex;align-items:center;justify-content:center;gap:12px;font-family:'Bricolage Grotesque';font-weight:700;color:var(--nine-deep);font-size:14.5px;text-align:center;flex-wrap:wrap;}
+.size-arrow{height:6px;border-radius:3px;background:linear-gradient(90deg,var(--nine-accent),var(--nine-dark));flex:1;max-width:180px;min-width:80px;position:relative;}
+.size-arrow.rev{background:linear-gradient(90deg,var(--nine-dark),var(--nine-accent));}
+@keyframes popIn{from{transform:scale(0);opacity:0;}to{transform:scale(1);opacity:1;}}
+
+/* ── ion lose/gain explorer ── */
+.ion-stage{background:#fff;border-radius:22px;padding:26px 18px 20px;box-shadow:var(--shadow);text-align:center;}
+.ion-scene{display:flex;align-items:center;justify-content:center;min-height:180px;position:relative;}
+.ion-disc{border-radius:50%;background:radial-gradient(circle at 34% 28%,#4cc6ff,var(--nine-dark));display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Bricolage Grotesque';font-weight:800;box-shadow:var(--shadow);transition:width .6s cubic-bezier(.2,.7,.3,1),height .6s cubic-bezier(.2,.7,.3,1),background .45s;position:relative;}
+.ion-disc.cat{background:radial-gradient(circle at 34% 28%,#8fb6e0,var(--nine-navy));}
+.ion-disc.an{background:radial-gradient(circle at 34% 28%,#4cc6ff,var(--nine-accent));}
+.ion-e{position:absolute;top:50%;left:50%;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;background:#ffd36b;box-shadow:0 0 10px #ffd36b;}
+@keyframes eOut{from{transform:translate(0,0);opacity:1;}to{transform:translate(120px,-84px);opacity:0;}}
+@keyframes eIn{from{transform:translate(-120px,84px);opacity:0;}45%{opacity:1;}to{transform:translate(0,0);opacity:1;}}
+.ion-label{margin-top:16px;font-family:'Bricolage Grotesque';font-weight:800;font-size:19px;color:var(--nine-navy);min-height:26px;}
+.ion-label .sz{color:var(--nine-accent);}
+.ion-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px;}
+.ion-btn{font-family:'Bricolage Grotesque';font-weight:700;font-size:14px;padding:10px 18px;border-radius:12px;border:2px solid var(--nine-accent);background:#fff;color:var(--nine-navy);cursor:pointer;transition:.15s;}
+.ion-btn:hover{background:var(--nine-accent);color:#fff;}
+.ion-btn.ghost{border-color:rgba(41,89,144,.25);color:var(--nine-deep);}
+.ion-btn.ghost:hover{background:var(--paper-2);color:var(--nine-navy);}
+
+/* ── Slater electron-shell diagram ── */
+.shell-fig{margin-top:18px;display:flex;flex-direction:column;align-items:center;gap:12px;}
+.shell-fig svg{width:100%;max-width:250px;height:auto;}
+.shell-ring{fill:none;stroke:rgba(255,255,255,.18);stroke-width:1.5;}
+.shell-nuc{fill:var(--nine-accent);}
+.shell-legend{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;font-size:12px;font-weight:700;color:#cfe2f4;}
+.shell-legend i{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:5px;vertical-align:-1px;}
+@media(max-width:640px){
+  .size-row{gap:10px;}
+  .size-stage{padding:18px 12px 14px;}
+}
