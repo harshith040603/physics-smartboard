@@ -66,7 +66,7 @@ export const chapterResources: ChapterResources[] = [
     num: '02',
     title: 'Kine',
     titleAccent: 'matics',
-    notes: { label: 'Class Notes', url: '/downloads/kinematics/notes.pdf' },
+    notes: { label: 'Class Notes', url: '/downloads/kinematics/kinematics%20till%20relative%20motion%20in%201D.pdf' },
     worksheets: [
       { label: 'Practice 50 Questions', url: '/downloads/kinematics/worksheet-1.pdf' },
       { label: 'Combined Practice Sheet', url: '/downloads/kinematics/worksheet-2.pdf' },
