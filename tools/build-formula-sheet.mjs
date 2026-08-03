@@ -171,7 +171,7 @@ const page = (n, eyebrow, body) => `
   </footer>
 </section>`;
 
-const page1 = page(1, 'Kinematics · Lectures 11-13', `
+const page1 = page(1, 'Kinematics', `
   <div class="title-row">
     <div>
       <h1>Projectile <span class="ac">Motion</span></h1>
