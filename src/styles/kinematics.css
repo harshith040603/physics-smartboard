@@ -282,6 +282,12 @@
 .pr-num.active{background:var(--nine-dark);color:#fff;border-color:var(--nine-dark);}
 @media (max-width:640px){.pr-num{width:40px;height:40px;font-size:13.5px;}}
 
+/* ── Projectile on an Inclined Plane ── */
+.ic-incline{background:linear-gradient(135deg,#0f766e,#14b8a6);}
+.incl-two{display:flex;gap:18px;align-items:stretch;}
+.incl-two > .kin-canvas{flex:1;min-width:0;min-height:300px;}
+@media (max-width:900px){ .incl-two{flex-direction:column;} }
+
 /* ── Motion in a Plane · larger type for back-of-room legibility ── */
 #plane .rev-chip{font-size:16.5px;padding:10px 18px;}
 #plane .pl-notes-body h4{font-size:23px;}
@@ -307,4 +313,30 @@
   #plane .rev-chip{font-size:13.5px;padding:8px 13px;}
   #plane .pl-nf{font-size:19px;}
   #plane .rev-q{font-size:20px;}
+}
+
+/* ── Inclined plane · same back-of-room type scale as Motion in a Plane ── */
+#incline .rev-chip{font-size:16.5px;padding:10px 18px;}
+#incline .pl-notes-body h4{font-size:23px;}
+#incline .pl-notes-body p{font-size:19.5px;line-height:1.7;}
+#incline .pl-nf{font-size:21.5px;}
+#incline .pl-nbox{font-size:19.5px;line-height:1.66;}
+#incline .pl-neg{font-size:18.5px;line-height:1.6;}
+#incline .pl-neg .pl-eglab{font-size:19px;}
+#incline .pl-eghint{font-size:15.5px;}
+#incline .pl-nstep{font-size:19.5px;line-height:1.58;}
+#incline .pl-eqhead{font-size:18.5px;}
+#incline .pl-eqrow{font-size:18px;}
+#incline .rev-q{font-size:22.5px;}
+#incline .rev-opt{font-size:20px;padding:14px 24px;}
+#incline .rev-feedback{font-size:19px;line-height:1.5;}
+#incline .rev-keybox{font-size:19px;}
+#incline .kin-ctrl label{font-size:18px;}
+#incline .kin-val{font-size:19.5px;}
+#incline .rf-text{font-size:20px;}
+#incline .rf-ans{font-size:18.5px;}
+@media (max-width:640px){
+  #incline .rev-chip{font-size:13.5px;padding:8px 13px;}
+  #incline .pl-nf{font-size:19px;}
+  #incline .rev-q{font-size:20px;}
 }
