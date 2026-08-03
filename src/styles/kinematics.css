@@ -287,6 +287,11 @@
 /* the diagrams keep a true 1:1 scale, so a very wide canvas just shrinks them -
    cap the width and let the drawing breathe vertically instead */
 #incline .kin-canvas{max-width:1440px;margin-left:auto;margin-right:auto;}
+/* homework question figures: small, left-aligned inside the card */
+#incline .hw-fig{
+  max-width:680px;margin:14px 0 2px;min-height:0;
+  box-shadow:none;border:1.5px solid rgba(41,89,144,.16);
+}
 .incl-two{display:flex;gap:18px;align-items:stretch;max-width:1440px;margin:0 auto;}
 .incl-two > .kin-canvas{flex:1;min-width:0;min-height:320px;max-width:none;}
 @media (max-width:900px){ .incl-two{flex-direction:column;} }

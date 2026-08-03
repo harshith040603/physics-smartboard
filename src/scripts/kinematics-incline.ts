@@ -270,26 +270,31 @@ function drawGround(p: p5, v: View, lo: V, hi: V) {
 }
 
 /* θ belongs at the foot of the hill, between the horizontal and the surface */
-function drawAlpha(p: p5, v: View, g: Geom, aDeg: number, lo: V, run: number) {
+function drawAlpha(p: p5, v: View, g: Geom, aDeg: number, lo: V, run: number, k = 1) {
   const ox = v.X(lo.x), oy = v.Y(lo.y);
   p.stroke(41, 89, 144, 105);
   p.strokeWeight(1.5);
   dashOn(p, [6, 6]);
   p.line(ox, oy, ox + run, oy);
   dashOff(p);
-  arc(p, ox, oy, 42, g.lineAng, 0, C.violet);
+  arc(p, ox, oy, 42 * k, g.lineAng, 0, C.violet);
   const m = g.lineAng / 2;
-  label(p, `θ = ${aDeg}°`, ox + Math.cos(m) * 64, oy + Math.sin(m) * 64, C.violet, 12.5);
+  label(p, `θ = ${aDeg}°`, ox + Math.cos(m) * 64 * k, oy + Math.sin(m) * 64 * k, C.violet, 12.5 * k);
 }
 
-function drawLaunch(p: p5, v: View, g: Geom, bDeg: number, len = 104, col = C.accent) {
+function drawLaunch(
+  p: p5, v: View, g: Geom, bDeg: number | null,
+  len = 104, col: string = C.accent, k = 1, at: V = { x: 0, y: 0 }
+) {
   const ua = g.exAng + g.perp * g.b;
+  const ox = v.X(at.x), oy = v.Y(at.y);
   p.stroke(col);
-  p.strokeWeight(3.4);
-  arrow(p, v.X(0), v.Y(0), v.X(0) + Math.cos(ua) * len, v.Y(0) + Math.sin(ua) * len, 12);
-  arc(p, v.X(0), v.Y(0), 76, g.exAng, ua, C.amber);
+  p.strokeWeight(3.4 * Math.max(k, 0.75));
+  arrow(p, ox, oy, ox + Math.cos(ua) * len, oy + Math.sin(ua) * len, 12 * Math.max(k, 0.7));
+  arc(p, ox, oy, 76 * k, g.exAng, ua, C.amber);
   const m = g.exAng + (g.perp * g.b) / 2;
-  label(p, `α = ${bDeg}°`, v.X(0) + Math.cos(m) * 106, v.Y(0) + Math.sin(m) * 106, C.amber, 12.5);
+  label(p, bDeg === null ? 'α = ?' : `α = ${bDeg}°`,
+    ox + Math.cos(m) * 106 * k, oy + Math.sin(m) * 106 * k, C.amber, 12.5 * Math.max(k, 0.85));
 }
 
 function drawYAxis(p: p5, v: View, g: Geom) {
@@ -1238,8 +1243,114 @@ function rqWire() {
 }
 
 /* ══════════════════════════════════════════════════════════════════════
-   Pane 8 · Homework
+   Pane 8 · Homework - a static figure per question
+
+   Same drawing language as the live panes, so the angles are true, but
+   only the GIVENS are labelled: the ranges read "R = ?" so the picture
+   never hands over the answer.
    ══════════════════════════════════════════════════════════════════════ */
+interface HwCfg {
+  canvas: string;
+  u: number; th: number; al: number;
+  dir: Dir;
+  mode: 'single' | 'fan' | 'both';
+}
+
+const hwFigs: HwCfg[] = [
+  { canvas: 'inHwFig1', u: 15, th: 20, al: 40, dir: 'up', mode: 'single' },
+  { canvas: 'inHwFig2', u: 15, th: 20, al: 40, dir: 'down', mode: 'single' },
+  { canvas: 'inHwFig3', u: 15, th: 20, al: 40, dir: 'up', mode: 'fan' },
+  { canvas: 'inHwFig4', u: 15, th: 20, al: 40, dir: 'up', mode: 'both' },
+];
+const FAN = [15, 30, 45, 60];
+
+function hwSketch(cfg: HwCfg) {
+  return (p: p5) => {
+    const holder = document.getElementById(cfg.canvas)!;
+    const M = { l: 34, r: 30, t: 30, b: 34 };
+    const canvasH = () => Math.max(215, Math.min(300, Math.round(holder.clientWidth * 0.46)));
+
+    p.setup = () => {
+      p.createCanvas(holder.clientWidth, canvasH());
+      p.noLoop();                                    // a homework figure never moves
+      document.fonts?.ready?.then(() => p.redraw()); // ...so catch a late webfont
+    };
+    p.windowResized = () => { p.resizeCanvas(holder.clientWidth, canvasH()); };
+
+    p.draw = () => {
+      p.background(C.paper);
+      const K = 0.62;                                  // arcs shrink on a small figure
+      const gU = geom(cfg.u, cfg.th, cfg.al, 'up');
+      const gD = geom(cfg.u, cfg.th, cfg.al, 'down');
+      const fans = FAN.map((a) => geom(cfg.u, cfg.th, a, 'up'));
+
+      /* how much hill each figure needs */
+      let hiEnd: V, loEnd: V, main: Geom;
+      if (cfg.mode === 'both') {
+        main = gU;
+        hiEnd = gU.along(gU.R * 1.16);
+        loEnd = gD.along(gD.R * 1.1);
+      } else if (cfg.mode === 'fan') {
+        main = gU;
+        hiEnd = gU.along(Math.max(...fans.map((f) => f.R)) * 1.18);
+        loEnd = { x: 0, y: 0 };
+      } else {
+        main = cfg.dir === 'up' ? gU : gD;
+        const ends = hillEnds(main, cfg.dir, main.R * 1.2, cfg.dir === 'up' ? 0 : main.R * 0.16);
+        hiEnd = ends.hi; loEnd = ends.lo;
+      }
+
+      const pts: V[] = [{ x: 0, y: 0 }, hiEnd, loEnd, { x: hiEnd.x, y: loEnd.y }];
+      const sample = (g: Geom) => {
+        for (let i = 0; i <= 24; i++) pts.push(g.pos((g.T * i) / 24));
+      };
+      if (cfg.mode === 'fan') fans.forEach(sample);
+      else if (cfg.mode === 'both') { sample(gU); sample(gD); }
+      else sample(main);
+      const v = fitView(p, M, pts, 0.11);
+
+      drawGround(p, v, loEnd, hiEnd);
+      drawAlpha(p, v, main, cfg.th, loEnd, (hiEnd.x - loEnd.x) * 0.3 * v.s, K);
+
+      if (cfg.mode === 'fan') {
+        fans.forEach((f, i) => {
+          const shade = 90 + i * 34;
+          p.noFill(); p.stroke(fade(p, C.accent, shade)); p.strokeWeight(2);
+          dashOn(p, [4, 5]);
+          p.beginShape();
+          for (let j = 0; j <= 60; j++) { const q = f.pos((f.T * j) / 60); p.vertex(v.X(q.x), v.Y(q.y)); }
+          p.endShape();
+          dashOff(p);
+          const e = f.along(f.R);
+          p.noStroke(); p.fill(fade(p, C.accent, shade)); p.circle(v.X(e.x), v.Y(e.y), 7);
+        });
+        drawLaunch(p, v, gU, null, 58, C.accent, K);
+        label(p, 'which α throws it furthest?', p.width / 2, p.height - 16, C.dark, 12.5, 0, false);
+      } else if (cfg.mode === 'both') {
+        pathDots(p, v, gU, 'rgba(0,160,227,0.55)');
+        pathDots(p, v, gD, 'rgba(245,158,11,0.65)');
+        drawRangeBand(p, v, gU, 'R = ?', C.accent);
+        drawRangeBand(p, v, gD, 'R = ?', C.amber);
+        drawLaunch(p, v, gU, cfg.al, 56, C.accent, K);
+        drawLaunch(p, v, gD, cfg.al, 56, C.amber, K);
+        label(p, 'same u, same θ, same α - one up the hill, one down it',
+          p.width / 2, p.height - 16, C.dark, 12.5, 0, false);
+      } else {
+        pathDots(p, v, main, 'rgba(41,89,144,0.45)');
+        drawRangeBand(p, v, main, 'R = ?', C.red);
+        drawLaunch(p, v, main, cfg.al, 58, C.accent, K);
+        const ua = main.exAng + main.perp * main.b;
+        label(p, `u = ${cfg.u} m/s`,
+          v.X(0) + Math.cos(ua) * 94, v.Y(0) + Math.sin(ua) * 94, C.accent, 12.5);
+        label(p, cfg.dir === 'up' ? 'projected UP the incline' : 'projected DOWN the incline',
+          p.width / 2, p.height - 16, C.dark, 12.5, 0, false);
+      }
+
+      ball(p, v.X(0), v.Y(0), C.navy, 13);
+    };
+  };
+}
+
 function homeworkWire() {
   document.querySelectorAll<HTMLButtonElement>('#inHw .hw-reveal').forEach((btn) => {
     btn.addEventListener('click', () => {
@@ -1283,6 +1394,8 @@ function activatePane(id: PaneId) {
         new p5(mxTrajSketch, document.getElementById('inMaxTrajCanvas')!),
         new p5(mxCurveSketch, document.getElementById('inMaxCurveCanvas')!),
       ];
+    } else if (id === 'inHw') {
+      sketches.inHw = hwFigs.map((c) => new p5(hwSketch(c), document.getElementById(c.canvas)!));
     }
   } else {
     sketches[id]!.forEach((sk) => sk.windowResized?.());
