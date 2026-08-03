@@ -978,25 +978,6 @@ import '../../styles/kinematics.css';
 
     <!-- ── Pane 1 · Why rotate the axes ── -->
     <div class="grav-pane active" id="inWhy">
-      <div class="pl-notes">
-        <div class="pl-notes-body">
-          <h4>1 · Why Rotate the Axes?</h4>
-          <p>A particle is launched from the bottom of an incline of angle α and lands somewhere up the slope.
-          Try it in the usual horizontal / vertical axes: the particle lands when its height equals the height of the slope at that x.</p>
-          <div class="pl-nf">Landing condition: &nbsp; y = x tanα</div>
-          <div class="pl-nbox">
-            That single line is the problem. It <b>couples x and y</b>, so the clean flat-ground trick - just set y = 0 - is gone,
-            because the "ground" is tilted.
-          </div>
-          <p>The fix: rotate the whole coordinate system so one axis runs <b>along</b> the incline. Landing then means the
-          perpendicular coordinate has returned to zero.</p>
-          <div class="pl-nbox">
-            <b>ROTATE THE AXES TO MATCH THE SURFACE. CHOOSE YOUR AXES TO SIMPLIFY THE CONSTRAINT.</b><br>
-            This idea comes back in dynamics (blocks on inclines) and in circular motion - it is not a projectile trick.
-          </div>
-        </div>
-      </div>
-
       <div class="kin-controls">
         <div class="kin-ctrl">
           <label>Incline angle α <span class="kin-val" id="inWhyAVal">30°</span></label>
@@ -1015,32 +996,6 @@ import '../../styles/kinematics.css';
 
     <!-- ── Pane 2 · Setting up the rotated axes ── -->
     <div class="grav-pane" id="inAxes">
-      <div class="pl-notes">
-        <div class="pl-notes-body">
-          <h4>2 · Setting Up the Rotated Axes</h4>
-          <div class="pl-nf">x′ : ALONG the incline &nbsp;·&nbsp; y′ : PERPENDICULAR to it (away from the surface = positive)</div>
-          <div class="pl-nf">u<sub>x′</sub> = u cosβ &nbsp;&nbsp;·&nbsp;&nbsp; u<sub>y′</sub> = u sinβ &nbsp;&nbsp;(β measured FROM THE INCLINE SURFACE)</div>
-          <p>Gravity still points straight down - it does not care that you rotated. So it splits into a piece along the incline
-          and a piece perpendicular to it:</p>
-          <div class="pl-ncols">
-            <div class="pl-eqcol">
-              <div class="pl-eqhead" style="color:#e11d48">Perpendicular (y′)</div>
-              <div class="pl-eqrow">a<sub>y′</sub> = −g cosα</div>
-              <div class="pl-eqrow">ALWAYS, into the surface - both cases.</div>
-            </div>
-            <div class="pl-eqcol">
-              <div class="pl-eqhead" style="color:#16a34a">Along the incline (x′)</div>
-              <div class="pl-eqrow">magnitude g sinα</div>
-              <div class="pl-eqrow">the SIGN depends on which way you launch - that is today's two cases.</div>
-            </div>
-          </div>
-          <div class="pl-nbox">
-            <b>α is measured from the HORIZONTAL. β is measured from the INCLINE.</b>
-            Keep them straight - this is the number one mistake in the whole topic.
-          </div>
-        </div>
-      </div>
-
       <div class="kin-controls">
         <div class="kin-ctrl">
           <label>Incline angle α <span class="kin-val" id="inAxAVal">30°</span></label>
@@ -1065,41 +1020,6 @@ import '../../styles/kinematics.css';
 
     <!-- ── Pane 3 · Case 1 · up the incline ── -->
     <div class="grav-pane" id="inUp">
-      <div class="pl-notes">
-        <div class="pl-notes-body">
-          <h4>3 · Case 1 - Projected UP the Incline</h4>
-          <p>Launched from the <b>bottom</b> of the incline, moving up and away from the surface, landing further up the slope.
-          Picture kicking a ball up a hill. Take x′ positive up the slope, in the launch direction.</p>
-          <div class="pl-ncols">
-            <div class="pl-eqcol">
-              <div class="pl-eqhead" style="color:#16a34a">Along x′</div>
-              <div class="pl-eqrow">a<sub>x′</sub> = −g sinα &nbsp;(OPPOSES the motion)</div>
-              <div class="pl-eqrow">R = (u cosβ)T − ½(g sinα)T²</div>
-            </div>
-            <div class="pl-eqcol">
-              <div class="pl-eqhead" style="color:#e11d48">Along y′</div>
-              <div class="pl-eqrow">a<sub>y′</sub> = −g cosα &nbsp;(into the surface)</div>
-              <div class="pl-eqrow">T = 2u sinβ / (g cosα)</div>
-            </div>
-          </div>
-          <div class="pl-nbox">
-            Same shape as the flat-ground formulas, with <b>g replaced by g cosα</b> for the timing.
-            But the range now carries a <b>minus</b> sign: gravity is actively fighting the along-slope motion.
-          </div>
-          <div class="pl-neg pl-egtap" role="button" tabindex="0">
-            <span class="pl-eglab">Worked example - up the incline</span>
-            u = 20 m/s, incline α = 30°, launch β = 30° to the incline, g = 10. Find T and R.
-            <span class="pl-eghint">Tap to reveal the solution</span>
-            <div class="pl-egans">
-              g cosα = 10 × (√3/2) ≈ 8.66 &nbsp;·&nbsp; g sinα = 10 × 0.5 = 5<br>
-              T = 2u sinβ / (g cosα) = 2(20)(0.5) / 8.66 = 20 / 8.66 ≈ <b>2.31 s</b><br>
-              R = (20 cos30°)(2.31) − ½(5)(2.31)² = (17.3)(2.31) − 2.5(5.34) ≈ 40.0 − 13.3 ≈ <b>26.7 m</b><br>
-              Hold on to these numbers - Case 2 uses exactly the same ones.
-            </div>
-          </div>
-        </div>
-      </div>
-
       <div class="kin-controls">
         <div class="kin-ctrl">
           <label>Launch speed u <span class="kin-val" id="inUpUVal">20 m/s</span></label>
@@ -1146,42 +1066,6 @@ import '../../styles/kinematics.css';
 
     <!-- ── Pane 4 · Case 2 · down the incline ── -->
     <div class="grav-pane" id="inDn">
-      <div class="pl-notes">
-        <div class="pl-notes-body">
-          <h4>4 · Case 2 - Projected DOWN the Incline</h4>
-          <p>Launched from the <b>top</b> of the incline, moving away from the surface and down the slope.
-          Picture kicking a ball off the edge of a downhill ramp. Take x′ positive down the slope, again in the launch direction.</p>
-          <div class="pl-ncols">
-            <div class="pl-eqcol">
-              <div class="pl-eqhead" style="color:#16a34a">Along x′</div>
-              <div class="pl-eqrow">a<sub>x′</sub> = +g sinα &nbsp;(AIDS the motion)</div>
-              <div class="pl-eqrow">R = (u cosβ)T + ½(g sinα)T² &nbsp;← plus now</div>
-            </div>
-            <div class="pl-eqcol">
-              <div class="pl-eqhead" style="color:#e11d48">Along y′</div>
-              <div class="pl-eqrow">a<sub>y′</sub> = −g cosα &nbsp;(SAME as before)</div>
-              <div class="pl-eqrow">T = 2u sinβ / (g cosα) &nbsp;← IDENTICAL formula</div>
-            </div>
-          </div>
-          <div class="pl-nbox">
-            <b>The time of flight did not change at all.</b> Timing depends only on the perpendicular motion, and perpendicular to
-            the incline gravity behaves exactly the same whichever way you launch along the slope. Only the <b>sign in the range</b>
-            formula flips - from minus to plus, because gravity now helps instead of hinders.
-          </div>
-          <div class="pl-neg pl-egtap" role="button" tabindex="0">
-            <span class="pl-eglab">Worked example - down the incline (same numbers)</span>
-            u = 20 m/s, α = 30°, β = 30° to the incline, g = 10. Find T and R, then compare with Case 1.
-            <span class="pl-eghint">Tap to reveal the solution</span>
-            <div class="pl-egans">
-              T = 2u sinβ / (g cosα) = <b>2.31 s</b> - exactly the same as Case 1.<br>
-              R = (17.3)(2.31) + ½(5)(2.31)² = 40.0 + 13.3 ≈ <b>53.3 m</b><br>
-              Up the incline: 26.7 m. Down the incline: 53.3 m. Same launch, opposite direction along the slope -
-              gravity was fighting you in Case 1 and helping you in Case 2.
-            </div>
-          </div>
-        </div>
-      </div>
-
       <div class="kin-controls">
         <div class="kin-ctrl">
           <label>Launch speed u <span class="kin-val" id="inDnUVal">20 m/s</span></label>
@@ -1256,38 +1140,10 @@ import '../../styles/kinematics.css';
       <div class="pl-eqtable" id="inCmpTable"></div>
       <div class="rev-keybox" id="inCmpNote" style="margin-top:14px;"></div>
 
-      <div class="pl-notes">
-        <div class="pl-notes-body">
-          <h4>The comparison, in one box</h4>
-          <div class="pl-nf">Same u, α, β - different direction along the slope:</div>
-          <div class="pl-nstep"><b>UP the incline:</b> T = 2.31 s, R ≈ 26.7 m &nbsp;(for u = 20, α = 30°, β = 30°)</div>
-          <div class="pl-nstep"><b>DOWN the incline:</b> T = 2.31 s, R ≈ 53.3 m</div>
-          <div class="pl-nbox">
-            <b>Time of flight is IDENTICAL</b> - the perpendicular motion does not care about direction along the slope.<br>
-            <b>Range DIFFERS</b> - gravity opposes going up and assists going down:
-            &nbsp; R = (u cosβ)T ∓ ½(g sinα)T² &nbsp; (minus for up, plus for down).
-          </div>
-        </div>
-      </div>
     </div>
 
     <!-- ── Pane 6 · Maximum range ── -->
     <div class="grav-pane" id="inMax">
-      <div class="pl-notes">
-        <div class="pl-notes-body">
-          <h4>6 · Maximum Range Up the Incline</h4>
-          <p>One classic result - quoted here, derived in a problem-solving session. Writing the range as
-          R = 2u² sinβ cos(β + α) / (g cos²α) and maximising gives:</p>
-          <div class="pl-nf">β<sub>opt</sub> = (90° − α) / 2 &nbsp;&nbsp;(from the incline) &nbsp;&nbsp;·&nbsp;&nbsp; R<sub>max</sub> = u² / [g(1 + sinα)]</div>
-          <div class="pl-nbox">
-            <b>Check α = 0 (flat ground):</b> β<sub>opt</sub> = 45° and R<sub>max</sub> = u²/g - exactly Lecture 11's result.
-            The flat-ground formula was never a separate fact; it is this incline formula with α set to zero.
-          </div>
-          <p>Down the incline the same algebra gives β<sub>opt</sub> = (90° + α)/2 and R<sub>max</sub> = u² / [g(1 − sinα)] -
-          the amber curve on the right.</p>
-        </div>
-      </div>
-
       <div class="kin-controls">
         <div class="kin-ctrl">
           <label>Launch speed u <span class="kin-val" id="inMaxUVal">20 m/s</span></label>
@@ -1394,18 +1250,6 @@ import '../../styles/kinematics.css';
         </div>
       </div>
 
-      <div class="pl-notes" style="margin-top:18px;">
-        <div class="pl-notes-body">
-          <h4>Lecture in one line</h4>
-          <div class="pl-nbox">
-            <b>Choose your axes to simplify the constraint.</b> Rotate until the slope is the ground; gravity splits into
-            g sinα along it and g cosα across it. The perpendicular part sets the clock (same both ways); the along-slope part
-            sets the range (minus up, plus down).
-          </div>
-          <p>That closes projectile motion completely - ground-to-ground, from a height, and both directions of an incline.
-          Next: relative motion in two dimensions, where v<sub>AB</sub> = v<sub>A</sub> − v<sub>B</sub> becomes a vector subtraction.</p>
-        </div>
-      </div>
     </div>
   </section>
 

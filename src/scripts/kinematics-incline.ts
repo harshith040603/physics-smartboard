@@ -1112,16 +1112,6 @@ function homeworkWire() {
   });
 }
 
-function exampleWire() {
-  document.querySelectorAll<HTMLElement>('#incline .pl-egtap').forEach((box) => {
-    const toggle = () => box.classList.toggle('revealed');
-    box.addEventListener('click', toggle);
-    box.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
-    });
-  });
-}
-
 /* ══════════════════════════════════════════════════════════════════════
    pane switching + init
    ══════════════════════════════════════════════════════════════════════ */
@@ -1173,7 +1163,6 @@ export function inclineScreenInit() {
     mxWire();
     rqWire();
     homeworkWire();
-    exampleWire();
     document.querySelectorAll<HTMLButtonElement>('#inTabs .rev-chip').forEach((b) => {
       b.addEventListener('click', () => activatePane(b.dataset.pane as PaneId));
     });

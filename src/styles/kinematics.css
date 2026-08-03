@@ -317,14 +317,6 @@
 
 /* ── Inclined plane · same back-of-room type scale as Motion in a Plane ── */
 #incline .rev-chip{font-size:16.5px;padding:10px 18px;}
-#incline .pl-notes-body h4{font-size:23px;}
-#incline .pl-notes-body p{font-size:19.5px;line-height:1.7;}
-#incline .pl-nf{font-size:21.5px;}
-#incline .pl-nbox{font-size:19.5px;line-height:1.66;}
-#incline .pl-neg{font-size:18.5px;line-height:1.6;}
-#incline .pl-neg .pl-eglab{font-size:19px;}
-#incline .pl-eghint{font-size:15.5px;}
-#incline .pl-nstep{font-size:19.5px;line-height:1.58;}
 #incline .pl-eqhead{font-size:18.5px;}
 #incline .pl-eqrow{font-size:18px;}
 #incline .rev-q{font-size:22.5px;}
@@ -337,6 +329,5 @@
 #incline .rf-ans{font-size:18.5px;}
 @media (max-width:640px){
   #incline .rev-chip{font-size:13.5px;padding:8px 13px;}
-  #incline .pl-nf{font-size:19px;}
   #incline .rev-q{font-size:20px;}
 }
