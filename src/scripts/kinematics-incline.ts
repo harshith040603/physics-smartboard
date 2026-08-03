@@ -1,20 +1,25 @@
 /* ═══════════ Projectile on an Inclined Plane (Lecture 13) - eight-pane lab ═══════════
-   Pane 1: Why Rotate? - the landing condition y = x tanα couples x and y in the
+   Pane 1: Why Rotate? - the landing condition y = x tanθ couples x and y in the
            old axes; toggle the rotated axes and it collapses to y′ = 0.
-   Pane 2: Rotated Axes - α from the horizontal, β from the incline, and gravity
-           split into g sinα (along) + g cosα (perpendicular).
+   Pane 2: Rotated Axes - θ from the horizontal, α from the incline, and gravity
+           split into g sinθ (along) + g cosθ (perpendicular).
    Pane 3: Case 1 - projected UP the incline (gravity opposes along the slope).
    Pane 4: Case 2 - projected DOWN the incline (gravity assists along the slope).
-   Pane 5: Side by Side - same u, α, β both ways: identical T, different R.
-   Pane 6: Maximum Range - R(β) curve, β_opt = (90 − α)/2, and the α = 0 check.
+   Pane 5: Side by Side - same u, θ, α both ways: identical T, different R.
+   Pane 6: Maximum Range - R(α) curve, α_opt = (90 − θ)/2, and the θ = 0 check.
    Pane 7: Rapid Fire quiz.  Pane 8: Homework.
 
    Drawing rules for every diagram here:
-   · ONE uniform world→screen scale, so the α and β you measure off the screen are real.
+   · ONE uniform world→screen scale, so the θ and α you measure off the screen are real.
    · The launch corner carries geometry only (u arrow, two arcs, y′). Every number
      lives in one auto-placed panel that hunts for empty canvas.
    · Lengths along the slope are shown as a measured band ON the surface, not as
      floating arrows.
+   Notation follows how the class was taught:
+   · θ (code: `a` / `aDeg`) - the INCLINE angle, measured from the horizontal.
+   · α (code: `b` / `bDeg`) - the LAUNCH angle, measured from the incline surface.
+   The slider ids keep the older A/B naming (inUpA is θ, inUpB is α).
+
    p5 instances are created lazily per pane - hidden panes have zero width.          */
 
 import p5 from 'p5';
@@ -264,7 +269,7 @@ function drawGround(p: p5, v: View, lo: V, hi: V) {
   p.line(v.X(lo.x), v.Y(lo.y), v.X(hi.x), v.Y(hi.y));
 }
 
-/* α belongs at the foot of the hill, between the horizontal and the surface */
+/* θ belongs at the foot of the hill, between the horizontal and the surface */
 function drawAlpha(p: p5, v: View, g: Geom, aDeg: number, lo: V, run: number) {
   const ox = v.X(lo.x), oy = v.Y(lo.y);
   p.stroke(41, 89, 144, 105);
@@ -274,7 +279,7 @@ function drawAlpha(p: p5, v: View, g: Geom, aDeg: number, lo: V, run: number) {
   dashOff(p);
   arc(p, ox, oy, 42, g.lineAng, 0, C.violet);
   const m = g.lineAng / 2;
-  label(p, `α = ${aDeg}°`, ox + Math.cos(m) * 64, oy + Math.sin(m) * 64, C.violet, 12.5);
+  label(p, `θ = ${aDeg}°`, ox + Math.cos(m) * 64, oy + Math.sin(m) * 64, C.violet, 12.5);
 }
 
 function drawLaunch(p: p5, v: View, g: Geom, bDeg: number, len = 104, col = C.accent) {
@@ -284,7 +289,7 @@ function drawLaunch(p: p5, v: View, g: Geom, bDeg: number, len = 104, col = C.ac
   arrow(p, v.X(0), v.Y(0), v.X(0) + Math.cos(ua) * len, v.Y(0) + Math.sin(ua) * len, 12);
   arc(p, v.X(0), v.Y(0), 76, g.exAng, ua, C.amber);
   const m = g.exAng + (g.perp * g.b) / 2;
-  label(p, `β = ${bDeg}°`, v.X(0) + Math.cos(m) * 106, v.Y(0) + Math.sin(m) * 106, C.amber, 12.5);
+  label(p, `α = ${bDeg}°`, v.X(0) + Math.cos(m) * 106, v.Y(0) + Math.sin(m) * 106, C.amber, 12.5);
 }
 
 function drawYAxis(p: p5, v: View, g: Geom) {
@@ -411,7 +416,7 @@ const whySketch = (p: p5) => {
       label(p, `x = ${xL.toFixed(1)} m`, v.X(xL / 2), v.Y(0) + 20, C.red, 12.5);
       label(p, `y = ${yL.toFixed(1)} m`, v.X(0) + 34, v.Y(yL), C.red, 12.5);
       arc(p, v.X(0), v.Y(0), 42, 0, -al, C.violet);
-      label(p, `α = ${why.a}°`, v.X(0) + Math.cos(-al / 2) * 64, v.Y(0) + Math.sin(-al / 2) * 64, C.violet, 12.5);
+      label(p, `θ = ${why.a}°`, v.X(0) + Math.cos(-al / 2) * 64, v.Y(0) + Math.sin(-al / 2) * 64, C.violet, 12.5);
     } else {
       /* rotated axes: y′ is all that matters */
       const ex: V = { x: Math.cos(al), y: Math.sin(al) };
@@ -433,7 +438,7 @@ const whySketch = (p: p5) => {
         p.noStroke(); p.fill(C.amber); p.circle(v.X(X), v.Y(Y), 6);
       }
       arc(p, v.X(0), v.Y(0), 42, 0, -al, C.violet);
-      label(p, `α = ${why.a}°`, v.X(0) + Math.cos(-al / 2) * 64, v.Y(0) + Math.sin(-al / 2) * 64, C.violet, 12.5);
+      label(p, `θ = ${why.a}°`, v.X(0) + Math.cos(-al / 2) * 64, v.Y(0) + Math.sin(-al / 2) * 64, C.violet, 12.5);
     }
 
     ball(p, v.X(0), v.Y(0), C.accent, 15);
@@ -449,7 +454,7 @@ const whySketch = (p: p5) => {
       ]
       : [
         { text: 'Ordinary horizontal / vertical axes', dim: true },
-        { text: `Landing condition:   y = x tanα`, sw: C.red },
+        { text: `Landing condition:   y = x tanθ`, sw: C.red },
         { text: `${yL.toFixed(1)} = ${xL.toFixed(1)} × tan ${why.a}°`, sw: C.red },
         { sep: true },
         { text: 'x and y are tangled - "set y = 0" is gone', dim: true },
@@ -473,7 +478,7 @@ function whyWire() {
     t.textContent = why.rotated ? 'View: rotated axes ⇄ old axes' : 'View: old axes ⇄ rotated axes';
     document.getElementById('inWhyNote')!.innerHTML = why.rotated
       ? 'In the rotated frame the landing test is <b>y′ = 0</b> - exactly the trick that made flat-ground projectiles easy. The price: gravity is no longer along one axis, so it splits into two components.'
-      : 'In the old axes the landing test is <b>y = x tanα</b>: the two coordinates are coupled, so you cannot just "set y = 0" any more. That is the whole problem with a tilted ground.';
+      : 'In the old axes the landing test is <b>y = x tanθ</b>: the two coordinates are coupled, so you cannot just "set y = 0" any more. That is the whole problem with a tilted ground.';
   });
 }
 
@@ -486,11 +491,11 @@ function axReadout() {
   const opts = { throwOnError: false, displayMode: false };
   const gc = G * Math.cos(rad(ax.a)), gs = G * Math.sin(rad(ax.a));
   katex.render(
-    String.raw`a_{y'}=-g\cos\alpha=-10\cos ${ax.a}^\circ=\mathbf{-${gc.toFixed(2)}}\ \text{m/s}^2\quad\text{(always, into the surface)}`,
+    String.raw`a_{y'}=-g\cos\theta=-10\cos ${ax.a}^\circ=\mathbf{-${gc.toFixed(2)}}\ \text{m/s}^2\quad\text{(always, into the surface)}`,
     document.getElementById('inAxRo1')!, opts
   );
   katex.render(
-    String.raw`|a_{x'}|=g\sin\alpha=10\sin ${ax.a}^\circ=\mathbf{${gs.toFixed(2)}}\ \text{m/s}^2\quad\text{(sign set by the launch direction)}`,
+    String.raw`|a_{x'}|=g\sin\theta=10\sin ${ax.a}^\circ=\mathbf{${gs.toFixed(2)}}\ \text{m/s}^2\quad\text{(sign set by the launch direction)}`,
     document.getElementById('inAxRo2')!, opts
   );
 }
@@ -534,10 +539,10 @@ const axSketch = (p: p5) => {
 
     p.stroke(C.green); p.strokeWeight(3);
     arrow(p, bx, by, ax1, ay1, 10);
-    label(p, 'g sinα', (bx + ax1) / 2 - 24, (by + ay1) / 2, C.green, 12);
+    label(p, 'g sinθ', (bx + ax1) / 2 - 24, (by + ay1) / 2, C.green, 12);
     p.stroke(C.red); p.strokeWeight(3);
     arrow(p, bx, by, px1, py1, 10);
-    label(p, 'g cosα', (bx + px1) / 2 + 26, (by + py1) / 2, C.red, 12);
+    label(p, 'g cosθ', (bx + px1) / 2 + 26, (by + py1) / 2, C.red, 12);
     p.stroke(C.navy); p.strokeWeight(3.2);
     arrow(p, bx, by, bx, by + gpx, 11);
     label(p, 'g', bx + 16, by + gpx - 12, C.navy, 12.5);
@@ -545,12 +550,12 @@ const axSketch = (p: p5) => {
 
     const rows: Row[] = [
       { text: 'Gravity never rotates - it splits', dim: true },
-      { text: `along x′ :  g sinα = ${(G * Math.sin(g.a)).toFixed(2)} m/s²`, sw: C.green },
-      { text: `along y′ :  g cosα = ${(G * Math.cos(g.a)).toFixed(2)} m/s²`, sw: C.red },
+      { text: `along x′ :  g sinθ = ${(G * Math.sin(g.a)).toFixed(2)} m/s²`, sw: C.green },
+      { text: `along y′ :  g cosθ = ${(G * Math.cos(g.a)).toFixed(2)} m/s²`, sw: C.red },
       { sep: true },
-      { text: `u_x′ = u cosβ = ${(20 * Math.cos(g.b)).toFixed(1)} m/s` },
-      { text: `u_y′ = u sinβ = ${(20 * Math.sin(g.b)).toFixed(1)} m/s` },
-      { text: 'α from the horizontal, β from the incline', dim: true },
+      { text: `u_x′ = u cosα = ${(20 * Math.cos(g.b)).toFixed(1)} m/s` },
+      { text: `u_y′ = u sinα = ${(20 * Math.sin(g.b)).toFixed(1)} m/s` },
+      { text: 'θ from the horizontal, α from the incline', dim: true },
     ];
     const title = 'THE ROTATED FRAME  ·  u = 20 m/s';
     const m = panelSize(p, title, rows);
@@ -613,14 +618,14 @@ const dnIds: CaseIds = {
 
 function caseFormulas(ids: CaseIds, dir: Dir) {
   const opts = { throwOnError: false, displayMode: true };
-  katex.render(String.raw`T=\dfrac{2u\sin\beta}{g\cos\alpha}`, document.getElementById(ids.fT)!, opts);
+  katex.render(String.raw`T=\dfrac{2u\sin\alpha}{g\cos\theta}`, document.getElementById(ids.fT)!, opts);
   katex.render(
     dir === 'up'
-      ? String.raw`R=u\cos\beta\,T-\tfrac12 g\sin\alpha\,T^{2}`
-      : String.raw`R=u\cos\beta\,T+\tfrac12 g\sin\alpha\,T^{2}`,
+      ? String.raw`R=u\cos\alpha\,T-\tfrac12 g\sin\theta\,T^{2}`
+      : String.raw`R=u\cos\alpha\,T+\tfrac12 g\sin\theta\,T^{2}`,
     document.getElementById(ids.fR)!, opts
   );
-  katex.render(String.raw`H_{\perp}=\dfrac{u^{2}\sin^{2}\beta}{2g\cos\alpha}`, document.getElementById(ids.fH)!, opts);
+  katex.render(String.raw`H_{\perp}=\dfrac{u^{2}\sin^{2}\alpha}{2g\cos\theta}`, document.getElementById(ids.fH)!, opts);
 }
 
 function caseStats(st: CaseState, ids: CaseIds, dir: Dir) {
@@ -631,10 +636,10 @@ function caseStats(st: CaseState, ids: CaseIds, dir: Dir) {
   const flat = st.u * Math.cos(rad(st.b)) * g.T;
   const kick = 0.5 * G * Math.sin(g.a) * g.T * g.T;
   document.getElementById(ids.note)!.innerHTML = dir === 'up'
-    ? `g cosα = <b>${(G * Math.cos(g.a)).toFixed(2)}</b> sets the clock; g sinα = <b>${(G * Math.sin(g.a)).toFixed(2)}</b>
+    ? `g cosθ = <b>${(G * Math.cos(g.a)).toFixed(2)}</b> sets the clock; g sinθ = <b>${(G * Math.sin(g.a)).toFixed(2)}</b>
        <b>fights</b> the along-slope motion: R = ${flat.toFixed(1)} − ${kick.toFixed(1)} = <b>${g.R.toFixed(1)} m</b>.
        Gravity ate ${kick.toFixed(1)} m of range.`
-    : `g cosα = <b>${(G * Math.cos(g.a)).toFixed(2)}</b> sets the clock; g sinα = <b>${(G * Math.sin(g.a)).toFixed(2)}</b>
+    : `g cosθ = <b>${(G * Math.cos(g.a)).toFixed(2)}</b> sets the clock; g sinθ = <b>${(G * Math.sin(g.a)).toFixed(2)}</b>
        <b>helps</b> the along-slope motion: R = ${flat.toFixed(1)} + ${kick.toFixed(1)} = <b>${g.R.toFixed(1)} m</b>.
        Gravity added ${kick.toFixed(1)} m of range.`;
 }
@@ -714,11 +719,11 @@ function caseSketch(st: CaseState, ids: CaseIds, dir: Dir) {
       const flat = st.u * Math.cos(g.b) * g.T;
       const kick = 0.5 * g.gs * g.T * g.T;
       const rows: Row[] = [
-        { text: `u = ${st.u} m/s   ·   α = ${st.a}°   ·   β = ${st.b}° from the incline`, dim: true },
-        { text: `a_x′ = ${sign}g sinα = ${sign}${g.gs.toFixed(2)} m/s²   ${dir === 'up' ? 'opposes' : 'assists'}`, sw: C.green },
-        { text: `a_y′ = −g cosα = −${g.gc.toFixed(2)} m/s²   into the surface`, sw: C.red },
+        { text: `u = ${st.u} m/s   ·   θ = ${st.a}°   ·   α = ${st.b}° from the incline`, dim: true },
+        { text: `a_x′ = ${sign}g sinθ = ${sign}${g.gs.toFixed(2)} m/s²   ${dir === 'up' ? 'opposes' : 'assists'}`, sw: C.green },
+        { text: `a_y′ = −g cosθ = −${g.gc.toFixed(2)} m/s²   into the surface`, sw: C.red },
         { sep: true },
-        { text: `T = 2u sinβ / g cosα = ${g.T.toFixed(2)} s` },
+        { text: `T = 2u sinα / g cosθ = ${g.T.toFixed(2)} s` },
         { text: `R = ${flat.toFixed(1)} ${sign} ${kick.toFixed(1)} = ${g.R.toFixed(1)} m` },
         { sep: true },
         { text: `t = ${t.toFixed(2)} s    x′ = ${g.xp(t).toFixed(1)} m    y′ = ${g.yp(t).toFixed(2)} m`, dim: st.phase === 'ready' },
@@ -736,8 +741,8 @@ function caseSketch(st: CaseState, ids: CaseIds, dir: Dir) {
           p.width / 2, p.height - 22, C.green, 15);
       } else if (st.phase === 'ready') {
         label(p, dir === 'up'
-          ? 'Press Launch - watch v_x′ shrink as g sinα drags it back'
-          : 'Press Launch - watch v_x′ grow as g sinα pushes it on',
+          ? 'Press Launch - watch v_x′ shrink as g sinθ drags it back'
+          : 'Press Launch - watch v_x′ grow as g sinθ pushes it on',
           p.width / 2, p.height - 22, C.dark, 13.5);
       }
     };
@@ -752,7 +757,7 @@ function caseWire(st: CaseState, ids: CaseIds, dir: Dir) {
     st.t = 0; st.phase = 'ready'; st.paused = false;
     document.getElementById(ids.pause)!.textContent = '⏸ Pause';
   };
-  const capBeta = () => {
+  const capLaunch = () => {
     if (dir !== 'up') return;
     b.max = String(Math.min(80, 85 - st.a));
     if (st.b > +b.max) { st.b = +b.max; b.value = b.max; document.getElementById(ids.bVal)!.textContent = `${st.b}°`; }
@@ -765,7 +770,7 @@ function caseWire(st: CaseState, ids: CaseIds, dir: Dir) {
   a.addEventListener('input', () => {
     st.a = +a.value;
     document.getElementById(ids.aVal)!.textContent = `${st.a}°`;
-    capBeta(); reset(); caseStats(st, ids, dir);
+    capLaunch(); reset(); caseStats(st, ids, dir);
   });
   b.addEventListener('input', () => {
     st.b = +b.value;
@@ -778,13 +783,13 @@ function caseWire(st: CaseState, ids: CaseIds, dir: Dir) {
     document.getElementById(ids.pause)!.textContent = st.paused ? '▶ Resume' : '⏸ Pause';
   });
   document.getElementById(ids.reset)!.addEventListener('click', reset);
-  capBeta();
+  capLaunch();
   caseFormulas(ids, dir);
   caseStats(st, ids, dir);
 }
 
 /* ══════════════════════════════════════════════════════════════════════
-   Pane 5 · Side by side - same u, α, β, opposite directions
+   Pane 5 · Side by side - same u, θ, α, opposite directions
    ══════════════════════════════════════════════════════════════════════ */
 const cmp = { u: 20, a: 30, b: 30, phase: 'ready' as 'ready' | 'flying' | 'landed', t: 0 };
 
@@ -795,20 +800,20 @@ function cmpTable() {
   const flat = cmp.u * Math.cos(rad(cmp.b)) * gu.T;
   document.getElementById('inCmpTable')!.innerHTML = `
     <div class="pl-eqcol">
-      <div class="pl-eqhead" style="color:${C.accent}">UP the incline&nbsp;&nbsp;(a_x′ = −g sinα)</div>
-      <div class="pl-eqrow">T = 2u sinβ / g cosα = <b>${gu.T.toFixed(2)} s</b></div>
+      <div class="pl-eqhead" style="color:${C.accent}">UP the incline&nbsp;&nbsp;(a_x′ = −g sinθ)</div>
+      <div class="pl-eqrow">T = 2u sinα / g cosθ = <b>${gu.T.toFixed(2)} s</b></div>
       <div class="pl-eqrow">R = ${flat.toFixed(1)} <b>−</b> ${kick.toFixed(1)} = <b>${gu.R.toFixed(1)} m</b></div>
     </div>
     <div class="pl-eqcol">
-      <div class="pl-eqhead" style="color:${C.amber}">DOWN the incline&nbsp;&nbsp;(a_x′ = +g sinα)</div>
-      <div class="pl-eqrow">T = 2u sinβ / g cosα = <b>${gd.T.toFixed(2)} s</b></div>
+      <div class="pl-eqhead" style="color:${C.amber}">DOWN the incline&nbsp;&nbsp;(a_x′ = +g sinθ)</div>
+      <div class="pl-eqrow">T = 2u sinα / g cosθ = <b>${gd.T.toFixed(2)} s</b></div>
       <div class="pl-eqrow">R = ${flat.toFixed(1)} <b>+</b> ${kick.toFixed(1)} = <b>${gd.R.toFixed(1)} m</b></div>
     </div>`;
   document.getElementById('inCmpNote')!.innerHTML =
     `Time of flight is <b>identical</b> (${gu.T.toFixed(2)} s both ways) - it is set by the perpendicular motion, which never
      hears about the direction along the slope. Range differs by <b>${(gd.R - gu.R).toFixed(1)} m</b>
      (${gu.R.toFixed(1)} m up vs ${gd.R.toFixed(1)} m down, a ratio of <b>${(gd.R / gu.R).toFixed(2)}×</b>) - because the SIGN of
-     g sinα flips: it eats ${kick.toFixed(1)} m going up and adds ${kick.toFixed(1)} m going down.`;
+     g sinθ flips: it eats ${kick.toFixed(1)} m going up and adds ${kick.toFixed(1)} m going down.`;
 }
 
 const cmpSketch = (p: p5) => {
@@ -872,14 +877,14 @@ const cmpSketch = (p: p5) => {
     }
 
     const rows: Row[] = [
-      { text: `u = ${cmp.u} m/s   ·   α = ${cmp.a}°   ·   β = ${cmp.b}° - both launches`, dim: true },
+      { text: `u = ${cmp.u} m/s   ·   θ = ${cmp.a}°   ·   α = ${cmp.b}° - both launches`, dim: true },
       { text: `up:     T = ${gu.T.toFixed(2)} s     R = ${gu.R.toFixed(1)} m`, sw: C.accent },
       { text: `down:  T = ${gd.T.toFixed(2)} s     R = ${gd.R.toFixed(1)} m`, sw: C.amber },
       { sep: true },
-      { text: 'Same clock. The sign of g sinα is the only difference.', dim: true },
+      { text: 'Same clock. The sign of g sinθ is the only difference.', dim: true },
       { text: `t = ${t.toFixed(2)} s${cmp.phase === 'landed' ? '   ·   both landed' : ''}`, dim: cmp.phase === 'ready' },
     ];
-    const title = 'SAME u, α, β  ·  OPPOSITE DIRECTIONS';
+    const title = 'SAME u, θ, α  ·  OPPOSITE DIRECTIONS';
     const m = panelSize(p, title, rows);
     const busy: V[] = [];
     for (let i = 0; i <= 24; i++) {
@@ -906,7 +911,7 @@ function cmpWire() {
   const a = document.getElementById('inCmpA') as HTMLInputElement;
   const b = document.getElementById('inCmpB') as HTMLInputElement;
   const reset = () => { cmp.t = 0; cmp.phase = 'ready'; };
-  const capBeta = () => {
+  const capLaunch = () => {
     b.max = String(Math.min(80, 85 - cmp.a));
     if (cmp.b > +b.max) { cmp.b = +b.max; b.value = b.max; document.getElementById('inCmpBVal')!.textContent = `${cmp.b}°`; }
   };
@@ -918,7 +923,7 @@ function cmpWire() {
   a.addEventListener('input', () => {
     cmp.a = +a.value;
     document.getElementById('inCmpAVal')!.textContent = `${cmp.a}°`;
-    capBeta(); reset(); cmpTable();
+    capLaunch(); reset(); cmpTable();
   });
   b.addEventListener('input', () => {
     cmp.b = +b.value;
@@ -927,7 +932,7 @@ function cmpWire() {
   });
   document.getElementById('inCmpGo')!.addEventListener('click', () => { reset(); cmp.phase = 'flying'; });
   document.getElementById('inCmpReset')!.addEventListener('click', reset);
-  capBeta();
+  capLaunch();
   cmpTable();
 }
 
@@ -943,21 +948,21 @@ const rangeDown = (u: number, a: number, b: number) =>
 
 function mxReadout() {
   const a = rad(mx.a);
-  const bOpt = (90 - mx.a) / 2;
+  const optA = (90 - mx.a) / 2;
   const rMax = (mx.u * mx.u) / (G * (1 + Math.sin(a)));
   const opts = { throwOnError: false, displayMode: false };
   katex.render(
-    String.raw`\beta_{\text{opt}}=\dfrac{90^\circ-\alpha}{2}=\dfrac{90^\circ-${mx.a}^\circ}{2}=\mathbf{${bOpt.toFixed(1)}^\circ}\ \text{from the incline}`,
+    String.raw`\alpha_{\text{opt}}=\dfrac{90^\circ-\theta}{2}=\dfrac{90^\circ-${mx.a}^\circ}{2}=\mathbf{${optA.toFixed(1)}^\circ}\ \text{from the incline}`,
     document.getElementById('inMaxRo1')!, opts
   );
   katex.render(
-    String.raw`R_{\max}=\dfrac{u^{2}}{g(1+\sin\alpha)}=\dfrac{${mx.u}^{2}}{10(1+\sin ${mx.a}^\circ)}=\mathbf{${rMax.toFixed(1)}\ \text{m}}`,
+    String.raw`R_{\max}=\dfrac{u^{2}}{g(1+\sin\theta)}=\dfrac{${mx.u}^{2}}{10(1+\sin ${mx.a}^\circ)}=\mathbf{${rMax.toFixed(1)}\ \text{m}}`,
     document.getElementById('inMaxRo2')!, opts
   );
   document.getElementById('inMaxNote')!.innerHTML =
-    `Right now β = <b>${mx.b}°</b> gives R = <b>${rangeUp(mx.u, a, rad(mx.b)).toFixed(1)} m</b>;
-     the best possible is <b>${rMax.toFixed(1)} m</b> at β = ${bOpt.toFixed(1)}°.
-     Set α = 0 and the formulas collapse to β = 45° and R = u²/g - Lecture 11's flat-ground result was
+    `Right now α = <b>${mx.b}°</b> gives R = <b>${rangeUp(mx.u, a, rad(mx.b)).toFixed(1)} m</b>;
+     the best possible is <b>${rMax.toFixed(1)} m</b> at α = ${optA.toFixed(1)}°.
+     Set θ = 0 and the formulas collapse to α = 45° and R = u²/g - Lecture 11's flat-ground result was
      never a separate fact.`;
 }
 
@@ -971,9 +976,9 @@ const mxTrajSketch = (p: p5) => {
 
   p.draw = () => {
     p.background(C.paper);
-    const bOpt = (90 - mx.a) / 2;
+    const optA = (90 - mx.a) / 2;
     const g = geom(mx.u, mx.a, mx.b, 'up');
-    const gOpt = geom(mx.u, mx.a, bOpt, 'up');
+    const gOpt = geom(mx.u, mx.a, optA, 'up');
     const len = Math.max(g.R, gOpt.R) * 1.16;
     const pts: V[] = [{ x: 0, y: 0 }, g.along(len)];
     for (let i = 0; i <= 30; i++) {
@@ -1005,8 +1010,8 @@ const mxTrajSketch = (p: p5) => {
     ball(p, v.X(0), v.Y(0), C.navy, 14);
 
     const rows: Row[] = [
-      { text: `β = ${mx.b}°  →  R = ${g.R.toFixed(1)} m`, sw: C.accent },
-      { text: `β_opt = ${bOpt.toFixed(1)}°  →  R = ${gOpt.R.toFixed(1)} m`, sw: C.green },
+      { text: `α = ${mx.b}°  →  R = ${g.R.toFixed(1)} m`, sw: C.accent },
+      { text: `α_opt = ${optA.toFixed(1)}°  →  R = ${gOpt.R.toFixed(1)} m`, sw: C.green },
     ];
     const title = 'YOUR LAUNCH vs THE BEST ONE';
     const m = panelSize(p, title, rows);
@@ -1031,7 +1036,7 @@ const mxCurveSketch = (p: p5) => {
   p.draw = () => {
     p.background(C.paper);
     const a = rad(mx.a);
-    const bOpt = (90 - mx.a) / 2;
+    const optA = (90 - mx.a) / 2;
     const rMax = (mx.u * mx.u) / (G * (1 + Math.sin(a)));
     const rMaxDown = (mx.u * mx.u) / (G * (1 - Math.sin(a)));
     const yTop = Math.min(rMaxDown * 1.14, rMax * 3.2);
@@ -1055,7 +1060,7 @@ const mxCurveSketch = (p: p5) => {
     p.textAlign(p.LEFT, p.BOTTOM);
     p.text('RANGE  R (m)', M.l - 2, M.t - 10);
     p.textAlign(p.RIGHT, p.TOP);
-    p.text('LAUNCH ANGLE β FROM THE INCLINE', p.width - M.r, py(0) + 26);
+    p.text('LAUNCH ANGLE α FROM THE INCLINE', p.width - M.r, py(0) + 26);
 
     const curve = (fn: (b: number) => number, col: unknown, wt = 3) => {
       p.noFill(); p.stroke(col as string); p.strokeWeight(wt);
@@ -1073,20 +1078,20 @@ const mxCurveSketch = (p: p5) => {
 
     /* the up-slope peak */
     p.stroke(C.green); p.strokeWeight(1.6); dashOn(p, [5, 5]);
-    p.line(px(bOpt), py(0), px(bOpt), py(rMax));
-    p.line(M.l, py(rMax), px(bOpt), py(rMax));
+    p.line(px(optA), py(0), px(optA), py(rMax));
+    p.line(M.l, py(rMax), px(optA), py(rMax));
     dashOff(p);
-    p.noStroke(); p.fill(C.green); p.circle(px(bOpt), py(rMax), 11);
-    label(p, `β_opt = ${bOpt.toFixed(1)}°   R_max = ${rMax.toFixed(1)} m`,
-      px(bOpt) + 4, py(rMax) - 24, C.green, 12.5);
+    p.noStroke(); p.fill(C.green); p.circle(px(optA), py(rMax), 11);
+    label(p, `α_opt = ${optA.toFixed(1)}°   R_max = ${rMax.toFixed(1)} m`,
+      px(optA) + 4, py(rMax) - 24, C.green, 12.5);
 
-    const bOptD = (90 + mx.a) / 2;
+    const optADown = (90 + mx.a) / 2;
     if (rMaxDown <= yTop) {
-      p.noStroke(); p.fill(C.amber); p.circle(px(bOptD), py(rMaxDown), 10);
-      label(p, `down: peak at ${bOptD.toFixed(1)}°`, px(bOptD), py(rMaxDown) - 22, C.amber, 12);
+      p.noStroke(); p.fill(C.amber); p.circle(px(optADown), py(rMaxDown), 10);
+      label(p, `down: peak at ${optADown.toFixed(1)}°`, px(optADown), py(rMaxDown) - 22, C.amber, 12);
     } else {
-      label(p, `down-slope peak off the chart: ${bOptD.toFixed(1)}° → ${rMaxDown.toFixed(0)} m`,
-        px(Math.min(bOptD, 72)), M.t + 12, C.amber, 12);
+      label(p, `down-slope peak off the chart: ${optADown.toFixed(1)}° → ${rMaxDown.toFixed(0)} m`,
+        px(Math.min(optADown, 72)), M.t + 12, C.amber, 12);
     }
 
     /* where you are now */
@@ -1095,7 +1100,7 @@ const mxCurveSketch = (p: p5) => {
     p.line(px(mx.b), py(0), px(mx.b), py(rNow));
     dashOff(p);
     p.noStroke(); p.fill(C.accent); p.circle(px(mx.b), py(rNow), 12);
-    label(p, `β = ${mx.b}° → ${rNow.toFixed(1)} m`, px(mx.b), py(rNow) + 26, C.accent, 12.5);
+    label(p, `α = ${mx.b}° → ${rNow.toFixed(1)} m`, px(mx.b), py(rNow) + 26, C.accent, 12.5);
   };
 };
 
@@ -1141,54 +1146,54 @@ const rqs: Rq[] = [
   {
     q: 'Why do we rotate the axes for an inclined-plane projectile?',
     opts: ['Because gravity changes direction on a slope',
-      'So the landing condition becomes y′ = 0 instead of y = x tanα',
+      'So the landing condition becomes y′ = 0 instead of y = x tanθ',
       'Because the range formula only works on tilted axes'],
     correct: 1,
     fb: 'Gravity never moves. We choose axes that simplify the CONSTRAINT: with x′ along the slope, landing is just y′ back to zero.',
   },
   {
     q: 'In the rotated frame, the acceleration perpendicular to the incline is:',
-    opts: ['−g cosα, always, into the surface', '−g sinα, into the surface', 'zero'],
+    opts: ['−g cosθ, always, into the surface', '−g sinθ, into the surface', 'zero'],
     correct: 0,
-    fb: 'a_y′ = −g cosα for BOTH cases. It is the perpendicular component of gravity and it never changes sign.',
+    fb: 'a_y′ = −g cosθ for BOTH cases. It is the perpendicular component of gravity and it never changes sign.',
   },
   {
     q: 'A particle is projected UP the incline. The along-slope acceleration is:',
-    opts: ['+g sinα (helps the motion)', '−g sinα (opposes the motion)', '−g cosα'],
+    opts: ['+g sinθ (helps the motion)', '−g sinθ (opposes the motion)', '−g cosθ'],
     correct: 1,
-    fb: 'Going up the slope, gravity\'s along-slope component points back down the hill: a_x′ = −g sinα, and range shrinks.',
+    fb: 'Going up the slope, gravity\'s along-slope component points back down the hill: a_x′ = −g sinθ, and range shrinks.',
   },
   {
-    q: 'Same u, same α, same β - one launched up the slope, one down. Their times of flight are:',
+    q: 'Same u, same θ, same α - one launched up the slope, one down. Their times of flight are:',
     opts: ['Longer for the down-slope one', 'Longer for the up-slope one', 'Exactly the same'],
     correct: 2,
-    fb: 'T = 2u sinβ / (g cosα) for both. Timing is decided by the perpendicular motion, which is identical in the two cases.',
+    fb: 'T = 2u sinα / (g cosθ) for both. Timing is decided by the perpendicular motion, which is identical in the two cases.',
   },
   {
     q: 'Why is the time of flight the same in both cases?',
     opts: ['Because the ranges happen to be equal',
       'Because the perpendicular motion is unaffected by the direction along the slope',
-      'Because g sinα cancels g cosα'],
+      'Because g sinθ cancels g cosθ'],
     correct: 1,
-    fb: 'The clock is set by y′: u_y′ = u sinβ and a_y′ = −g cosα in both cases. The sign flip lives only in the x′ equation.',
+    fb: 'The clock is set by y′: u_y′ = u sinα and a_y′ = −g cosθ in both cases. The sign flip lives only in the x′ equation.',
   },
   {
-    q: 'β is measured from...',
+    q: 'α is measured from...',
     opts: ['the horizontal', 'the incline surface', 'the vertical'],
     correct: 1,
-    fb: 'α is from the horizontal, β is from the INCLINE. Mixing them is the single most common mistake in this topic.',
+    fb: 'θ is from the horizontal, α is from the INCLINE. Mixing them is the single most common mistake in this topic.',
   },
   {
-    q: 'The launch angle for maximum range UP an incline of angle α is:',
-    opts: ['45° from the incline', '(90° − α)/2 from the incline', '(90° + α)/2 from the incline'],
+    q: 'The launch angle for maximum range UP an incline of angle θ is:',
+    opts: ['45° from the incline', '(90° − θ)/2 from the incline', '(90° + θ)/2 from the incline'],
     correct: 1,
-    fb: 'β_opt = (90° − α)/2 from the incline, giving R_max = u²/(g(1 + sinα)). (Down the slope it is (90° + α)/2.)',
+    fb: 'α_opt = (90° − θ)/2 from the incline, giving R_max = u²/(g(1 + sinθ)). (Down the slope it is (90° + θ)/2.)',
   },
   {
-    q: 'Put α = 0 into R_max = u²/(g(1 + sinα)). You get:',
+    q: 'Put θ = 0 into R_max = u²/(g(1 + sinθ)). You get:',
     opts: ['u²/g, the flat-ground result', 'zero', 'u²/2g'],
     correct: 0,
-    fb: 'sin0 = 0, so R_max = u²/g at β = 45°. The flat-ground formula is just the incline formula with α = 0.',
+    fb: 'sin0 = 0, so R_max = u²/g at α = 45°. The flat-ground formula is just the incline formula with θ = 0.',
   },
 ];
 

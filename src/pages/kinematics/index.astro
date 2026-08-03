@@ -961,7 +961,7 @@ import '../../styles/kinematics.css';
       <button class="back-btn" onclick="go('home')">‹ Back</button>
       <div>
         <div class="scr-title">Projectile on an Inclined Plane</div>
-        <div class="scr-sub">Choose your axes to simplify the constraint. Rotate until the slope is the ground, then gravity splits into g sinα along it and g cosα across it.</div>
+        <div class="scr-sub">Choose your axes to simplify the constraint. Rotate until the slope is the ground, then gravity splits into g sinθ along it and g cosθ across it.</div>
       </div>
     </div>
 
@@ -980,7 +980,7 @@ import '../../styles/kinematics.css';
     <div class="grav-pane active" id="inWhy">
       <div class="kin-controls">
         <div class="kin-ctrl">
-          <label>Incline angle α <span class="kin-val" id="inWhyAVal">30°</span></label>
+          <label>Incline angle θ <span class="kin-val" id="inWhyAVal">30°</span></label>
           <input type="range" id="inWhyA" min="10" max="50" step="1" value="30">
         </div>
         <div class="kin-btns">
@@ -989,7 +989,7 @@ import '../../styles/kinematics.css';
       </div>
       <div class="kin-canvas" id="inWhyCanvas"></div>
       <div class="rev-keybox" id="inWhyNote">
-        In the old axes the landing test is <b>y = x tanα</b>: the two coordinates are coupled, so you cannot just "set y = 0" any more.
+        In the old axes the landing test is <b>y = x tanθ</b>: the two coordinates are coupled, so you cannot just "set y = 0" any more.
         That is the whole problem with a tilted ground.
       </div>
     </div>
@@ -998,11 +998,11 @@ import '../../styles/kinematics.css';
     <div class="grav-pane" id="inAxes">
       <div class="kin-controls">
         <div class="kin-ctrl">
-          <label>Incline angle α <span class="kin-val" id="inAxAVal">30°</span></label>
+          <label>Incline angle θ <span class="kin-val" id="inAxAVal">30°</span></label>
           <input type="range" id="inAxA" min="10" max="55" step="1" value="30">
         </div>
         <div class="kin-ctrl">
-          <label>Launch β (from the incline) <span class="kin-val" id="inAxBVal">30°</span></label>
+          <label>Launch α (from the incline) <span class="kin-val" id="inAxBVal">30°</span></label>
           <input type="range" id="inAxB" min="10" max="55" step="1" value="30">
         </div>
       </div>
@@ -1012,9 +1012,9 @@ import '../../styles/kinematics.css';
         <div class="rev-readout" id="inAxRo2"></div>
       </div>
       <div class="rev-keybox" style="margin-top:12px;">
-        Drag α and watch the two gravity components trade size: steepen the slope and g sinα grows while g cosα shrinks,
-        always with g sinα + g cosα forming the same downward vector. Drag β and only the launch arrow moves -
-        <b>β never changes the gravity split</b>.
+        Drag θ and watch the two gravity components trade size: steepen the slope and g sinθ grows while g cosθ shrinks,
+        always with g sinθ + g cosθ forming the same downward vector. Drag α and only the launch arrow moves -
+        <b>α never changes the gravity split</b>.
       </div>
     </div>
 
@@ -1026,11 +1026,11 @@ import '../../styles/kinematics.css';
           <input type="range" id="inUpU" min="10" max="40" step="1" value="20">
         </div>
         <div class="kin-ctrl">
-          <label>Incline angle α <span class="kin-val" id="inUpAVal">30°</span></label>
+          <label>Incline angle θ <span class="kin-val" id="inUpAVal">30°</span></label>
           <input type="range" id="inUpA" min="10" max="50" step="1" value="30">
         </div>
         <div class="kin-ctrl">
-          <label>Launch β (from the incline) <span class="kin-val" id="inUpBVal">30°</span></label>
+          <label>Launch α (from the incline) <span class="kin-val" id="inUpBVal">30°</span></label>
           <input type="range" id="inUpB" min="10" max="55" step="1" value="30">
         </div>
         <div class="kin-btns">
@@ -1072,11 +1072,11 @@ import '../../styles/kinematics.css';
           <input type="range" id="inDnU" min="10" max="40" step="1" value="20">
         </div>
         <div class="kin-ctrl">
-          <label>Incline angle α <span class="kin-val" id="inDnAVal">30°</span></label>
+          <label>Incline angle θ <span class="kin-val" id="inDnAVal">30°</span></label>
           <input type="range" id="inDnA" min="10" max="50" step="1" value="30">
         </div>
         <div class="kin-ctrl">
-          <label>Launch β (from the incline) <span class="kin-val" id="inDnBVal">30°</span></label>
+          <label>Launch α (from the incline) <span class="kin-val" id="inDnBVal">30°</span></label>
           <input type="range" id="inDnB" min="10" max="70" step="1" value="30">
         </div>
         <div class="kin-btns">
@@ -1113,7 +1113,7 @@ import '../../styles/kinematics.css';
     <!-- ── Pane 5 · Side by side ── -->
     <div class="grav-pane" id="inCmp">
       <div class="rev-keybox">
-        <b>One hillside, one launcher, two shots.</b> Same u, same α, same β - the only difference is which way
+        <b>One hillside, one launcher, two shots.</b> Same u, same θ, same α - the only difference is which way
         along the slope the particle is sent: one up the hill, one down it. Both leave on the same clock,
         so watch them land at the same instant, very different distances apart.
       </div>
@@ -1124,11 +1124,11 @@ import '../../styles/kinematics.css';
           <input type="range" id="inCmpU" min="10" max="40" step="1" value="20">
         </div>
         <div class="kin-ctrl">
-          <label>Incline angle α <span class="kin-val" id="inCmpAVal">30°</span></label>
+          <label>Incline angle θ <span class="kin-val" id="inCmpAVal">30°</span></label>
           <input type="range" id="inCmpA" min="10" max="50" step="1" value="30">
         </div>
         <div class="kin-ctrl">
-          <label>Launch β (from the incline) <span class="kin-val" id="inCmpBVal">30°</span></label>
+          <label>Launch α (from the incline) <span class="kin-val" id="inCmpBVal">30°</span></label>
           <input type="range" id="inCmpB" min="10" max="55" step="1" value="30">
         </div>
         <div class="kin-btns">
@@ -1150,15 +1150,15 @@ import '../../styles/kinematics.css';
           <input type="range" id="inMaxU" min="10" max="40" step="1" value="20">
         </div>
         <div class="kin-ctrl">
-          <label>Incline angle α <span class="kin-val" id="inMaxAVal">30°</span></label>
+          <label>Incline angle θ <span class="kin-val" id="inMaxAVal">30°</span></label>
           <input type="range" id="inMaxA" min="0" max="50" step="1" value="30">
         </div>
         <div class="kin-ctrl">
-          <label>Launch β (from the incline) <span class="kin-val" id="inMaxBVal">30°</span></label>
+          <label>Launch α (from the incline) <span class="kin-val" id="inMaxBVal">30°</span></label>
           <input type="range" id="inMaxB" min="5" max="58" step="1" value="30">
         </div>
         <div class="kin-btns">
-          <button class="check-btn" id="inMaxSnap">Snap to β_opt</button>
+          <button class="check-btn" id="inMaxSnap">Snap to α_opt</button>
         </div>
       </div>
       <div class="incl-two">
@@ -1171,7 +1171,7 @@ import '../../styles/kinematics.css';
       </div>
       <div class="rev-keybox" id="inMaxNote" style="margin-top:12px;"></div>
       <div class="rev-keybox" style="margin-top:12px;">
-        Drag α down to <b>0°</b> and watch both peaks slide to 45° and both curves land on the same u²/g -
+        Drag θ down to <b>0°</b> and watch both peaks slide to 45° and both curves land on the same u²/g -
         the two incline cases and the flat-ground case are one formula.
       </div>
     </div>
@@ -1196,7 +1196,7 @@ import '../../styles/kinematics.css';
     <!-- ── Pane 8 · Homework ── -->
     <div class="grav-pane" id="inHw">
       <div class="rev-keybox">
-        Draw the incline and label α and β <b>before</b> you write a single equation. Every mistake in this topic starts with
+        Draw the incline and label θ and α <b>before</b> you write a single equation. Every mistake in this topic starts with
         an unlabelled diagram.
       </div>
 
@@ -1207,8 +1207,8 @@ import '../../styles/kinematics.css';
         <div class="rf-text">A particle is projected UP a 20° incline at 15 m/s, at 40° to the incline surface (g = 10). Find T and R.</div>
         <button class="check-btn hw-reveal">Show solution</button>
         <div class="rf-ans rev-step">
-          g cosα = 10 cos20° = 9.40 &nbsp;·&nbsp; g sinα = 10 sin20° = 3.42<br>
-          T = 2u sinβ / (g cosα) = 2(15)(0.643) / 9.40 = 19.28 / 9.40 = <b>2.05 s</b><br>
+          g cosθ = 10 cos20° = 9.40 &nbsp;·&nbsp; g sinθ = 10 sin20° = 3.42<br>
+          T = 2u sinα / (g cosθ) = 2(15)(0.643) / 9.40 = 19.28 / 9.40 = <b>2.05 s</b><br>
           R = (15 cos40°)(2.05) − ½(3.42)(2.05)² = (11.49)(2.05) − 7.20 = 23.58 − 7.20 = <b>16.4 m</b>
         </div>
       </div>
@@ -1230,9 +1230,9 @@ import '../../styles/kinematics.css';
         <div class="rf-text">For the up-the-incline case in Q1, find the launch angle (to the incline) that maximises the range, and the maximum range itself.</div>
         <button class="check-btn hw-reveal">Show solution</button>
         <div class="rf-ans rev-step">
-          β<sub>opt</sub> = (90° − α)/2 = (90° − 20°)/2 = <b>35°</b><br>
-          R<sub>max</sub> = u² / [g(1 + sinα)] = 225 / [10(1 + 0.342)] = 225 / 13.42 = <b>16.8 m</b><br>
-          Sanity check: Q1 used β = 40°, which gave 16.4 m - just short of the 16.8 m optimum, exactly as it should be.
+          α<sub>opt</sub> = (90° − θ)/2 = (90° − 20°)/2 = <b>35°</b><br>
+          R<sub>max</sub> = u² / [g(1 + sinθ)] = 225 / [10(1 + 0.342)] = 225 / 13.42 = <b>16.8 m</b><br>
+          Sanity check: Q1 used α = 40°, which gave 16.4 m - just short of the 16.8 m optimum, exactly as it should be.
         </div>
       </div>
 
@@ -1242,10 +1242,10 @@ import '../../styles/kinematics.css';
         <button class="check-btn hw-reveal">Show solution</button>
         <div class="rf-ans rev-step">
           The flight ends when the <b>perpendicular</b> coordinate y′ returns to zero. In that direction both cases start with
-          u<sub>y′</sub> = u sinβ and accelerate at a<sub>y′</sub> = −g cosα - identical, so T = 2u sinβ/(g cosα) is identical.
+          u<sub>y′</sub> = u sinα and accelerate at a<sub>y′</sub> = −g cosθ - identical, so T = 2u sinα/(g cosθ) is identical.
           The direction along the slope never enters the y′ equation.<br>
-          The range is governed by the <b>along-slope</b> motion, and there the sign of g sinα flips: it decelerates the particle
-          going up (R = u cosβ T − ½ g sinα T²) and accelerates it going down (R = u cosβ T + ½ g sinα T²).
+          The range is governed by the <b>along-slope</b> motion, and there the sign of g sinθ flips: it decelerates the particle
+          going up (R = u cosα T − ½ g sinθ T²) and accelerates it going down (R = u cosα T + ½ g sinθ T²).
           Same clock, different distance covered on it.
         </div>
       </div>
