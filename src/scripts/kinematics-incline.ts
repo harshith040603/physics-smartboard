@@ -212,10 +212,10 @@ interface Geom {
   perp: number;                      // sign that turns x′ into y′ in screen angles
 }
 
-/* The hill always rises to the right. "Up the incline" launches from the foot and
-   travels up-right; "down the incline" launches part-way up the same hillside and
-   travels down-left. Only the embedding in world coordinates differs - the rotated
-   frame maths below is identical for the two cases.                              */
+/* Each case gets the slope its problem is usually drawn on: "up the incline" rises
+   to the right and launches from the foot, "down the incline" descends to the right
+   and launches from the top. Only the embedding in world coordinates differs - the
+   rotated-frame maths below is identical for the two cases.                       */
 function geom(u: number, aDeg: number, bDeg: number, dir: Dir): Geom {
   const a = rad(aDeg), b = rad(bDeg);
   const gc = G * Math.cos(a), gs = G * Math.sin(a);
@@ -223,9 +223,9 @@ function geom(u: number, aDeg: number, bDeg: number, dir: Dir): Geom {
   const T = (2 * u * Math.sin(b)) / gc;
   const xp = (t: number) => u * Math.cos(b) * t + 0.5 * sgn * gs * t * t;
   const yp = (t: number) => u * Math.sin(b) * t - 0.5 * gc * t * t;
-  const d = dir === 'up' ? 1 : -1;                 // travel direction along the hill
-  const ex: V = { x: d * Math.cos(a), y: d * Math.sin(a) };
-  const ey: V = { x: -Math.sin(a), y: Math.cos(a) };
+  const d = dir === 'up' ? 1 : -1;                 // which way the slope tilts
+  const ex: V = { x: Math.cos(a), y: d * Math.sin(a) };
+  const ey: V = { x: -d * Math.sin(a), y: Math.cos(a) };
   const pos = (t: number) => ({
     x: ex.x * xp(t) + ey.x * yp(t),
     y: ex.y * xp(t) + ey.y * yp(t),
@@ -236,9 +236,9 @@ function geom(u: number, aDeg: number, bDeg: number, dir: Dir): Geom {
     ex, ey, xp, yp, pos,
     along: (s: number) => ({ x: ex.x * s, y: ex.y * s }),
     tApex: (u * Math.sin(b)) / gc,
-    lineAng: -a,
-    exAng: dir === 'up' ? -a : Math.PI - a,
-    perp: dir === 'up' ? -1 : 1,
+    lineAng: -d * a,
+    exAng: -d * a,
+    perp: -1,
   };
 }
 
@@ -250,10 +250,10 @@ const eyS = (g: Geom): V => ({ x: g.ey.x, y: -g.ey.y });
 /* The drawn hillside: `lo` is its foot, `hi` its top. Up the incline the launch
    IS the foot; down the incline the launch sits part-way up, so the hill carries
    on a little above it.                                                          */
-function hillEnds(g: Geom, dir: Dir, len: number, back = 0) {
+function hillEnds(g: Geom, dir: Dir, len: number) {
   return dir === 'up'
-    ? { lo: { x: 0, y: 0 } as V, hi: g.along(len) }
-    : { lo: g.along(len), hi: g.along(-back) };
+    ? { lo: { x: 0, y: 0 } as V, hi: g.along(len) }   // launch at the foot
+    : { lo: g.along(len), hi: { x: 0, y: 0 } as V };  // launch at the top
 }
 
 function drawGround(p: p5, v: View, lo: V, hi: V) {
@@ -662,14 +662,13 @@ function caseSketch(st: CaseState, ids: CaseIds, dir: Dir) {
       p.background(C.paper);
       const g = geom(st.u, st.a, st.b, dir);
       const len = g.R * 1.22;
-      const back = dir === 'up' ? 0 : g.R * 0.18;      // hillside above a down-slope launch
-      const { lo, hi } = hillEnds(g, dir, len, back);
+      const { lo, hi } = hillEnds(g, dir, len);
       const pts: V[] = [{ x: 0, y: 0 }, lo, hi, { x: hi.x, y: lo.y }];
       for (let i = 0; i <= 40; i++) pts.push(g.pos((g.T * i) / 40));
       const v = fitView(p, M, pts, 0.12);
 
       drawGround(p, v, lo, hi);
-      drawAlpha(p, v, g, st.a, lo, len * 0.34 * Math.cos(g.a) * v.s);
+      drawAlpha(p, v, g, st.a, { x: 0, y: 0 }, len * 0.34 * Math.cos(g.a) * v.s);
       drawRangeBand(p, v, g, `R = ${g.R.toFixed(1)} m`, C.red);
       drawXAxis(p, v, g, len);
       pathDots(p, v, g, 'rgba(41,89,144,0.4)');
@@ -833,28 +832,43 @@ const cmpSketch = (p: p5) => {
     p.background(C.paper);
     const gu = geom(cmp.u, cmp.a, cmp.b, 'up');
     const gd = geom(cmp.u, cmp.a, cmp.b, 'down');
-    /* ONE hillside: the launcher sits part-way up it and fires both ways */
+    /* two slopes, one launch point - the ranges start from the same spot */
     const lenU = gu.R * 1.16, lenD = gd.R * 1.1;
-    const hi = gu.along(lenU), lo = gd.along(lenD);
-    const pts: V[] = [{ x: 0, y: 0 }, hi, lo, { x: hi.x, y: lo.y }];
+    const tipU = gu.along(lenU), tipD = gd.along(lenD);
+    const pts: V[] = [{ x: 0, y: 0 }, tipU, tipD, { x: tipD.x, y: tipD.y }];
     for (let i = 0; i <= 30; i++) {
       pts.push(gu.pos((gu.T * i) / 30));
       pts.push(gd.pos((gd.T * i) / 30));
     }
     const v = fitView(p, M, pts, 0.1);
 
-    drawGround(p, v, lo, hi);
-    drawAlpha(p, v, gu, cmp.a, lo, (hi.x - lo.x) * 0.3 * v.s);
+    p.noStroke();
+    p.fill(0, 160, 227, 16);
+    p.beginShape();
+    p.vertex(v.X(0), v.Y(0)); p.vertex(v.X(tipU.x), v.Y(tipU.y)); p.vertex(v.X(tipU.x), v.Y(0));
+    p.endShape(p.CLOSE);
+    p.fill(245, 158, 11, 14);
+    p.beginShape();
+    p.vertex(v.X(0), v.Y(0)); p.vertex(v.X(tipD.x), v.Y(tipD.y));
+    p.vertex(v.X(tipD.x), v.Y(v.y0)); p.vertex(v.X(0), v.Y(v.y0));
+    p.endShape(p.CLOSE);
+    p.stroke(C.navy); p.strokeWeight(3.4);
+    p.line(v.X(0), v.Y(0), v.X(tipU.x), v.Y(tipU.y));
+    p.line(v.X(0), v.Y(0), v.X(tipD.x), v.Y(tipD.y));
+
+    p.stroke(41, 89, 144, 95); p.strokeWeight(1.5); dashOn(p, [6, 6]);
+    p.line(v.X(0), v.Y(0), v.X(Math.max(tipU.x, tipD.x) * 0.3), v.Y(0));
+    dashOff(p);
+    arc(p, v.X(0), v.Y(0), 42, gu.lineAng, 0, C.violet);
+    arc(p, v.X(0), v.Y(0), 42, 0, gd.lineAng, C.violet);
+    label(p, `θ = ${cmp.a}°`, v.X(0) + 78, v.Y(0), C.violet, 12.5);
 
     drawRangeBand(p, v, gu, `R = ${gu.R.toFixed(1)} m`, C.accent);
     drawRangeBand(p, v, gd, `R = ${gd.R.toFixed(1)} m`, C.amber);
-    label(p, 'up the incline →', v.X(hi.x) + eyS(gu).x * 16, v.Y(hi.y) + eyS(gu).y * 16,
+    label(p, 'up the incline', v.X(tipU.x) + eyS(gu).x * 16, v.Y(tipU.y) + eyS(gu).y * 16,
       C.accent, 12, gu.lineAng);
-    label(p, '← down the incline', v.X(lo.x) + eyS(gd).x * 16, v.Y(lo.y) + eyS(gd).y * 16,
+    label(p, 'down the incline', v.X(tipD.x) + eyS(gd).x * 16, v.Y(tipD.y) + eyS(gd).y * 16,
       C.amber, 12, gd.lineAng);
-    drawYAxis(p, v, gu);
-    drawLaunch(p, v, gu, cmp.b, 88, C.accent);
-    drawLaunch(p, v, gd, cmp.b, 88, C.amber);
 
     pathDots(p, v, gu, 'rgba(0,160,227,0.5)');
     pathDots(p, v, gd, 'rgba(245,158,11,0.6)');
@@ -1296,7 +1310,7 @@ function hwSketch(cfg: HwCfg) {
         loEnd = { x: 0, y: 0 };
       } else {
         main = cfg.dir === 'up' ? gU : gD;
-        const ends = hillEnds(main, cfg.dir, main.R * 1.2, cfg.dir === 'up' ? 0 : main.R * 0.16);
+        const ends = hillEnds(main, cfg.dir, main.R * 1.2);
         hiEnd = ends.hi; loEnd = ends.lo;
       }
 
@@ -1309,8 +1323,28 @@ function hwSketch(cfg: HwCfg) {
       else sample(main);
       const v = fitView(p, M, pts, 0.11);
 
-      drawGround(p, v, loEnd, hiEnd);
-      drawAlpha(p, v, main, cfg.th, loEnd, (hiEnd.x - loEnd.x) * 0.3 * v.s, K);
+      if (cfg.mode === 'both') {
+        /* two slopes from one launch point */
+        p.noStroke();
+        p.fill(0, 160, 227, 16);
+        p.beginShape();
+        p.vertex(v.X(0), v.Y(0)); p.vertex(v.X(hiEnd.x), v.Y(hiEnd.y)); p.vertex(v.X(hiEnd.x), v.Y(0));
+        p.endShape(p.CLOSE);
+        p.fill(245, 158, 11, 14);
+        p.beginShape();
+        p.vertex(v.X(0), v.Y(0)); p.vertex(v.X(loEnd.x), v.Y(loEnd.y));
+        p.vertex(v.X(loEnd.x), v.Y(v.y0)); p.vertex(v.X(0), v.Y(v.y0));
+        p.endShape(p.CLOSE);
+        p.stroke(C.navy); p.strokeWeight(3);
+        p.line(v.X(0), v.Y(0), v.X(hiEnd.x), v.Y(hiEnd.y));
+        p.line(v.X(0), v.Y(0), v.X(loEnd.x), v.Y(loEnd.y));
+        arc(p, v.X(0), v.Y(0), 30, gU.lineAng, 0, C.violet);
+        arc(p, v.X(0), v.Y(0), 30, 0, gD.lineAng, C.violet);
+        label(p, `θ = ${cfg.th}°`, v.X(0) + 58, v.Y(0), C.violet, 11);
+      } else {
+        drawGround(p, v, loEnd, hiEnd);
+        drawAlpha(p, v, main, cfg.th, { x: 0, y: 0 }, (hiEnd.x - loEnd.x) * 0.3 * v.s, K);
+      }
 
       if (cfg.mode === 'fan') {
         fans.forEach((f, i) => {
