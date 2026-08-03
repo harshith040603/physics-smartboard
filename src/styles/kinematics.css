@@ -284,8 +284,11 @@
 
 /* ── Projectile on an Inclined Plane ── */
 .ic-incline{background:linear-gradient(135deg,#0f766e,#14b8a6);}
-.incl-two{display:flex;gap:18px;align-items:stretch;}
-.incl-two > .kin-canvas{flex:1;min-width:0;min-height:300px;}
+/* the diagrams keep a true 1:1 scale, so a very wide canvas just shrinks them -
+   cap the width and let the drawing breathe vertically instead */
+#incline .kin-canvas{max-width:1440px;margin-left:auto;margin-right:auto;}
+.incl-two{display:flex;gap:18px;align-items:stretch;max-width:1440px;margin:0 auto;}
+.incl-two > .kin-canvas{flex:1;min-width:0;min-height:320px;max-width:none;}
 @media (max-width:900px){ .incl-two{flex-direction:column;} }
 
 /* ── Motion in a Plane · larger type for back-of-room legibility ── */

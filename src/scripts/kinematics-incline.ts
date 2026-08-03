@@ -9,9 +9,13 @@
    Pane 6: Maximum Range - R(β) curve, β_opt = (90 − α)/2, and the α = 0 check.
    Pane 7: Rapid Fire quiz.  Pane 8: Homework.
 
-   Every diagram is drawn with ONE uniform world→screen scale, so the angles you
-   measure off the screen are the real α and β.
-   p5 instances are created lazily per pane - hidden panes have zero width.       */
+   Drawing rules for every diagram here:
+   · ONE uniform world→screen scale, so the α and β you measure off the screen are real.
+   · The launch corner carries geometry only (u arrow, two arcs, y′). Every number
+     lives in one auto-placed panel that hunts for empty canvas.
+   · Lengths along the slope are shown as a measured band ON the surface, not as
+     floating arrows.
+   p5 instances are created lazily per pane - hidden panes have zero width.          */
 
 import p5 from 'p5';
 import katex from 'katex';
@@ -25,6 +29,7 @@ const C = {
   amber: '#f59e0b',
   violet: '#7c3aed',
   paper: '#f4f8fc',
+  ink: '#41556f',
 };
 const G = 10;
 const rad = (d: number) => (d * Math.PI) / 180;
@@ -39,7 +44,7 @@ interface View {
   x0: number; x1: number; y0: number; y1: number;
 }
 
-/* ═════════ drawing helpers ═════════ */
+/* ═════════ primitives ═════════ */
 function arrow(p: p5, x1: number, y1: number, x2: number, y2: number, head = 9) {
   p.line(x1, y1, x2, y2);
   const a = Math.atan2(y2 - y1, x2 - x1);
@@ -47,24 +52,30 @@ function arrow(p: p5, x1: number, y1: number, x2: number, y2: number, head = 9) 
   p.line(x2, y2, x2 - head * Math.cos(a + 0.45), y2 - head * Math.sin(a + 0.45));
 }
 
-function chip(
+/* centre-anchored text pill; `ang` lets a label lie along the slope */
+function label(
   p: p5, txt: string, x: number, y: number,
-  align: 'left' | 'right' | 'center' = 'left', size = 14, col = C.navy
+  col: string = C.navy, size = 13, ang = 0, box = true
 ) {
+  p.push();
+  p.translate(x, y);
+  if (ang) p.rotate(ang);
   p.textFont('DM Sans');
   p.textSize(size);
   const lines = txt.split('\n');
   const w = Math.max(...lines.map((l) => p.textWidth(l)));
-  const lh = size * 1.34;
-  let bx = x;
-  if (align === 'right') bx = x - w;
-  if (align === 'center') bx = x - w / 2;
+  const lh = size * 1.35;
+  const h = lh * lines.length;
+  if (box) {
+    p.noStroke();
+    p.fill(255, 255, 255, 234);
+    p.rect(-w / 2 - 7, -h / 2 - 4, w + 14, h + 8, 7);
+  }
   p.noStroke();
-  p.fill(255, 255, 255, 232);
-  p.rect(bx - 8, y - 5, w + 16, lh * lines.length + 9, 8);
   p.fill(col);
-  p.textAlign(p.LEFT, p.TOP);
-  lines.forEach((l, i) => p.text(l, bx, y + i * lh));
+  p.textAlign(p.CENTER, p.CENTER);
+  lines.forEach((l, i) => p.text(l, 0, -h / 2 + lh * (i + 0.5)));
+  p.pop();
 }
 
 function ball(p: p5, x: number, y: number, col: string, r = 16) {
@@ -77,9 +88,10 @@ function ball(p: p5, x: number, y: number, col: string, r = 16) {
 
 const dashOn = (p: p5, pat: number[] = [5, 5]) => p.drawingContext.setLineDash(pat);
 const dashOff = (p: p5) => p.drawingContext.setLineDash([]);
+const fade = (p: p5, col: string, a: number) => { const c = p.color(col); c.setAlpha(a); return c; };
 
-/* Fit a set of world points into the plot box with ONE scale for both axes,
-   so a 30° slope is drawn at exactly 30°.                                  */
+/* Fit world points into the plot box with ONE scale for both axes, so a 30°
+   slope is drawn at exactly 30°.                                            */
 function fitView(p: p5, M: Mg, pts: V[], pad = 0.1): View {
   let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity;
   for (const q of pts) {
@@ -96,32 +108,101 @@ function fitView(p: p5, M: Mg, pts: V[], pad = 0.1): View {
   return { X: (wx) => ox + wx * s, Y: (wy) => oy - wy * s, s, x0, x1, y0, y1 };
 }
 
-/* Angle arc drawn in SCREEN angles (y grows downward, so an angle θ above the
-   horizontal is the screen angle −θ).                                        */
-function angleArc(
-  p: p5, cx: number, cy: number, r: number,
-  sa: number, sb: number, col: string, label: string
-) {
+/* arcs are drawn in SCREEN angles (y grows downward) */
+function arc(p: p5, cx: number, cy: number, r: number, sa: number, sb: number, col: string) {
   p.noFill();
   p.stroke(col);
   p.strokeWeight(2);
   p.arc(cx, cy, r * 2, r * 2, Math.min(sa, sb), Math.max(sa, sb));
-  const am = (sa + sb) / 2;
-  chip(p, label, cx + Math.cos(am) * (r + 22), cy + Math.sin(am) * (r + 22) - 9, 'center', 13, col);
+}
+
+/* ═════════ the info panel ═════════ */
+interface Row { text?: string; sw?: string; sep?: boolean; dim?: boolean }
+
+function panelSize(p: p5, title: string, rows: Row[]) {
+  p.textFont('Bricolage Grotesque');
+  p.textSize(12.5);
+  let w = p.textWidth(title);
+  p.textFont('DM Sans');
+  p.textSize(13.5);
+  for (const r of rows) if (r.text) w = Math.max(w, p.textWidth(r.text) + (r.sw ? 20 : 0));
+  const h = rows.reduce((a, r) => a + (r.sep ? 11 : 20), 0);
+  return { w: w + 30, h: h + 42 };
+}
+
+function drawPanel(p: p5, x: number, y: number, title: string, rows: Row[]) {
+  const m = panelSize(p, title, rows);
+  p.noStroke();
+  p.fill(255, 255, 255, 240);
+  p.rect(x, y, m.w, m.h, 13);
+  p.noFill();
+  p.stroke(41, 89, 144, 46);
+  p.strokeWeight(1);
+  p.rect(x + 0.5, y + 0.5, m.w - 1, m.h - 1, 13);
+  p.noStroke();
+  p.fill(C.dark);
+  p.textFont('Bricolage Grotesque');
+  p.textSize(12.5);
+  p.textAlign(p.LEFT, p.TOP);
+  p.text(title, x + 15, y + 12);
+  p.textFont('DM Sans');
+  p.textSize(13.5);
+  let ry = y + 34;
+  for (const r of rows) {
+    if (r.sep) {
+      p.stroke(41, 89, 144, 34);
+      p.strokeWeight(1);
+      p.line(x + 15, ry + 5, x + m.w - 15, ry + 5);
+      p.noStroke();
+      ry += 11;
+      continue;
+    }
+    if (r.sw) {
+      p.fill(r.sw);
+      p.rect(x + 15, ry + 5, 11, 5, 2.5);
+    }
+    p.fill(r.dim ? 'rgba(65,85,111,.68)' : C.navy);
+    p.textAlign(p.LEFT, p.TOP);
+    p.text(r.text ?? '', x + (r.sw ? 34 : 15), ry);
+    ry += 20;
+  }
+  return m;
+}
+
+/* park the panel in the emptiest corner of the plot box */
+function placePanel(p: p5, M: Mg, w: number, h: number, busy: V[]) {
+  const pad = 10;
+  const cands = [
+    { x: M.l + pad, y: M.t + pad },
+    { x: p.width - M.r - w - pad, y: M.t + pad },
+    { x: M.l + pad, y: p.height - M.b - h - pad },
+    { x: p.width - M.r - w - pad, y: p.height - M.b - h - pad },
+  ];
+  let best = cands[0], bestHits = Infinity;
+  for (const c of cands) {
+    let hits = 0;
+    for (const q of busy) {
+      if (q.x > c.x - 14 && q.x < c.x + w + 14 && q.y > c.y - 14 && q.y < c.y + h + 14) hits++;
+    }
+    if (hits < bestHits) { bestHits = hits; best = c; }
+    if (hits === 0) break;
+  }
+  return best;
 }
 
 /* ═════════ the physics, once ═════════ */
 interface Geom {
-  a: number; b: number;            // radians
-  gc: number; gs: number;          // g cosα, g sinα
-  sgn: number;                     // −1 up the slope, +1 down the slope
+  a: number; b: number;
+  gc: number; gs: number;
+  sgn: number;
   T: number; R: number; Hp: number;
-  ex: V; ey: V;                    // rotated basis in ground coordinates
-  xp: (t: number) => number;       // along-incline coordinate
-  yp: (t: number) => number;       // perpendicular coordinate
+  ex: V; ey: V;
+  xp: (t: number) => number;
+  yp: (t: number) => number;
   pos: (t: number) => V;
   along: (d: number) => V;
   tApex: number;
+  slopeAng: number;                  // screen angle of the surface
 }
 
 function geom(u: number, aDeg: number, bDeg: number, dir: Dir): Geom {
@@ -138,75 +219,117 @@ function geom(u: number, aDeg: number, bDeg: number, dir: Dir): Geom {
     x: ex.x * xp(t) + ey.x * yp(t),
     y: ex.y * xp(t) + ey.y * yp(t),
   });
-  const along = (d: number) => ({ x: ex.x * d, y: ex.y * d });
   return {
     a, b, gc, gs, sgn, T, R: xp(T),
     Hp: (u * Math.sin(b)) ** 2 / (2 * gc),
-    ex, ey, xp, yp, pos, along, tApex: (u * Math.sin(b)) / gc,
+    ex, ey, xp, yp, pos,
+    along: (d: number) => ({ x: ex.x * d, y: ex.y * d }),
+    tApex: (u * Math.sin(b)) / gc,
+    slopeAng: dir === 'up' ? -a : a,
   };
 }
 
-/* ═════════ shared scene pieces ═════════ */
-function drawWedge(p: p5, v: View, g: Geom, dir: Dir, len: number) {
+/* screen-space unit vectors of the rotated axes */
+const exS = (g: Geom): V => ({ x: g.ex.x, y: -g.ex.y });
+const eyS = (g: Geom): V => ({ x: g.ey.x, y: -g.ey.y });
+
+/* ═════════ scene pieces ═════════ */
+function drawGround(p: p5, v: View, g: Geom, dir: Dir, len: number) {
   const tip = g.along(len);
   p.noStroke();
-  p.fill(41, 89, 144, 26);
+  p.fill(41, 89, 144, 22);
   p.beginShape();
   p.vertex(v.X(0), v.Y(0));
   p.vertex(v.X(tip.x), v.Y(tip.y));
-  if (dir === 'up') {
-    p.vertex(v.X(tip.x), v.Y(0));
-  } else {
-    p.vertex(v.X(tip.x), v.Y(v.y0));
-    p.vertex(v.X(0), v.Y(v.y0));
-  }
+  if (dir === 'up') p.vertex(v.X(tip.x), v.Y(0));
+  else { p.vertex(v.X(tip.x), v.Y(v.y0)); p.vertex(v.X(0), v.Y(v.y0)); }
   p.endShape(p.CLOSE);
-
-  /* the surface itself */
   p.stroke(C.navy);
-  p.strokeWeight(3);
+  p.strokeWeight(3.4);
   p.line(v.X(0), v.Y(0), v.X(tip.x), v.Y(tip.y));
 }
 
-function drawHorizontalAndAlpha(p: p5, v: View, g: Geom, dir: Dir, aDeg: number, len: number) {
-  const hx = g.along(len).x;
-  p.stroke(41, 89, 144, 110);
-  p.strokeWeight(1.6);
+function drawAlpha(p: p5, v: View, g: Geom, aDeg: number, len: number) {
+  const hx = g.along(len * 0.4).x;                 // short reference, not a full-width rule
+  p.stroke(41, 89, 144, 105);
+  p.strokeWeight(1.5);
   dashOn(p, [6, 6]);
   p.line(v.X(0), v.Y(0), v.X(hx), v.Y(0));
   dashOff(p);
-  const inc = dir === 'up' ? -g.a : g.a;      // screen angle of the slope
-  angleArc(p, v.X(0), v.Y(0), 54, Math.min(0, inc), Math.max(0, inc), C.violet, `α = ${aDeg}°`);
+  arc(p, v.X(0), v.Y(0), 42, 0, g.slopeAng, C.violet);
+  const m = g.slopeAng / 2;
+  label(p, `α = ${aDeg}°`, v.X(0) + Math.cos(m) * 64, v.Y(0) + Math.sin(m) * 64, C.violet, 12.5);
 }
 
-/* rotated axis arrows drawn at a fixed pixel length from the origin */
-function drawRotatedAxes(p: p5, v: View, g: Geom, len = 78) {
-  const exs = { x: g.ex.x, y: -g.ex.y };      // screen direction of x′
-  const eys = { x: g.ey.x, y: -g.ey.y };      // screen direction of y′
-  const ox = v.X(0), oy = v.Y(0);
-  p.stroke(C.dark);
-  p.strokeWeight(2.2);
-  arrow(p, ox, oy, ox + exs.x * len, oy + exs.y * len, 9);
-  arrow(p, ox, oy, ox + eys.x * len * 0.82, oy + eys.y * len * 0.82, 9);
-  chip(p, "x′ (along)", ox + exs.x * (len + 12), oy + exs.y * (len + 12) - 9, 'center', 12.5, C.dark);
-  chip(p, "y′ (perp)", ox + eys.x * (len + 14), oy + eys.y * (len + 14) - 9, 'center', 12.5, C.dark);
+function drawLaunch(p: p5, v: View, g: Geom, bDeg: number, len = 104) {
+  const ua = g.slopeAng - g.b;
+  p.stroke(C.accent);
+  p.strokeWeight(3.4);
+  arrow(p, v.X(0), v.Y(0), v.X(0) + Math.cos(ua) * len, v.Y(0) + Math.sin(ua) * len, 12);
+  arc(p, v.X(0), v.Y(0), 76, g.slopeAng, ua, C.amber);
+  const m = g.slopeAng - g.b / 2;
+  label(p, `β = ${bDeg}°`, v.X(0) + Math.cos(m) * 106, v.Y(0) + Math.sin(m) * 106, C.amber, 12.5);
 }
 
-/* double-headed range marker, offset INTO the wedge so it never sits on the path */
-function drawRange(p: p5, v: View, g: Geom, label: string, col = C.red, off = 22) {
-  const eys = { x: g.ey.x, y: -g.ey.y };
-  const dx = -eys.x * off, dy = -eys.y * off;
+function drawYAxis(p: p5, v: View, g: Geom) {
+  const na = g.slopeAng - Math.PI / 2;
+  p.stroke(41, 89, 144, 150);
+  p.strokeWeight(1.8);
+  dashOn(p, [4, 4]);
+  arrow(p, v.X(0), v.Y(0), v.X(0) + Math.cos(na) * 62, v.Y(0) + Math.sin(na) * 62, 8);
+  dashOff(p);
+  label(p, 'y′', v.X(0) + Math.cos(na) * 78, v.Y(0) + Math.sin(na) * 78, C.dark, 12);
+}
+
+/* "x′ along the incline", set on the surface past the landing point */
+function drawXAxis(p: p5, v: View, g: Geom, len: number) {
+  const d = (g.R + len) / 2;
+  const q = g.along(d);
+  const e = eyS(g);
+  label(p, 'x′  along the incline', v.X(q.x) + e.x * 15, v.Y(q.y) + e.y * 15,
+    C.dark, 12, g.slopeAng);
+}
+
+/* a measured band lying ON the surface - no floating arrows */
+function drawRangeBand(p: p5, v: View, g: Geom, txt: string, col: string) {
   const end = g.along(g.R);
-  const x1 = v.X(0) + dx, y1 = v.Y(0) + dy;
-  const x2 = v.X(end.x) + dx, y2 = v.Y(end.y) + dy;
+  const x1 = v.X(0), y1 = v.Y(0), x2 = v.X(end.x), y2 = v.Y(end.y);
+  const e = eyS(g);
+  p.stroke(fade(p, col, 78));
+  p.strokeWeight(11);
+  p.line(x1, y1, x2, y2);
   p.stroke(col);
-  p.strokeWeight(2);
-  arrow(p, x1, y1, x2, y2, 8);
-  arrow(p, x2, y2, x1, y1, 8);
-  chip(p, label, (x1 + x2) / 2 + dx * 0.7, (y1 + y2) / 2 + dy * 0.7 - 9, 'center', 13.5, col);
+  p.strokeWeight(2.6);
+  p.line(x1 - e.x * 10, y1 - e.y * 10, x1 + e.x * 10, y1 + e.y * 10);
+  p.line(x2 - e.x * 10, y2 - e.y * 10, x2 + e.x * 10, y2 + e.y * 10);
   p.noStroke();
   p.fill(col);
-  p.circle(v.X(end.x), v.Y(end.y), 10);
+  p.circle(x2, y2, 11);
+  label(p, txt, (x1 + x2) / 2 - e.x * 22, (y1 + y2) / 2 - e.y * 22, col, 13, g.slopeAng);
+}
+
+function pathDots(p: p5, v: View, g: Geom, col: string, wt = 2) {
+  p.noFill();
+  p.stroke(col);
+  p.strokeWeight(wt);
+  dashOn(p, [5, 6]);
+  p.beginShape();
+  for (let i = 0; i <= 80; i++) { const q = g.pos((g.T * i) / 80); p.vertex(v.X(q.x), v.Y(q.y)); }
+  p.endShape();
+  dashOff(p);
+}
+
+/* screen points the panel should avoid */
+function busyPoints(v: View, g: Geom, len: number): V[] {
+  const out: V[] = [];
+  for (let i = 0; i <= 24; i++) {
+    const q = g.pos((g.T * i) / 24);
+    out.push({ x: v.X(q.x), y: v.Y(q.y) });
+    const s = g.along((len * i) / 24);
+    out.push({ x: v.X(s.x), y: v.Y(s.y) });
+  }
+  out.push({ x: v.X(0), y: v.Y(0) });
+  return out;
 }
 
 /* ══════════════════════════════════════════════════════════════════════
@@ -217,8 +340,8 @@ const WHY_U = 20, WHY_TH = 60;                 // launch angle fixed to the HORI
 
 const whySketch = (p: p5) => {
   const holder = document.getElementById('inWhyCanvas')!;
-  const M = { l: 62, r: 30, t: 44, b: 52 };
-  const canvasH = () => Math.max(340, Math.min(460, Math.round(holder.clientWidth * 0.46)));
+  const M = { l: 58, r: 40, t: 34, b: 44 };
+  const canvasH = () => Math.max(380, Math.min(560, Math.round(holder.clientWidth * 0.42)));
 
   p.setup = () => { p.createCanvas(holder.clientWidth, canvasH()); };
   p.windowResized = () => { p.resizeCanvas(holder.clientWidth, canvasH()); };
@@ -228,87 +351,98 @@ const whySketch = (p: p5) => {
     const th = rad(WHY_TH), al = rad(why.a);
     const gx = (t: number) => WHY_U * Math.cos(th) * t;
     const gy = (t: number) => WHY_U * Math.sin(th) * t - 0.5 * G * t * t;
-    /* landing on the slope: y = x tanα  →  t = 2u(sinθ − cosθ tanα)/g */
     const tL = (2 * WHY_U * (Math.sin(th) - Math.cos(th) * Math.tan(al))) / G;
     const xL = gx(tL), yL = gy(tL);
 
-    const pts: V[] = [{ x: 0, y: 0 }, { x: xL * 1.14, y: xL * 1.14 * Math.tan(al) }];
+    const tipX = xL * 1.16, tipY = tipX * Math.tan(al);
+    const pts: V[] = [{ x: 0, y: 0 }, { x: tipX, y: tipY }];
     for (let i = 0; i <= 40; i++) pts.push({ x: gx((tL * i) / 40), y: gy((tL * i) / 40) });
     const v = fitView(p, M, pts, 0.09);
 
-    /* wedge + slope */
-    const tipX = xL * 1.14, tipY = tipX * Math.tan(al);
+    /* hill */
     p.noStroke();
-    p.fill(41, 89, 144, 26);
+    p.fill(41, 89, 144, 22);
     p.beginShape();
     p.vertex(v.X(0), v.Y(0)); p.vertex(v.X(tipX), v.Y(tipY)); p.vertex(v.X(tipX), v.Y(0));
     p.endShape(p.CLOSE);
-    p.stroke(C.navy); p.strokeWeight(3);
+    p.stroke(C.navy); p.strokeWeight(3.4);
     p.line(v.X(0), v.Y(0), v.X(tipX), v.Y(tipY));
 
-    /* old axes */
-    p.stroke(41, 89, 144, 130);
-    p.strokeWeight(1.6);
-    arrow(p, v.X(0), v.Y(0), v.X(tipX), v.Y(0), 8);
-    arrow(p, v.X(0), v.Y(0), v.X(0), v.Y(v.y1 * 0.94), 8);
-    p.noStroke(); p.fill(C.dark); p.textFont('DM Sans'); p.textSize(13);
-    p.textAlign(p.CENTER, p.TOP);
-    p.text('x', v.X(tipX) - 4, v.Y(0) + 10);
-    p.textAlign(p.RIGHT, p.CENTER);
-    p.text('y', v.X(0) - 10, v.Y(v.y1 * 0.94) + 4);
-
-    angleArc(p, v.X(0), v.Y(0), 52, -al, 0, C.violet, `α = ${why.a}°`);
-
-    /* trajectory */
-    p.noFill(); p.stroke(C.accent); p.strokeWeight(3);
+    /* flight */
+    p.noFill(); p.stroke(C.accent); p.strokeWeight(3.2);
     p.beginShape();
     for (let i = 0; i <= 90; i++) p.vertex(v.X(gx((tL * i) / 90)), v.Y(gy((tL * i) / 90)));
     p.endShape();
 
+    const busy: V[] = [];
+    for (let i = 0; i <= 24; i++) {
+      busy.push({ x: v.X(gx((tL * i) / 24)), y: v.Y(gy((tL * i) / 24)) });
+      busy.push({ x: v.X((tipX * i) / 24), y: v.Y((tipY * i) / 24) });
+    }
+
     if (!why.rotated) {
-      /* the coupling: x and y of the landing point */
+      /* old axes: the coupled landing condition */
+      p.stroke(41, 89, 144, 120);
+      p.strokeWeight(1.6);
+      arrow(p, v.X(0), v.Y(0), v.X(tipX), v.Y(0), 8);
+      arrow(p, v.X(0), v.Y(0), v.X(0), v.Y(v.y1 * 0.92), 8);
+      label(p, 'x', v.X(tipX) - 6, v.Y(0) + 16, C.dark, 12, 0, false);
+      label(p, 'y', v.X(0) - 16, v.Y(v.y1 * 0.92) + 4, C.dark, 12, 0, false);
+
       p.stroke(C.red); p.strokeWeight(1.8); dashOn(p, [6, 5]);
       p.line(v.X(xL), v.Y(yL), v.X(xL), v.Y(0));
       p.line(v.X(xL), v.Y(yL), v.X(0), v.Y(yL));
       dashOff(p);
-      chip(p, `x = ${xL.toFixed(1)} m`, v.X(xL / 2), v.Y(0) + 12, 'center', 13, C.red);
-      chip(p, `y = ${yL.toFixed(1)} m`, v.X(0) + 10, v.Y(yL) - 9, 'left', 13, C.red);
-      chip(p, `Landing needs  y = x tanα\n${yL.toFixed(1)} = ${xL.toFixed(1)} × tan${why.a}°  ← x and y are TANGLED`,
-        v.X(xL) + 16, v.Y(yL) - 30, 'left', 14, C.red);
+      label(p, `x = ${xL.toFixed(1)} m`, v.X(xL / 2), v.Y(0) + 20, C.red, 12.5);
+      label(p, `y = ${yL.toFixed(1)} m`, v.X(0) + 34, v.Y(yL), C.red, 12.5);
+      arc(p, v.X(0), v.Y(0), 42, 0, -al, C.violet);
+      label(p, `α = ${why.a}°`, v.X(0) + Math.cos(-al / 2) * 64, v.Y(0) + Math.sin(-al / 2) * 64, C.violet, 12.5);
     } else {
-      /* rotated axes: the same landing point is simply y′ = 0 */
+      /* rotated axes: y′ is all that matters */
       const ex: V = { x: Math.cos(al), y: Math.sin(al) };
       const ey: V = { x: -Math.sin(al), y: Math.cos(al) };
       const ox = v.X(0), oy = v.Y(0);
-      p.stroke(C.green); p.strokeWeight(2.6);
-      arrow(p, ox, oy, ox + ex.x * 96, oy - ex.y * 96, 10);
-      arrow(p, ox, oy, ox + ey.x * 80, oy - ey.y * 80, 10);
-      chip(p, "x′ along the incline", ox + ex.x * 108, oy - ex.y * 108 - 9, 'center', 13, C.green);
-      chip(p, "y′ ⊥ to the incline", ox + ey.x * 92, oy - ey.y * 92 - 9, 'center', 13, C.green);
+      p.stroke(C.green); p.strokeWeight(2.4);
+      arrow(p, ox, oy, ox + ey.x * 74, oy - ey.y * 74, 10);
+      label(p, 'y′', ox + ey.x * 90, oy - ey.y * 90, C.green, 12.5);
+      label(p, 'x′  along the incline',
+        v.X(ex.x * tipX * 0.78) + ey.x * 15, v.Y(ex.y * tipX * 0.78) - ey.y * 15, C.green, 12, -al);
 
-      /* perpendicular offsets along the flight = the y′ coordinate */
       for (let i = 1; i < 10; i++) {
         const t = (tL * i) / 10;
         const X = gx(t), Y = gy(t);
-        const yp = -X * Math.sin(al) + Y * Math.cos(al);
         const xp = X * Math.cos(al) + Y * Math.sin(al);
-        const fx = ex.x * xp, fy = ex.y * xp;
         p.stroke(C.amber); p.strokeWeight(1.4); dashOn(p, [4, 4]);
-        p.line(v.X(X), v.Y(Y), v.X(fx), v.Y(fy));
+        p.line(v.X(X), v.Y(Y), v.X(ex.x * xp), v.Y(ex.y * xp));
         dashOff(p);
         p.noStroke(); p.fill(C.amber); p.circle(v.X(X), v.Y(Y), 6);
-        if (i === 5) chip(p, `y′ = ${yp.toFixed(1)} m`, v.X(X) + 10, v.Y(Y) - 26, 'left', 12.5, C.amber);
       }
-      chip(p, "Landing condition:  y′ = 0\nOne coordinate, back to zero. Clean again.",
-        v.X(xL) + 16, v.Y(yL) - 26, 'left', 14, C.green);
+      arc(p, v.X(0), v.Y(0), 42, 0, -al, C.violet);
+      label(p, `α = ${why.a}°`, v.X(0) + Math.cos(-al / 2) * 64, v.Y(0) + Math.sin(-al / 2) * 64, C.violet, 12.5);
     }
 
     ball(p, v.X(0), v.Y(0), C.accent, 15);
     p.noStroke(); p.fill(C.navy); p.circle(v.X(xL), v.Y(yL), 11);
-    chip(p, why.rotated
-      ? 'Rotated axes: the slope IS the new ground.'
-      : 'Old axes: the "ground" is tilted, so y = 0 is no longer the landing test.',
-      p.width - M.r - 4, M.t - 30, 'right', 14, why.rotated ? C.green : C.red);
+
+    const rows: Row[] = why.rotated
+      ? [
+        { text: 'x′ runs ALONG the incline, y′ across it', dim: true },
+        { text: 'Landing condition:   y′ = 0', sw: C.green },
+        { text: 'One coordinate, back to zero - clean again', dim: true },
+        { sep: true },
+        { text: 'The amber drops are y′, the height above the slope', dim: true },
+      ]
+      : [
+        { text: 'Ordinary horizontal / vertical axes', dim: true },
+        { text: `Landing condition:   y = x tanα`, sw: C.red },
+        { text: `${yL.toFixed(1)} = ${xL.toFixed(1)} × tan ${why.a}°`, sw: C.red },
+        { sep: true },
+        { text: 'x and y are tangled - "set y = 0" is gone', dim: true },
+      ];
+    const title = why.rotated ? 'ROTATED AXES' : 'THE OLD AXES';
+    const m = panelSize(p, title, rows);
+    const at = placePanel(p, M, m.w, m.h, busy);
+    drawPanel(p, at.x, at.y, title, rows);
   };
 };
 
@@ -329,7 +463,7 @@ function whyWire() {
 }
 
 /* ══════════════════════════════════════════════════════════════════════
-   Pane 2 · The rotated axes + gravity split
+   Pane 2 · The rotated axes + the gravity split
    ══════════════════════════════════════════════════════════════════════ */
 const ax = { a: 30, b: 30 };
 
@@ -348,8 +482,8 @@ function axReadout() {
 
 const axSketch = (p: p5) => {
   const holder = document.getElementById('inAxCanvas')!;
-  const M = { l: 70, r: 40, t: 52, b: 56 };
-  const canvasH = () => Math.max(360, Math.min(480, Math.round(holder.clientWidth * 0.5)));
+  const M = { l: 60, r: 44, t: 36, b: 48 };
+  const canvasH = () => Math.max(400, Math.min(580, Math.round(holder.clientWidth * 0.44)));
 
   p.setup = () => { p.createCanvas(holder.clientWidth, canvasH()); };
   p.windowResized = () => { p.resizeCanvas(holder.clientWidth, canvasH()); };
@@ -357,71 +491,57 @@ const axSketch = (p: p5) => {
   p.draw = () => {
     p.background(C.paper);
     const g = geom(20, ax.a, ax.b, 'up');
-    const len = g.R * 1.16;
-    const pts: V[] = [{ x: 0, y: 0 }, g.along(len), { x: g.along(len).x, y: 0 }];
+    const len = g.R * 1.18;
+    const pts: V[] = [{ x: 0, y: 0 }, g.along(len)];
     for (let i = 0; i <= 40; i++) pts.push(g.pos((g.T * i) / 40));
-    const v = fitView(p, M, pts, 0.1);
+    const v = fitView(p, M, pts, 0.12);
 
-    drawWedge(p, v, g, 'up', len);
-    drawHorizontalAndAlpha(p, v, g, 'up', ax.a, len);
-    drawRotatedAxes(p, v, g, 84);
+    drawGround(p, v, g, 'up', len);
+    drawAlpha(p, v, g, ax.a, len);
+    drawXAxis(p, v, g, len);
+    pathDots(p, v, g, 'rgba(41,89,144,0.42)', 2);
+    drawYAxis(p, v, g);
+    drawLaunch(p, v, g, ax.b);
 
-    /* the flight, faint - this pane is about the frame, not the numbers */
-    p.noFill(); p.stroke(41, 89, 144, 90); p.strokeWeight(2);
-    dashOn(p, [5, 6]);
-    p.beginShape();
-    for (let i = 0; i <= 70; i++) { const q = g.pos((g.T * i) / 70); p.vertex(v.X(q.x), v.Y(q.y)); }
-    p.endShape();
-    dashOff(p);
-
-    /* launch velocity u at β FROM THE INCLINE */
-    const ux = 20 * Math.cos(g.b), uy = 20 * Math.sin(g.b);
-    const uw: V = { x: g.ex.x * ux + g.ey.x * uy, y: g.ex.y * ux + g.ey.y * uy };
-    const uLen = 118;
-    const uNorm = Math.hypot(uw.x, uw.y);
-    p.stroke(C.accent); p.strokeWeight(3.4);
-    arrow(p, v.X(0), v.Y(0),
-      v.X(0) + (uw.x / uNorm) * uLen, v.Y(0) - (uw.y / uNorm) * uLen, 12);
-    chip(p, 'u', v.X(0) + (uw.x / uNorm) * (uLen + 16), v.Y(0) - (uw.y / uNorm) * (uLen + 16) - 9,
-      'center', 15, C.accent);
-    angleArc(p, v.X(0), v.Y(0), 88, -(g.a + g.b), -g.a, C.amber, `β = ${ax.b}°`);
-
-    /* gravity split, hung off the particle at its highest point (most clearance) */
+    /* gravity hung off the particle at its highest point (most clearance) */
     const q = g.pos(g.tApex);
-    const px = v.X(q.x), py = v.Y(q.y);
-    const gpx = Math.max(70, Math.min(112, p.height - M.b - py - 26));
-    ball(p, px, py, C.accent, 15);
-    p.stroke(C.navy); p.strokeWeight(3);
-    arrow(p, px, py, px, py + gpx, 11);
-    chip(p, 'g = 10 m/s²', px + 8, py + gpx - 8, 'left', 13.5, C.navy);
+    const bx = v.X(q.x), by = v.Y(q.y);
+    const gpx = Math.max(74, Math.min(118, p.height - M.b - by - 30));
+    const ax1 = bx - exS(g).x * gpx * Math.sin(g.a), ay1 = by - exS(g).y * gpx * Math.sin(g.a);
+    const px1 = bx - eyS(g).x * gpx * Math.cos(g.a), py1 = by - eyS(g).y * gpx * Math.cos(g.a);
 
-    /* components of g in the rotated frame */
-    const alongPx = gpx * Math.sin(g.a);              // g sinα, down the slope
-    const perpPx = gpx * Math.cos(g.a);               // g cosα, into the surface
-    const exs = { x: g.ex.x, y: -g.ex.y };
-    const eys = { x: g.ey.x, y: -g.ey.y };
-    const ax1 = px - exs.x * alongPx, ay1 = py - exs.y * alongPx;   // −x′ direction
-    const px1 = px - eys.x * perpPx, py1 = py - eys.y * perpPx;     // −y′ direction
+    /* the parallelogram that proves it is a genuine resolution */
+    p.stroke(41, 89, 144, 105); p.strokeWeight(1.3); dashOn(p, [4, 4]);
+    p.line(ax1, ay1, bx + (ax1 - bx) + (px1 - bx), by + (ay1 - by) + (py1 - by));
+    p.line(px1, py1, bx + (ax1 - bx) + (px1 - bx), by + (ay1 - by) + (py1 - by));
+    dashOff(p);
 
     p.stroke(C.green); p.strokeWeight(3);
-    arrow(p, px, py, ax1, ay1, 10);
-    chip(p, `g sinα = ${(G * Math.sin(g.a)).toFixed(2)}\n(down the slope)`,
-      ax1 - 12, ay1 - 34, 'right', 12.5, C.green);
+    arrow(p, bx, by, ax1, ay1, 10);
+    label(p, 'g sinα', (bx + ax1) / 2 - 24, (by + ay1) / 2, C.green, 12);
     p.stroke(C.red); p.strokeWeight(3);
-    arrow(p, px, py, px1, py1, 10);
-    chip(p, `g cosα = ${(G * Math.cos(g.a)).toFixed(2)}\n(into the surface)`,
-      px1 + 10, py1 + 6, 'left', 12.5, C.red);
+    arrow(p, bx, by, px1, py1, 10);
+    label(p, 'g cosα', (bx + px1) / 2 + 26, (by + py1) / 2, C.red, 12);
+    p.stroke(C.navy); p.strokeWeight(3.2);
+    arrow(p, bx, by, bx, by + gpx, 11);
+    label(p, 'g', bx + 16, by + gpx - 12, C.navy, 12.5);
+    ball(p, bx, by, C.accent, 15);
 
-    /* the rectangle that proves it is a genuine resolution */
-    p.stroke(41, 89, 144, 120); p.strokeWeight(1.3); dashOn(p, [4, 4]);
-    p.line(ax1, ay1, px + (ax1 - px) + (px1 - px), py + (ay1 - py) + (py1 - py));
-    p.line(px1, py1, px + (ax1 - px) + (px1 - px), py + (ay1 - py) + (py1 - py));
-    dashOff(p);
-
-    chip(p, 'Gravity does not rotate with your axes - it just splits.',
-      p.width - M.r - 4, M.t - 38, 'right', 14, C.dark);
-    chip(p, `u_x′ = u cosβ = ${(20 * Math.cos(g.b)).toFixed(1)}    u_y′ = u sinβ = ${(20 * Math.sin(g.b)).toFixed(1)}   (u = 20 m/s)`,
-      v.X(0) - 4, M.t - 38, 'left', 14, C.accent);
+    const rows: Row[] = [
+      { text: 'Gravity never rotates - it splits', dim: true },
+      { text: `along x′ :  g sinα = ${(G * Math.sin(g.a)).toFixed(2)} m/s²`, sw: C.green },
+      { text: `along y′ :  g cosα = ${(G * Math.cos(g.a)).toFixed(2)} m/s²`, sw: C.red },
+      { sep: true },
+      { text: `u_x′ = u cosβ = ${(20 * Math.cos(g.b)).toFixed(1)} m/s` },
+      { text: `u_y′ = u sinβ = ${(20 * Math.sin(g.b)).toFixed(1)} m/s` },
+      { text: 'α from the horizontal, β from the incline', dim: true },
+    ];
+    const title = 'THE ROTATED FRAME  ·  u = 20 m/s';
+    const m = panelSize(p, title, rows);
+    const busy = busyPoints(v, g, len);
+    busy.push({ x: bx, y: by }, { x: ax1, y: ay1 }, { x: px1, y: py1 }, { x: bx, y: by + gpx });
+    const at = placePanel(p, M, m.w, m.h, busy);
+    drawPanel(p, at.x, at.y, title, rows);
   };
 };
 
@@ -492,22 +612,22 @@ function caseStats(st: CaseState, ids: CaseIds, dir: Dir) {
   document.getElementById(ids.vT)!.textContent = `${g.T.toFixed(2)} s`;
   document.getElementById(ids.vR)!.textContent = `${g.R.toFixed(1)} m`;
   document.getElementById(ids.vH)!.textContent = `${g.Hp.toFixed(1)} m`;
-  const note = document.getElementById(ids.note)!;
-  const gc = (G * Math.cos(g.a)).toFixed(2), gs = (G * Math.sin(g.a)).toFixed(2);
-  note.innerHTML = dir === 'up'
-    ? `g cosα = <b>${gc}</b> sets the clock, g sinα = <b>${gs}</b> <b>fights</b> the along-slope motion.
-       R = ${(st.u * Math.cos(rad(st.b)) * g.T).toFixed(1)} − ${(0.5 * G * Math.sin(g.a) * g.T * g.T).toFixed(1)} = <b>${g.R.toFixed(1)} m</b>
-       - gravity ate ${(0.5 * G * Math.sin(g.a) * g.T * g.T).toFixed(1)} m of range.`
-    : `g cosα = <b>${gc}</b> sets the clock, g sinα = <b>${gs}</b> <b>helps</b> the along-slope motion.
-       R = ${(st.u * Math.cos(rad(st.b)) * g.T).toFixed(1)} + ${(0.5 * G * Math.sin(g.a) * g.T * g.T).toFixed(1)} = <b>${g.R.toFixed(1)} m</b>
-       - gravity added ${(0.5 * G * Math.sin(g.a) * g.T * g.T).toFixed(1)} m of range.`;
+  const flat = st.u * Math.cos(rad(st.b)) * g.T;
+  const kick = 0.5 * G * Math.sin(g.a) * g.T * g.T;
+  document.getElementById(ids.note)!.innerHTML = dir === 'up'
+    ? `g cosα = <b>${(G * Math.cos(g.a)).toFixed(2)}</b> sets the clock; g sinα = <b>${(G * Math.sin(g.a)).toFixed(2)}</b>
+       <b>fights</b> the along-slope motion: R = ${flat.toFixed(1)} − ${kick.toFixed(1)} = <b>${g.R.toFixed(1)} m</b>.
+       Gravity ate ${kick.toFixed(1)} m of range.`
+    : `g cosα = <b>${(G * Math.cos(g.a)).toFixed(2)}</b> sets the clock; g sinα = <b>${(G * Math.sin(g.a)).toFixed(2)}</b>
+       <b>helps</b> the along-slope motion: R = ${flat.toFixed(1)} + ${kick.toFixed(1)} = <b>${g.R.toFixed(1)} m</b>.
+       Gravity added ${kick.toFixed(1)} m of range.`;
 }
 
 function caseSketch(st: CaseState, ids: CaseIds, dir: Dir) {
   return (p: p5) => {
     const holder = document.getElementById(ids.canvas)!;
-    const M = { l: 66, r: 40, t: 52, b: 56 };
-    const canvasH = () => Math.max(370, Math.min(500, Math.round(holder.clientWidth * 0.5)));
+    const M = { l: 58, r: 44, t: 36, b: 48 };
+    const canvasH = () => Math.max(420, Math.min(620, Math.round(holder.clientWidth * 0.46)));
 
     p.setup = () => { p.createCanvas(holder.clientWidth, canvasH()); };
     p.windowResized = () => { p.resizeCanvas(holder.clientWidth, canvasH()); };
@@ -515,99 +635,92 @@ function caseSketch(st: CaseState, ids: CaseIds, dir: Dir) {
     p.draw = () => {
       p.background(C.paper);
       const g = geom(st.u, st.a, st.b, dir);
-      const len = g.R * 1.18;
-      const pts: V[] = [{ x: 0, y: 0 }, g.along(len), { x: g.along(len).x, y: 0 }];
+      const len = g.R * 1.22;
+      const pts: V[] = [{ x: 0, y: 0 }, g.along(len)];
       for (let i = 0; i <= 40; i++) pts.push(g.pos((g.T * i) / 40));
-      const v = fitView(p, M, pts, 0.1);
+      const v = fitView(p, M, pts, 0.12);
 
-      drawWedge(p, v, g, dir, len);
-      drawHorizontalAndAlpha(p, v, g, dir, st.a, len);
-      drawRotatedAxes(p, v, g, 74);
+      drawGround(p, v, g, dir, len);
+      drawAlpha(p, v, g, st.a, len);
+      drawRangeBand(p, v, g, `R = ${g.R.toFixed(1)} m`, C.red);
+      drawXAxis(p, v, g, len);
+      pathDots(p, v, g, 'rgba(41,89,144,0.4)');
 
-      /* predicted path */
-      p.noFill(); p.stroke(41, 89, 144, 95); p.strokeWeight(2);
-      dashOn(p, [5, 6]);
-      p.beginShape();
-      for (let i = 0; i <= 80; i++) { const q = g.pos((g.T * i) / 80); p.vertex(v.X(q.x), v.Y(q.y)); }
-      p.endShape();
-      dashOff(p);
-
-      /* apex: greatest perpendicular distance */
+      /* greatest distance from the surface */
       const qa = g.pos(g.tApex);
       const fa = g.along(g.xp(g.tApex));
       p.stroke(C.amber); p.strokeWeight(1.7); dashOn(p, [5, 5]);
       p.line(v.X(qa.x), v.Y(qa.y), v.X(fa.x), v.Y(fa.y));
       dashOff(p);
       p.noStroke(); p.fill(C.amber); p.circle(v.X(qa.x), v.Y(qa.y), 8);
-      chip(p, `H⊥ = ${g.Hp.toFixed(1)} m`, v.X(qa.x), v.Y(qa.y) - 30, 'center', 13, C.amber);
+      label(p, `H⊥ = ${g.Hp.toFixed(1)} m`,
+        (v.X(qa.x) + v.X(fa.x)) / 2 - eyS(g).y * 34, (v.Y(qa.y) + v.Y(fa.y)) / 2 + eyS(g).x * 34,
+        C.amber, 12.5);
 
-      drawRange(p, v, g, `R = ${g.R.toFixed(1)} m`, C.red, 24);
+      drawYAxis(p, v, g);
+      drawLaunch(p, v, g, st.b);
 
-      /* launch vector */
-      const uw: V = {
-        x: g.ex.x * Math.cos(g.b) + g.ey.x * Math.sin(g.b),
-        y: g.ex.y * Math.cos(g.b) + g.ey.y * Math.sin(g.b),
-      };
-      p.stroke(C.accent); p.strokeWeight(3.2);
-      arrow(p, v.X(0), v.Y(0), v.X(0) + uw.x * 96, v.Y(0) - uw.y * 96, 11);
-      chip(p, `u = ${st.u} m/s`, v.X(0) + uw.x * 112, v.Y(0) - uw.y * 112 - 9, 'center', 13.5, C.accent);
-      const incS = dir === 'up' ? -g.a : g.a;
-      angleArc(p, v.X(0), v.Y(0), 62, incS, incS - g.b, C.amber, `β = ${st.b}°`);
-
-      /* run the clock */
       if (st.phase === 'flying' && !st.paused) {
         st.t += (p.deltaTime / 1000) * Math.max(1, g.T / 3);
         if (st.t >= g.T) { st.t = g.T; st.phase = 'landed'; }
       }
 
-      if (st.phase !== 'ready') {
-        const t = st.t;
-        const q = g.pos(t);
-        const foot = g.along(g.xp(t));
+      const t = st.phase === 'ready' ? 0 : st.t;
+      const q = g.pos(t);
+      const bx = v.X(q.x), by = v.Y(q.y);
+      const vxp = st.u * Math.cos(g.b) + g.sgn * g.gs * t;
+      const vyp = st.u * Math.sin(g.b) - g.gc * t;
 
-        /* traced path */
-        p.noFill(); p.stroke(C.accent); p.strokeWeight(3.4);
+      if (st.phase !== 'ready') {
+        p.noFill(); p.stroke(C.accent); p.strokeWeight(3.6);
         p.beginShape();
-        for (let i = 0; i <= 80; i++) {
-          const tt = (t * i) / 80;
-          const w = g.pos(tt);
-          p.vertex(v.X(w.x), v.Y(w.y));
-        }
+        for (let i = 0; i <= 80; i++) { const w = g.pos((t * i) / 80); p.vertex(v.X(w.x), v.Y(w.y)); }
         p.endShape();
 
-        /* the perpendicular coordinate y′, live */
+        const foot = g.along(g.xp(t));
         p.stroke(C.red); p.strokeWeight(1.8); dashOn(p, [5, 4]);
-        p.line(v.X(q.x), v.Y(q.y), v.X(foot.x), v.Y(foot.y));
+        p.line(bx, by, v.X(foot.x), v.Y(foot.y));
         dashOff(p);
 
-        /* velocity in the rotated frame */
-        const vxp = st.u * Math.cos(g.b) + g.sgn * g.gs * t;
-        const vyp = st.u * Math.sin(g.b) - g.gc * t;
         const vs = 3.4;
-        const exs = { x: g.ex.x, y: -g.ex.y };
-        const eys = { x: g.ey.x, y: -g.ey.y };
-        const bx = v.X(q.x), by = v.Y(q.y);
         p.stroke(C.green); p.strokeWeight(2.6);
-        arrow(p, bx, by, bx + exs.x * vxp * vs, by + exs.y * vxp * vs, 9);
+        arrow(p, bx, by, bx + exS(g).x * vxp * vs, by + exS(g).y * vxp * vs, 9);
         p.stroke(C.red);
-        arrow(p, bx, by, bx + eys.x * vyp * vs, by + eys.y * vyp * vs, 9);
+        arrow(p, bx, by, bx + eyS(g).x * vyp * vs, by + eyS(g).y * vyp * vs, 9);
         ball(p, bx, by, C.accent, 17);
-
-        chip(p, `t = ${t.toFixed(2)} s    x′ = ${g.xp(t).toFixed(1)} m    y′ = ${g.yp(t).toFixed(2)} m\nv_x′ = ${vxp.toFixed(1)}    v_y′ = ${vyp.toFixed(1)} m/s`,
-          p.width - M.r - 4, M.t - 44, 'right', 13.5, C.navy);
-
-        if (st.phase === 'landed') {
-          chip(p, dir === 'up'
-            ? `LANDED up the slope.  T = ${g.T.toFixed(2)} s,  R = ${g.R.toFixed(1)} m`
-            : `LANDED down the slope.  T = ${g.T.toFixed(2)} s,  R = ${g.R.toFixed(1)} m`,
-            p.width / 2, M.t - 16, 'center', 15.5, C.green);
-        }
       } else {
-        ball(p, v.X(0), v.Y(0), C.accent, 15);
-        chip(p, dir === 'up'
-          ? 'Press Launch - watch g sinα drag the along-slope motion back.'
-          : 'Press Launch - watch g sinα push the along-slope motion forward.',
-          p.width / 2, M.t - 16, 'center', 14.5, C.dark);
+        ball(p, v.X(0), v.Y(0), C.accent, 16);
+      }
+
+      const sign = dir === 'up' ? '−' : '+';
+      const flat = st.u * Math.cos(g.b) * g.T;
+      const kick = 0.5 * g.gs * g.T * g.T;
+      const rows: Row[] = [
+        { text: `u = ${st.u} m/s   ·   α = ${st.a}°   ·   β = ${st.b}° from the incline`, dim: true },
+        { text: `a_x′ = ${sign}g sinα = ${sign}${g.gs.toFixed(2)} m/s²   ${dir === 'up' ? 'opposes' : 'assists'}`, sw: C.green },
+        { text: `a_y′ = −g cosα = −${g.gc.toFixed(2)} m/s²   into the surface`, sw: C.red },
+        { sep: true },
+        { text: `T = 2u sinβ / g cosα = ${g.T.toFixed(2)} s` },
+        { text: `R = ${flat.toFixed(1)} ${sign} ${kick.toFixed(1)} = ${g.R.toFixed(1)} m` },
+        { sep: true },
+        { text: `t = ${t.toFixed(2)} s    x′ = ${g.xp(t).toFixed(1)} m    y′ = ${g.yp(t).toFixed(2)} m`, dim: st.phase === 'ready' },
+        { text: `v_x′ = ${vxp.toFixed(1)}    v_y′ = ${vyp.toFixed(1)} m/s`, dim: st.phase === 'ready' },
+      ];
+      const title = dir === 'up' ? 'CASE 1 · UP THE INCLINE' : 'CASE 2 · DOWN THE INCLINE';
+      const m = panelSize(p, title, rows);
+      const busy = busyPoints(v, g, len);
+      busy.push({ x: bx, y: by });
+      const at = placePanel(p, M, m.w, m.h, busy);
+      drawPanel(p, at.x, at.y, title, rows);
+
+      if (st.phase === 'landed') {
+        label(p, `LANDED  ·  T = ${g.T.toFixed(2)} s  ·  R = ${g.R.toFixed(1)} m`,
+          p.width / 2, p.height - 22, C.green, 15);
+      } else if (st.phase === 'ready') {
+        label(p, dir === 'up'
+          ? 'Press Launch - watch v_x′ shrink as g sinα drags it back'
+          : 'Press Launch - watch v_x′ grow as g sinα pushes it on',
+          p.width / 2, p.height - 22, C.dark, 13.5);
       }
     };
   };
@@ -617,7 +730,10 @@ function caseWire(st: CaseState, ids: CaseIds, dir: Dir) {
   const u = document.getElementById(ids.u) as HTMLInputElement;
   const a = document.getElementById(ids.a) as HTMLInputElement;
   const b = document.getElementById(ids.b) as HTMLInputElement;
-  const reset = () => { st.t = 0; st.phase = 'ready'; st.paused = false; document.getElementById(ids.pause)!.textContent = '⏸ Pause'; };
+  const reset = () => {
+    st.t = 0; st.phase = 'ready'; st.paused = false;
+    document.getElementById(ids.pause)!.textContent = '⏸ Pause';
+  };
   const capBeta = () => {
     if (dir !== 'up') return;
     b.max = String(Math.min(80, 85 - st.a));
@@ -657,30 +773,30 @@ const cmp = { u: 20, a: 30, b: 30, phase: 'ready' as 'ready' | 'flying' | 'lande
 function cmpTable() {
   const gu = geom(cmp.u, cmp.a, cmp.b, 'up');
   const gd = geom(cmp.u, cmp.a, cmp.b, 'down');
-  const drag = 0.5 * G * Math.sin(rad(cmp.a)) * gu.T * gu.T;
+  const kick = 0.5 * G * Math.sin(rad(cmp.a)) * gu.T * gu.T;
   const flat = cmp.u * Math.cos(rad(cmp.b)) * gu.T;
   document.getElementById('inCmpTable')!.innerHTML = `
     <div class="pl-eqcol">
       <div class="pl-eqhead" style="color:${C.accent}">UP the incline&nbsp;&nbsp;(a_x′ = −g sinα)</div>
       <div class="pl-eqrow">T = 2u sinβ / g cosα = <b>${gu.T.toFixed(2)} s</b></div>
-      <div class="pl-eqrow">R = ${flat.toFixed(1)} <b>−</b> ${drag.toFixed(1)} = <b>${gu.R.toFixed(1)} m</b></div>
+      <div class="pl-eqrow">R = ${flat.toFixed(1)} <b>−</b> ${kick.toFixed(1)} = <b>${gu.R.toFixed(1)} m</b></div>
     </div>
     <div class="pl-eqcol">
       <div class="pl-eqhead" style="color:${C.amber}">DOWN the incline&nbsp;&nbsp;(a_x′ = +g sinα)</div>
       <div class="pl-eqrow">T = 2u sinβ / g cosα = <b>${gd.T.toFixed(2)} s</b></div>
-      <div class="pl-eqrow">R = ${flat.toFixed(1)} <b>+</b> ${drag.toFixed(1)} = <b>${gd.R.toFixed(1)} m</b></div>
+      <div class="pl-eqrow">R = ${flat.toFixed(1)} <b>+</b> ${kick.toFixed(1)} = <b>${gd.R.toFixed(1)} m</b></div>
     </div>`;
   document.getElementById('inCmpNote')!.innerHTML =
     `Time of flight is <b>identical</b> (${gu.T.toFixed(2)} s both ways) - it is set by the perpendicular motion, which never
      hears about the direction along the slope. Range differs by <b>${(gd.R - gu.R).toFixed(1)} m</b>
      (${gu.R.toFixed(1)} m up vs ${gd.R.toFixed(1)} m down, a ratio of <b>${(gd.R / gu.R).toFixed(2)}×</b>) - because the SIGN of
-     g sinα flips: it eats ${drag.toFixed(1)} m going up and adds ${drag.toFixed(1)} m going down.`;
+     g sinα flips: it eats ${kick.toFixed(1)} m going up and adds ${kick.toFixed(1)} m going down.`;
 }
 
 const cmpSketch = (p: p5) => {
   const holder = document.getElementById('inCmpCanvas')!;
-  const M = { l: 66, r: 44, t: 54, b: 56 };
-  const canvasH = () => Math.max(400, Math.min(540, Math.round(holder.clientWidth * 0.52)));
+  const M = { l: 58, r: 46, t: 36, b: 48 };
+  const canvasH = () => Math.max(440, Math.min(640, Math.round(holder.clientWidth * 0.48)));
 
   p.setup = () => { p.createCanvas(holder.clientWidth, canvasH()); };
   p.windowResized = () => { p.resizeCanvas(holder.clientWidth, canvasH()); };
@@ -689,62 +805,55 @@ const cmpSketch = (p: p5) => {
     p.background(C.paper);
     const gu = geom(cmp.u, cmp.a, cmp.b, 'up');
     const gd = geom(cmp.u, cmp.a, cmp.b, 'down');
-    const lenU = gu.R * 1.14, lenD = gd.R * 1.10;
+    const lenU = gu.R * 1.18, lenD = gd.R * 1.12;
     const pts: V[] = [{ x: 0, y: 0 }, gu.along(lenU), gd.along(lenD)];
     for (let i = 0; i <= 30; i++) {
       pts.push(gu.pos((gu.T * i) / 30));
       pts.push(gd.pos((gd.T * i) / 30));
     }
-    const v = fitView(p, M, pts, 0.08);
+    const v = fitView(p, M, pts, 0.1);
 
-    /* both surfaces from the same launch point */
+    /* the two surfaces, from one launch point */
     const tipU = gu.along(lenU), tipD = gd.along(lenD);
-    p.noStroke(); p.fill(41, 89, 144, 18);
+    p.noStroke();
+    p.fill(0, 160, 227, 16);
     p.beginShape();
     p.vertex(v.X(0), v.Y(0)); p.vertex(v.X(tipU.x), v.Y(tipU.y)); p.vertex(v.X(tipU.x), v.Y(0));
     p.endShape(p.CLOSE);
-    p.fill(245, 158, 11, 16);
+    p.fill(245, 158, 11, 14);
     p.beginShape();
     p.vertex(v.X(0), v.Y(0)); p.vertex(v.X(tipD.x), v.Y(tipD.y));
     p.vertex(v.X(tipD.x), v.Y(v.y0)); p.vertex(v.X(0), v.Y(v.y0));
     p.endShape(p.CLOSE);
-
-    p.stroke(C.navy); p.strokeWeight(3);
+    p.stroke(C.navy); p.strokeWeight(3.4);
     p.line(v.X(0), v.Y(0), v.X(tipU.x), v.Y(tipU.y));
     p.line(v.X(0), v.Y(0), v.X(tipD.x), v.Y(tipD.y));
-    chip(p, 'incline · UP case', v.X(tipU.x) - 6, v.Y(tipU.y) - 26, 'right', 13, C.accent);
-    chip(p, 'incline · DOWN case', v.X(tipD.x) - 6, v.Y(tipD.y) + 8, 'right', 13, C.amber);
 
-    /* horizontal reference + both α arcs */
-    p.stroke(41, 89, 144, 110); p.strokeWeight(1.6); dashOn(p, [6, 6]);
-    p.line(v.X(0), v.Y(0), v.X(Math.max(tipU.x, tipD.x)), v.Y(0));
+    /* one horizontal reference, one α on each side */
+    p.stroke(41, 89, 144, 95); p.strokeWeight(1.5); dashOn(p, [6, 6]);
+    p.line(v.X(0), v.Y(0), v.X(Math.max(tipU.x, tipD.x) * 0.34), v.Y(0));
     dashOff(p);
-    angleArc(p, v.X(0), v.Y(0), 46, -gu.a, 0, C.violet, `α = ${cmp.a}°`);
-    angleArc(p, v.X(0), v.Y(0), 46, 0, gd.a, C.violet, `α = ${cmp.a}°`);
+    arc(p, v.X(0), v.Y(0), 40, gu.slopeAng, 0, C.violet);
+    arc(p, v.X(0), v.Y(0), 40, 0, gd.slopeAng, C.violet);
+    label(p, `α = ${cmp.a}°`, v.X(0) + 74, v.Y(0), C.violet, 12.5);
 
-    /* predicted paths */
-    const path = (g: Geom, col: string) => {
-      p.noFill(); p.stroke(col); p.strokeWeight(2); dashOn(p, [5, 6]);
-      p.beginShape();
-      for (let i = 0; i <= 70; i++) { const q = g.pos((g.T * i) / 70); p.vertex(v.X(q.x), v.Y(q.y)); }
-      p.endShape();
-      dashOff(p);
-    };
-    path(gu, 'rgba(0,160,227,0.55)');
-    path(gd, 'rgba(245,158,11,0.65)');
+    drawRangeBand(p, v, gu, `R = ${gu.R.toFixed(1)} m`, C.accent);
+    drawRangeBand(p, v, gd, `R = ${gd.R.toFixed(1)} m`, C.amber);
+    label(p, 'up the incline', v.X(tipU.x) + eyS(gu).x * 16, v.Y(tipU.y) + eyS(gu).y * 16, C.accent, 12, gu.slopeAng);
+    label(p, 'down the incline', v.X(tipD.x) + eyS(gd).x * 16, v.Y(tipD.y) + eyS(gd).y * 16, C.amber, 12, gd.slopeAng);
 
-    drawRange(p, v, gu, `R = ${gu.R.toFixed(1)} m`, C.accent, 22);
-    drawRange(p, v, gd, `R = ${gd.R.toFixed(1)} m`, C.amber, 22);
+    pathDots(p, v, gu, 'rgba(0,160,227,0.5)');
+    pathDots(p, v, gd, 'rgba(245,158,11,0.6)');
 
-    /* one shared clock - they land at the same instant */
+    /* both launches share one clock */
     if (cmp.phase === 'flying') {
       cmp.t += (p.deltaTime / 1000) * Math.max(1, gu.T / 3);
       if (cmp.t >= gu.T) { cmp.t = gu.T; cmp.phase = 'landed'; }
     }
+    const t = cmp.phase === 'ready' ? 0 : cmp.t;
     if (cmp.phase !== 'ready') {
-      const t = cmp.t;
       const trace = (g: Geom, col: string) => {
-        p.noFill(); p.stroke(col); p.strokeWeight(3.4);
+        p.noFill(); p.stroke(col); p.strokeWeight(3.6);
         p.beginShape();
         for (let i = 0; i <= 70; i++) { const q = g.pos((t * i) / 70); p.vertex(v.X(q.x), v.Y(q.y)); }
         p.endShape();
@@ -754,16 +863,36 @@ const cmpSketch = (p: p5) => {
       const qu = gu.pos(t), qd = gd.pos(t);
       ball(p, v.X(qu.x), v.Y(qu.y), C.accent, 17);
       ball(p, v.X(qd.x), v.Y(qd.y), C.amber, 17);
-      chip(p, `t = ${t.toFixed(2)} s   ·   same clock, both still flying`,
-        p.width - M.r - 4, M.t - 46, 'right', 14, C.navy);
-      if (cmp.phase === 'landed') {
-        chip(p, `BOTH LANDED at t = ${gu.T.toFixed(2)} s.   Up: ${gu.R.toFixed(1)} m    Down: ${gd.R.toFixed(1)} m`,
-          p.width / 2, M.t - 20, 'center', 16, C.green);
-      }
     } else {
-      ball(p, v.X(0), v.Y(0), C.navy, 16);
-      chip(p, 'Same u, same α, same β - only the direction along the slope differs. Press Launch both.',
-        p.width / 2, M.t - 20, 'center', 14.5, C.dark);
+      ball(p, v.X(0), v.Y(0), C.navy, 17);
+    }
+
+    const rows: Row[] = [
+      { text: `u = ${cmp.u} m/s   ·   α = ${cmp.a}°   ·   β = ${cmp.b}° - both launches`, dim: true },
+      { text: `up:     T = ${gu.T.toFixed(2)} s     R = ${gu.R.toFixed(1)} m`, sw: C.accent },
+      { text: `down:  T = ${gd.T.toFixed(2)} s     R = ${gd.R.toFixed(1)} m`, sw: C.amber },
+      { sep: true },
+      { text: 'Same clock. The sign of g sinα is the only difference.', dim: true },
+      { text: `t = ${t.toFixed(2)} s${cmp.phase === 'landed' ? '   ·   both landed' : ''}`, dim: cmp.phase === 'ready' },
+    ];
+    const title = 'SAME u, α, β  ·  OPPOSITE DIRECTIONS';
+    const m = panelSize(p, title, rows);
+    const busy: V[] = [];
+    for (let i = 0; i <= 24; i++) {
+      const a1 = gu.pos((gu.T * i) / 24), b1 = gd.pos((gd.T * i) / 24);
+      const s1 = gu.along((lenU * i) / 24), s2 = gd.along((lenD * i) / 24);
+      busy.push({ x: v.X(a1.x), y: v.Y(a1.y) }, { x: v.X(b1.x), y: v.Y(b1.y) },
+        { x: v.X(s1.x), y: v.Y(s1.y) }, { x: v.X(s2.x), y: v.Y(s2.y) });
+    }
+    const at = placePanel(p, M, m.w, m.h, busy);
+    drawPanel(p, at.x, at.y, title, rows);
+
+    if (cmp.phase === 'landed') {
+      label(p, `BOTH LANDED at t = ${gu.T.toFixed(2)} s   ·   ${gu.R.toFixed(1)} m up  vs  ${gd.R.toFixed(1)} m down`,
+        p.width / 2, p.height - 22, C.green, 15);
+    } else if (cmp.phase === 'ready') {
+      label(p, 'Two scenarios from one launch point - press Launch both',
+        p.width / 2, p.height - 22, C.dark, 13.5);
     }
   };
 };
@@ -830,8 +959,8 @@ function mxReadout() {
 
 const mxTrajSketch = (p: p5) => {
   const holder = document.getElementById('inMaxTrajCanvas')!;
-  const M = { l: 52, r: 34, t: 44, b: 46 };
-  const canvasH = () => Math.max(300, Math.min(400, Math.round(holder.clientWidth * 0.62)));
+  const M = { l: 44, r: 36, t: 32, b: 40 };
+  const canvasH = () => Math.max(320, Math.min(420, Math.round(holder.clientWidth * 0.66)));
 
   p.setup = () => { p.createCanvas(holder.clientWidth, canvasH()); };
   p.windowResized = () => { p.resizeCanvas(holder.clientWidth, canvasH()); };
@@ -841,49 +970,55 @@ const mxTrajSketch = (p: p5) => {
     const bOpt = (90 - mx.a) / 2;
     const g = geom(mx.u, mx.a, mx.b, 'up');
     const gOpt = geom(mx.u, mx.a, bOpt, 'up');
-    const len = Math.max(g.R, gOpt.R) * 1.14;
-    const pts: V[] = [{ x: 0, y: 0 }, g.along(len), { x: g.along(len).x, y: 0 }];
+    const len = Math.max(g.R, gOpt.R) * 1.16;
+    const pts: V[] = [{ x: 0, y: 0 }, g.along(len)];
     for (let i = 0; i <= 30; i++) {
       pts.push(g.pos((g.T * i) / 30));
       pts.push(gOpt.pos((gOpt.T * i) / 30));
     }
-    const v = fitView(p, M, pts, 0.09);
+    const v = fitView(p, M, pts, 0.12);
 
-    drawWedge(p, v, g, 'up', len);
-    p.stroke(41, 89, 144, 100); p.strokeWeight(1.5); dashOn(p, [6, 6]);
-    p.line(v.X(0), v.Y(0), v.X(g.along(len).x), v.Y(0));
-    dashOff(p);
-    angleArc(p, v.X(0), v.Y(0), 40, -g.a, 0, C.violet, `α = ${mx.a}°`);
+    drawGround(p, v, g, 'up', len);
+    drawAlpha(p, v, g, mx.a, len);
 
-    /* optimal trajectory, ghosted */
-    p.noFill(); p.stroke(22, 163, 74, 150); p.strokeWeight(2.4); dashOn(p, [5, 5]);
+    /* the optimal launch, ghosted */
+    p.noFill(); p.stroke(fade(p, C.green, 150)); p.strokeWeight(2.4); dashOn(p, [5, 5]);
     p.beginShape();
     for (let i = 0; i <= 70; i++) { const q = gOpt.pos((gOpt.T * i) / 70); p.vertex(v.X(q.x), v.Y(q.y)); }
     p.endShape();
     dashOff(p);
     const eo = gOpt.along(gOpt.R);
-    p.noStroke(); p.fill(C.green); p.circle(v.X(eo.x), v.Y(eo.y), 9);
-    chip(p, `β_opt = ${bOpt.toFixed(1)}°  →  R_max = ${gOpt.R.toFixed(1)} m`,
-      v.X(eo.x) - 8, v.Y(eo.y) - 30, 'right', 12.5, C.green);
+    p.noStroke(); p.fill(C.green); p.circle(v.X(eo.x), v.Y(eo.y), 10);
 
-    /* your trajectory */
-    p.noFill(); p.stroke(C.accent); p.strokeWeight(3);
+    /* your launch */
+    p.noFill(); p.stroke(C.accent); p.strokeWeight(3.2);
     p.beginShape();
     for (let i = 0; i <= 70; i++) { const q = g.pos((g.T * i) / 70); p.vertex(v.X(q.x), v.Y(q.y)); }
     p.endShape();
     const e1 = g.along(g.R);
-    p.noStroke(); p.fill(C.accent); p.circle(v.X(e1.x), v.Y(e1.y), 9);
-    chip(p, `β = ${mx.b}°  →  R = ${g.R.toFixed(1)} m`, v.X(e1.x) + 10, v.Y(e1.y) + 6, 'left', 12.5, C.accent);
-
+    p.noStroke(); p.fill(C.accent); p.circle(v.X(e1.x), v.Y(e1.y), 10);
     ball(p, v.X(0), v.Y(0), C.navy, 14);
-    chip(p, 'Your launch vs the optimal launch', v.X(0) - 4, M.t - 32, 'left', 13.5, C.dark);
+
+    const rows: Row[] = [
+      { text: `β = ${mx.b}°  →  R = ${g.R.toFixed(1)} m`, sw: C.accent },
+      { text: `β_opt = ${bOpt.toFixed(1)}°  →  R = ${gOpt.R.toFixed(1)} m`, sw: C.green },
+    ];
+    const title = 'YOUR LAUNCH vs THE BEST ONE';
+    const m = panelSize(p, title, rows);
+    const busy = busyPoints(v, g, len);
+    for (let i = 0; i <= 20; i++) {
+      const q = gOpt.pos((gOpt.T * i) / 20);
+      busy.push({ x: v.X(q.x), y: v.Y(q.y) });
+    }
+    const at = placePanel(p, M, m.w, m.h, busy);
+    drawPanel(p, at.x, at.y, title, rows);
   };
 };
 
 const mxCurveSketch = (p: p5) => {
   const holder = document.getElementById('inMaxCurveCanvas')!;
-  const M = { l: 62, r: 30, t: 44, b: 52 };
-  const canvasH = () => Math.max(300, Math.min(400, Math.round(holder.clientWidth * 0.62)));
+  const M = { l: 58, r: 28, t: 44, b: 52 };
+  const canvasH = () => Math.max(320, Math.min(420, Math.round(holder.clientWidth * 0.66)));
 
   p.setup = () => { p.createCanvas(holder.clientWidth, canvasH()); };
   p.windowResized = () => { p.resizeCanvas(holder.clientWidth, canvasH()); };
@@ -894,74 +1029,68 @@ const mxCurveSketch = (p: p5) => {
     const bOpt = (90 - mx.a) / 2;
     const rMax = (mx.u * mx.u) / (G * (1 + Math.sin(a)));
     const rMaxDown = (mx.u * mx.u) / (G * (1 - Math.sin(a)));
-    /* on steep inclines the down-slope range runs away; keep the up-slope curve readable */
-    const yTop = Math.min(rMaxDown * 1.12, rMax * 3.2);
+    const yTop = Math.min(rMaxDown * 1.14, rMax * 3.2);
     const px = (bDeg: number) => M.l + (bDeg / 90) * (p.width - M.l - M.r);
     const py = (r: number) => p.height - M.b - (r / yTop) * (p.height - M.t - M.b);
 
-    /* grid + axes */
-    p.stroke(41, 89, 144, 24); p.strokeWeight(1);
+    p.stroke(41, 89, 144, 22); p.strokeWeight(1);
     for (let bd = 0; bd <= 90; bd += 15) p.line(px(bd), M.t, px(bd), p.height - M.b);
-    const rStep = yTop > 120 ? 40 : yTop > 60 ? 20 : 10;
+    const rStep = yTop > 160 ? 50 : yTop > 90 ? 25 : yTop > 45 ? 10 : 5;
     for (let r = 0; r <= yTop; r += rStep) p.line(M.l, py(r), p.width - M.r, py(r));
     p.stroke(C.navy); p.strokeWeight(2);
     p.line(M.l, py(0), p.width - M.r, py(0));
     p.line(M.l, M.t, M.l, py(0));
-    p.noStroke(); p.fill(C.dark); p.textFont('DM Sans'); p.textSize(12);
+    p.noStroke(); p.fill(C.ink); p.textFont('DM Sans'); p.textSize(12);
     p.textAlign(p.CENTER, p.TOP);
     for (let bd = 0; bd <= 90; bd += 15) p.text(`${bd}°`, px(bd), py(0) + 8);
     p.textAlign(p.RIGHT, p.CENTER);
     for (let r = rStep; r <= yTop; r += rStep) p.text(`${r}`, M.l - 8, py(r));
-    p.textAlign(p.LEFT, p.TOP);
-    p.text('R (m)', M.l - 8, M.t - 22);
+    p.textFont('Bricolage Grotesque'); p.textSize(12);
+    p.fill(C.dark);
+    p.textAlign(p.LEFT, p.BOTTOM);
+    p.text('RANGE  R (m)', M.l - 2, M.t - 10);
     p.textAlign(p.RIGHT, p.TOP);
-    p.text('β from the incline', p.width - M.r, py(0) + 26);
+    p.text('LAUNCH ANGLE β FROM THE INCLINE', p.width - M.r, py(0) + 26);
 
-    /* R(β) for both directions */
-    const curve = (fn: (b: number) => number, col: string) => {
-      p.noFill(); p.stroke(col); p.strokeWeight(3);
+    const curve = (fn: (b: number) => number, col: unknown, wt = 3) => {
+      p.noFill(); p.stroke(col as string); p.strokeWeight(wt);
       let open = false;
       for (let bd = 0; bd <= 90; bd += 0.5) {
         const r = fn(rad(bd));
-        if (r < 0 || r > yTop) {                       // leave the box, break the line
-          if (open) { p.endShape(); open = false; }
-          continue;
-        }
+        if (r < 0 || r > yTop) { if (open) { p.endShape(); open = false; } continue; }
         if (!open) { p.beginShape(); open = true; }
         p.vertex(px(bd), py(r));
       }
       if (open) p.endShape();
     };
-    curve((b) => rangeDown(mx.u, a, b), C.amber);
+    curve((b) => rangeDown(mx.u, a, b), fade(p, C.amber, 205), 2.6);
     curve((b) => rangeUp(mx.u, a, b), C.accent);
 
-    /* peaks */
-    p.stroke(C.green); p.strokeWeight(1.8); dashOn(p, [5, 5]);
+    /* the up-slope peak */
+    p.stroke(C.green); p.strokeWeight(1.6); dashOn(p, [5, 5]);
     p.line(px(bOpt), py(0), px(bOpt), py(rMax));
     p.line(M.l, py(rMax), px(bOpt), py(rMax));
     dashOff(p);
-    p.noStroke(); p.fill(C.green); p.circle(px(bOpt), py(rMax), 10);
-    chip(p, `β_opt = ${bOpt.toFixed(1)}°\nR_max = ${rMax.toFixed(1)} m`, px(bOpt) + 12, py(rMax) - 4, 'left', 13, C.green);
+    p.noStroke(); p.fill(C.green); p.circle(px(bOpt), py(rMax), 11);
+    label(p, `β_opt = ${bOpt.toFixed(1)}°   R_max = ${rMax.toFixed(1)} m`,
+      px(bOpt) + 4, py(rMax) - 24, C.green, 12.5);
 
     const bOptD = (90 + mx.a) / 2;
     if (rMaxDown <= yTop) {
-      p.noStroke(); p.fill(C.amber); p.circle(px(bOptD), py(rMaxDown), 9);
-      chip(p, `down: peak at ${bOptD.toFixed(1)}°`, px(bOptD) - 10, py(rMaxDown) - 26, 'right', 12, C.amber);
+      p.noStroke(); p.fill(C.amber); p.circle(px(bOptD), py(rMaxDown), 10);
+      label(p, `down: peak at ${bOptD.toFixed(1)}°`, px(bOptD), py(rMaxDown) - 22, C.amber, 12);
     } else {
-      chip(p, `down-slope peak is off the chart:\n${bOptD.toFixed(1)}° → ${rMaxDown.toFixed(0)} m`,
-        px(Math.min(bOptD, 84)), M.t + 4, 'center', 12.5, C.amber);
+      label(p, `down-slope peak off the chart: ${bOptD.toFixed(1)}° → ${rMaxDown.toFixed(0)} m`,
+        px(Math.min(bOptD, 72)), M.t + 12, C.amber, 12);
     }
 
-    /* live marker */
+    /* where you are now */
     const rNow = Math.max(rangeUp(mx.u, a, rad(mx.b)), 0);
-    p.stroke(C.accent); p.strokeWeight(1.6); dashOn(p, [4, 4]);
+    p.stroke(C.accent); p.strokeWeight(1.5); dashOn(p, [4, 4]);
     p.line(px(mx.b), py(0), px(mx.b), py(rNow));
     dashOff(p);
-    p.noStroke(); p.fill(C.accent); p.circle(px(mx.b), py(rNow), 11);
-    chip(p, `β = ${mx.b}° → ${rNow.toFixed(1)} m`, px(mx.b), py(rNow) - 34, 'center', 13, C.accent);
-
-    chip(p, 'blue: up the incline   ·   amber: down the incline',
-      p.width - M.r - 4, M.t - 32, 'right', 13, C.dark);
+    p.noStroke(); p.fill(C.accent); p.circle(px(mx.b), py(rNow), 12);
+    label(p, `β = ${mx.b}° → ${rNow.toFixed(1)} m`, px(mx.b), py(rNow) + 26, C.accent, 12.5);
   };
 };
 
@@ -1099,7 +1228,7 @@ function rqWire() {
 }
 
 /* ══════════════════════════════════════════════════════════════════════
-   Pane 8 · Homework + tap-to-reveal examples
+   Pane 8 · Homework
    ══════════════════════════════════════════════════════════════════════ */
 function homeworkWire() {
   document.querySelectorAll<HTMLButtonElement>('#inHw .hw-reveal').forEach((btn) => {
