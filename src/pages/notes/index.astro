@@ -35,6 +35,16 @@ import { chapterResources } from '../../data/resources';
               <span class="res-dl" style="opacity:.5;">Coming soon</span>
             </div>
           )}
+
+          {ch.sheets?.map((sheet) => (
+            <a class="res-row" href={sheet.url} target="_blank" rel="noopener">
+              <span class="res-ic res-ic-notes">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M4 9h16M9 9v11"/></svg>
+              </span>
+              <span class="res-label">{sheet.label}</span>
+              <span class="res-dl">Download ↓</span>
+            </a>
+          ))}
         </div>
       ))}
     </div>

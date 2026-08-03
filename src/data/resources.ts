@@ -14,6 +14,7 @@ export interface ChapterResources {
   title: string;          // rendered directly before titleAccent - include any needed trailing space
   titleAccent: string;    // part of the title rendered in accent colour
   notes?: { label: string; url: string };
+  sheets?: Worksheet[];   // formula / reference sheets, shown under the notes row
   worksheets: Worksheet[];
 }
 
@@ -67,6 +68,9 @@ export const chapterResources: ChapterResources[] = [
     title: 'Kine',
     titleAccent: 'matics',
     notes: { label: 'Class Notes', url: '/downloads/kinematics/kinematics%20till%20relative%20motion%20in%201D.pdf' },
+    sheets: [
+      { label: 'Projectile Motion Formula Sheet', url: '/downloads/kinematics/projectile-motion-formula-sheet.pdf' },
+    ],
     worksheets: [
       { label: 'Practice 50 Questions', url: '/downloads/kinematics/worksheet-1.pdf' },
       { label: 'Combined Practice Sheet', url: '/downloads/kinematics/worksheet-2.pdf' },
