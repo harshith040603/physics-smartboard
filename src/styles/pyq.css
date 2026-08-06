@@ -1,0 +1,114 @@
+/* ═══════════ JEE Main PYQ viewer - shared page styles ═══════════
+   Used by every /jee-pyqs/<chapter> page. The markup is rendered
+   server-side by the page; src/scripts/pyq-viewer.ts wires the
+   section filter and the answer reveals.                        */
+
+.pyq-bar {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  gap: 16px; flex-wrap: wrap; margin-bottom: 10px;
+}
+.pyq-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.pyq-chip {
+  font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 13px;
+  padding: 8px 14px; border-radius: 999px; cursor: pointer;
+  background: #eef3f9; color: var(--nine-deep); border: 1.5px solid transparent;
+  transition: transform .15s, background .15s, border-color .15s;
+}
+.pyq-chip:hover { transform: translateY(-1px); }
+.pyq-chip.active {
+  background: var(--nine-navy); color: #fff; border-color: var(--nine-navy);
+}
+.pyq-allbtn {
+  font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 13px;
+  padding: 9px 18px; border-radius: 12px; cursor: pointer; white-space: nowrap;
+  background: linear-gradient(135deg, var(--nine-accent), #34c4ff); color: #fff;
+  border: none; box-shadow: var(--shadow); transition: transform .15s;
+}
+.pyq-allbtn:active { transform: scale(.96); }
+.pyq-count { font-size: 13px; color: #7185a0; font-weight: 600; margin-bottom: 20px; }
+
+.pyq-list {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 18px; align-items: start;
+}
+.pyq-card {
+  background: #fff; border: 1.5px solid #e4ebf3; border-radius: 18px;
+  padding: 22px 24px; box-shadow: var(--shadow);
+}
+.pyq-card.hide { display: none; }
+@media (max-width: 900px) { .pyq-list { grid-template-columns: 1fr; } }
+.pyq-top {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 12px;
+}
+.pyq-id {
+  font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 15px;
+  color: #fff; background: var(--nine-navy); padding: 3px 11px; border-radius: 8px;
+}
+.pyq-src { font-size: 12.5px; font-weight: 600; color: var(--nine-accent); }
+.pyq-secname {
+  font-size: 11.5px; font-weight: 600; color: #8397ae;
+  margin-left: auto; text-align: right;
+}
+.pyq-q {
+  font-size: 16px; line-height: 1.6; color: var(--nine-navy);
+  font-weight: 500; margin-bottom: 14px;
+}
+.pyq-table {
+  border-collapse: collapse; margin: 0 0 14px; width: 100%; max-width: 560px;
+  font-size: 14.5px;
+}
+.pyq-table td {
+  border: 1px solid #dde6ef; padding: 8px 14px; color: #33475f; font-weight: 500;
+}
+.pyq-table td:first-child { width: 55%; }
+.pyq-opts { display: grid; gap: 8px; margin: 0 0 16px; padding: 0; }
+.pyq-opt {
+  display: flex; align-items: center; gap: 12px; width: 100%; text-align: left;
+  font-family: 'DM Sans', sans-serif; font-size: 15px; color: #33475f; font-weight: 500;
+  background: #f5f8fc; border: 1.5px solid transparent; border-radius: 10px;
+  padding: 11px 14px; cursor: pointer; transition: background .15s, border-color .15s;
+}
+.pyq-opt:hover { background: #eaf1fa; border-color: #cfe0f0; }
+.pyq-opt-mark {
+  flex-shrink: 0; width: 18px; height: 18px; border-radius: 50%;
+  border: 2px solid #b6c6d8; transition: border-color .15s, background .15s;
+}
+.pyq-opt.selected { border-color: var(--nine-accent); background: #e8f4fc; }
+.pyq-opt.selected .pyq-opt-mark {
+  border-color: var(--nine-accent);
+  background: radial-gradient(circle, var(--nine-accent) 0 42%, transparent 46%);
+}
+/* graded states (added on Check answer) */
+.pyq-opt.correct { border-color: #38b676; background: #e8f7ee; color: #14603c; }
+.pyq-opt.correct .pyq-opt-mark { border-color: #38b676; background: #38b676; }
+.pyq-opt.wrong { border-color: #e2698a; background: #fdecf1; color: #9a3450; }
+.pyq-opt.wrong .pyq-opt-mark { border-color: #e2698a; background: #e2698a; }
+.pyq-reveal {
+  font-family: 'Bricolage Grotesque', sans-serif; font-weight: 600; font-size: 14px;
+  padding: 10px 20px; border-radius: 12px; cursor: pointer;
+  background: var(--nine-navy); color: #fff; border: none;
+  box-shadow: var(--shadow); transition: transform .15s;
+}
+.pyq-reveal:active { transform: scale(.96); }
+.pyq-answer { display: none; margin-top: 16px; }
+.pyq-card.open .pyq-answer { display: block; animation: fade .3s ease; }
+.pyq-ans-line {
+  font-size: 16px; font-weight: 700; color: #16794a;
+  background: #e8f7ee; border-radius: 10px; padding: 10px 16px; margin-bottom: 12px;
+}
+.pyq-ans-label {
+  font-family: 'Bricolage Grotesque', sans-serif; text-transform: uppercase;
+  letter-spacing: 1px; font-size: 12px; color: #16794a; margin-right: 6px;
+}
+.pyq-sol {
+  white-space: pre-wrap; font-size: 14.5px; line-height: 1.65; color: #435a72;
+  background: #f7fafd; border-left: 3px solid var(--nine-accent);
+  border-radius: 0 10px 10px 0; padding: 14px 18px; font-weight: 500;
+}
+
+@media (max-width: 640px) {
+  .pyq-card { padding: 18px 16px; border-radius: 15px; }
+  .pyq-secname { width: 100%; margin-left: 0; text-align: left; }
+  .pyq-q { font-size: 15px; }
+  .pyq-allbtn { width: 100%; }
+}

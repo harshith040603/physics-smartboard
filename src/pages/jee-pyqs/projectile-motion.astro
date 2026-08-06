@@ -1,14 +1,19 @@
 ---
 import StudioLayout from '../../layouts/StudioLayout.astro';
-import { PYQS, SECTIONS } from '../../data/pyq-units-dimensions';
+import { PYQS, SECTIONS } from '../../data/pyq-projectile-motion';
 import '../../styles/pyq.css';
+
+/* only offer a chip for a sub-topic that actually has questions in the bank */
+const usedSections = Object.entries(SECTIONS).filter(
+  ([key]) => PYQS.some((qn) => qn.sec === key)
+);
 ---
-<StudioLayout title="Units & Dimensions PYQs - Physics with Harshith" chapterChip="JEE Main · PYQs">
+<StudioLayout title="Projectile Motion PYQs - Physics with Harshith" chapterChip="JEE Main · PYQs">
   <section class="screen active">
     <div class="scr-head">
       <a class="back-btn" href="/jee-pyqs" style="text-decoration:none;">‹ JEE PYQs</a>
       <div>
-        <div class="scr-title">Units & <span class="res-accent">Dimensions</span> · PYQs</div>
+        <div class="scr-title">Projectile <span class="res-accent">Motion</span> · PYQs</div>
         <div class="scr-sub">{PYQS.length} JEE Main previous-year questions. Solve first, then Check answer.</div>
       </div>
     </div>
@@ -16,7 +21,7 @@ import '../../styles/pyq.css';
     <div class="pyq-bar">
       <div class="pyq-chips">
         <button class="pyq-chip active" data-sec="ALL">All {PYQS.length}</button>
-        {Object.entries(SECTIONS).map(([key, name]) => (
+        {usedSections.map(([key, name]) => (
           <button class="pyq-chip" data-sec={key}>{key} · {name}</button>
         ))}
       </div>
@@ -29,7 +34,7 @@ import '../../styles/pyq.css';
         <article class="pyq-card" data-sec={qn.sec}>
           <div class="pyq-top">
             <span class="pyq-id">Q{qn.id}</span>
-            <span class="pyq-src">{qn.source}</span>
+            {qn.source && <span class="pyq-src">{qn.source}</span>}
             <span class="pyq-secname">{SECTIONS[qn.sec]}</span>
           </div>
 
@@ -75,4 +80,3 @@ import '../../styles/pyq.css';
   import { pyqViewerInit } from '../../scripts/pyq-viewer';
   pyqViewerInit();
 </script>
-

@@ -1,6 +1,7 @@
 ---
 import StudioLayout from '../../layouts/StudioLayout.astro';
 import { PYQS } from '../../data/pyq-units-dimensions';
+import { PYQS as PROJECTILE_PYQS } from '../../data/pyq-projectile-motion';
 ---
 <StudioLayout title="JEE Main PYQs - Physics with Harshith" chapterChip="JEE Main · PYQs">
   <section class="screen active">
@@ -21,6 +22,16 @@ import { PYQS } from '../../data/pyq-units-dimensions';
         <h3>Units & <span class="accent">Dimensions</span></h3>
         <p>Significant figures, dimensional formulas, screw gauge & vernier - straight from JEE Main 2025 & 2026 papers.</p>
         <span class="tile-go">{PYQS.length} questions - Open ›</span>
+      </a>
+
+      <a class="tile" href="/jee-pyqs/projectile-motion" style="text-decoration:none;color:inherit;">
+        <div class="tile-num">02</div>
+        <div class="tile-icon ic-build">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20c4-12 10-16 18-16"/><path d="M17 3l4 1-1 4"/><circle cx="5" cy="19" r="1.6" fill="#fff"/></svg>
+        </div>
+        <h3>Projectile <span class="accent">Motion</span></h3>
+        <p>Time of flight, range, trajectory equation, launches from a height and onto an incline - as JEE Main asks them.</p>
+        <span class="tile-go">{PROJECTILE_PYQS.length} question{PROJECTILE_PYQS.length === 1 ? '' : 's'} - Open ›</span>
       </a>
     </div>
   </section>
