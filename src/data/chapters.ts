@@ -36,4 +36,13 @@ export const chapters: Chapter[] = [
     status: 'ready',
     activities: 16,
   },
+  {
+    slug: 'thermometry',
+    num: '04',
+    title: 'Thermo',
+    titleAccent: 'metry',
+    blurb: 'There is no temperature sensor - only properties that change. Calibrate a scale, learn the one master formula, and fix a faulty thermometer.',
+    status: 'ready',
+    activities: 6,
+  },
 ];

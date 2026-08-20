@@ -1,0 +1,498 @@
+---
+import StudioLayout from '../../layouts/StudioLayout.astro';
+import '../../styles/thermometry.css';
+---
+<StudioLayout title="Thermometry - Physics with Harshith" chapterChip="Physics · Thermometry">
+
+  <!-- =========== HOME =========== -->
+  <section id="home" class="screen active">
+    <div class="hero">
+      <h1>Thermo<span class="accent">metry</span></h1>
+      <p>Nothing in the world can feel temperature directly. So every thermometer measures something else - a length, a pressure, a resistance - and turns that into a temperature. Six stations from Lecture 1.</p>
+    </div>
+    <div class="grid">
+
+      <div class="tile" onclick="go('why')">
+        <div class="tile-num">01</div>
+        <div class="tile-icon ic-therm"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.76V4.5a2.5 2.5 0 0 0-5 0v10.26a4.5 4.5 0 1 0 5 0z"/><path d="M11.5 8h2.5M11.5 11h2.5"/></svg></div>
+        <h3>How Does Mercury Know?</h3>
+        <p>It doesn't. Heat something up, watch a property change, and meet the word that runs this whole chapter - thermometric property.</p>
+        <span class="tile-go">Start ›</span>
+      </div>
+
+      <div class="tile" onclick="go('calibrate')">
+        <div class="tile-num">02</div>
+        <div class="tile-icon ic-cal"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16"/><path d="M6 20V8M10 20V4M14 20V8M18 20V4"/></svg></div>
+        <h3>Calibrating Celsius</h3>
+        <p>Ice point, steam point, one hundred equal parts. Then the catch: mercury and alcohol still disagree in between.</p>
+        <span class="tile-go">Start ›</span>
+      </div>
+
+      <div class="tile" onclick="go('master')">
+        <div class="tile-num">03</div>
+        <div class="tile-icon ic-formula"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16"/><path d="M7 7l4 5-4 5"/><path d="M15 7h4M15 17h4"/></svg></div>
+        <h3>The Master Formula</h3>
+        <p>Drag the property and watch the temperature move by the same fraction. One formula that becomes p, R or l just by changing the letter.</p>
+        <span class="tile-go">Start ›</span>
+      </div>
+
+      <div class="tile" onclick="go('types')">
+        <div class="tile-num">04</div>
+        <div class="tile-icon ic-range"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h11M3 12h17M3 18h8"/><path d="M18 3l3 3-3 3"/></svg></div>
+        <h3>Thermometers &amp; Ranges</h3>
+        <p>Five thermometers on one temperature line. Tap a bar to see what it measures and why its range stops where it stops.</p>
+        <span class="tile-go">Start ›</span>
+      </div>
+
+      <div class="tile" onclick="go('faulty')">
+        <div class="tile-num">05</div>
+        <div class="tile-icon ic-faulty"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><path d="M12 9v4M12 17h.01"/></svg></div>
+        <h3>Faulty Thermometers</h3>
+        <p>The JEE favourite. Break the ice point and the steam point, then see why just subtracting the error is wrong.</p>
+        <span class="tile-go">Start ›</span>
+      </div>
+
+      <div class="tile" onclick="go('homework')">
+        <div class="tile-num">06</div>
+        <div class="tile-icon ic-hw"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 15l2 2 4-4"/></svg></div>
+        <h3>Homework &amp; Rapid Fire</h3>
+        <p>Five problems with full solutions on tap, plus a quick recap round to finish the lecture.</p>
+        <span class="tile-go">Start ›</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========== 1 · HOW DOES MERCURY KNOW? =========== -->
+  <section id="why" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">How Does Mercury Know?</div>
+        <div class="scr-sub">It doesn't. Every thermometer measures something else, then converts it.</div>
+      </div>
+    </div>
+
+    <div class="th-notes">
+      <div class="th-notes-head">Copy this into your notes</div>
+      <div class="th-notes-body">
+        <h4>You cannot measure temperature directly</h4>
+        <p>A ruler touches a length. A balance touches a mass. But nothing can touch a temperature - there is no "temperature meter". So every thermometer uses the same trick:</p>
+        <div class="th-nbox">
+          <b>Pick something that changes when the temperature changes. Measure THAT instead. Then convert it into a temperature.</b><br>
+          The thing you measure is called the <b>thermometric property</b>.
+        </div>
+        <p>So a thermometer is really just two things: a property that changes with heat, and a rule to turn that property into a temperature.</p>
+
+        <h4>The five thermometric properties</h4>
+        <div class="th-props">
+          <div class="th-prop"><div class="th-pn">01</div><div class="th-pt">Volume of a liquid</div><div class="th-pd">mercury / alcohol thermometer</div></div>
+          <div class="th-prop"><div class="th-pn">02</div><div class="th-pt">Length of a solid</div><div class="th-pd">rod thermometers</div></div>
+          <div class="th-prop"><div class="th-pn">03</div><div class="th-pt">Pressure of a gas at constant volume</div><div class="th-pd">constant volume gas thermometer</div></div>
+          <div class="th-prop"><div class="th-pn">04</div><div class="th-pt">Volume of a gas at constant pressure</div><div class="th-pd">constant pressure gas thermometer</div></div>
+          <div class="th-prop"><div class="th-pn">05</div><div class="th-pt">Electrical resistance of a conductor</div><div class="th-pd">platinum resistance thermometer</div></div>
+        </div>
+
+        <h4>The one rule you must remember</h4>
+        <div class="th-nbox">
+          <b>The property must change in a STRAIGHT LINE with temperature, over the range you use it in.</b><br>
+          Straight line means the maths is just a proportion - nothing harder. Where the line bends, the thermometer stops working, and that is why every thermometer comes with a stated <b>range</b>.
+        </div>
+        <div class="th-eg" role="button" tabindex="0">
+          <span class="th-eglab">Think about it</span>
+          A mercury thermometer is useless at -100 °C. The glass is fine and the numbers are fine - so what has gone wrong?
+          <span class="th-eghint">Tap to reveal the answer</span>
+          <div class="th-egans">
+            Mercury freezes at -39 °C. A solid does not expand when you warm it a little, so the property has stopped changing - there is nothing left to measure. Below -39 °C use alcohol (it freezes only at -115 °C) or a gas thermometer.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="th-controls">
+      <div class="th-ctrl">
+        <label>Temperature of the body <span class="th-val" id="thWhyTVal">25 °C</span></label>
+        <input type="range" id="thWhyT" min="-80" max="360" step="1" value="25">
+      </div>
+      <div class="th-btns" id="thWhyProps">
+        <button class="th-btn on" data-prop="liquid">Liquid column</button>
+        <button class="th-btn" data-prop="gas">Gas pressure</button>
+        <button class="th-btn" data-prop="res">Resistance</button>
+      </div>
+    </div>
+
+    <div class="th-canvas" id="thWhyCanvas"></div>
+
+    <div class="th-readouts">
+      <div class="th-readout"><small>Temperature t</small><div class="th-ro" id="thWhyRoT">25 °C</div></div>
+      <div class="th-readout"><small id="thWhyRoXlab">Property X</small><div class="th-ro" id="thWhyRoX">-</div></div>
+      <div class="th-readout"><small>Working range</small><div class="th-ro small" id="thWhyRoRange">-</div></div>
+      <div class="th-readout"><small>Status</small><div class="th-ro small" id="thWhyRoStat">-</div></div>
+    </div>
+
+    <div class="th-keybox">
+      <b>Mercury does not know what temperature is.</b> All it can do is expand when it gets hot. Drag the slider past the ends of the green band and watch the graph stop being a straight line - that is a thermometer going out of range.
+    </div>
+  </section>
+
+  <!-- =========== 2 · CALIBRATING CELSIUS =========== -->
+  <section id="calibrate" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">Calibrating the Celsius Scale</div>
+        <div class="scr-sub">Two fixed points, one hundred parts - and one problem left over.</div>
+      </div>
+    </div>
+
+    <div class="th-chips" id="thCalTabs">
+      <button class="th-chip active" data-pane="thCalA">1 · Build the scale</button>
+      <button class="th-chip" data-pane="thCalB">2 · Two thermometers disagree</button>
+    </div>
+
+    <!-- ── build the scale ── -->
+    <div class="th-pane active" id="thCalA">
+      <div class="th-notes">
+        <div class="th-notes-head">Copy this into your notes</div>
+        <div class="th-notes-body">
+          <h4>Calibrating the Celsius scale</h4>
+          <div class="th-nstep"><b>Step 1</b> · Put the thermometer in melting ice. Mark where the mercury stops. Call that mark <b>0 °C</b> - the <b>ice point</b>.</div>
+          <div class="th-nstep"><b>Step 2</b> · Now hold it in the steam above boiling water (at normal air pressure). Mark where the mercury stops. Call it <b>100 °C</b> - the <b>steam point</b>.</div>
+          <div class="th-nstep"><b>Step 3</b> · Cut the gap between the two marks into <b>100 equal parts</b>. Each part is 1 °C.</div>
+          <p>Two marks, one hundred parts, and the scale is built. That is where the old name <b>centigrade</b> comes from - it just means "hundred steps".</p>
+        </div>
+      </div>
+
+      <div class="th-controls">
+        <div class="th-btns">
+          <button class="th-btn primary" id="thCalS1">1 · Dip in melting ice</button>
+          <button class="th-btn" id="thCalS2">2 · Hold in steam</button>
+          <button class="th-btn" id="thCalS3">3 · Divide into 100</button>
+          <button class="th-btn" id="thCalReset">↺ Start over</button>
+        </div>
+      </div>
+
+      <div class="th-canvas" id="thCalCanvas"></div>
+
+      <div class="th-keybox">
+        <b>Nobody discovered 0 and 100 - we chose them.</b> We picked ice and steam because anyone, anywhere, can set them up and get the same temperature every time. We picked 100 parts because it is easy to work with. The mercury just sits there and expands.
+      </div>
+    </div>
+
+    <!-- ── the disagreement ── -->
+    <div class="th-pane" id="thCalB">
+      <div class="th-notes">
+        <div class="th-notes-head">Copy this into your notes</div>
+        <div class="th-notes-body">
+          <h4>The problem left over</h4>
+          <p>Build a mercury thermometer and an alcohol thermometer using those same three steps. At 0 °C they agree, because we made them agree. At 100 °C they agree, for the same reason. But at 40 °C they can give different answers - because the two liquids do not expand in quite the same way in between.</p>
+          <div class="th-nbox">
+            <b>If your scale is built on one liquid, your answer depends on that liquid.</b><br>
+            We want a thermometer whose reading does not depend on what is inside it.
+          </div>
+          <p>Keep this problem in mind. The gas thermometer solves it in the next lecture - and following its graph leads us straight to the coldest temperature that can exist.</p>
+        </div>
+      </div>
+
+      <div class="th-controls">
+        <div class="th-ctrl">
+          <label>True temperature of the bath <span class="th-val" id="thCmpTVal">40 °C</span></label>
+          <input type="range" id="thCmpT" min="0" max="100" step="1" value="40">
+        </div>
+      </div>
+
+      <div class="th-canvas" id="thCmpCanvas"></div>
+
+      <div class="th-readouts">
+        <div class="th-readout"><small>Mercury reads</small><div class="th-ro" id="thCmpHg">-</div></div>
+        <div class="th-readout"><small>Alcohol reads</small><div class="th-ro" id="thCmpAl">-</div></div>
+        <div class="th-readout"><small>Disagreement</small><div class="th-ro bad" id="thCmpGap">-</div></div>
+      </div>
+
+      <div class="th-keybox">
+        <b>Slide to 0 and to 100:</b> the gap becomes exactly zero, because those are the two points we fixed by hand. Everywhere in between, the answer depends on what is inside the tube. Nothing is broken here - this is built into the way we defined the scale.
+      </div>
+    </div>
+  </section>
+
+  <!-- =========== 3 · THE MASTER FORMULA =========== -->
+  <section id="master" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">The Master Formula</div>
+        <div class="scr-sub">How far along the property has gone is how far along the temperature has gone.</div>
+      </div>
+    </div>
+
+    <div class="th-notes">
+      <div class="th-notes-head">Copy this into your notes</div>
+      <div class="th-notes-body">
+        <h4>The master formula</h4>
+        <p>Call the thermometric property X - it does not matter what it actually is:</p>
+        <div class="th-nf">X<sub>0</sub> = value at 0 °C &nbsp;·&nbsp; X<sub>100</sub> = value at 100 °C &nbsp;·&nbsp; X<sub>t</sub> = value at the unknown temperature t</div>
+        <div class="th-nf" style="font-size:26px;">t = [ (X<sub>t</sub> − X<sub>0</sub>) / (X<sub>100</sub> − X<sub>0</sub>) ] × 100 °C</div>
+
+        <h4>Where the formula comes from</h4>
+        <p>X changes in a straight line with t. So the fraction of the way the <b>property</b> has moved between its two fixed values is the same as the fraction of the way the <b>temperature</b> has moved between 0 and 100:</p>
+        <div class="th-nf">(t − 0) / (100 − 0) &nbsp; = &nbsp; (X<sub>t</sub> − X<sub>0</sub>) / (X<sub>100</sub> − X<sub>0</sub>)</div>
+        <div class="th-nbox">
+          Say it out loud: <b>how far along the property has gone is how far along the temperature has gone.</b> That is the whole formula. (Its proper name is <b>linear interpolation</b> - a big name for a simple idea.)
+        </div>
+
+        <h4>One formula, every thermometer</h4>
+        <p>Just rename X:</p>
+        <div class="th-nf">Gas thermometer &nbsp; X → p &nbsp;:&nbsp; t = [ (p<sub>t</sub> − p<sub>0</sub>) / (p<sub>100</sub> − p<sub>0</sub>) ] × 100</div>
+        <div class="th-nf">Platinum resistance &nbsp; X → R &nbsp;:&nbsp; t = [ (R<sub>t</sub> − R<sub>0</sub>) / (R<sub>100</sub> − R<sub>0</sub>) ] × 100</div>
+        <div class="th-nf">Mercury thermometer &nbsp; X → l &nbsp;:&nbsp; t = [ (l<sub>t</sub> − l<sub>0</sub>) / (l<sub>100</sub> − l<sub>0</sub>) ] × 100</div>
+        <div class="th-nbox">
+          Your textbook prints these as three separate formulas. They are not three - they are one formula wearing three different letters. So there is nothing extra to learn, and if an exam hands you a property you have never seen before, you can still do the question.
+        </div>
+
+        <div class="th-eg" role="button" tabindex="0">
+          <span class="th-eglab">Worked example</span>
+          A platinum resistance thermometer reads 5.0 Ω at the ice point, 5.4 Ω at the steam point, and 5.3 Ω in a hot liquid. Find the temperature of the liquid.
+          <span class="th-eghint">Tap to reveal the answer</span>
+          <div class="th-egans">
+            t = [(5.3 − 5.0) / (5.4 − 5.0)] × 100 = (0.3 / 0.4) × 100 = <b>75 °C</b>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="th-controls">
+      <div class="th-btns" id="thMasterProps">
+        <button class="th-btn on" data-prop="R">Resistance R (Ω)</button>
+        <button class="th-btn" data-prop="p">Pressure p (cm Hg)</button>
+        <button class="th-btn" data-prop="l">Length l (cm)</button>
+        <button class="th-btn" data-prop="X">Unknown X (units)</button>
+      </div>
+    </div>
+
+    <div class="th-controls">
+      <div class="th-ctrl">
+        <label><span id="thMX0Lab">X₀ at the ice point</span> <span class="th-val" id="thMX0Val">-</span></label>
+        <input type="range" id="thMX0" min="0" max="100" step="1" value="20">
+      </div>
+      <div class="th-ctrl">
+        <label><span id="thMX100Lab">X₁₀₀ at the steam point</span> <span class="th-val" id="thMX100Val">-</span></label>
+        <input type="range" id="thMX100" min="0" max="100" step="1" value="80">
+      </div>
+      <div class="th-ctrl">
+        <label><span id="thMXtLab">Xₜ measured now</span> <span class="th-val" id="thMXtVal">-</span></label>
+        <input type="range" id="thMXt" min="0" max="100" step="1" value="50">
+      </div>
+    </div>
+
+    <div class="th-canvas" id="thMasterCanvas"></div>
+
+    <div class="th-work">
+      <div class="th-work-lab">Substituting straight into the master formula</div>
+      <div class="th-work-line" id="thMLine1"></div>
+      <div class="th-work-line" id="thMLine2"></div>
+    </div>
+
+    <div class="th-keybox">
+      <b>Watch the two shaded bars.</b> The blue bar shows how far the property has moved; the orange bar shows how far the temperature has moved. They are always exactly the same length - and that is the formula, drawn as a picture. Notice the temperature can also go below 0 or above 100: the formula still works there, as long as the property keeps changing in a straight line.
+    </div>
+  </section>
+
+  <!-- =========== 4 · THERMOMETERS & RANGES =========== -->
+  <section id="types" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">Thermometers &amp; Their Ranges</div>
+        <div class="scr-sub">Five thermometers on one temperature line - tap a bar.</div>
+      </div>
+    </div>
+
+    <div class="th-notes">
+      <div class="th-notes-head">Copy this into your notes</div>
+      <div class="th-notes-body">
+        <h4>Thermometer types and ranges</h4>
+        <div class="th-nf">Mercury &nbsp;·&nbsp; length of Hg column &nbsp;·&nbsp; −30 to 300 °C</div>
+        <div class="th-nf">Constant volume gas &nbsp;·&nbsp; pressure of gas &nbsp;·&nbsp; −268 to 1500 °C</div>
+        <div class="th-nf">Platinum resistance &nbsp;·&nbsp; electrical resistance &nbsp;·&nbsp; −200 to 1200 °C</div>
+        <div class="th-nf">Thermocouple &nbsp;·&nbsp; thermo-emf &nbsp;·&nbsp; −200 to 1600 °C</div>
+        <div class="th-nf">Radiation pyrometer &nbsp;·&nbsp; emitted radiation &nbsp;·&nbsp; 800 °C to no upper limit</div>
+        <div class="th-nbox">
+          <b>Three things to remember:</b><br>
+          1 · Mercury <b>freezes at −39 °C</b>, so a mercury thermometer stops working around −30 °C. Below that, use alcohol.<br>
+          2 · The <b>radiation pyrometer never touches</b> the hot body - it just reads the radiation coming off it, which grows as T⁴ (Stefan's law, which you will meet again in Heat Transfer). Since it never touches anything, there is no upper limit: furnaces, molten steel, even stars. But it fails below 800 °C, because a cool body gives off too little radiation to pick up.<br>
+          3 · The <b>gas thermometer</b> reaches the lowest temperatures, and it is the one every other thermometer is checked against.
+        </div>
+      </div>
+    </div>
+
+    <div class="th-canvas" id="thTypesCanvas"></div>
+
+    <div class="th-work">
+      <div class="th-work-lab" id="thTypeLab">Tap a bar above</div>
+      <div class="th-work-line" id="thTypeInfo" style="font-size:19px;line-height:1.6;">Each bar is one thermometer, drawn on a real temperature line. Tap any of them to see what it measures and the reason its range stops where it stops.</div>
+    </div>
+
+    <div class="th-keybox">
+      <b>A range is never a random number.</b> Every end point on that chart is a bit of physics: a liquid freezing, a metal being spoiled, a gas turning liquid, or radiation getting too faint to catch.
+    </div>
+  </section>
+
+  <!-- =========== 5 · FAULTY THERMOMETERS =========== -->
+  <section id="faulty" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">Faulty Thermometers</div>
+        <div class="scr-sub">The question type JEE asks most often - so give it real time.</div>
+      </div>
+    </div>
+
+    <div class="th-notes">
+      <div class="th-notes-head">Copy this into your notes</div>
+      <div class="th-notes-body">
+        <h4>Faulty thermometers</h4>
+        <p>Someone makes a thermometer badly. In melting ice it shows 5 °C instead of 0 °C, and in steam it shows 99 °C instead of 100 °C. But the marks on it are still 100 equal parts, so <b>the scale is still a straight line</b> - it is just wrong at both ends.</p>
+        <div class="th-nbox">
+          A straight line is all the master formula needs. So it still works perfectly - you simply use the <b>faulty readings as your two fixed points</b>.
+        </div>
+        <div class="th-nf">true temp = [ (faulty reading − faulty ice point) / (faulty steam point − faulty ice point) ] × 100</div>
+
+        <div class="th-warn">
+          <b>DON'T just add or subtract the error.</b> Two things are wrong at the same time: the <b>zero</b> is in the wrong place, AND <b>each division is the wrong size</b>. Only the proportion formula fixes both at once.
+        </div>
+
+        <div class="th-eg" role="button" tabindex="0">
+          <span class="th-eglab">Example 1</span>
+          A faulty thermometer reads 5 °C in melting ice and 99 °C in steam. Find the correct temperature in °F when it reads 52 °C.
+          <span class="th-eghint">Tap to reveal the answer</span>
+          <div class="th-egans">
+            <b>Step 1 - true Celsius:</b> t = [(52 − 5) / (99 − 5)] × 100 = (47 / 94) × 100 = 50 °C<br>
+            <b>Step 2 - convert to Fahrenheit:</b> T<sub>F</sub> = (9/5)(50) + 32 = 90 + 32 = <b>122 °F</b>
+          </div>
+        </div>
+
+        <div class="th-eg" role="button" tabindex="0">
+          <span class="th-eglab">Example 2 - do it together</span>
+          A thermometer reads −2 °C in ice and 103 °C in steam. It reads 58 °C in a liquid. Find the true temperature.
+          <span class="th-eghint">Tap to reveal the answer</span>
+          <div class="th-egans">
+            t = [(58 − (−2)) / (103 − (−2))] × 100 = (60 / 105) × 100 = <b>57.14 °C</b>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="th-controls">
+      <div class="th-ctrl">
+        <label>Faulty ice point <span class="th-val" id="thFIceVal">5</span></label>
+        <input type="range" id="thFIce" min="-15" max="20" step="1" value="5">
+      </div>
+      <div class="th-ctrl">
+        <label>Faulty steam point <span class="th-val" id="thFStmVal">99</span></label>
+        <input type="range" id="thFStm" min="80" max="120" step="1" value="99">
+      </div>
+      <div class="th-ctrl">
+        <label>Faulty thermometer reads <span class="th-val" id="thFRdVal">52</span></label>
+        <input type="range" id="thFRd" min="-15" max="120" step="1" value="52">
+      </div>
+    </div>
+
+    <div class="th-canvas" id="thFaultyCanvas"></div>
+
+    <div class="th-readouts">
+      <div class="th-readout"><small>Correct - proportion</small><div class="th-ro good" id="thFTrue">-</div></div>
+      <div class="th-readout"><small>Wrong - just subtract</small><div class="th-ro bad" id="thFNaive">-</div></div>
+      <div class="th-readout"><small>Error the shortcut makes</small><div class="th-ro small" id="thFErr">-</div></div>
+      <div class="th-readout"><small>In Fahrenheit</small><div class="th-ro small" id="thFF">-</div></div>
+    </div>
+
+    <div class="th-work">
+      <div class="th-work-lab">Live substitution</div>
+      <div class="th-work-line" id="thFLine"></div>
+    </div>
+
+    <div class="th-keybox">
+      <b>Drag the reading and watch the red number.</b> The "just subtract the error" answer only matches the truth by luck. Drag the steam point away from 100 and the two answers pull further and further apart - because now every division is the wrong size too.
+    </div>
+  </section>
+
+  <!-- =========== 6 · HOMEWORK & RAPID FIRE =========== -->
+  <section id="homework" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">Homework &amp; Rapid Fire</div>
+        <div class="scr-sub">Solve first, then tap to check.</div>
+      </div>
+    </div>
+
+    <div class="th-chips" id="thHwTabs">
+      <button class="th-chip active" data-pane="thHwA">Homework · 5 questions</button>
+      <button class="th-chip" data-pane="thHwB">Rapid fire recap</button>
+    </div>
+
+    <div class="th-pane active" id="thHwA">
+      <div class="th-hw" role="button" tabindex="0">
+        <div class="th-hw-q"><span class="th-hw-n">1</span>A resistance thermometer reads 2.5 Ω at 0 °C and 3.5 Ω at 100 °C. What is the temperature when the resistance is 3.1 Ω?</div>
+        <div class="th-hw-sol">
+          Master formula with X → R:<br>
+          t = [(3.1 − 2.5) / (3.5 − 2.5)] × 100 = (0.6 / 1.0) × 100 = <b>60 °C</b>
+        </div>
+      </div>
+
+      <div class="th-hw" role="button" tabindex="0">
+        <div class="th-hw-q"><span class="th-hw-n">2</span>A constant volume gas thermometer records 80 cm of Hg at the ice point and 110 cm of Hg at the steam point. Find the temperature when the pressure reads 95 cm of Hg.</div>
+        <div class="th-hw-sol">
+          Master formula with X → p:<br>
+          t = [(95 − 80) / (110 − 80)] × 100 = (15 / 30) × 100 = <b>50 °C</b><br>
+          The pressure is exactly halfway between its two fixed values, so the temperature is exactly halfway too. That is the straight line doing its job.
+        </div>
+      </div>
+
+      <div class="th-hw" role="button" tabindex="0">
+        <div class="th-hw-q"><span class="th-hw-n">3</span>A faulty thermometer reads 1 °C in melting ice and 97 °C in steam. What does it read when the TRUE temperature is 40 °C? <i>(Careful - here you know the answer and have to find the reading.)</i></div>
+        <div class="th-hw-sol">
+          Same equation, different unknown. Let the faulty reading be F:<br>
+          40 = [(F − 1) / (97 − 1)] × 100 &nbsp;→&nbsp; F − 1 = (40 / 100) × 96 = 38.4<br>
+          F = 38.4 + 1 = <b>39.4 °C on the faulty scale</b><br>
+          <b>Note:</b> this is not a new method - it is the same proportion, just solved for a different letter.
+        </div>
+      </div>
+
+      <div class="th-hw" role="button" tabindex="0">
+        <div class="th-hw-q"><span class="th-hw-n">4</span>A thermometer has the ice point marked 20 and the steam point marked 170, in arbitrary units. Find the temperature in °C when it reads 95 units.</div>
+        <div class="th-hw-sol">
+          The property is now just "units on this scale" - the formula does not care:<br>
+          t = [(95 − 20) / (170 − 20)] × 100 = (75 / 150) × 100 = <b>50 °C</b>
+        </div>
+      </div>
+
+      <div class="th-hw" role="button" tabindex="0">
+        <div class="th-hw-q"><span class="th-hw-n">5</span><i>Conceptual.</i> Why can a mercury thermometer not measure the temperature of liquid nitrogen (−196 °C)? Which thermometer would you use instead, and why?</div>
+        <div class="th-hw-sol">
+          Mercury <b>freezes at −39 °C</b>. At −196 °C it is a solid lump, so the length of the column no longer changes with temperature - there is nothing left to measure.<br>
+          Use a <b>constant volume gas thermometer</b> (works down to about −268 °C) or a <b>platinum resistance thermometer</b> (down to about −200 °C). Gas pressure and electrical resistance are still changing nicely at that temperature.
+        </div>
+      </div>
+    </div>
+
+    <div class="th-pane" id="thHwB">
+      <div class="th-work">
+        <div class="th-work-lab" id="thQTag">Rapid fire</div>
+        <div class="th-q" id="thQQ"></div>
+        <div class="th-opts" id="thQOpts"></div>
+        <div class="th-fb" id="thQFb"></div>
+        <div class="th-nav">
+          <button class="th-btn" id="thQPrev">‹ Previous</button>
+          <button class="th-btn primary" id="thQNext">Next ›</button>
+        </div>
+      </div>
+
+      <div class="th-keybox">
+        <b>The whole lecture in one line.</b> Nothing can feel temperature. So every thermometer picks a property that changes with heat, fixes two known points, and works out everything in between as a straight-line proportion - which turns the gas, resistance, mercury and faulty-thermometer formulas into one single formula.
+      </div>
+    </div>
+  </section>
+
+  <script>import '../../scripts/thermometry-studio';</script>
+</StudioLayout>
