@@ -10,6 +10,15 @@
 .ic-faulty{background:linear-gradient(135deg,#dc2626,#f97316);}
 .ic-hw{background:linear-gradient(135deg,#0f766e,#14b8a6);}
 
+/* ── lecture 2 tile icons ── */
+.ic-gasth{background:linear-gradient(135deg,#0f2647,#00A0E3);}
+.ic-zero{background:linear-gradient(135deg,#1e3a8a,#38bdf8);}
+.ic-kelvin{background:linear-gradient(135deg,#5b21b6,#a855f7);}
+.ic-ladder{background:linear-gradient(135deg,#0369a1,#22d3ee);}
+.ic-cross{background:linear-gradient(135deg,#065f46,#10b981);}
+.ic-delta{background:linear-gradient(135deg,#b45309,#fbbf24);}
+.ic-heat{background:linear-gradient(135deg,#9f1239,#fb7185);}
+
 /* ── pane tabs ── */
 .th-chips{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:22px;}
 .th-chip{

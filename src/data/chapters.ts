@@ -41,8 +41,8 @@ export const chapters: Chapter[] = [
     num: '04',
     title: 'Thermo',
     titleAccent: 'metry',
-    blurb: 'There is no temperature sensor - only properties that change. Calibrate a scale, learn the one master formula, and fix a faulty thermometer.',
+    blurb: 'There is no temperature sensor - only properties that change. Calibrate a scale, learn the one master formula, fix a faulty thermometer, then follow the gas thermometer down to absolute zero.',
     status: 'ready',
-    activities: 6,
+    activities: 13,
   },
 ];

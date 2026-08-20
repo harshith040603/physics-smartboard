@@ -1,0 +1,434 @@
+---
+import StudioLayout from '../../layouts/StudioLayout.astro';
+import '../../styles/thermometry.css';
+---
+<StudioLayout title="Thermometry L2 - The Absolute Scale" chapterChip="Physics · Thermometry · Lecture 2">
+
+  <!-- =========== HOME =========== -->
+  <section id="home" class="screen active">
+    <div class="hero">
+      <h1>The Absolute <span class="accent">Scale</span></h1>
+      <p>Lecture 2, built entirely out of moving pictures. Run the gas thermometer, extrapolate three gases back to the same point, then watch what a temperature difference does that a temperature does not.</p>
+      <div style="margin-top:16px;">
+        <button class="th-btn" onclick="location.href='/thermometry'">‹ Lecture 1 · Thermometric Property</button>
+      </div>
+    </div>
+    <div class="grid">
+
+      <div class="tile" onclick="go('gas')">
+        <div class="tile-num">01</div>
+        <div class="tile-icon ic-gasth"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7" cy="17" r="4"/><path d="M7 13V5M7 5h10M17 5v9M17 14a3 3 0 0 0 0 6"/></svg></div>
+        <h3>Run the Gas Thermometer</h3>
+        <p>Heat the bulb, chase the mercury back to the mark, and read the pressure. Get the volume wrong and the instrument tells you so.</p>
+        <span class="tile-go">Open ›</span>
+      </div>
+
+      <div class="tile" onclick="go('zero')">
+        <div class="tile-num">02</div>
+        <div class="tile-icon ic-zero"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18"/><path d="M5 20L11 6M9 20l5-11M13 20l4-8"/><circle cx="4" cy="20" r="1.6" fill="#fff"/></svg></div>
+        <h3>Extrapolate to Absolute Zero</h3>
+        <p>Three gases, three different slopes. Run the lines backwards and watch them all die at the same temperature - then try to move it.</p>
+        <span class="tile-go">Open ›</span>
+      </div>
+
+      <div class="tile" onclick="go('kelvin')">
+        <div class="tile-num">03</div>
+        <div class="tile-icon ic-kelvin"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4v16M4 12l8-8M4 12l9 8"/><path d="M18 6v.01M20 10v.01M18 14v.01"/></svg></div>
+        <h3>Slide the Zero, Keep the Step</h3>
+        <p>Watch the Kelvin axis slide under the Celsius one until its zero lands on -273.15. The tick spacing never changes. Plus the triple point cell.</p>
+        <span class="tile-go">Open ›</span>
+      </div>
+
+      <div class="tile" onclick="go('convert')">
+        <div class="tile-num">04</div>
+        <div class="tile-icon ic-ladder"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3v18M17 3v18"/><path d="M7 8h10M7 12h10M7 16h10"/></svg></div>
+        <h3>The Conversion Ladder</h3>
+        <p>Four scales side by side, one bar dragged across all of them. Same fraction of the way up, every time - that is the general formula.</p>
+        <span class="tile-go">Open ›</span>
+      </div>
+
+      <div class="tile" onclick="go('same')">
+        <div class="tile-num">05</div>
+        <div class="tile-icon ic-cross"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20h18M3 20L20 4M3 20L20 12"/><circle cx="13.5" cy="9.7" r="2.4"/></svg></div>
+        <h3>When Two Scales Agree</h3>
+        <p>Equal, twice, half, opposite - every version is the same picture: two straight lines, one crossing point. Watch it move.</p>
+        <span class="tile-go">Open ›</span>
+      </div>
+
+      <div class="tile" onclick="go('delta')">
+        <div class="tile-num">06</div>
+        <div class="tile-icon ic-delta"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4L3 20h18z"/><path d="M8 15h8"/></svg></div>
+        <h3>&Delta;T is Not T</h3>
+        <p>Drag two handles and watch the bracket. On Celsius and Kelvin it is exactly the same length. Adding 273 to it walks straight off the page.</p>
+        <span class="tile-go">Open ›</span>
+      </div>
+
+      <div class="tile" onclick="go('heat')">
+        <div class="tile-num">07</div>
+        <div class="tile-icon ic-heat"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2s4 4 4 8a4 4 0 0 1-8 0c0-4 4-8 4-8z"/><path d="M6 20h12"/></svg></div>
+        <h3>Heat Is Not Temperature</h3>
+        <p>A big cold block can hold more energy than a small hot one - and heat still runs the other way. Then the rain and the wetness.</p>
+        <span class="tile-go">Open ›</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========== 1 · CONSTANT VOLUME GAS THERMOMETER =========== -->
+  <section id="gas" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">Run the Gas Thermometer</div>
+        <div class="scr-sub">Heat the bulb. Bring the mercury back to the mark. Read the pressure.</div>
+      </div>
+    </div>
+
+    <div class="th-chips" id="l2GTabs">
+      <button class="th-chip active" data-pane="l2GA">1 · How the apparatus works</button>
+      <button class="th-chip" data-pane="l2GB">2 · Take the readings yourself</button>
+    </div>
+
+    <!-- ── stand-alone walkthrough of the instrument ── -->
+    <div class="th-pane active" id="l2GA">
+      <div class="th-controls">
+        <div class="th-btns">
+          <button class="th-btn primary" id="l2GwPlay">▶ Play the whole cycle</button>
+          <button class="th-btn" id="l2GwPrev">‹ Step back</button>
+          <button class="th-btn" id="l2GwNext">Step on ›</button>
+          <button class="th-btn" id="l2GwRst">↺ Start over</button>
+        </div>
+      </div>
+
+      <div class="th-canvas" id="l2GwCanvas"></div>
+
+      <div class="th-readouts">
+        <div class="th-readout"><small>Step</small><div class="th-ro small" id="l2GwStep">-</div></div>
+        <div class="th-readout"><small>What is happening</small><div class="th-ro small" id="l2GwWhat">-</div></div>
+      </div>
+
+      <div class="th-keybox">
+        <b>Five steps, on repeat.</b> Warm the bulb, watch the gas push the mercury down, raise the reservoir until the mercury is back on the mark, then read the height difference. Volume constant, pressure measured - that is the whole instrument.
+      </div>
+    </div>
+
+    <!-- ── the interactive rig ── -->
+    <div class="th-pane" id="l2GB">
+      <div class="th-controls">
+        <div class="th-ctrl">
+          <label>Temperature of the bath <span class="th-val" id="l2GasTVal">0 °C</span></label>
+          <input type="range" id="l2GasT" min="-120" max="300" step="1" value="0">
+        </div>
+        <div class="th-ctrl">
+          <label>Raise / lower the reservoir <span class="th-val" id="l2GasRVal">0.0 cm</span></label>
+          <input type="range" id="l2GasR" min="-60" max="110" step="0.5" value="0">
+        </div>
+        <div class="th-btns">
+          <button class="th-btn" id="l2GasAuto">⚙ Auto-level: OFF</button>
+          <button class="th-btn primary" id="l2GasRec">● Record this point</button>
+          <button class="th-btn" id="l2GasClr">↺ Clear graph</button>
+        </div>
+      </div>
+
+      <div class="th-canvas" id="l2GasCanvas"></div>
+
+      <div class="th-readouts">
+        <div class="th-readout"><small>Bath temperature</small><div class="th-ro" id="l2GasRoT">-</div></div>
+        <div class="th-readout"><small>Mercury difference h</small><div class="th-ro small" id="l2GasRoH">-</div></div>
+        <div class="th-readout"><small>Gas pressure p = p₀ + h</small><div class="th-ro" id="l2GasRoP">-</div></div>
+        <div class="th-readout"><small>Volume check</small><div class="th-ro small" id="l2GasRoV">-</div></div>
+      </div>
+
+      <div class="th-keybox">
+        <b>Chase the mercury back to the red mark.</b> Only then is the volume the same as it was before - and only then does the height difference h mean anything. Record a few points and the graph draws itself.
+      </div>
+    </div>
+  </section>
+
+  <!-- =========== 2 · ABSOLUTE ZERO =========== -->
+  <section id="zero" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">Extrapolate to Absolute Zero</div>
+        <div class="scr-sub">Different gases. Different slopes. One meeting point.</div>
+      </div>
+    </div>
+
+    <div class="th-controls">
+      <div class="th-btns">
+        <button class="th-btn primary" id="l2ZS1">1 · Measure the three gases</button>
+        <button class="th-btn" id="l2ZS2">2 · Run the lines backwards</button>
+        <button class="th-btn" id="l2ZS3">3 · Where does p hit zero?</button>
+        <button class="th-btn" id="l2ZS4">4 · The honest caveat</button>
+        <button class="th-btn" id="l2ZRst">↺ Start over</button>
+      </div>
+      <div class="th-ctrl">
+        <label>Change how much gas is in bulb 3 <span class="th-val" id="l2ZP0Val">40 cm Hg</span></label>
+        <input type="range" id="l2ZP0" min="14" max="96" step="1" value="40">
+      </div>
+    </div>
+
+    <div class="th-canvas" id="l2ZeroCanvas"></div>
+
+    <div class="th-readouts">
+      <div class="th-readout"><small>Gas 1 hits p = 0 at</small><div class="th-ro small" id="l2ZI1">-</div></div>
+      <div class="th-readout"><small>Gas 2 hits p = 0 at</small><div class="th-ro small" id="l2ZI2">-</div></div>
+      <div class="th-readout"><small>Gas 3 hits p = 0 at</small><div class="th-ro small" id="l2ZI3">-</div></div>
+      <div class="th-readout"><small>Slope of gas 3</small><div class="th-ro small" id="l2ZSl">-</div></div>
+    </div>
+
+    <div class="th-keybox">
+      <b>Now drag the slider.</b> The third line tilts, its slope changes, its whole graph moves - and the point where it dies does not budge. That number is not about gases. It is about temperature.
+    </div>
+  </section>
+
+  <!-- =========== 3 · KELVIN SCALE =========== -->
+  <section id="kelvin" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">Slide the Zero, Keep the Step</div>
+        <div class="scr-sub">The Kelvin scale changes where zero is - and nothing else.</div>
+      </div>
+    </div>
+
+    <div class="th-chips" id="l2KTabs">
+      <button class="th-chip active" data-pane="l2KA">1 · Move the zero</button>
+      <button class="th-chip" data-pane="l2KB">2 · The triple point</button>
+    </div>
+
+    <div class="th-pane active" id="l2KA">
+      <div class="th-controls">
+        <div class="th-btns">
+          <button class="th-btn primary" id="l2KGo">▶ Slide the Kelvin axis into place</button>
+          <button class="th-btn" id="l2KRst">↺ Reset</button>
+        </div>
+        <div class="th-ctrl">
+          <label>Point at a temperature <span class="th-val" id="l2KTVal">27 °C</span></label>
+          <input type="range" id="l2KT" min="-273" max="327" step="1" value="27">
+        </div>
+      </div>
+
+      <div class="th-canvas" id="l2KCanvas"></div>
+
+      <div class="th-readouts">
+        <div class="th-readout"><small>Celsius</small><div class="th-ro" id="l2KRoC">-</div></div>
+        <div class="th-readout"><small>Kelvin</small><div class="th-ro" id="l2KRoK">-</div></div>
+        <div class="th-readout"><small>One division is worth</small><div class="th-ro small" id="l2KRoStep">-</div></div>
+      </div>
+
+      <div class="th-keybox">
+        <b>Watch the tick marks while the axis slides.</b> They never stretch and never squash. Only the label under the zero changes - which is the entire difference between Celsius and Kelvin.
+      </div>
+    </div>
+
+    <div class="th-pane" id="l2KB">
+      <div class="th-controls">
+        <div class="th-ctrl">
+          <label>Temperature <span class="th-val" id="l2TpTVal">273.16 K</span></label>
+          <input type="range" id="l2TpT" min="25800" max="30000" step="1" value="27316">
+        </div>
+        <div class="th-ctrl">
+          <label>Pressure <span class="th-val" id="l2TpPVal">4.58 mm Hg</span></label>
+          <input type="range" id="l2TpP" min="0" max="1000" step="1" value="223">
+        </div>
+        <div class="th-btns">
+          <button class="th-btn primary" id="l2TpSnap">◎ Snap to the triple point</button>
+        </div>
+      </div>
+
+      <div class="th-canvas" id="l2TpCanvas"></div>
+
+      <div class="th-readouts">
+        <div class="th-readout"><small>State of the water</small><div class="th-ro small" id="l2TpPhase">-</div></div>
+        <div class="th-readout"><small>Triple point</small><div class="th-ro small">273.16 K · 4.58 mm Hg</div></div>
+        <div class="th-readout"><small>Ice point</small><div class="th-ro small">273.15 K · 760 mm Hg</div></div>
+      </div>
+
+      <div class="th-keybox">
+        <b>Only one dot on the whole diagram gives all three at once.</b> That is why it was chosen as the reference: it is a single point, not a curve, so nobody has to state the pressure alongside it.
+      </div>
+    </div>
+  </section>
+
+  <!-- =========== 4 · CONVERSION LADDER =========== -->
+  <section id="convert" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">The Conversion Ladder</div>
+        <div class="scr-sub">Drag the bar. Every scale is the same fraction of the way up.</div>
+      </div>
+    </div>
+
+    <div class="th-controls">
+      <div class="th-ctrl">
+        <label>Temperature <span class="th-val" id="l2CvTVal">40 °C</span></label>
+        <input type="range" id="l2CvT" min="-60" max="160" step="0.5" value="40">
+      </div>
+      <div class="th-btns">
+        <button class="th-btn" id="l2CvIce">Ice point</button>
+        <button class="th-btn" id="l2CvSteam">Steam point</button>
+        <button class="th-btn" id="l2CvM40">−40, where C = F</button>
+        <button class="th-btn" id="l2CvBody">Body, 37 °C</button>
+      </div>
+    </div>
+
+    <div class="th-canvas" id="l2CvCanvas"></div>
+
+    <div class="th-readouts">
+      <div class="th-readout"><small>Celsius</small><div class="th-ro" id="l2CvC">-</div></div>
+      <div class="th-readout"><small>Fahrenheit</small><div class="th-ro" id="l2CvF">-</div></div>
+      <div class="th-readout"><small>Kelvin</small><div class="th-ro" id="l2CvK">-</div></div>
+      <div class="th-readout"><small>Reaumur</small><div class="th-ro small" id="l2CvR">-</div></div>
+    </div>
+
+    <div class="th-work">
+      <div class="th-work-lab">The same fraction, written out</div>
+      <div class="th-work-line" id="l2CvWork"></div>
+    </div>
+
+    <div class="th-keybox">
+      <b>The four bars always fill to the same height.</b> That is the whole conversion rule - not four formulas, one proportion with four sets of end numbers.
+    </div>
+  </section>
+
+  <!-- =========== 5 · SAME READING =========== -->
+  <section id="same" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">When Two Scales Agree</div>
+        <div class="scr-sub">Four different questions. One crossing point each time.</div>
+      </div>
+    </div>
+
+    <div class="th-controls">
+      <div class="th-btns" id="l2SameRel">
+        <button class="th-btn on" data-rel="eq">T_F = T_C</button>
+        <button class="th-btn" data-rel="twice">T_F = 2 T_C</button>
+        <button class="th-btn" data-rel="half">T_F = ½ T_C</button>
+        <button class="th-btn" data-rel="neg">T_F = − T_C</button>
+        <button class="th-btn" data-rel="kelvin">T_F = T_K</button>
+      </div>
+    </div>
+
+    <div class="th-canvas" id="l2SameCanvas"></div>
+
+    <div class="th-work">
+      <div class="th-work-lab">The same three steps, whatever the question says</div>
+      <div class="th-work-line" id="l2SmW1"></div>
+      <div class="th-work-line" id="l2SmW2"></div>
+      <div class="th-work-line" id="l2SmW3"></div>
+    </div>
+
+    <div class="th-keybox">
+      <b>Nothing about the method changed between those five buttons.</b> Write both scales in terms of T<sub>C</sub>, impose what the question says, solve one linear equation. The picture just moves the second line.
+    </div>
+  </section>
+
+  <!-- =========== 6 · DELTA T =========== -->
+  <section id="delta" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">A Difference Is Not a Temperature</div>
+        <div class="scr-sub">Drag the two handles and compare the brackets.</div>
+      </div>
+    </div>
+
+    <div class="th-controls">
+      <div class="th-ctrl">
+        <label>Start temperature <span class="th-val" id="l2D1Val">30 °C</span></label>
+        <input type="range" id="l2D1" min="-40" max="180" step="1" value="30">
+      </div>
+      <div class="th-ctrl">
+        <label>Final temperature <span class="th-val" id="l2D2Val">90 °C</span></label>
+        <input type="range" id="l2D2" min="-40" max="180" step="1" value="90">
+      </div>
+      <div class="th-btns">
+        <button class="th-btn" id="l2DBad">⚠ Show the wrong method</button>
+      </div>
+    </div>
+
+    <div class="th-canvas" id="l2DCanvas"></div>
+
+    <div class="th-readouts">
+      <div class="th-readout"><small>Change in Celsius</small><div class="th-ro" id="l2DdC">-</div></div>
+      <div class="th-readout"><small>Change in Kelvin</small><div class="th-ro good" id="l2DdK">-</div></div>
+      <div class="th-readout"><small>Change in Fahrenheit</small><div class="th-ro small" id="l2DdF">-</div></div>
+      <div class="th-readout"><small>If you add 273 anyway</small><div class="th-ro bad" id="l2DdBad">-</div></div>
+    </div>
+
+    <div class="th-keybox">
+      <b>Look at the two green brackets.</b> The Celsius one and the Kelvin one are exactly the same length on the screen, because they are the same physical change. Every expansion formula tomorrow contains &Delta;T, so this is the one that saves you time.
+    </div>
+  </section>
+
+  <!-- =========== 7 · HEAT VS TEMPERATURE =========== -->
+  <section id="heat" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">Heat Is Not Temperature</div>
+        <div class="scr-sub">One is a state of the body. The other only exists while it moves.</div>
+      </div>
+    </div>
+
+    <div class="th-chips" id="l2HTabs">
+      <button class="th-chip active" data-pane="l2HA">1 · Which way does it flow?</button>
+      <button class="th-chip" data-pane="l2HB">2 · Rain and wetness</button>
+    </div>
+
+    <div class="th-pane active" id="l2HA">
+      <div class="th-controls">
+        <div class="th-ctrl">
+          <label>Block A · mass <span class="th-val" id="l2HmAVal">1.0 kg</span></label>
+          <input type="range" id="l2HmA" min="1" max="80" step="1" value="10">
+        </div>
+        <div class="th-ctrl">
+          <label>Block A · temperature <span class="th-val" id="l2HtAVal">90 °C</span></label>
+          <input type="range" id="l2HtA" min="0" max="200" step="1" value="90">
+        </div>
+        <div class="th-ctrl">
+          <label>Block B · mass <span class="th-val" id="l2HmBVal">1.0 kg</span></label>
+          <input type="range" id="l2HmB" min="1" max="80" step="1" value="60">
+        </div>
+        <div class="th-ctrl">
+          <label>Block B · temperature <span class="th-val" id="l2HtBVal">20 °C</span></label>
+          <input type="range" id="l2HtB" min="0" max="200" step="1" value="20">
+        </div>
+      </div>
+
+      <div class="th-controls">
+        <div class="th-btns">
+          <button class="th-btn primary" id="l2HGo">▶ Put them in contact</button>
+          <button class="th-btn" id="l2HRst">↺ Pull them apart</button>
+        </div>
+      </div>
+
+      <div class="th-canvas" id="l2HCanvas"></div>
+
+      <div class="th-readouts">
+        <div class="th-readout"><small>Internal energy of A</small><div class="th-ro small" id="l2HUA">-</div></div>
+        <div class="th-readout"><small>Internal energy of B</small><div class="th-ro small" id="l2HUB">-</div></div>
+        <div class="th-readout"><small>Heat flows</small><div class="th-ro small" id="l2HDir">-</div></div>
+        <div class="th-readout"><small>Final temperature</small><div class="th-ro" id="l2HEq">-</div></div>
+      </div>
+
+      <div class="th-keybox">
+        <b>Make B huge and cold, A tiny and hot.</b> B now holds far more energy than A - and heat still runs from A into B. Direction is set by temperature, never by how much energy a body is carrying.
+      </div>
+    </div>
+
+    <div class="th-pane" id="l2HB">
+      <div class="th-canvas" id="l2RainCanvas"></div>
+      <div class="th-keybox">
+        <b>A cloud does not contain rain.</b> It contains water. Rain is water in the act of falling. In exactly the same way, a body does not contain heat - it contains internal energy, and heat is that energy in the act of moving.
+      </div>
+    </div>
+  </section>
+
+  <script>import '../../scripts/thermometry-l2';</script>
+</StudioLayout>
