@@ -1,0 +1,110 @@
+---
+import StudioLayout from '../../layouts/StudioLayout.astro';
+import katex from 'katex';
+import 'katex/dist/katex.min.css';
+import '../../styles/assignment.css';
+import { META, SECTIONS, MARKING, QUESTIONS } from '../../data/kinematics-practice-set-2';
+
+/* Render at build time: split the text on $...$, KaTeX the maths, escape the
+   rest. The page then needs no client-side script at all. */
+const esc = (s: string) =>
+  s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+function tex(src: string): string {
+  return src.split('$').map((part, i) => (
+    i % 2
+      ? katex.renderToString(part, { throwOnError: false, displayMode: false })
+      : esc(part)
+  )).join('');
+}
+
+const bySec = (key: string) => QUESTIONS.filter((q) => q.sec === key);
+---
+<StudioLayout title="Kinematics Practice Set II - Physics with Harshith" chapterChip="Physics · Kinematics">
+  <section class="screen active">
+    <div class="scr-head">
+      <a class="back-btn" href="/kinematics" style="text-decoration:none;">‹ Kinematics</a>
+      <div>
+        <div class="scr-title">Practice <span class="accent">Set II</span></div>
+        <div class="scr-sub">{META.count} questions across three JEE Advanced sections.</div>
+      </div>
+    </div>
+
+    <div class="asg-head">
+      <h1>{META.title}</h1>
+      <h2>{META.subject}</h2>
+      <div class="asg-line">{META.line}</div>
+      <div class="asg-meta">
+        <span class="asg-pill">{META.count} questions</span>
+        <span class="asg-pill">Suggested time · {META.minutes} minutes</span>
+        <span class="asg-pill">3 sections</span>
+      </div>
+      <div class="asg-rule"><Fragment set:html={tex(META.rule)} /> Marking scheme is at the end of the paper.</div>
+      <a class="asg-dl" href={META.pdf} target="_blank" rel="noopener">⬇ Download the printable PDF</a>
+    </div>
+
+    {SECTIONS.map((sec) => (
+      <Fragment>
+        <div class="asg-sec">
+          <span class="asg-sec-key">Section {sec.key}</span>
+          <span class="asg-sec-name">{sec.name}</span>
+          <span class="asg-sec-note">{sec.note}</span>
+        </div>
+
+        {bySec(sec.key).map((qn) => (
+          <article class="asg-q">
+            <div class="asg-qhead">
+              <span class="asg-num">Q{qn.id}</span>
+              <div class="asg-stem"><Fragment set:html={tex(qn.q)} /></div>
+            </div>
+
+            {qn.options && (
+              <div class="asg-opts">
+                {qn.options.map((opt) => (
+                  <div class="asg-opt"><Fragment set:html={tex(opt)} /></div>
+                ))}
+              </div>
+            )}
+
+            {qn.table && (
+              <Fragment>
+                <table class="asg-table">
+                  <thead>
+                    <tr><th>Column I</th><th>Column II</th></tr>
+                  </thead>
+                  <tbody>
+                    {Array.from({ length: Math.max(qn.table.left.length, qn.table.right.length) }).map((_, i) => (
+                      <tr>
+                        <td><Fragment set:html={qn.table!.left[i] ? tex(qn.table!.left[i]) : ''} /></td>
+                        <td><Fragment set:html={qn.table!.right[i] ? tex(qn.table!.right[i]) : ''} /></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                <div class="asg-grid">
+                  {qn.table.left.map((row) => (
+                    <div class="asg-cell">{row.slice(0, 3)} <span></span></div>
+                  ))}
+                </div>
+              </Fragment>
+            )}
+
+            {qn.sec === 'C' && (
+              <div class="asg-blank">Answer <span></span></div>
+            )}
+          </article>
+        ))}
+      </Fragment>
+    ))}
+
+    <div class="asg-mark">
+      <h3>Marking scheme</h3>
+      {MARKING.map((m) => (
+        <div class="asg-mark-row">
+          <span class="asg-mark-sec">{m.sec}</span>
+          <span>{m.text}</span>
+        </div>
+      ))}
+    </div>
+  </section>
+</StudioLayout>

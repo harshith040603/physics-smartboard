@@ -339,3 +339,6 @@
   #incline .rev-chip{font-size:13.5px;padding:8px 13px;}
   #incline .rev-q{font-size:20px;}
 }
+
+/* practice-paper tile */
+.ic-paper{background:linear-gradient(135deg,#0f766e,#14b8a6);}

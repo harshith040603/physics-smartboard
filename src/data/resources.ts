@@ -77,6 +77,7 @@ export const chapterResources: ChapterResources[] = [
       { label: 'Motion Graphs Worksheet', url: '/downloads/kinematics/worksheet-3.pdf' },
       { label: 'Motion Under Gravity Worksheet', url: '/downloads/kinematics/worksheet-4.pdf' },
       { label: 'Non-Uniform Acceleration Worksheet', url: '/downloads/kinematics/worksheet-5.pdf' },
+      { label: 'JEE Advanced Practice Set II - 15 Questions', url: '/downloads/kinematics/practice-set-2.pdf' },
     ],
   },
 ];
