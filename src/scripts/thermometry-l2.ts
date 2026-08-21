@@ -790,26 +790,63 @@ const zeroSketch = (p: p5) => {
       dashed(p, false);
     }
 
+    /* the pressure axis belongs on the left edge; t = 0 is only a reference */
     p.stroke(C.navy);
     p.strokeWeight(2.4);
     p.line(gx, Y(0), gx + gw, Y(0));
-    p.line(X(0), gy, X(0), gy + gh);
+    p.line(gx, gy, gx, Y(0));
+    p.stroke(41, 89, 144, 95);
+    p.strokeWeight(1.6);
+    dashed(p, true, [5, 5]);
+    p.line(X(0), gy, X(0), Y(0));
+    dashed(p, false);
 
     p.noStroke();
     p.fill(C.dark);
     p.textFont('DM Sans');
     p.textSize(12.5);
     p.textAlign(p.CENTER, p.TOP);
-    for (let t = -300; t <= 200; t += 100) if (t !== 0) p.text(`${t}`, X(t), Y(0) + 7);
+    for (let t = -300; t <= 200; t += 100) p.text(`${t}`, X(t), Y(0) + 7);
     p.text('temperature t (°C)', gx + gw / 2, gy + gh + 30);
     p.textAlign(p.RIGHT, p.CENTER);
-    for (let v = 25; v <= 150; v += 25) p.text(`${v}`, X(0) - 7, Y(v));
+    for (let v = 25; v <= 150; v += 25) p.text(`${v}`, gx - 7, Y(v));
     p.push();
     p.translate(26, gy + gh / 2);
     p.rotate(-Math.PI / 2);
     p.textAlign(p.CENTER, p.CENTER);
     p.text('pressure of the gas (cm Hg)', 0, 0);
     p.pop();
+
+    /* ── stage 0: the three bulbs, still waiting ── */
+    if (zero.a1 <= 0) {
+      const by = gy + gh * 0.44;
+      ZGASES.forEach((G, i) => {
+        const bx = gx + gw * (0.28 + i * 0.22);
+        p.noStroke();
+        p.fill(255);
+        p.circle(bx, by, 86);
+        p.stroke(G.col);
+        p.strokeWeight(3.4);
+        p.noFill();
+        p.circle(bx, by, 86);
+        p.noStroke();
+        const gc = p.color(G.col);
+        gc.setAlpha(215);
+        p.fill(gc);
+        for (let k = 0; k < 9; k++) {
+          const ph = k * 1.9 + i * 0.7;
+          const rr = 12 + (k % 3) * 9;
+          p.circle(bx + rr * Math.cos(p.frameCount * 0.03 + ph),
+            by + rr * Math.sin(p.frameCount * 0.041 + ph * 1.7), 7);
+        }
+        p.stroke(C.dark);
+        p.strokeWeight(5);
+        p.line(bx, by - 43, bx, by - 66);
+        chip(p, `${G.name}\n${fmt(zP0(i), 0)} cm Hg at 0 °C`, bx, by + 52, 'center', 13.5, G.col);
+      });
+      chip(p, 'Same volume, same pressure gauge, three different gases.\nTap step 1 to measure them.',
+        gx + gw * 0.5, gy + gh * 0.14, 'center', 15, C.grey);
+    }
 
     /* ── the three gases ── */
     ZGASES.forEach((G, i) => {
@@ -1092,77 +1129,115 @@ const tpSketch = (p: p5) => {
   /* ── the sealed cell ── */
   const drawCell = (x0: number, w: number) => {
     const ph = tpPhase(tp.T, tp.p);
-    const cw = Math.min(w - 40, 170), cx = x0 + w / 2;
-    const ct = 74, cb = p.height - 74;
+    const cw = Math.min(w - 36, 186), cx = x0 + w / 2;
+    const ct = 78, cb = p.height - 78;
+    const inner = (pad: number) => ({
+      l: cx - cw / 2 + pad, r: cx + cw / 2 - pad, t: ct + pad, b: cb - pad,
+    });
 
     if (ph === 'triple') {
       p.noStroke();
       p.fill(22, 163, 74, 40 + 26 * Math.sin(p.frameCount * 0.09));
-      p.rect(cx - cw / 2 - 14, ct - 14, cw + 28, cb - ct + 28, 20);
+      p.rect(cx - cw / 2 - 14, ct - 14, cw + 28, cb - ct + 28, 22);
     }
 
     p.noStroke();
     p.fill(255);
-    p.rect(cx - cw / 2, ct, cw, cb - ct, 14);
+    p.rect(cx - cw / 2, ct, cw, cb - ct, 16);
 
-    const liqTop = ph === 'liquid' ? cb - (cb - ct) * 0.55
-      : ph === 'triple' ? cb - (cb - ct) * 0.42 : cb;
+    const I = inner(4);
+
+    /* how much of the cell each phase occupies - only the triple point
+       has all three at once, everywhere else the cell is one phase */
+    const liqTop = ph === 'liquid' ? I.t : ph === 'triple' ? I.b - (I.b - I.t) * 0.42 : I.b;
+    const iceTop = ph === 'solid' ? I.t : I.b;
+
+    /* liquid */
     if (ph === 'liquid' || ph === 'triple') {
-      p.fill(56, 130, 246, 120);
-      p.rect(cx - cw / 2 + 2, liqTop, cw - 4, cb - liqTop - 2, 8);
-      chip(p, 'liquid', cx - cw / 2 + 8, (liqTop + cb) / 2 - 10, 'left', 12.5, C.dark);
-    }
-    if (ph === 'solid') {
-      p.fill(214, 240, 255, 235);
-      p.stroke(125, 211, 252);
+      p.noStroke();
+      p.fill(96, 165, 250, 175);
+      p.rect(I.l, liqTop, I.r - I.l, I.b - liqTop, 11);
+      /* a little convection wobble so it reads as a fluid */
+      p.stroke(255, 255, 255, 90);
       p.strokeWeight(2);
-      p.rect(cx - cw / 2 + 6, cb - (cb - ct) * 0.6, cw - 12, (cb - ct) * 0.6 - 6, 10);
-      p.noStroke();
-      chip(p, 'ice', cx - cw / 2 + 12, cb - (cb - ct) * 0.34, 'left', 12.5, C.dark);
+      p.noFill();
+      for (let k = 0; k < 3; k++) {
+        p.beginShape();
+        for (let xx = I.l + 8; xx <= I.r - 8; xx += 8) {
+          p.vertex(xx, liqTop + 26 + k * 34 + 3 * Math.sin(xx * 0.06 + p.frameCount * 0.04 + k));
+        }
+        p.endShape();
+      }
     }
-    if (ph === 'triple') {
-      /* ice chunks bobbing on the surface */
+
+    /* solid: the cell packs full of ice */
+    if (ph === 'solid') {
       p.noStroke();
-      p.fill(224, 245, 255, 245);
-      [-38, 2, 36].forEach((dx, i) => {
+      p.fill(212, 238, 255, 245);
+      p.rect(I.l, iceTop, I.r - I.l, I.b - iceTop, 11);
+      p.stroke(125, 211, 252, 220);
+      p.strokeWeight(2);
+      for (let yy = iceTop + 22; yy < I.b - 8; yy += 30) p.line(I.l + 6, yy, I.r - 6, yy);
+      for (let xx = I.l + 26; xx < I.r - 8; xx += 34) p.line(xx, iceTop + 8, xx, I.b - 8);
+      p.noStroke();
+    }
+
+    /* triple point: ice floating on the surface of the water */
+    if (ph === 'triple') {
+      p.noStroke();
+      p.fill(228, 246, 255, 250);
+      [-42, 0, 40].forEach((dx, i) => {
         const bob = 3 * Math.sin(p.frameCount * 0.05 + i);
         p.push();
-        p.translate(cx + dx, liqTop - 6 + bob);
-        p.rotate(Math.sin(i * 2.1) * 0.3);
-        p.rect(-16, -12, 32, 24, 6);
+        p.translate(cx + dx, liqTop - 4 + bob);
+        p.rotate(Math.sin(i * 2.1) * 0.28);
+        p.rect(-19, -13, 38, 26, 7);
         p.pop();
       });
-      chip(p, 'ice', cx - cw / 2 + 8, liqTop - 40, 'left', 12.5, C.dark);
     }
-    /* vapour, always present above the liquid unless the cell is solid-packed */
-    const vTop = ct + 6, vBot = Math.min(liqTop - 6, cb - 6);
-    p.noStroke();
-    p.fill(0, 160, 227, 190);
-    for (let i = 0; i < 18; i++) {
-      const seed = Math.sin(i * 12.9898) * 43758.5453;
-      const fx = seed - Math.floor(seed);
-      const fy = (Math.sin(i * 78.233) * 43758.5453) % 1;
-      const sx = cx - cw / 2 + 12 + ((fx * (cw - 24) + p.frameCount * (0.5 + (i % 4) * 0.22)) % (cw - 24));
-      const sy = vTop + ((Math.abs(fy) * (vBot - vTop) + p.frameCount * (0.3 + (i % 3) * 0.26))
-        % Math.max(20, vBot - vTop));
-      p.circle(sx, sy, 5.5);
+
+    /* vapour: only where a vapour phase actually exists */
+    if (ph === 'vapour' || ph === 'triple') {
+      const vTop = I.t + 4;
+      const vBot = ph === 'triple' ? liqTop - 16 : I.b - 4;
+      p.noStroke();
+      p.fill(0, 160, 227, 200);
+      const n = ph === 'vapour' ? 24 : 13;
+      for (let i = 0; i < n; i++) {
+        const fx = Math.abs(Math.sin(i * 12.9898) * 43758.5453) % 1;
+        const fy = Math.abs(Math.sin(i * 78.233) * 43758.5453) % 1;
+        const sx = I.l + 10 + ((fx * (I.r - I.l - 20) + p.frameCount * (0.5 + (i % 4) * 0.22))
+          % (I.r - I.l - 20));
+        const sy = vTop + ((fy * (vBot - vTop) + p.frameCount * (0.3 + (i % 3) * 0.26))
+          % Math.max(18, vBot - vTop));
+        p.circle(sx, sy, 6);
+      }
     }
-    if (ph !== 'solid') chip(p, 'vapour', cx - cw / 2 + 8, vTop + 4, 'left', 12.5, C.accent);
+
+    /* phase labels, only for the phases that are in the cell */
+    if (ph === 'vapour') chip(p, 'vapour', I.l + 6, I.t + 8, 'left', 13, C.accent);
+    if (ph === 'liquid') chip(p, 'liquid water', I.l + 6, I.t + 8, 'left', 13, C.dark);
+    if (ph === 'solid') chip(p, 'ice', I.l + 6, I.t + 8, 'left', 13, C.dark);
+    if (ph === 'triple') {
+      chip(p, 'vapour', I.l + 6, I.t + 8, 'left', 13, C.accent);
+      chip(p, 'ice', I.l + 6, liqTop - 44, 'left', 13, C.navy);
+      chip(p, 'liquid', I.l + 6, (liqTop + I.b) / 2 - 10, 'left', 13, C.dark);
+    }
 
     p.noFill();
     p.stroke(C.navy);
     p.strokeWeight(3);
-    p.rect(cx - cw / 2, ct, cw, cb - ct, 14);
+    p.rect(cx - cw / 2, ct, cw, cb - ct, 16);
 
     p.noStroke();
     p.fill(ph === 'triple' ? C.green : C.navy);
     p.textFont('DM Sans');
     p.textSize(16);
     p.textAlign(p.CENTER, p.TOP);
-    p.text(TP_NAMES[tpPhase(tp.T, tp.p)], cx, cb + 12);
+    p.text(TP_NAMES[ph], cx, cb + 14);
     p.fill(C.dark);
     p.textSize(13);
-    p.text('sealed cell of pure water', cx, ct - 26);
+    p.text('sealed cell of pure water', cx, ct - 28);
   };
 
   /* ── the phase diagram ── */
