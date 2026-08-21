@@ -56,12 +56,18 @@ export function pyqViewerInit() {
     const btn = card.querySelector<HTMLButtonElement>('.pyq-reveal');
     btn?.addEventListener('click', () => toggleCard(card));
 
+    /* a card marked data-multi holds a "one or more correct" question, so
+       the picks toggle instead of replacing one another */
+    const multi = card.dataset.multi === 'true';
     const opts = card.querySelectorAll<HTMLElement>('.pyq-opt');
     opts.forEach((opt) => {
       opt.addEventListener('click', () => {
-        // pick this option (single-select); regrade if the answer is showing
-        opts.forEach((o) => o.classList.remove('selected'));
-        opt.classList.add('selected');
+        if (multi) {
+          opt.classList.toggle('selected');
+        } else {
+          opts.forEach((o) => o.classList.remove('selected'));
+          opt.classList.add('selected');
+        }
         if (card.classList.contains('open')) gradeOptions(card, true);
       });
     });

@@ -1,142 +1,59 @@
-/* ═══════════ Printed assignment rendered for the board ═══════════
-   Big type, hard contrast, generous line height: the questions and the
-   options have to be readable from the back of the room, and the sheet
-   has to print cleanly onto A4.                                         */
+/* ═══════════ Practice Set header + marking scheme ═══════════
+   The questions themselves reuse the JEE PYQ card viewer (pyq.css); this
+   only styles the paper's identity strip and the marking block.        */
 
-.asg-head{
-  background:#fff;border-radius:20px;box-shadow:var(--shadow);
-  padding:26px 32px 24px;margin-bottom:22px;text-align:center;
-  border-top:6px solid var(--nine-accent);
+.asg-strip{
+  display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;
+  background:#fff;border:1.5px solid #e4ebf3;border-radius:18px;
+  box-shadow:var(--shadow);padding:18px 24px;margin-bottom:20px;
+  border-left:5px solid var(--nine-accent);
 }
-.asg-head h1{
-  font-family:'Bricolage Grotesque';font-weight:800;
-  font-size:clamp(26px,3vw,38px);color:var(--nine-navy);letter-spacing:-.6px;line-height:1.15;
+.asg-strip-main{flex:1;min-width:260px;}
+.asg-strip-title{
+  font-family:'Bricolage Grotesque';font-weight:800;font-size:20px;
+  color:var(--nine-navy);letter-spacing:-.3px;
 }
-.asg-head h2{
-  font-family:'Bricolage Grotesque';font-weight:800;
-  font-size:clamp(19px,2vw,25px);color:var(--nine-accent);
-  letter-spacing:2px;text-transform:uppercase;margin-top:4px;
-}
-.asg-line{font-size:17px;color:var(--nine-deep);font-weight:600;margin-top:12px;}
-.asg-meta{
-  display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin-top:16px;
-}
-.asg-pill{
-  font-family:'DM Sans';font-weight:700;font-size:15px;
-  padding:8px 16px;border-radius:999px;
-  background:rgba(0,160,227,.1);color:var(--nine-dark);
-}
-.asg-rule{
-  margin-top:16px;padding:12px 18px;border-radius:12px;font-size:17.5px;
-  background:var(--paper-2);border-left:4px solid var(--nine-accent);
-  color:var(--ink);text-align:left;
-}
+.asg-strip-title b{color:var(--nine-accent);}
+.asg-strip-line{font-size:14px;color:#6b7f97;font-weight:600;margin-top:3px;}
+.asg-strip-rule{font-size:14.5px;color:#435a72;font-weight:500;margin-top:8px;}
 .asg-dl{
-  display:inline-flex;align-items:center;gap:8px;margin-top:16px;
-  font-family:'Bricolage Grotesque';font-weight:700;font-size:16px;
-  padding:12px 22px;border-radius:12px;text-decoration:none;
-  background:var(--nine-accent);color:#fff;transition:.15s;
+  display:inline-flex;align-items:center;gap:8px;flex-shrink:0;
+  font-family:'Bricolage Grotesque';font-weight:600;font-size:14px;
+  padding:11px 20px;border-radius:12px;text-decoration:none;
+  background:var(--nine-navy);color:#fff;transition:.15s;
 }
-.asg-dl:hover{background:#0090cf;}
+.asg-dl:hover{background:var(--nine-dark);}
 
-/* ── section banner ── */
-.asg-sec{
-  display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;
-  margin:34px 0 16px;padding:14px 22px;border-radius:14px;
-  background:linear-gradient(90deg,var(--nine-navy),var(--nine-dark));color:#fff;
-}
-.asg-sec-key{
-  font-family:'Bricolage Grotesque';font-weight:800;font-size:15px;
-  letter-spacing:2px;text-transform:uppercase;opacity:.72;
-}
-.asg-sec-name{font-family:'Bricolage Grotesque';font-weight:800;font-size:23px;letter-spacing:-.3px;}
-.asg-sec-note{font-size:16px;opacity:.85;font-style:italic;}
-
-/* ── one question ── */
-.asg-q{
-  background:#fff;border-radius:18px;box-shadow:var(--shadow);
-  padding:24px 28px;margin-bottom:18px;
-  border-left:5px solid rgba(0,160,227,.5);
-}
-.asg-qhead{display:flex;gap:14px;align-items:flex-start;}
-.asg-num{
-  flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;
-  min-width:52px;height:36px;padding:0 10px;border-radius:10px;
-  background:var(--nine-dark);color:#fff;
-  font-family:'Bricolage Grotesque';font-weight:800;font-size:17px;
-}
-.asg-stem{
-  font-size:20.5px;line-height:1.62;color:var(--ink);font-weight:500;
+/* a one-line instruction inside a card, above the options */
+.pyq-hint{
+  font-size:13px;font-weight:600;color:var(--nine-accent);
+  margin:0 0 10px;letter-spacing:.2px;
 }
 
-/* ── options ── */
-.asg-opts{display:grid;grid-template-columns:1fr;gap:12px;margin:18px 0 0 66px;}
-@media (min-width:900px){.asg-opts{grid-template-columns:1fr 1fr;}}
-.asg-opt{
-  padding:13px 18px;border-radius:12px;
-  background:var(--paper-2);border:1.5px solid rgba(41,89,144,.16);
-  font-size:19px;line-height:1.7;color:var(--ink);
-}
-.asg-opt .katex{font-size:1.05em;}
-.asg-stem .katex,.asg-opt .katex,.asg-table .katex,.asg-rule .katex{white-space:nowrap;}
-
-/* ── matrix matching table ── */
-.asg-table{
-  width:calc(100% - 66px);margin:18px 0 0 66px;border-collapse:collapse;
-  background:var(--paper-2);border-radius:12px;overflow:hidden;
-}
-.asg-table th{
+/* keep an expression from breaking across a line */
+.pyq-q .katex,.pyq-opt .katex,.pyq-table .katex,.asg-strip-rule .katex{white-space:nowrap;}
+.pyq-opt-text{line-height:1.6;}
+.pyq-table th{
   background:var(--nine-dark);color:#fff;text-align:left;
-  font-family:'Bricolage Grotesque';font-weight:700;font-size:16px;
-  letter-spacing:1px;text-transform:uppercase;padding:11px 18px;
+  font-family:'Bricolage Grotesque';font-weight:700;font-size:12px;
+  letter-spacing:1px;text-transform:uppercase;padding:8px 14px;
+  border:1px solid var(--nine-dark);
 }
-.asg-table td{
-  padding:12px 18px;font-size:19px;line-height:1.5;color:var(--ink);
-  border-top:1px solid rgba(41,89,144,.14);vertical-align:top;width:50%;
-}
-.asg-table tr td:first-child{border-right:1px solid rgba(41,89,144,.14);font-weight:600;}
-
-/* the answer grid a student fills in for a matching question */
-.asg-grid{display:flex;gap:12px;margin:16px 0 0 66px;flex-wrap:wrap;}
-.asg-cell{
-  display:flex;align-items:center;gap:9px;
-  padding:9px 16px;border-radius:10px;
-  background:#fff;border:2px dashed rgba(41,89,144,.3);
-  font-family:'Bricolage Grotesque';font-weight:700;font-size:17px;color:var(--nine-dark);
-}
-.asg-cell span{
-  display:inline-block;min-width:74px;height:26px;border-bottom:2px solid rgba(41,89,144,.3);
-}
-
-/* the blank a numerical answer goes on */
-.asg-blank{
-  display:flex;align-items:center;gap:12px;margin:16px 0 0 66px;
-  font-family:'Bricolage Grotesque';font-weight:700;font-size:17px;color:var(--nine-dark);
-}
-.asg-blank span{
-  display:inline-block;min-width:190px;height:30px;border-bottom:2px solid rgba(41,89,144,.34);
-}
+.pyq-sol .katex{font-size:1em;}
 
 /* ── marking scheme ── */
 .asg-mark{
-  margin-top:30px;background:#fff;border-radius:18px;box-shadow:var(--shadow);
-  padding:22px 28px;border-left:5px solid var(--amber,#f59e0b);
+  margin-top:26px;background:#fff;border:1.5px solid #e4ebf3;border-radius:18px;
+  box-shadow:var(--shadow);padding:20px 26px;border-left:5px solid #f59e0b;
 }
 .asg-mark h3{
-  font-family:'Bricolage Grotesque';font-weight:800;font-size:21px;
-  color:var(--nine-navy);margin-bottom:12px;
+  font-family:'Bricolage Grotesque';font-weight:800;font-size:19px;
+  color:var(--nine-navy);margin-bottom:10px;
 }
-.asg-mark-row{display:flex;gap:14px;font-size:18.5px;line-height:1.6;margin:7px 0;flex-wrap:wrap;}
-.asg-mark-sec{font-weight:700;color:var(--nine-dark);min-width:104px;}
+.asg-mark-row{display:flex;gap:14px;font-size:15px;line-height:1.6;margin:6px 0;flex-wrap:wrap;color:#435a72;}
+.asg-mark-sec{font-weight:700;color:var(--nine-dark);min-width:92px;}
 
-@media (max-width:760px){
-  .asg-opts,.asg-table,.asg-grid,.asg-blank{margin-left:0;width:100%;}
-  .asg-stem{font-size:18px;}
-  .asg-opt,.asg-table td{font-size:17px;}
-}
-
-@media print{
-  .topbar,.asg-dl,.asg-cell,.asg-blank{display:none !important;}
-  .asg-q,.asg-head,.asg-mark{box-shadow:none;border:1px solid #ccc;break-inside:avoid;}
-  .asg-sec{background:#0f2647 !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+@media (max-width:640px){
+  .asg-dl{width:100%;justify-content:center;}
+  .asg-strip-title{font-size:17px;}
 }

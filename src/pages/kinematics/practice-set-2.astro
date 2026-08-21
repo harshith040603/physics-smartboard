@@ -2,11 +2,12 @@
 import StudioLayout from '../../layouts/StudioLayout.astro';
 import katex from 'katex';
 import 'katex/dist/katex.min.css';
+import '../../styles/pyq.css';
 import '../../styles/assignment.css';
 import { META, SECTIONS, MARKING, QUESTIONS } from '../../data/kinematics-practice-set-2';
 
-/* Render at build time: split the text on $...$, KaTeX the maths, escape the
-   rest. The page then needs no client-side script at all. */
+/* Maths is rendered at build time: split on $...$, KaTeX the maths, escape
+   the rest. Only the viewer's filter / reveal wiring ships as script. */
 const esc = (s: string) =>
   s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
@@ -18,7 +19,10 @@ function tex(src: string): string {
   )).join('');
 }
 
-const bySec = (key: string) => QUESTIONS.filter((q) => q.sec === key);
+const SEC_NAME: Record<string, string> = Object.fromEntries(
+  SECTIONS.map((s) => [s.key, s.name])
+);
+const countIn = (key: string) => QUESTIONS.filter((q) => q.sec === key).length;
 ---
 <StudioLayout title="Kinematics Practice Set II - Physics with Harshith" chapterChip="Physics · Kinematics">
   <section class="screen active">
@@ -26,76 +30,92 @@ const bySec = (key: string) => QUESTIONS.filter((q) => q.sec === key);
       <a class="back-btn" href="/kinematics" style="text-decoration:none;">‹ Kinematics</a>
       <div>
         <div class="scr-title">Practice <span class="accent">Set II</span></div>
-        <div class="scr-sub">{META.count} questions across three JEE Advanced sections.</div>
+        <div class="scr-sub">{META.count} JEE Advanced questions. Solve first, then Check answer.</div>
       </div>
     </div>
 
-    <div class="asg-head">
-      <h1>{META.title}</h1>
-      <h2>{META.subject}</h2>
-      <div class="asg-line">{META.line}</div>
-      <div class="asg-meta">
-        <span class="asg-pill">{META.count} questions</span>
-        <span class="asg-pill">Suggested time · {META.minutes} minutes</span>
-        <span class="asg-pill">3 sections</span>
-      </div>
-      <div class="asg-rule"><Fragment set:html={tex(META.rule)} /> Marking scheme is at the end of the paper.</div>
-      <a class="asg-dl" href={META.pdf} target="_blank" rel="noopener">⬇ Download the printable PDF</a>
-    </div>
-
-    {SECTIONS.map((sec) => (
-      <Fragment>
-        <div class="asg-sec">
-          <span class="asg-sec-key">Section {sec.key}</span>
-          <span class="asg-sec-name">{sec.name}</span>
-          <span class="asg-sec-note">{sec.note}</span>
+    <div class="asg-strip">
+      <div class="asg-strip-main">
+        <div class="asg-strip-title">{META.title} &middot; <b>{META.subject}</b></div>
+        <div class="asg-strip-line">{META.line}</div>
+        <div class="asg-strip-rule">
+          <Fragment set:html={tex(META.rule)} /> Suggested time {META.minutes} minutes.
         </div>
+      </div>
+      <a class="asg-dl" href={META.pdf} target="_blank" rel="noopener">⬇ Printable PDF</a>
+    </div>
 
-        {bySec(sec.key).map((qn) => (
-          <article class="asg-q">
-            <div class="asg-qhead">
-              <span class="asg-num">Q{qn.id}</span>
-              <div class="asg-stem"><Fragment set:html={tex(qn.q)} /></div>
-            </div>
+    <div class="pyq-bar">
+      <div class="pyq-chips">
+        <button class="pyq-chip active" data-sec="ALL">All {META.count}</button>
+        {SECTIONS.map((sec) => (
+          <button class="pyq-chip" data-sec={sec.key}>
+            {sec.key} · {sec.name} ({countIn(sec.key)})
+          </button>
+        ))}
+      </div>
+      <button id="pyqRevealAll" class="pyq-allbtn">Reveal all answers</button>
+    </div>
+    <div class="pyq-count"><span id="pyqCount"></span></div>
 
-            {qn.options && (
-              <div class="asg-opts">
+    <div class="pyq-list">
+      {QUESTIONS.map((qn) => (
+        <article class="pyq-card" data-sec={qn.sec} data-multi={qn.sec === 'A' ? 'true' : undefined}>
+          <div class="pyq-top">
+            <span class="pyq-id">Q{qn.id}</span>
+            <span class="pyq-src">Section {qn.sec}</span>
+            <span class="pyq-secname">{SEC_NAME[qn.sec]}</span>
+          </div>
+
+          <p class="pyq-q"><Fragment set:html={tex(qn.q)} /></p>
+
+          {qn.table && (
+            <table class="pyq-table">
+              <thead>
+                <tr><th>Column I</th><th>Column II</th></tr>
+              </thead>
+              <tbody>
+                {Array.from({ length: Math.max(qn.table.left.length, qn.table.right.length) }).map((_, i) => (
+                  <tr>
+                    <td><Fragment set:html={qn.table!.left[i] ? tex(qn.table!.left[i]) : ''} /></td>
+                    <td><Fragment set:html={qn.table!.right[i] ? tex(qn.table!.right[i]) : ''} /></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+
+          {qn.options && (
+            <Fragment>
+              <div class="pyq-hint">One or more options may be correct - tap every one you want.</div>
+              <div class="pyq-opts">
                 {qn.options.map((opt) => (
-                  <div class="asg-opt"><Fragment set:html={tex(opt)} /></div>
+                  <button
+                    class="pyq-opt"
+                    type="button"
+                    data-correct={qn.correct?.some((L) => opt.startsWith(`(${L})`)) ? 'true' : undefined}
+                  >
+                    <span class="pyq-opt-mark"></span>
+                    <span class="pyq-opt-text"><Fragment set:html={tex(opt)} /></span>
+                  </button>
                 ))}
               </div>
-            )}
+            </Fragment>
+          )}
 
-            {qn.table && (
-              <Fragment>
-                <table class="asg-table">
-                  <thead>
-                    <tr><th>Column I</th><th>Column II</th></tr>
-                  </thead>
-                  <tbody>
-                    {Array.from({ length: Math.max(qn.table.left.length, qn.table.right.length) }).map((_, i) => (
-                      <tr>
-                        <td><Fragment set:html={qn.table!.left[i] ? tex(qn.table!.left[i]) : ''} /></td>
-                        <td><Fragment set:html={qn.table!.right[i] ? tex(qn.table!.right[i]) : ''} /></td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-                <div class="asg-grid">
-                  {qn.table.left.map((row) => (
-                    <div class="asg-cell">{row.slice(0, 3)} <span></span></div>
-                  ))}
-                </div>
-              </Fragment>
-            )}
+          {qn.sec === 'C' && (
+            <div class="pyq-hint">Numerical value - give it to two decimal places.</div>
+          )}
 
-            {qn.sec === 'C' && (
-              <div class="asg-blank">Answer <span></span></div>
-            )}
-          </article>
-        ))}
-      </Fragment>
-    ))}
+          <button class="pyq-reveal">Check answer</button>
+
+          <div class="pyq-answer">
+            <div class="pyq-ans-line"><span class="pyq-ans-label">Answer</span> {qn.answer}</div>
+            <div class="pyq-sol"><Fragment set:html={tex(qn.solution)} /></div>
+          </div>
+        </article>
+      ))}
+    </div>
 
     <div class="asg-mark">
       <h3>Marking scheme</h3>
@@ -108,3 +128,8 @@ const bySec = (key: string) => QUESTIONS.filter((q) => q.sec === key);
     </div>
   </section>
 </StudioLayout>
+
+<script>
+  import { pyqViewerInit } from '../../scripts/pyq-viewer';
+  pyqViewerInit();
+</script>
