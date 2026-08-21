@@ -1098,9 +1098,16 @@ const tp = { T: TP_T, p: TP_P };
 
 function tpPhase(T: number, pr: number): 'solid' | 'liquid' | 'vapour' | 'triple' {
   if (Math.abs(T - TP_T) < 0.07 && Math.abs(Math.log10(pr / TP_P)) < 0.035) return 'triple';
-  if (T < TP_T) return pr < pSub(T) ? 'vapour' : 'solid';
-  if (pr < pVap(T)) return 'vapour';
-  return T < tMelt(pr) ? 'solid' : 'liquid';
+  /* below the triple point pressure there is no liquid at all: the solid
+     goes straight to vapour across the sublimation curve */
+  if (pr < TP_P) {
+    if (T >= TP_T) return 'vapour';
+    return pr < pSub(T) ? 'vapour' : 'solid';
+  }
+  /* above it, the melting curve separates solid from liquid - and it is the
+     same curve the diagram draws, so the shading and the line agree */
+  if (T < tMelt(pr)) return 'solid';
+  return pr < pVap(T) ? 'vapour' : 'liquid';
 }
 
 const TP_NAMES: Record<string, string> = {
