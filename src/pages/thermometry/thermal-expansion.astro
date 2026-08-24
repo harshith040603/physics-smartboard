@@ -1,0 +1,326 @@
+---
+import StudioLayout from '../../layouts/StudioLayout.astro';
+import '../../styles/thermometry.css';
+---
+<StudioLayout title="Thermal Expansion - Physics with Harshith" chapterChip="Physics · Thermometry">
+
+  <!-- =========== HOME =========== -->
+  <section id="home" class="screen active">
+    <div class="hero">
+      <h1>Thermal <span class="accent">Expansion</span></h1>
+      <p>Heat almost anything and it gets bigger. Five animations: why it happens at all, the one formula it all comes from, and the question about a hole that nearly everybody gets wrong.</p>
+      <div style="margin-top:16px;">
+        <button class="th-btn" onclick="location.href='/thermometry'">‹ Back to Thermometry</button>
+      </div>
+    </div>
+    <div class="grid">
+
+      <div class="tile" onclick="go('why')">
+        <div class="tile-num">01</div>
+        <div class="tile-icon ic-atoms"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="5" cy="12" r="2.6"/><circle cx="19" cy="12" r="2.6"/><path d="M8 12h1M15 12h1"/><path d="M9 12l1.4-2.4L11.8 14l1.4-4.4L14.6 12"/></svg></div>
+        <h3>Why Things Expand</h3>
+        <p>Atoms just jiggle harder - so why does the solid grow? Flatten the energy well and watch the expansion disappear.</p>
+        <span class="tile-go">Start ›</span>
+      </div>
+
+      <div class="tile" onclick="go('rod')">
+        <div class="tile-num">02</div>
+        <div class="tile-icon ic-rod"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="9" width="14" height="6" rx="1.5"/><path d="M18 12h4M20 10l2 2-2 2"/></svg></div>
+        <h3>Rod Gets Longer</h3>
+        <p>&Delta;l = l &alpha; &Delta;T, one slider at a time. Cool it instead and the same formula runs backwards - there is no separate contraction rule.</p>
+        <span class="tile-go">Start ›</span>
+      </div>
+
+      <div class="tile" onclick="go('cube')">
+        <div class="tile-num">03</div>
+        <div class="tile-icon ic-cube"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5L21 7v10l-9 4.5L3 17V7z"/><path d="M3 7l9 4.5L21 7M12 11.5V21"/></svg></div>
+        <h3>Area and Volume</h3>
+        <p>Cut the grown square into pieces and the 2 falls out. Do the same to a cube and you get the 3. Nothing to memorise.</p>
+        <span class="tile-go">Start ›</span>
+      </div>
+
+      <div class="tile" onclick="go('metals')">
+        <div class="tile-num">04</div>
+        <div class="tile-icon ic-race"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h11M3 12h16M3 18h7"/><path d="M18 3l3 3-3 3"/></svg></div>
+        <h3>Which Metal Grows Most</h3>
+        <p>Four rods, one furnace, same heating. Watch the order come out - and see how far ahead a liquid finishes.</p>
+        <span class="tile-go">Start ›</span>
+      </div>
+
+      <div class="tile" onclick="go('hole')">
+        <div class="tile-num">05</div>
+        <div class="tile-icon ic-hole"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="4" width="19" height="16" rx="2"/><circle cx="12" cy="12" r="4"/></svg></div>
+        <h3>The Hole Question</h3>
+        <p>Heat a plate with a hole in it. Bigger, smaller or the same? Vote first, then watch the disc get cut out.</p>
+        <span class="tile-go">Start ›</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========== 1 · WHY THINGS EXPAND =========== -->
+  <section id="why" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">Why Things Expand</div>
+        <div class="scr-sub">Harder jiggling on its own would change nothing. The lopsided well is what does it.</div>
+      </div>
+    </div>
+
+    <div class="th-controls">
+      <div class="th-ctrl">
+        <label>How hot is it <span class="th-val" id="l3WT">cold</span></label>
+        <input type="range" id="l3WTs" min="4" max="88" step="1" value="24">
+      </div>
+      <div class="th-btns" id="l3WWell">
+        <button class="th-btn on" data-well="real">Real well (lopsided)</button>
+        <button class="th-btn" data-well="sym">Pretend it is symmetric</button>
+      </div>
+      <div class="th-btns">
+        <button class="th-btn" id="l3WTrail">✦ Leave a trail</button>
+      </div>
+    </div>
+
+    <div class="th-canvas" id="l3WhyCanvas"></div>
+
+    <div class="th-readouts">
+      <div class="th-readout"><small>Closest approach</small><div class="th-ro small" id="l3WIn">-</div></div>
+      <div class="th-readout"><small>Furthest apart</small><div class="th-ro small" id="l3WOut">-</div></div>
+      <div class="th-readout"><small>Average spacing</small><div class="th-ro" id="l3WAvg">-</div></div>
+      <div class="th-readout"><small>Grown by</small><div class="th-ro small" id="l3WGrow">-</div></div>
+    </div>
+
+    <div class="th-keybox">
+      <b>Switch to the symmetric well and drag the heat all the way up.</b> The atom swings wildly - and the average spacing does not move a hair. Switch back and the average creeps right. That creep is the whole of thermal expansion.
+    </div>
+  </section>
+
+  <!-- =========== 2 · ROD GETS LONGER =========== -->
+  <section id="rod" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">Rod Gets Longer</div>
+        <div class="scr-sub">One formula, and it runs in both directions.</div>
+      </div>
+    </div>
+
+    <div class="th-controls">
+      <div class="th-btns" id="l3RMat">
+        <button class="th-btn on" data-mat="steel">Steel</button>
+        <button class="th-btn" data-mat="copper">Copper</button>
+        <button class="th-btn" data-mat="brass">Brass</button>
+        <button class="th-btn" data-mat="alu">Aluminium</button>
+      </div>
+      <div class="th-ctrl">
+        <label>Original length l <span class="th-val" id="l3RLVal">1.0 m</span></label>
+        <input type="range" id="l3RL" min="5" max="60" step="1" value="10">
+      </div>
+      <div class="th-ctrl">
+        <label>Change in temperature ΔT <span class="th-val" id="l3RTVal">+100 °C</span></label>
+        <input type="range" id="l3RT" min="-200" max="400" step="5" value="100">
+      </div>
+    </div>
+
+    <div class="th-canvas" id="l3RodCanvas"></div>
+
+    <div class="th-readouts">
+      <div class="th-readout"><small>α of this metal</small><div class="th-ro small" id="l3RAlpha">-</div></div>
+      <div class="th-readout"><small>Change in length Δl</small><div class="th-ro" id="l3RDl">-</div></div>
+      <div class="th-readout"><small>New length l'</small><div class="th-ro small" id="l3RNew">-</div></div>
+      <div class="th-readout"><small>What it is doing</small><div class="th-ro small" id="l3RWhat">-</div></div>
+    </div>
+
+    <div class="th-work">
+      <div class="th-work-lab">Straight substitution</div>
+      <div class="th-work-line" id="l3RWork"></div>
+    </div>
+
+    <div class="th-keybox">
+      <b>Drag ΔT below zero.</b> Nothing about the formula changes - Δl simply comes out negative and the rod shrinks. Notice the real change is drawn far too small to see, so the picture magnifies it; the magnification is written on the canvas.
+    </div>
+  </section>
+
+  <!-- =========== 3 · AREA AND VOLUME =========== -->
+  <section id="cube" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">Area and Volume</div>
+        <div class="scr-sub">Cut the grown shape into pieces and the 2 and the 3 fall out on their own.</div>
+      </div>
+    </div>
+
+    <div class="th-chips" id="l3CTabs">
+      <button class="th-chip active" data-pane="l3CA">1 · Square → β = 2α</button>
+      <button class="th-chip" data-pane="l3CB">2 · Cube → γ = 3α</button>
+    </div>
+
+    <div class="th-pane active" id="l3CA">
+      <div class="th-controls">
+        <div class="th-ctrl">
+          <label>Exaggerate the growth <span class="th-val" id="l3CEVal">×1</span></label>
+          <input type="range" id="l3CE" min="0" max="100" step="1" value="72">
+        </div>
+        <div class="th-btns">
+          <button class="th-btn" id="l3CSplit">▣ Split it into pieces</button>
+          <button class="th-btn" id="l3CReal">↺ Back to real size</button>
+        </div>
+      </div>
+
+      <div class="th-canvas" id="l3SqCanvas"></div>
+
+      <div class="th-readouts">
+        <div class="th-readout"><small>Two long strips</small><div class="th-ro small" id="l3SqStrip">-</div></div>
+        <div class="th-readout"><small>Corner square</small><div class="th-ro small bad" id="l3SqCorner">-</div></div>
+        <div class="th-readout"><small>So ΔA works out as</small><div class="th-ro small" id="l3SqRes">-</div></div>
+      </div>
+
+      <div class="th-keybox">
+        <b>Slide the exaggeration back down to ×1.</b> The corner square vanishes - at a real αΔT of about 0.001 it is a millionth of the area. Throw it away and ΔA = 2A αΔT, so β = 2α.
+      </div>
+    </div>
+
+    <div class="th-pane" id="l3CB">
+      <div class="th-controls">
+        <div class="th-ctrl">
+          <label>Exaggerate the growth <span class="th-val" id="l3CE2Val">×1</span></label>
+          <input type="range" id="l3CE2" min="0" max="100" step="1" value="72">
+        </div>
+        <div class="th-btns">
+          <button class="th-btn" id="l3CSplit2">▣ Split it into pieces</button>
+          <button class="th-btn" id="l3CReal2">↺ Back to real size</button>
+        </div>
+      </div>
+
+      <div class="th-canvas" id="l3CuCanvas"></div>
+
+      <div class="th-readouts">
+        <div class="th-readout"><small>Three flat slabs</small><div class="th-ro small" id="l3CuSlab">-</div></div>
+        <div class="th-readout"><small>Three thin bars</small><div class="th-ro small bad" id="l3CuBar">-</div></div>
+        <div class="th-readout"><small>One tiny cube</small><div class="th-ro small bad" id="l3CuCube">-</div></div>
+        <div class="th-readout"><small>So ΔV works out as</small><div class="th-ro small" id="l3CuRes">-</div></div>
+      </div>
+
+      <div class="th-keybox">
+        <b>Three slabs survive, everything else is rubbish.</b> ΔV = 3V αΔT, so γ = 3α - and the exponent in V = l³ is exactly where the 3 came from. Length 1, area 2, volume 3.
+      </div>
+    </div>
+  </section>
+
+  <!-- =========== 4 · WHICH METAL GROWS MOST =========== -->
+  <section id="metals" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">Which Metal Grows Most</div>
+        <div class="scr-sub">Same rod, same furnace, four different metals.</div>
+      </div>
+    </div>
+
+    <div class="th-controls">
+      <div class="th-ctrl">
+        <label>Heat them all by <span class="th-val" id="l3MTVal">+100 °C</span></label>
+        <input type="range" id="l3MT" min="0" max="400" step="5" value="100">
+      </div>
+      <div class="th-btns">
+        <button class="th-btn primary" id="l3MRun">▶ Run the furnace</button>
+        <button class="th-btn" id="l3MRst">↺ Cool them down</button>
+      </div>
+    </div>
+
+    <div class="th-canvas" id="l3MetCanvas"></div>
+
+    <div class="th-readouts">
+      <div class="th-readout"><small>Smallest α</small><div class="th-ro small" id="l3MMin">-</div></div>
+      <div class="th-readout"><small>Largest α</small><div class="th-ro small" id="l3MMax">-</div></div>
+      <div class="th-readout"><small>Aluminium beats steel by</small><div class="th-ro small" id="l3MRatio">-</div></div>
+      <div class="th-readout"><small>A liquid, for scale</small><div class="th-ro small" id="l3MLiq">-</div></div>
+    </div>
+
+    <div class="th-keybox">
+      <b>Steel, copper, brass, aluminium - smallest to largest, and it never changes.</b> Knowing the order lets you call the answer to a two-metal problem before you compute anything.
+    </div>
+  </section>
+
+  <!-- =========== 5 · THE HOLE QUESTION =========== -->
+  <section id="hole" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">The Hole Question</div>
+        <div class="scr-sub">Vote before you look. Most of the room gets this wrong.</div>
+      </div>
+    </div>
+
+    <div class="th-chips" id="l3HTabs">
+      <button class="th-chip active" data-pane="l3HA">1 · Does the hole grow?</button>
+      <button class="th-chip" data-pane="l3HB">2 · Ring onto a shaft</button>
+    </div>
+
+    <div class="th-pane active" id="l3HA">
+      <div class="th-controls">
+        <div class="th-btns" id="l3HVote">
+          <button class="th-btn" data-vote="big">The hole gets BIGGER</button>
+          <button class="th-btn" data-vote="small">The hole gets SMALLER</button>
+          <button class="th-btn" data-vote="same">It stays the SAME</button>
+        </div>
+      </div>
+
+      <div class="th-controls" id="l3HSteps" style="display:none;">
+        <div class="th-btns">
+          <button class="th-btn primary" id="l3HS1">1 · Draw a circle, then heat</button>
+          <button class="th-btn" id="l3HS2">2 · Cut the disc out</button>
+          <button class="th-btn" id="l3HS3">3 · Heat again</button>
+          <button class="th-btn" id="l3HS4">4 · Lay them on top</button>
+          <button class="th-btn" id="l3HRst">↺ Start over</button>
+        </div>
+        <div class="th-ctrl">
+          <label>Temperature <span class="th-val" id="l3HTVal">20 °C</span></label>
+          <input type="range" id="l3HT" min="20" max="520" step="5" value="20">
+        </div>
+      </div>
+
+      <div class="th-canvas" id="l3HoleCanvas"></div>
+
+      <div class="th-readouts">
+        <div class="th-readout"><small>Hole at 20 °C</small><div class="th-ro small">2.000 cm</div></div>
+        <div class="th-readout"><small>Hole now</small><div class="th-ro" id="l3HNow">-</div></div>
+        <div class="th-readout"><small>Change Δd</small><div class="th-ro small" id="l3HDd">-</div></div>
+        <div class="th-readout"><small>Verdict</small><div class="th-ro small" id="l3HVerdict">vote first</div></div>
+      </div>
+
+      <div class="th-keybox">
+        <b>The metal around the hole has no idea the disc was ever removed.</b> Same atoms, same neighbours, same pull. So every linear dimension - the hole's diameter included - obeys Δd = d α ΔT.
+      </div>
+    </div>
+
+    <div class="th-pane" id="l3HB">
+      <div class="th-controls">
+        <div class="th-ctrl">
+          <label>Temperature of the ring <span class="th-val" id="l3HRTVal">20 °C</span></label>
+          <input type="range" id="l3HRT" min="20" max="620" step="5" value="20">
+        </div>
+        <div class="th-btns">
+          <button class="th-btn primary" id="l3HRSlide">▶ Try to slide it on</button>
+          <button class="th-btn" id="l3HRRst">↺ Take it back off</button>
+        </div>
+      </div>
+
+      <div class="th-canvas" id="l3RingCanvas"></div>
+
+      <div class="th-readouts">
+        <div class="th-readout"><small>Shaft diameter</small><div class="th-ro small">4.000 cm</div></div>
+        <div class="th-readout"><small>Ring hole now</small><div class="th-ro" id="l3HRHole">-</div></div>
+        <div class="th-readout"><small>Clearance</small><div class="th-ro small" id="l3HRGap">-</div></div>
+      </div>
+
+      <div class="th-keybox">
+        <b>Heat the ring and its hole grows with it</b> - so a ring that was too tight slides straight on. Let it cool and it grips the shaft harder than any hammer could. Cooling the shaft instead works just as well.
+      </div>
+    </div>
+  </section>
+
+  <script>import '../../scripts/thermal-expansion';</script>
+</StudioLayout>

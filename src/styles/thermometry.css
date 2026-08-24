@@ -18,6 +18,12 @@
 .ic-cross{background:linear-gradient(135deg,#065f46,#10b981);}
 .ic-delta{background:linear-gradient(135deg,#b45309,#fbbf24);}
 .ic-heat{background:linear-gradient(135deg,#9f1239,#fb7185);}
+/* ── thermal expansion tile icons ── */
+.ic-atoms{background:linear-gradient(135deg,#0f2647,#7c3aed);}
+.ic-rod{background:linear-gradient(135deg,#b45309,#f59e0b);}
+.ic-cube{background:linear-gradient(135deg,#0369a1,#22d3ee);}
+.ic-race{background:linear-gradient(135deg,#065f46,#10b981);}
+.ic-hole{background:linear-gradient(135deg,#9f1239,#fb7185);}
 
 /* ── pane tabs ── */
 .th-chips{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:22px;}
