@@ -1,0 +1,342 @@
+---
+import StudioLayout from '../../layouts/StudioLayout.astro';
+import '../../styles/thermometry.css';
+---
+<StudioLayout title="Expansion at Work - Physics with Harshith" chapterChip="Physics · Thermometry">
+
+  <!-- =========== HOME =========== -->
+  <section id="home" class="screen active">
+    <div class="hero">
+      <h1>Expansion <span class="accent">at Work</span></h1>
+      <p>Five animations where yesterday's three formulas earn their keep. Every one of them asks the same thing first: which WAY does it go? Get the direction wrong and the number is worth nothing.</p>
+      <div style="margin-top:16px;">
+        <button class="th-btn" onclick="location.href='/thermometry/thermal-expansion'">‹ Thermal Expansion</button>
+        <button class="th-btn" onclick="location.href='/thermometry'">Back to Thermometry</button>
+      </div>
+    </div>
+    <div class="grid">
+
+      <div class="tile" onclick="go('ruler')">
+        <div class="tile-num">01</div>
+        <div class="tile-icon ic-ruler"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="8" width="20" height="8" rx="1.5"/><path d="M6 8v3M10 8v4M14 8v3M18 8v4"/></svg></div>
+        <h3>The Lying Ruler</h3>
+        <p>Heat the scale and every division grows. Fewer of them fit across the object - so the reading drops even though nothing shrank.</p>
+        <span class="tile-go">Start ›</span>
+      </div>
+
+      <div class="tile" onclick="go('clock')">
+        <div class="tile-num">02</div>
+        <div class="tile-icon ic-clock"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></div>
+        <h3>Clock Runs Slow</h3>
+        <p>A longer pendulum swings slower, so the clock falls behind. Run a week and watch the gap open - then see the period cancel out.</p>
+        <span class="tile-go">Start ›</span>
+      </div>
+
+      <div class="tile" onclick="go('strip')">
+        <div class="tile-num">03</div>
+        <div class="tile-icon ic-strip"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9c6 0 12 3 18 3"/><path d="M3 13c6 0 12 3 18 3"/></svg></div>
+        <h3>The Bending Strip</h3>
+        <p>Two metals glued together cannot both win, so the strip bends. Then wire it into a thermostat and watch it switch a heater on and off.</p>
+        <span class="tile-go">Start ›</span>
+      </div>
+
+      <div class="tile" onclick="go('ball')">
+        <div class="tile-num">04</div>
+        <div class="tile-icon ic-ball"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="7" r="4"/><rect x="3" y="14" width="18" height="6" rx="1.5"/><circle cx="12" cy="17" r="2.6"/></svg></div>
+        <h3>Ball Through the Hole</h3>
+        <p>An iron ball a hundredth of a millimetre too fat. Heat both and the brass hole gains on it - only the DIFFERENCE of the alphas matters.</p>
+        <span class="tile-go">Start ›</span>
+      </div>
+
+      <div class="tile" onclick="go('stress')">
+        <div class="tile-num">05</div>
+        <div class="tile-icon ic-clamp"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4v16M21 4v16"/><rect x="6" y="9" width="12" height="6" rx="1.5"/><path d="M6 12H3M21 12h-3"/></svg></div>
+        <h3>Rod That Can't Grow</h3>
+        <p>Clamp it, heat it 50 degrees, and it pushes back with the weight of two lorries. Drag the length slider and watch the answer refuse to change.</p>
+        <span class="tile-go">Start ›</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========== 1 · THE LYING RULER =========== -->
+  <section id="ruler" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">The Lying Ruler</div>
+        <div class="scr-sub">The object never changed. The divisions did.</div>
+      </div>
+    </div>
+
+    <div class="th-controls">
+      <div class="th-ctrl">
+        <label>Temperature of the scale <span class="th-val" id="l4RTVal">40 °C</span></label>
+        <input type="range" id="l4RT" min="-40" max="140" step="1" value="40">
+      </div>
+      <div class="th-ctrl">
+        <label>True length of the object <span class="th-val" id="l4RLVal">60.0 cm</span></label>
+        <input type="range" id="l4RL" min="200" max="900" step="5" value="600">
+      </div>
+      <div class="th-btns" id="l4RMat">
+        <button class="th-btn on" data-mat="steel">Steel scale</button>
+        <button class="th-btn" data-mat="alu">Aluminium scale</button>
+      </div>
+    </div>
+
+    <div class="th-canvas" id="l4RulerCanvas"></div>
+
+    <div class="th-readouts">
+      <div class="th-readout"><small>The scale says</small><div class="th-ro" id="l4RRead">-</div></div>
+      <div class="th-readout"><small>True length</small><div class="th-ro small" id="l4RTrue">-</div></div>
+      <div class="th-readout"><small>Error in the reading</small><div class="th-ro small" id="l4RErr">-</div></div>
+      <div class="th-readout"><small>Direction</small><div class="th-ro small" id="l4RDir">-</div></div>
+    </div>
+
+    <div class="th-work">
+      <div class="th-work-lab">Correcting the reading</div>
+      <div class="th-work-line" id="l4RWork"></div>
+    </div>
+
+    <div class="th-keybox">
+      <b>Two different questions, opposite answers.</b> The ruler itself always gets LONGER when you heat it. The READING it gives always gets SMALLER. Keep them apart and this section is easy; mix them up and nothing works.
+    </div>
+  </section>
+
+  <!-- =========== 2 · CLOCK RUNS SLOW =========== -->
+  <section id="clock" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">Clock Runs Slow</div>
+        <div class="scr-sub">Longer pendulum, slower swing, fewer ticks in a real day.</div>
+      </div>
+    </div>
+
+    <div class="th-chips" id="l4CTabs">
+      <button class="th-chip active" data-pane="l4CA">1 · Let it drift</button>
+      <button class="th-chip" data-pane="l4CB">2 · The period cancels</button>
+    </div>
+
+    <div class="th-pane active" id="l4CA">
+      <div class="th-controls">
+        <div class="th-ctrl">
+          <label>Temperature change Δθ <span class="th-val" id="l4CTVal">+10 °C</span></label>
+          <input type="range" id="l4CT" min="-40" max="60" step="1" value="10">
+        </div>
+        <div class="th-btns" id="l4CMat">
+          <button class="th-btn on" data-mat="steel">Steel</button>
+          <button class="th-btn" data-mat="brass">Brass</button>
+          <button class="th-btn" data-mat="invar">Invar</button>
+        </div>
+        <div class="th-btns">
+          <button class="th-btn primary" id="l4CRun">▶ Run a week</button>
+          <button class="th-btn" id="l4CRst">↺ Reset both clocks</button>
+        </div>
+      </div>
+
+      <div class="th-canvas" id="l4ClockCanvas"></div>
+
+      <div class="th-readouts">
+        <div class="th-readout"><small>Days elapsed</small><div class="th-ro small" id="l4CDays">0.0</div></div>
+        <div class="th-readout"><small>Drift per day</small><div class="th-ro small" id="l4CPer">-</div></div>
+        <div class="th-readout"><small>Behind / ahead by</small><div class="th-ro" id="l4CLag">-</div></div>
+        <div class="th-readout"><small>Direction</small><div class="th-ro small" id="l4CDir">-</div></div>
+      </div>
+
+      <div class="th-work">
+        <div class="th-work-lab">Straight substitution</div>
+        <div class="th-work-line" id="l4CWork"></div>
+      </div>
+
+      <div class="th-keybox">
+        <b>Drag Δθ below zero.</b> The pendulum shortens, each swing is quicker, and the clock starts RUNNING FAST instead. Same formula, sign flipped - and Invar barely moves at all, which is exactly why good clocks are built from it.
+      </div>
+    </div>
+
+    <div class="th-pane" id="l4CB">
+      <div class="th-controls">
+        <div class="th-ctrl">
+          <label>Temperature change Δθ <span class="th-val" id="l4C2TVal">+10 °C</span></label>
+          <input type="range" id="l4C2T" min="-40" max="60" step="1" value="10">
+        </div>
+        <div class="th-btns">
+          <button class="th-btn primary" id="l4C2Run">▶ Swing them both</button>
+          <button class="th-btn" id="l4C2Rst">↺ Stop</button>
+        </div>
+      </div>
+
+      <div class="th-canvas" id="l4Clock2Canvas"></div>
+
+      <div class="th-readouts">
+        <div class="th-readout"><small>Short pendulum</small><div class="th-ro small" id="l4C2A">-</div></div>
+        <div class="th-readout"><small>Long pendulum</small><div class="th-ro small" id="l4C2B">-</div></div>
+        <div class="th-readout"><small>Loses per day</small><div class="th-ro" id="l4C2Lag">-</div></div>
+      </div>
+
+      <div class="th-keybox">
+        <b>One swings four times as often as the other, and they lose exactly the same amount.</b> The period cancels out of Δt = ½ α Δθ t, so never go hunting for it. A wristwatch pendulum and a grandfather clock drift by the same percentage.
+      </div>
+    </div>
+  </section>
+
+  <!-- =========== 3 · THE BENDING STRIP =========== -->
+  <section id="strip" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">The Bending Strip</div>
+        <div class="scr-sub">Two metals glued together. Neither gets its way.</div>
+      </div>
+    </div>
+
+    <div class="th-chips" id="l4STabs">
+      <button class="th-chip active" data-pane="l4SA">1 · Why it bends</button>
+      <button class="th-chip" data-pane="l4SB">2 · Wired as a thermostat</button>
+    </div>
+
+    <div class="th-pane active" id="l4SA">
+      <div class="th-controls">
+        <div class="th-ctrl">
+          <label>Temperature <span class="th-val" id="l4STVal">20 °C</span></label>
+          <input type="range" id="l4ST" min="-60" max="200" step="1" value="20">
+        </div>
+        <div class="th-btns">
+          <button class="th-btn" id="l4SSplit">✂ Unglue them for a second</button>
+        </div>
+      </div>
+
+      <div class="th-canvas" id="l4StripCanvas"></div>
+
+      <div class="th-readouts">
+        <div class="th-readout"><small>Brass wants to be</small><div class="th-ro small" id="l4SBrass">-</div></div>
+        <div class="th-readout"><small>Steel wants to be</small><div class="th-ro small" id="l4SSteel">-</div></div>
+        <div class="th-readout"><small>They disagree by</small><div class="th-ro small" id="l4SGap">-</div></div>
+        <div class="th-readout"><small>So the strip</small><div class="th-ro small" id="l4SBend">-</div></div>
+      </div>
+
+      <div class="th-keybox">
+        <b>Press "unglue them" and the argument becomes obvious.</b> Free, the brass ends up longer than the steel. Glued, the only way both can stay the same length is to curl - and the metal that wanted more length takes the OUTSIDE of the curve.
+      </div>
+    </div>
+
+    <div class="th-pane" id="l4SB">
+      <div class="th-controls">
+        <div class="th-ctrl">
+          <label>Thermostat set to <span class="th-val" id="l4TSetVal">25 °C</span></label>
+          <input type="range" id="l4TSet" min="15" max="40" step="1" value="25">
+        </div>
+        <div class="th-btns">
+          <button class="th-btn primary" id="l4TRun">▶ Switch the heater on</button>
+          <button class="th-btn" id="l4TRst">↺ Reset the room</button>
+        </div>
+      </div>
+
+      <div class="th-canvas" id="l4ThermoCanvas"></div>
+
+      <div class="th-readouts">
+        <div class="th-readout"><small>Room temperature</small><div class="th-ro" id="l4TRoom">-</div></div>
+        <div class="th-readout"><small>Heater</small><div class="th-ro small" id="l4THeat">-</div></div>
+        <div class="th-readout"><small>Contact</small><div class="th-ro small" id="l4TCont">-</div></div>
+        <div class="th-readout"><small>Cycles so far</small><div class="th-ro small" id="l4TCyc">0</div></div>
+      </div>
+
+      <div class="th-keybox">
+        <b>This is the iron, the geyser and the old room heater.</b> The strip warms, bends, breaks the contact and cuts the power; the room cools, the strip straightens, contact remakes. No electronics anywhere - just two metals that disagree.
+      </div>
+    </div>
+  </section>
+
+  <!-- =========== 4 · BALL THROUGH THE HOLE =========== -->
+  <section id="ball" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">Ball Through the Hole</div>
+        <div class="scr-sub">Iron ball, brass plate, one hundredth of a millimetre in the way.</div>
+      </div>
+    </div>
+
+    <div class="th-controls">
+      <div class="th-ctrl">
+        <label>Heat them both to <span class="th-val" id="l4BTVal">30 °C</span></label>
+        <input type="range" id="l4BT" min="30" max="90" step="1" value="30">
+      </div>
+      <div class="th-btns">
+        <button class="th-btn primary" id="l4BDrop">▶ Try to drop it through</button>
+        <button class="th-btn" id="l4BFind">◎ Find the temperature</button>
+        <button class="th-btn" id="l4BRst">↺ Reset</button>
+      </div>
+    </div>
+
+    <div class="th-canvas" id="l4BallCanvas"></div>
+
+    <div class="th-readouts">
+      <div class="th-readout"><small>Iron ball</small><div class="th-ro small" id="l4BBall">-</div></div>
+      <div class="th-readout"><small>Brass hole</small><div class="th-ro small" id="l4BHole">-</div></div>
+      <div class="th-readout"><small>Still too fat by</small><div class="th-ro" id="l4BGap">-</div></div>
+      <div class="th-readout"><small>Gap closes at</small><div class="th-ro small" id="l4BRate">-</div></div>
+    </div>
+
+    <div class="th-work">
+      <div class="th-work-lab">The one-line route</div>
+      <div class="th-work-line" id="l4BWork"></div>
+    </div>
+
+    <div class="th-keybox">
+      <b>Both grow. The brass just grows faster.</b> So the answer never depends on either α on its own - only on the difference between them. That is the whole of differential expansion.
+    </div>
+  </section>
+
+  <!-- =========== 5 · ROD THAT CAN'T GROW =========== -->
+  <section id="stress" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">Rod That Can't Grow</div>
+        <div class="scr-sub">It wants to expand. The walls say no. Something has to give.</div>
+      </div>
+    </div>
+
+    <div class="th-controls">
+      <div class="th-btns" id="l4XMat">
+        <button class="th-btn on" data-mat="steel">Steel</button>
+        <button class="th-btn" data-mat="copper">Copper</button>
+        <button class="th-btn" data-mat="brass">Brass</button>
+        <button class="th-btn" data-mat="alu">Aluminium</button>
+      </div>
+      <div class="th-ctrl">
+        <label>Temperature change ΔT <span class="th-val" id="l4XTVal">+50 °C</span></label>
+        <input type="range" id="l4XT" min="-100" max="200" step="5" value="50">
+      </div>
+      <div class="th-ctrl">
+        <label>Cross-section A <span class="th-val" id="l4XAVal">2.0 cm²</span></label>
+        <input type="range" id="l4XA" min="5" max="120" step="1" value="20">
+      </div>
+      <div class="th-ctrl">
+        <label>Length of the rod <span class="th-val" id="l4XLVal">1.0 m</span></label>
+        <input type="range" id="l4XL" min="1" max="200" step="1" value="10">
+      </div>
+    </div>
+
+    <div class="th-canvas" id="l4StressCanvas"></div>
+
+    <div class="th-readouts">
+      <div class="th-readout"><small>It wanted to grow</small><div class="th-ro small" id="l4XWant">-</div></div>
+      <div class="th-readout"><small>Thermal stress</small><div class="th-ro" id="l4XStress">-</div></div>
+      <div class="th-readout"><small>Force on each wall</small><div class="th-ro" id="l4XForce">-</div></div>
+      <div class="th-readout"><small>That is like hanging</small><div class="th-ro small" id="l4XMass">-</div></div>
+    </div>
+
+    <div class="th-work">
+      <div class="th-work-lab">Where the length went</div>
+      <div class="th-work-line" id="l4XWork"></div>
+    </div>
+
+    <div class="th-keybox">
+      <b>Now drag the length slider from 1 cm to 20 m.</b> The stress and the force do not move at all - the l cancels in strain = Δl/l = αΔT. Only the cross-section changes the force.
+    </div>
+  </section>
+
+  <script>import '../../scripts/expansion-at-work';</script>
+</StudioLayout>
