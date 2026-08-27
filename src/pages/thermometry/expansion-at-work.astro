@@ -227,7 +227,8 @@ import '../../styles/thermometry.css';
           <input type="range" id="l4TSet" min="15" max="40" step="1" value="25">
         </div>
         <div class="th-btns">
-          <button class="th-btn primary" id="l4TRun">▶ Switch the heater on</button>
+          <button class="th-btn primary" id="l4TRun">▶ Start the cycle</button>
+          <button class="th-btn" id="l4TStep">↦ Nudge it forward</button>
           <button class="th-btn" id="l4TRst">↺ Reset the room</button>
         </div>
       </div>
@@ -238,11 +239,12 @@ import '../../styles/thermometry.css';
         <div class="th-readout"><small>Room temperature</small><div class="th-ro" id="l4TRoom">-</div></div>
         <div class="th-readout"><small>Heater</small><div class="th-ro small" id="l4THeat">-</div></div>
         <div class="th-readout"><small>Contact</small><div class="th-ro small" id="l4TCont">-</div></div>
+        <div class="th-readout"><small>Where we are</small><div class="th-ro small" id="l4TPhase">-</div></div>
         <div class="th-readout"><small>Cycles so far</small><div class="th-ro small" id="l4TCyc">0</div></div>
       </div>
 
       <div class="th-keybox">
-        <b>This is the iron, the geyser and the old room heater.</b> The strip warms, bends, breaks the contact and cuts the power; the room cools, the strip straightens, contact remakes. No electronics anywhere - just two metals that disagree.
+        <b>Four steps, then it repeats forever.</b> Cold room, strip straight, contact closed, heater ON. The room warms; the strip curls up; the contact breaks and the power is cut. The room cools; the strip drops back; the contact remakes. No electronics anywhere - just two metals that disagree. Use <b>Nudge it forward</b> to step through one phase at a time while you talk.
       </div>
     </div>
   </section>

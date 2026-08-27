@@ -749,12 +749,43 @@ function stripWire() {
 
 /* ══════════════════════════════════════════════════════════════════════
    3b · WIRED AS A THERMOSTAT
-   The strip is one half of a switch. Warm room → strip bends → contact
-   breaks → heater off → room cools → contact remakes. A closed loop with
-   no electronics in it at all.
+   A closed loop with no electronics in it. Deliberately slow: one full
+   cycle takes about fifteen seconds, which is long enough to narrate each
+   phase while it happens. The contact state is derived from the room
+   temperature alone, so the picture and the labels can never disagree -
+   including before anyone presses play.
+
+   AMBIENT is what the room drifts back to with the heater off; DRIVE is
+   set so the heater alone would settle it at 30 °C. DEAD is the snap in
+   the switch, wide enough that each half of the cycle lasts seconds.
    ══════════════════════════════════════════════════════════════════════ */
 
-const thermo = { set: 25, room: 18, on: false, run: false, cycles: 0, trace: [] as number[] };
+const AMBIENT = 18, HEAT_TARGET = 30, DEAD = 1.5;
+const COOL_RATE = 0.08;
+const DRIVE = (HEAT_TARGET - AMBIENT) * COOL_RATE;
+
+const PHASES: Array<[string, string, string]> = [
+  ['1 · room is COLD', 'strip lies straight, contact CLOSED', C.green],
+  ['2 · heater ON', 'the room is warming up', C.red],
+  ['3 · room is WARM', 'strip curls up, contact OPEN', C.red],
+  ['4 · heater off', 'the room is cooling again', C.accent],
+];
+
+const thermo = {
+  set: 25, room: AMBIENT, on: true, run: false,
+  cycles: 0, trace: [] as number[], nudge: 0, phase: 0,
+};
+
+/* the switch, decided by temperature alone - it snaps at set ± DEAD */
+function thermoSwitch() {
+  if (thermo.room > thermo.set + DEAD) thermo.on = false;
+  if (thermo.room < thermo.set - DEAD) thermo.on = true;
+}
+
+function thermoPhase() {
+  if (thermo.on) return thermo.room < thermo.set - DEAD * 0.4 ? 0 : 1;
+  return thermo.room > thermo.set + DEAD * 0.4 ? 2 : 3;
+}
 
 function thermoReadouts() {
   el('l4TRoom').textContent = `${fmt(thermo.room, 1)} °C`;
@@ -764,12 +795,15 @@ function thermoReadouts() {
   const c = el('l4TCont');
   c.textContent = thermo.on ? 'closed' : 'open';
   c.style.color = thermo.on ? C.green : C.red;
+  const ph = el('l4TPhase');
+  ph.textContent = PHASES[thermo.phase][0];
+  ph.style.color = PHASES[thermo.phase][2];
   el('l4TCyc').textContent = `${thermo.cycles}`;
 }
 
 const thermoSketch = (p: p5) => {
   const holder = el('l4ThermoCanvas');
-  const canvasH = () => Math.max(420, Math.min(520, Math.round(holder.clientWidth * 0.38)));
+  const canvasH = () => Math.max(440, Math.min(540, Math.round(holder.clientWidth * 0.4)));
 
   p.setup = () => { p.createCanvas(holder.clientWidth, canvasH()); };
   p.windowResized = () => { p.resizeCanvas(holder.clientWidth, canvasH()); };
@@ -779,33 +813,32 @@ const thermoSketch = (p: p5) => {
     const d = dt(p);
     p.textFont('DM Sans');
 
-    if (thermo.run) {
-      /* heater pushes the room up, the world outside pulls it down */
-      const drive = thermo.on ? 9 : 0;
-      thermo.room += (drive - (thermo.room - 12) * 0.5) * d;
+    /* advance the room, either continuously or one nudge at a time */
+    let step = 0;
+    if (thermo.run) step = d;
+    else if (thermo.nudge > 0) { step = Math.min(d, thermo.nudge); thermo.nudge -= step; }
+
+    if (step > 0) {
       const wasOn = thermo.on;
-      if (thermo.room > thermo.set + 0.6) thermo.on = false;
-      if (thermo.room < thermo.set - 0.6) thermo.on = true;
+      thermo.room += ((thermo.on ? DRIVE : 0) - (thermo.room - AMBIENT) * COOL_RATE) * step;
+      thermoSwitch();
       if (wasOn && !thermo.on) thermo.cycles++;
       thermo.trace.push(thermo.room);
-      if (thermo.trace.length > 460) thermo.trace.shift();
-      thermoReadouts();
+      if (thermo.trace.length > 520) thermo.trace.shift();
     }
+    thermo.phase = thermoPhase();
+    thermoReadouts();
 
-    /* ── the strip as a switch ──
-       The strip rests ON the contact while the room is at or below the
-       setpoint, and lifts off it as the room overshoots. */
-    const cx = p.width * 0.09, cy = p.height * 0.32;
-    const len = Math.min(p.width * 0.3, 210);
-    const contactY = cy + 46;
-    /* the contact leaves the moment the heater cuts, so the picture and the
-       label can never disagree: both are driven off the same threshold */
-    const lift = Math.max(0, Math.min(52, (thermo.room - (thermo.set - 0.6)) * 34));
+    /* ── the strip as a switch ── */
+    const cx = p.width * 0.08, cy = p.height * 0.26;
+    const len = Math.min(p.width * 0.28, 200);
+    const contactY = cy;
+    const lift = Math.max(0, Math.min(54, (thermo.room - (thermo.set - DEAD)) * 18));
     const tipY = contactY - lift;
 
     p.noStroke();
     p.fill(C.navy);
-    p.rect(cx - 20, cy - 32, 18, 68, 4);
+    p.rect(cx - 20, cy - 30, 18, 66, 4);
 
     const layerCurve = (off: number, col: string) => {
       p.noFill();
@@ -821,39 +854,37 @@ const thermoSketch = (p: p5) => {
     layerCurve(-5, MATS.brass.col);
     layerCurve(5, MATS.steel.col);
 
-    /* the fixed contact it lands on */
     p.noStroke();
     p.fill(C.dark);
-    p.rect(cx + len + 2, contactY + 10, 16, 34, 3);
-    p.circle(cx + len + 10, contactY + 10, 17);
-    /* the moving contact on the tip of the strip */
+    p.rect(cx + len + 2, contactY + 8, 16, 46, 3);
+    p.circle(cx + len + 10, contactY + 8, 17);
     p.fill(thermo.on ? C.green : C.red);
     p.circle(cx + len + 10, tipY + 5, 16);
 
-    if (lift > 5) {
+    if (!thermo.on) {
       p.stroke(C.red);
       p.strokeWeight(1.8);
       dashed(p, true, [4, 4]);
-      p.line(cx + len + 10, tipY + 13, cx + len + 10, contactY + 2);
+      p.line(cx + len + 10, tipY + 13, cx + len + 10, contactY);
       dashed(p, false);
     }
     chip(p, thermo.on ? 'contact CLOSED\ncurrent flows' : 'contact OPEN\npower cut',
-      cx + len + 26, tipY - 18, 'left', 13.5, thermo.on ? C.green : C.red);
-    chip(p, 'brass', cx + 8, cy - 40, 'left', 12.5, MATS.brass.col);
-    chip(p, 'steel', cx + 8, cy + 22, 'left', 12.5, MATS.steel.col);
+      cx + len + 28, tipY - 18, 'left', 13.5, thermo.on ? C.green : C.red);
+    chip(p, 'brass', cx + 8, cy - 38, 'left', 12.5, MATS.brass.col);
+    chip(p, 'steel', cx + 8, cy + 20, 'left', 12.5, MATS.steel.col);
 
-    /* the heater it is switching */
-    const hx = p.width * 0.22, hy = p.height * 0.76;
+    /* ── the heater it is switching ── */
+    const hx = cx + len * 0.5, hy = p.height * 0.54;
     p.noStroke();
-    p.fill(thermo.on ? p.color(225, 29, 72, 40) : p.color(41, 89, 144, 18));
-    p.rect(hx - 100, hy - 30, 200, 62, 12);
+    p.fill(thermo.on ? p.color(225, 29, 72, 46) : p.color(41, 89, 144, 16));
+    p.rect(hx - 96, hy - 28, 192, 58, 12);
     p.stroke(thermo.on ? C.red : C.grey);
     p.strokeWeight(3);
     p.noFill();
     for (let k = 0; k < 3; k++) {
       p.beginShape();
-      for (let x = -80; x <= 80; x += 6) {
-        p.vertex(hx + x, hy - 14 + k * 16 + 4 * Math.sin(x * 0.28));
+      for (let x = -76; x <= 76; x += 6) {
+        p.vertex(hx + x, hy - 14 + k * 15 + 4 * Math.sin(x * 0.28));
       }
       p.endShape();
     }
@@ -861,19 +892,50 @@ const thermoSketch = (p: p5) => {
     p.fill(thermo.on ? C.red : C.grey);
     p.textSize(14);
     p.textAlign(p.CENTER, p.TOP);
-    p.text(thermo.on ? 'HEATER ON' : 'heater off', hx, hy + 36);
+    p.text(thermo.on ? 'HEATER ON' : 'heater off', hx, hy + 34);
+
+    /* ── the four phases, with the live one lit ── */
+    const py = p.height - 132;
+    p.noStroke();
+    p.fill(C.dark);
+    p.textSize(12.5);
+    p.textAlign(p.LEFT, p.TOP);
+    p.text('THE CYCLE, STEP BY STEP', 20, py - 19);
+    PHASES.forEach(([title, sub, col], i) => {
+      const live = i === thermo.phase;
+      const yy = py + i * 30;
+      p.noStroke();
+      p.fill(live ? p.color(col) : p.color(41, 89, 144, 16));
+      p.rect(20, yy, live ? 8 : 4, 24, 2);
+      p.fill(live ? p.color(col) : p.color(120, 137, 160));
+      p.textSize(live ? 14.5 : 13);
+      p.text(`${title}  —  ${sub}`, 36, yy + (live ? 3 : 4));
+    });
 
     /* ── the room temperature against time ── */
-    const gx = p.width * 0.52, gw = p.width - gx - 40, gy = 72, gh = p.height - 150;
+    const gx = p.width * 0.52, gw = p.width - gx - 40, gy = 72, gh = p.height - 168;
     p.noStroke();
     p.fill(255);
     p.rect(gx - 40, gy - 26, gw + 62, gh + 66, 14);
-    const TA = 12, TB = 42;
+    const TA = 14, TB = 34;
     const Y = (v: number) => gy + gh - ((v - TA) / (TB - TA)) * gh;
+
+    /* shade the stretches where the heater was actually running */
+    let runStart = -1;
+    thermo.trace.forEach((v, i) => {
+      const heating = i > 0 && v > thermo.trace[i - 1];
+      if (heating && runStart < 0) runStart = i;
+      if ((!heating || i === thermo.trace.length - 1) && runStart >= 0) {
+        p.noStroke();
+        p.fill(225, 29, 72, 22);
+        p.rect(gx + (runStart / 520) * gw, gy, ((i - runStart) / 520) * gw, gh);
+        runStart = -1;
+      }
+    });
 
     p.stroke(41, 89, 144, 24);
     p.strokeWeight(1);
-    for (let v = 15; v <= 40; v += 5) p.line(gx, Y(v), gx + gw, Y(v));
+    for (let v = 16; v <= 32; v += 4) p.line(gx, Y(v), gx + gw, Y(v));
     p.stroke(C.navy);
     p.strokeWeight(2.2);
     p.line(gx, gy + gh, gx + gw, gy + gh);
@@ -882,38 +944,40 @@ const thermoSketch = (p: p5) => {
     p.fill(C.dark);
     p.textSize(12);
     p.textAlign(p.RIGHT, p.CENTER);
-    for (let v = 15; v <= 40; v += 5) p.text(`${v}`, gx - 7, Y(v));
+    for (let v = 16; v <= 32; v += 4) p.text(`${v}`, gx - 7, Y(v));
     p.textAlign(p.CENTER, p.TOP);
     p.text('time  →', gx + gw / 2, gy + gh + 24);
 
-    /* the setpoint and its dead band */
+    /* the setpoint and the snap band the switch actually uses */
     p.noStroke();
-    p.fill(22, 163, 74, 26);
-    p.rect(gx, Y(thermo.set + 0.6), gw, Y(thermo.set - 0.6) - Y(thermo.set + 0.6));
+    p.fill(22, 163, 74, 24);
+    p.rect(gx, Y(thermo.set + DEAD), gw, Y(thermo.set - DEAD) - Y(thermo.set + DEAD));
     p.stroke(C.green);
     p.strokeWeight(2);
     dashed(p, true, [6, 5]);
     p.line(gx, Y(thermo.set), gx + gw, Y(thermo.set));
     dashed(p, false);
-    chip(p, `set to ${thermo.set} °C`, gx + gw - 8, Y(thermo.set) - 30, 'right', 13, C.green);
+    chip(p, `set to ${thermo.set} °C`, gx + gw - 8, Y(thermo.set) - 32, 'right', 13, C.green);
+    chip(p, 'switches off up here', gx + 8, Y(thermo.set + DEAD) - 26, 'left', 12.5, C.red);
+    chip(p, 'switches on down here', gx + 8, Y(thermo.set - DEAD) + 6, 'left', 12.5, C.green);
 
-    /* the trace */
     p.noFill();
     p.stroke(C.red);
-    p.strokeWeight(2.6);
+    p.strokeWeight(2.8);
     p.beginShape();
     thermo.trace.forEach((v, i) => {
-      p.vertex(gx + (i / 460) * gw, Y(Math.max(TA, Math.min(TB, v))));
+      p.vertex(gx + (i / 520) * gw, Y(Math.max(TA, Math.min(TB, v))));
     });
     p.endShape();
     if (thermo.trace.length) {
-      const lastX = gx + ((thermo.trace.length - 1) / 460) * gw;
+      const lastX = gx + ((thermo.trace.length - 1) / 520) * gw;
       p.noStroke();
       p.fill(C.red);
-      p.circle(lastX, Y(Math.max(TA, Math.min(TB, thermo.room))), 11);
+      p.circle(lastX, Y(Math.max(TA, Math.min(TB, thermo.room))), 12);
     }
 
-    chip(p, 'the room hunts around the setpoint, on its own',
+    chip(p, thermo.run ? 'the room hunts around the setpoint, on its own'
+      : thermo.nudge > 0 ? 'nudging…' : 'paused — press start, or nudge it a step at a time',
       gx, 18, 'left', 14.5, C.navy);
   };
 };
@@ -925,14 +989,31 @@ function thermoWire() {
   s.addEventListener('input', () => {
     thermo.set = +s.value;
     el('l4TSetVal').textContent = `${thermo.set} °C`;
+    thermoSwitch();
+    thermo.phase = thermoPhase();
     thermoReadouts();
   });
-  el('l4TRun').addEventListener('click', () => { thermo.run = true; thermo.on = true; });
+  const run = el('l4TRun') as HTMLButtonElement;
+  run.addEventListener('click', () => {
+    thermo.run = !thermo.run;
+    run.textContent = thermo.run ? '⏸ Pause' : '▶ Start the cycle';
+    run.classList.toggle('primary', !thermo.run);
+  });
+  el('l4TStep').addEventListener('click', () => { thermo.nudge += 1.5; });
   el('l4TRst').addEventListener('click', () => {
-    thermo.run = false; thermo.on = false; thermo.room = 18;
-    thermo.cycles = 0; thermo.trace = [];
+    thermo.run = false;
+    run.textContent = '▶ Start the cycle';
+    run.classList.add('primary');
+    thermo.room = AMBIENT;
+    thermo.on = true;                       /* cold room: the contact IS closed */
+    thermo.cycles = 0;
+    thermo.trace = [];
+    thermo.nudge = 0;
+    thermo.phase = thermoPhase();
     thermoReadouts();
   });
+  thermoSwitch();
+  thermo.phase = thermoPhase();
   thermoReadouts();
 }
 
