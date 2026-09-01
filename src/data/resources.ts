@@ -80,4 +80,15 @@ export const chapterResources: ChapterResources[] = [
       { label: 'JEE Advanced Practice Set II - 15 Questions', url: '/downloads/kinematics/practice-set-2.pdf' },
     ],
   },
+  {
+    slug: 'thermometry',
+    num: '06',
+    title: 'Thermo',
+    titleAccent: 'metry',
+    notes: { label: 'General Temperature Scale X - Notes', url: '/downloads/thermometry/general-temperature-scale-x.pdf' },
+    sheets: [
+      { label: 'Scale X - 12 Practice Questions', url: '/downloads/thermometry/scale-x-practice-questions.pdf' },
+    ],
+    worksheets: [],
+  },
 ];
