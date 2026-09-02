@@ -32,6 +32,13 @@
 .ic-ball{background:linear-gradient(135deg,#065f46,#10b981);}
 .ic-clamp{background:linear-gradient(135deg,#7f1d1d,#f97316);}
 
+/* ── liquids and floating tile icons ── */
+.ic-dens{background:linear-gradient(135deg,#0f2647,#38bdf8);}
+.ic-water{background:linear-gradient(135deg,#0369a1,#22d3ee);}
+.ic-flask{background:linear-gradient(135deg,#5b21b6,#a855f7);}
+.ic-weigh{background:linear-gradient(135deg,#b45309,#fbbf24);}
+.ic-float{background:linear-gradient(135deg,#065f46,#10b981);}
+
 /* ── pane tabs ── */
 .th-chips{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:22px;}
 .th-chip{

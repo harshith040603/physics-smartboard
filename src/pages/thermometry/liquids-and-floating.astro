@@ -1,0 +1,333 @@
+---
+import StudioLayout from '../../layouts/StudioLayout.astro';
+import '../../styles/thermometry.css';
+---
+<StudioLayout title="Liquids and Floating - Physics with Harshith" chapterChip="Physics · Thermometry">
+
+  <!-- =========== HOME =========== -->
+  <section id="home" class="screen active">
+    <div class="hero">
+      <h1>Liquids and <span class="accent">Floating</span></h1>
+      <p>Heating drops density - and density decides everything that floats. Five animations, including the strangest substance in the chapter: water, which shrinks when you warm it from 0 to 4 °C, and saves every fish in the lake by doing so.</p>
+      <div style="margin-top:16px;">
+        <button class="th-btn" onclick="location.href='/thermometry/expansion-at-work'">‹ Expansion at Work</button>
+        <button class="th-btn" onclick="location.href='/thermometry'">Back to Thermometry</button>
+      </div>
+    </div>
+    <div class="grid">
+
+      <div class="tile" onclick="go('density')">
+        <div class="tile-num">01</div>
+        <div class="tile-icon ic-dens"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="10" height="10" rx="1.5"/><rect x="7" y="10" width="14" height="10" rx="1.5" stroke-dasharray="3 3"/></svg></div>
+        <h3>Heat It, Density Falls</h3>
+        <p>No atoms leave, but the box gets bigger. Same mass in more room - watch the density bar drop as the block grows.</p>
+        <span class="tile-go">Start ›</span>
+      </div>
+
+      <div class="tile" onclick="go('water')">
+        <div class="tile-num">02</div>
+        <div class="tile-icon ic-water"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s6 7 6 11a6 6 0 0 1-12 0c0-4 6-11 6-11z"/><path d="M9 14a3 3 0 0 0 3 3"/></svg></div>
+        <h3>Water Breaks the Rules</h3>
+        <p>Between 0 and 4 °C water contracts as it warms. Trace the curve, then freeze a whole lake and watch the fish survive because of it.</p>
+        <span class="tile-go">Start ›</span>
+      </div>
+
+      <div class="tile" onclick="go('flask')">
+        <div class="tile-num">03</div>
+        <div class="tile-icon ic-flask"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3v6L4.5 19a2 2 0 0 0 1.8 3h11.4a2 2 0 0 0 1.8-3L14 9V3"/><path d="M8 3h8"/></svg></div>
+        <h3>The Overflowing Flask</h3>
+        <p>The liquid expands - but so does the flask you are measuring it in. What spills is the DIFFERENCE, and the glass hides its 3.</p>
+        <span class="tile-go">Start ›</span>
+      </div>
+
+      <div class="tile" onclick="go('weigh')">
+        <div class="tile-num">04</div>
+        <div class="tile-icon ic-weigh"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v4"/><circle cx="12" cy="12" r="5"/><path d="M4 21h16"/><path d="M12 17v4"/></svg></div>
+        <h3>Lighter Under Water?</h3>
+        <p>Heat a submerged block and two effects fight: it swells, the liquid thins. Whichever expands faster wins the tug of war.</p>
+        <span class="tile-go">Start ›</span>
+      </div>
+
+      <div class="tile" onclick="go('float')">
+        <div class="tile-num">05</div>
+        <div class="tile-icon ic-float"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="6" width="8" height="7" rx="1.5"/><path d="M2 13c2 0 2 2 4 2s2-2 4-2 2 2 4 2 2-2 4-2 2 2 4 2"/><path d="M2 18c2 0 2 2 4 2s2-2 4-2 2 2 4 2 2-2 4-2 2 2 4 2"/></svg></div>
+        <h3>Float Higher or Lower</h3>
+        <p>The fraction under water is just ρ_solid over ρ_liquid. Heat both and the ratio moves - then float wood on 0-10 °C water and find the peak.</p>
+        <span class="tile-go">Start ›</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========== 1 · HEAT IT, DENSITY FALLS =========== -->
+  <section id="density" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">Heat It, Density Falls</div>
+        <div class="scr-sub">The mass stays put. The volume does not.</div>
+      </div>
+    </div>
+
+    <div class="th-controls">
+      <div class="th-btns" id="l5DMat">
+        <button class="th-btn on" data-mat="metal">A metal · γ = 6.0 × 10⁻⁵</button>
+        <button class="th-btn" data-mat="liquid">A liquid · γ = 5.0 × 10⁻⁴</button>
+      </div>
+      <div class="th-ctrl">
+        <label>Heat it by ΔT <span class="th-val" id="l5DTVal">+100 °C</span></label>
+        <input type="range" id="l5DT" min="0" max="300" step="5" value="100">
+      </div>
+    </div>
+
+    <div class="th-canvas" id="l5DenCanvas"></div>
+
+    <div class="th-readouts">
+      <div class="th-readout"><small>Mass</small><div class="th-ro small" id="l5DM">-</div></div>
+      <div class="th-readout"><small>Volume</small><div class="th-ro small" id="l5DV">-</div></div>
+      <div class="th-readout"><small>Density now</small><div class="th-ro" id="l5DRho">-</div></div>
+      <div class="th-readout"><small>Approx vs exact</small><div class="th-ro small" id="l5DCmp">-</div></div>
+    </div>
+
+    <div class="th-work">
+      <div class="th-work-lab">The binomial does the work</div>
+      <div class="th-work-line" id="l5DWork"></div>
+    </div>
+
+    <div class="th-keybox">
+      <b>Watch the two bars.</b> The mass bar never moves - no atoms leave. The volume bar grows, so the density bar must fall by the same fraction. And the shortcut ρ(1 − γΔT) stays within a hair of the exact answer, because γΔT is tiny.
+    </div>
+  </section>
+
+  <!-- =========== 2 · WATER BREAKS THE RULES =========== -->
+  <section id="water" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">Water Breaks the Rules</div>
+        <div class="scr-sub">From 0 to 4 °C it contracts as it warms. Then it saves the fish.</div>
+      </div>
+    </div>
+
+    <div class="th-chips" id="l5WTabs">
+      <button class="th-chip active" data-pane="l5WA">1 · The strange curve</button>
+      <button class="th-chip" data-pane="l5WB">2 · Why lakes freeze from the top</button>
+    </div>
+
+    <div class="th-pane active" id="l5WA">
+      <div class="th-controls">
+        <div class="th-ctrl">
+          <label>Temperature of the water <span class="th-val" id="l5WTVal">10 °C</span></label>
+          <input type="range" id="l5WT" min="0" max="20" step="0.1" value="10">
+        </div>
+        <div class="th-btns">
+          <button class="th-btn" id="l5WNorm">⇄ Pretend water were normal</button>
+        </div>
+      </div>
+
+      <div class="th-canvas" id="l5CurveCanvas"></div>
+
+      <div class="th-readouts">
+        <div class="th-readout"><small>Density</small><div class="th-ro" id="l5WRho">-</div></div>
+        <div class="th-readout"><small>Volume of 1 kg</small><div class="th-ro small" id="l5WVol">-</div></div>
+        <div class="th-readout"><small>Right now it is</small><div class="th-ro small" id="l5WNote">-</div></div>
+        <div class="th-readout"><small>Densest at</small><div class="th-ro small">4 °C · 1000 kg/m³</div></div>
+      </div>
+
+      <div class="th-keybox">
+        <b>Drag slowly from 0 to 10 and watch the beaker level.</b> It falls, bottoms out at 4 °C, then rises again - warming the water SHRANK it for the first four degrees. Every other liquid follows the dashed line.
+      </div>
+    </div>
+
+    <div class="th-pane" id="l5WB">
+      <div class="th-controls">
+        <div class="th-ctrl">
+          <label>Air above the lake <span class="th-val" id="l5LAirVal">−10 °C</span></label>
+          <input type="range" id="l5LAir" min="-15" max="10" step="1" value="-10">
+        </div>
+        <div class="th-btns">
+          <button class="th-btn primary" id="l5LRun">▶ Start the winter</button>
+          <button class="th-btn" id="l5LStep">↦ Nudge it forward</button>
+          <button class="th-btn" id="l5LRst">↺ Back to autumn</button>
+        </div>
+      </div>
+
+      <div class="th-canvas" id="l5LakeCanvas"></div>
+
+      <div class="th-readouts">
+        <div class="th-readout"><small>Surface water</small><div class="th-ro" id="l5LSurf">-</div></div>
+        <div class="th-readout"><small>Bottom water</small><div class="th-ro" id="l5LBot">-</div></div>
+        <div class="th-readout"><small>Ice thickness</small><div class="th-ro small" id="l5LIce">-</div></div>
+        <div class="th-readout"><small>Where we are</small><div class="th-ro small" id="l5LPhase">-</div></div>
+      </div>
+
+      <div class="th-keybox">
+        <b>Nothing here is scripted - the layers just follow the density curve.</b> While the surface is above 4 °C, cooling makes it denser, so it sinks and the lake stirs itself. The moment the whole lake hits 4 °C, cold water floats instead, convection dies, the top freezes - and the ice lid keeps the bottom at 4 °C all winter.
+      </div>
+    </div>
+  </section>
+
+  <!-- =========== 3 · THE OVERFLOWING FLASK =========== -->
+  <section id="flask" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">The Overflowing Flask</div>
+        <div class="scr-sub">You never see a liquid's real expansion - the measuring cup is growing too.</div>
+      </div>
+    </div>
+
+    <div class="th-controls">
+      <div class="th-btns" id="l5FLiq">
+        <button class="th-btn on" data-liq="hg">Mercury in glass</button>
+        <button class="th-btn" data-liq="gly">Glycerine in glass</button>
+      </div>
+      <div class="th-ctrl">
+        <label>Heat the whole thing to <span class="th-val" id="l5FTVal">50 °C</span></label>
+        <input type="range" id="l5FT" min="0" max="100" step="1" value="50">
+      </div>
+    </div>
+
+    <div class="th-canvas" id="l5FlaskCanvas"></div>
+
+    <div class="th-readouts">
+      <div class="th-readout"><small>Liquid grew by</small><div class="th-ro small" id="l5FHg">-</div></div>
+      <div class="th-readout"><small>Flask grew by</small><div class="th-ro small" id="l5FGl">-</div></div>
+      <div class="th-readout"><small>Overflow = difference</small><div class="th-ro" id="l5FOver">-</div></div>
+      <div class="th-readout"><small>What you SEE is</small><div class="th-ro small">apparent expansion</div></div>
+    </div>
+
+    <div class="th-work">
+      <div class="th-work-lab">The one-line route</div>
+      <div class="th-work-line" id="l5FWork"></div>
+    </div>
+
+    <div class="th-keybox">
+      <b>The glass hides its 3.</b> Flask data always arrives as α, liquid data as γ - circle which is which before touching anything, because γ_glass = 3α_glass and forgetting the 3 is the most-missed step in this entire problem type.
+    </div>
+  </section>
+
+  <!-- =========== 4 · LIGHTER UNDER WATER? =========== -->
+  <section id="weigh" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">Lighter Under Water?</div>
+        <div class="scr-sub">The block swells. The liquid thins. Whichever expands faster wins.</div>
+      </div>
+    </div>
+
+    <div class="th-controls">
+      <div class="th-btns" id="l5GPre">
+        <button class="th-btn" data-pre="solid">Solid expands faster</button>
+        <button class="th-btn on" data-pre="liquid">Liquid expands faster (usual)</button>
+        <button class="th-btn" data-pre="equal">Exactly equal</button>
+      </div>
+      <div class="th-ctrl">
+        <label>γ of the solid <span class="th-val" id="l5GSVal">6 × 10⁻⁵</span></label>
+        <input type="range" id="l5GS" min="1" max="60" step="1" value="6">
+      </div>
+      <div class="th-ctrl">
+        <label>γ of the liquid <span class="th-val" id="l5GLVal">50 × 10⁻⁵</span></label>
+        <input type="range" id="l5GL" min="1" max="60" step="1" value="50">
+      </div>
+      <div class="th-ctrl">
+        <label>Heat both by <span class="th-val" id="l5GTVal">+100 °C</span></label>
+        <input type="range" id="l5GT" min="0" max="200" step="5" value="100">
+      </div>
+    </div>
+
+    <div class="th-canvas" id="l5WeighCanvas"></div>
+
+    <div class="th-readouts">
+      <div class="th-readout"><small>Upthrust</small><div class="th-ro small" id="l5GF">-</div></div>
+      <div class="th-readout"><small>Scale reads</small><div class="th-ro" id="l5GW">-</div></div>
+      <div class="th-readout"><small>So on heating it</small><div class="th-ro small" id="l5GDir">-</div></div>
+    </div>
+
+    <div class="th-work">
+      <div class="th-work-lab">The competition, in one ratio</div>
+      <div class="th-work-line" id="l5GWork"></div>
+    </div>
+
+    <div class="th-keybox">
+      <b>Set the two γ sliders equal and heat away.</b> The swelling and the thinning cancel exactly and the scale does not move - that is not a trick, it is the middle case. In practice the liquid nearly always wins, so apparent weight usually goes UP.
+    </div>
+  </section>
+
+  <!-- =========== 5 · FLOAT HIGHER OR LOWER =========== -->
+  <section id="float" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">Float Higher or Lower</div>
+        <div class="scr-sub">The fraction under the surface is just a ratio of densities.</div>
+      </div>
+    </div>
+
+    <div class="th-chips" id="l5FTabs">
+      <button class="th-chip active" data-pane="l5FA">1 · The race of the gammas</button>
+      <button class="th-chip" data-pane="l5FB">2 · Wood on 0-10 °C water</button>
+    </div>
+
+    <div class="th-pane active" id="l5FA">
+      <div class="th-controls">
+        <div class="th-ctrl">
+          <label>γ of the solid <span class="th-val" id="l5FsVal">6 × 10⁻⁵</span></label>
+          <input type="range" id="l5Fs" min="1" max="60" step="1" value="6">
+        </div>
+        <div class="th-ctrl">
+          <label>γ of the liquid <span class="th-val" id="l5FlVal">18 × 10⁻⁵</span></label>
+          <input type="range" id="l5Fl" min="1" max="60" step="1" value="18">
+        </div>
+        <div class="th-ctrl">
+          <label>Heat both by <span class="th-val" id="l5FdTVal">+100 °C</span></label>
+          <input type="range" id="l5FdT" min="0" max="200" step="5" value="100">
+        </div>
+      </div>
+
+      <div class="th-canvas" id="l5FloatCanvas"></div>
+
+      <div class="th-readouts">
+        <div class="th-readout"><small>Fraction under, cold</small><div class="th-ro small" id="l5FF0">-</div></div>
+        <div class="th-readout"><small>Fraction under, hot</small><div class="th-ro" id="l5FF1">-</div></div>
+        <div class="th-readout"><small>So the block</small><div class="th-ro small" id="l5FDir">-</div></div>
+      </div>
+
+      <div class="th-work">
+        <div class="th-work-lab">Same ratio as the last screen - upside down</div>
+        <div class="th-work-line" id="l5FAWork"></div>
+      </div>
+
+      <div class="th-keybox">
+        <b>Compare with the last screen and notice the inequality has FLIPPED.</b> There, the faster-expanding solid got lighter. Here, the faster-expanding liquid makes the block sit LOWER - a thinner liquid supports less, so more block must go under. Don't memorise either box; re-derive the direction every time.
+      </div>
+    </div>
+
+    <div class="th-pane" id="l5FB">
+      <div class="th-controls">
+        <div class="th-ctrl">
+          <label>Water temperature <span class="th-val" id="l5FWTVal">0.0 °C</span></label>
+          <input type="range" id="l5FWT" min="0" max="10" step="0.1" value="0">
+        </div>
+        <div class="th-btns">
+          <button class="th-btn primary" id="l5FWRun">▶ Warm it 0 → 10 °C</button>
+        </div>
+      </div>
+
+      <div class="th-canvas" id="l5WoodCanvas"></div>
+
+      <div class="th-readouts">
+        <div class="th-readout"><small>Water density</small><div class="th-ro small" id="l5FWRho">-</div></div>
+        <div class="th-readout"><small>Fraction above water</small><div class="th-ro" id="l5FWAb">-</div></div>
+        <div class="th-readout"><small>Block rides highest at</small><div class="th-ro small" id="l5FWMax">4 °C</div></div>
+      </div>
+
+      <div class="th-keybox">
+        <b>The exam question, answered by the curve.</b> From 0 to 4 °C the water gets denser, so the block rises; past 4 °C it thins again, so the block settles back down. The fraction above water peaks exactly at 4 °C - the graph draws itself as you warm it.
+      </div>
+    </div>
+  </section>
+
+  <script>import '../../scripts/liquids-and-floating';</script>
+</StudioLayout>
