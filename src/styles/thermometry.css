@@ -39,6 +39,13 @@
 .ic-weigh{background:linear-gradient(135deg,#b45309,#fbbf24);}
 .ic-float{background:linear-gradient(135deg,#065f46,#10b981);}
 
+/* ── apparent expansion tile icons ── */
+.ic-cup{background:linear-gradient(135deg,#0f2647,#00A0E3);}
+.ic-cases{background:linear-gradient(135deg,#5b21b6,#a855f7);}
+.ic-spill{background:linear-gradient(135deg,#9f1239,#fb7185);}
+.ic-gap{background:linear-gradient(135deg,#b45309,#fbbf24);}
+.ic-drill{background:linear-gradient(135deg,#0f766e,#14b8a6);}
+
 /* ── pane tabs ── */
 .th-chips{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:22px;}
 .th-chip{

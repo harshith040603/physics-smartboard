@@ -1,0 +1,378 @@
+---
+import StudioLayout from '../../layouts/StudioLayout.astro';
+import '../../styles/thermometry.css';
+---
+<StudioLayout title="Apparent Expansion - Physics with Harshith" chapterChip="Physics · Thermometry">
+
+  <!-- =========== HOME =========== -->
+  <section id="home" class="screen active">
+    <div class="hero">
+      <h1>Apparent <span class="accent">Expansion</span></h1>
+      <p>You can never watch a liquid expand on its own - it has to sit in a container, and the container is growing too. What you see is only the difference. Four animations to make that one idea unforgettable, then seven problems and the homework.</p>
+      <div style="margin-top:16px;">
+        <button class="th-btn" onclick="location.href='/thermometry/liquids-and-floating'">‹ Liquids and Floating</button>
+        <button class="th-btn" onclick="location.href='/thermometry'">Back to Thermometry</button>
+      </div>
+    </div>
+    <div class="grid">
+
+      <div class="tile" onclick="go('problem')">
+        <div class="tile-num">01</div>
+        <div class="tile-icon ic-cup"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v18h12V3"/><path d="M6 11h12"/><path d="M3 8l3-3M21 8l-3-3" stroke-dasharray="2 2"/></svg></div>
+        <h3>The Measurement Problem</h3>
+        <p>Heat the liquid alone, heat the glass alone, then heat both. The level you SEE is the first minus the second - every time.</p>
+        <span class="tile-go">Start ›</span>
+      </div>
+
+      <div class="tile" onclick="go('cases')">
+        <div class="tile-num">02</div>
+        <div class="tile-icon ic-cases"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17V7M12 17V12M19 17V15"/><path d="M3 7l2-3 2 3M17 15l2 3 2-3"/><path d="M9 12h6"/></svg></div>
+        <h3>Rises, Stays or Falls</h3>
+        <p>Pick a liquid and a container. Heat them. The level can rise, freeze in place, or even drop - and one line of algebra says which.</p>
+        <span class="tile-go">Start ›</span>
+      </div>
+
+      <div class="tile" onclick="go('overflow')">
+        <div class="tile-num">03</div>
+        <div class="tile-icon ic-spill"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4v16h10V4"/><path d="M4 8h10"/><path d="M17 10v3M17 16v3" /><path d="M16 22h5"/></svg></div>
+        <h3>How Much Spills?</h3>
+        <p>Brim-full flask, heat it, catch the overflow in a cup. The one-line formula, and the wrong answer you get by forgetting the 3.</p>
+        <span class="tile-go">Start ›</span>
+      </div>
+
+      <div class="tile" onclick="go('gap')">
+        <div class="tile-num">04</div>
+        <div class="tile-icon ic-gap"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3v18h14V3"/><path d="M5 13h14"/><path d="M8 8h8M8 10h8" stroke-dasharray="2 2"/></svg></div>
+        <h3>The Gap That Never Changes</h3>
+        <p>Partly fill a vessel so the empty space stays exactly the same on heating. Find the one fill fraction that works, and why.</p>
+        <span class="tile-go">Start ›</span>
+      </div>
+
+      <div class="tile" onclick="go('drill')">
+        <div class="tile-num">05</div>
+        <div class="tile-icon ic-drill"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 15l2 2 4-4"/></svg></div>
+        <h3>Seven Problems, Then Homework</h3>
+        <p>The full drill from the lecture with solutions on tap, the three-case box, and the seven homework questions with an answer key.</p>
+        <span class="tile-go">Start ›</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========== 1 · THE MEASUREMENT PROBLEM =========== -->
+  <section id="problem" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">The Measurement Problem</div>
+        <div class="scr-sub">To heat a liquid you must put it in something. Now heat the whole thing.</div>
+      </div>
+    </div>
+
+    <div class="th-controls">
+      <div class="th-btns" id="aePLiq">
+        <button class="th-btn on" data-liq="hg">Mercury in glass</button>
+        <button class="th-btn" data-liq="gly">Glycerine in glass</button>
+      </div>
+      <div class="th-ctrl">
+        <label>Heat everything by ΔT <span class="th-val" id="aePTVal">+0 °C</span></label>
+        <input type="range" id="aePT" min="0" max="100" step="1" value="0">
+      </div>
+      <div class="th-btns">
+        <button class="th-btn primary" id="aePPlay">▶ Heat it 0 → 100 °C</button>
+        <button class="th-btn" id="aePReset">Reset</button>
+      </div>
+    </div>
+
+    <div class="th-canvas" id="aeProbCanvas"></div>
+
+    <div class="th-readouts">
+      <div class="th-readout"><small>Liquid really expands by</small><div class="th-ro small" id="aePReal">-</div></div>
+      <div class="th-readout"><small>Glass makes extra room</small><div class="th-ro small" id="aePCont">-</div></div>
+      <div class="th-readout"><small>Rise you actually SEE</small><div class="th-ro" id="aePApp">-</div></div>
+      <div class="th-readout"><small>Real vs apparent</small><div class="th-ro small">real is always bigger</div></div>
+    </div>
+
+    <div class="th-work">
+      <div class="th-work-lab">Two names, one subtraction</div>
+      <div class="th-work-line" id="aePWork1"></div>
+      <div class="th-work-line" id="aePWork2"></div>
+    </div>
+
+    <div class="th-keybox">
+      <b>This is the whole idea.</b> You never see a liquid's real expansion, because your measuring cup is growing along with it. The container "absorbs" part of the expansion, so what you observe is always the difference: γ_apparent = γ_real − γ_container. Rearranged, γ_real = γ_apparent + γ_container - JEE gives you two of the three and asks for the third.
+    </div>
+  </section>
+
+  <!-- =========== 2 · RISES, STAYS OR FALLS =========== -->
+  <section id="cases" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">Rises, Stays or Falls</div>
+        <div class="scr-sub">The race between the liquid and its container. Whoever expands faster decides the level.</div>
+      </div>
+    </div>
+
+    <div class="th-controls">
+      <div class="th-btns" id="aeCPre">
+        <button class="th-btn on" data-pre="rise">Mercury in glass</button>
+        <button class="th-btn" data-pre="same">Problem 5 · exactly equal</button>
+        <button class="th-btn" data-pre="fall">Container wins</button>
+      </div>
+      <div class="th-ctrl">
+        <label>Liquid γ_real <span class="th-val" id="aeCGLVal">18.0 × 10⁻⁵</span></label>
+        <input type="range" id="aeCGL" min="0" max="40" step="0.2" value="18">
+      </div>
+      <div class="th-ctrl">
+        <label>Container α (linear!) <span class="th-val" id="aeCAVal">0.9 × 10⁻⁵</span></label>
+        <input type="range" id="aeCA" min="0" max="3" step="0.1" value="0.9">
+      </div>
+      <div class="th-btns">
+        <button class="th-btn primary" id="aeCPlay">▶ Heat it 0 → 100 °C</button>
+        <button class="th-btn" id="aeCReset">Reset</button>
+      </div>
+    </div>
+
+    <div class="th-canvas" id="aeCaseCanvas"></div>
+
+    <div class="th-readouts">
+      <div class="th-readout"><small>γ_container = 3α</small><div class="th-ro small" id="aeCGC">-</div></div>
+      <div class="th-readout"><small>γ_apparent = γ_real − γ_c</small><div class="th-ro small" id="aeCGA">-</div></div>
+      <div class="th-readout"><small>So the level</small><div class="th-ro" id="aeCVerdict">-</div></div>
+    </div>
+
+    <div class="th-work">
+      <div class="th-work-lab">Sign decides direction</div>
+      <div class="th-work-line" id="aeCWork"></div>
+    </div>
+
+    <div class="th-keybox">
+      <b>The three-case box.</b> γ_real &gt; γ_container → level RISES (or overflows). γ_real = γ_container → level UNCHANGED, because the vessel grows precisely as fast as the liquid. γ_real &lt; γ_container → level FALLS. That last case is real: some liquids in some containers appear to CONTRACT on heating, because the container outruns them.
+    </div>
+  </section>
+
+  <!-- =========== 3 · HOW MUCH SPILLS? =========== -->
+  <section id="overflow" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">How Much Spills?</div>
+        <div class="scr-sub">Filled to the brim, heated, and caught in a cup. The overflow IS the apparent expansion.</div>
+      </div>
+    </div>
+
+    <div class="th-controls">
+      <div class="th-btns" id="aeOPre">
+        <button class="th-btn on" data-pre="p1">Problem 1 · 1000 cm³ mercury in glass</button>
+        <button class="th-btn" data-pre="p4">Problem 4 · 500 cm³ glycerine in glass</button>
+      </div>
+      <div class="th-ctrl">
+        <label>Heat it by ΔT <span class="th-val" id="aeOTVal">+0 °C</span></label>
+        <input type="range" id="aeOT" min="0" max="100" step="1" value="0">
+      </div>
+      <div class="th-btns">
+        <button class="th-btn primary" id="aeOPlay">▶ Heat it 0 → 100 °C</button>
+        <button class="th-btn" id="aeOReset">Reset</button>
+      </div>
+    </div>
+
+    <div class="th-canvas" id="aeOverCanvas"></div>
+
+    <div class="th-readouts">
+      <div class="th-readout"><small>Circle it: α_glass → γ_glass</small><div class="th-ro small" id="aeOGC">-</div></div>
+      <div class="th-readout"><small>γ_apparent</small><div class="th-ro small" id="aeOGA">-</div></div>
+      <div class="th-readout"><small>Spilled</small><div class="th-ro" id="aeOSpill">-</div></div>
+      <div class="th-readout"><small>If you forgot the 3</small><div class="th-ro bad" id="aeOWrong">-</div></div>
+    </div>
+
+    <div class="th-work">
+      <div class="th-work-lab">The one-line way</div>
+      <div class="th-work-line" id="aeOWork"></div>
+    </div>
+
+    <div class="th-keybox">
+      <b>Trap 1 - the most missed step.</b> Container data is almost always given as α (linear). Liquid data is almost always given as γ (volume). You need BOTH as γ, so γ_container = 3α. Physically circle which is which on your paper before you write anything. The red number above is the clean-looking wrong answer you get without the 3.
+    </div>
+  </section>
+
+  <!-- =========== 4 · THE GAP THAT NEVER CHANGES =========== -->
+  <section id="gap" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">The Gap That Never Changes</div>
+        <div class="scr-sub">Problem 7. Fill the vessel so the empty space stays constant at every temperature.</div>
+      </div>
+    </div>
+
+    <div class="th-controls">
+      <div class="th-btns" id="aeGRatio">
+        <button class="th-btn on" data-r="3">γ_L = 3 γ_c</button>
+        <button class="th-btn" data-r="5">γ_L = 5 γ_c</button>
+        <button class="th-btn" data-r="10">γ_L = 10 γ_c</button>
+      </div>
+      <div class="th-ctrl">
+        <label>Fill the vessel to <span class="th-val" id="aeGFVal">50 %</span></label>
+        <input type="range" id="aeGF" min="5" max="95" step="0.5" value="50">
+      </div>
+      <div class="th-ctrl">
+        <label>Heat it by ΔT <span class="th-val" id="aeGTVal">+0 °C</span></label>
+        <input type="range" id="aeGT" min="0" max="100" step="1" value="0">
+      </div>
+      <div class="th-btns">
+        <button class="th-btn primary" id="aeGPlay">▶ Heat it 0 → 100 °C</button>
+        <button class="th-btn" id="aeGSnap">Snap to the sweet spot</button>
+      </div>
+    </div>
+
+    <div class="th-canvas" id="aeGapCanvas"></div>
+
+    <div class="th-readouts">
+      <div class="th-readout"><small>Vessel grows by</small><div class="th-ro small" id="aeGVes">-</div></div>
+      <div class="th-readout"><small>Liquid grows by</small><div class="th-ro small" id="aeGLiq">-</div></div>
+      <div class="th-readout"><small>Empty space</small><div class="th-ro" id="aeGGap">-</div></div>
+      <div class="th-readout"><small>Sweet spot V_L / V = γ_c / γ_L</small><div class="th-ro small" id="aeGSweet">-</div></div>
+    </div>
+
+    <div class="th-work">
+      <div class="th-work-lab">The physics is one sentence</div>
+      <div class="th-work-line" id="aeGWork"></div>
+    </div>
+
+    <div class="th-keybox">
+      <b>Say the sentence before writing anything.</b> The empty space stays constant only if the liquid's expansion exactly equals the WHOLE container's expansion: V_L γ_L ΔT = V γ_c ΔT. Once you have said that, V_L = V γ_c / γ_L writes itself. This is the JEE pattern where reasoning beats computation.
+    </div>
+  </section>
+
+  <!-- =========== 5 · DRILL =========== -->
+  <section id="drill" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">Seven Problems, Then Homework</div>
+        <div class="scr-sub">Circle your coefficients first, every time. Tap a card to check.</div>
+      </div>
+    </div>
+
+    <div class="th-chips" id="aeDTabs">
+      <button class="th-chip active" data-pane="aeDA">Worked problems · 7</button>
+      <button class="th-chip" data-pane="aeDB">Homework · 7</button>
+      <button class="th-chip" data-pane="aeDC">Everything in one box</button>
+    </div>
+
+    <div class="th-pane active" id="aeDA">
+      <div class="th-hw" role="button" tabindex="0">
+        <div class="th-hw-q"><span class="th-hw-n">1</span>A glass flask of volume 1000 cm³ is completely filled with mercury at 0 °C. Both are heated to 100 °C. How much mercury overflows? γ_Hg = 1.8 × 10⁻⁴ °C⁻¹, α_glass = 9 × 10⁻⁶ °C⁻¹.</div>
+        <div class="th-hw-sol">
+          CIRCLE: mercury is γ ✓, glass is α ✗ → γ_glass = 3 × 9 × 10⁻⁶ = 2.7 × 10⁻⁵<br>
+          V_spilt = V(γ_L − γ_c)ΔT = 1000 × (1.8 × 10⁻⁴ − 2.7 × 10⁻⁵) × 100 = 1000 × 1.53 × 10⁻⁴ × 100 = <b>15.3 cm³</b><br>
+          <b>The trap:</b> using 9 × 10⁻⁶ directly gives 17.1 cm³ - a clean-looking wrong answer.
+        </div>
+      </div>
+
+      <div class="th-hw" role="button" tabindex="0">
+        <div class="th-hw-q"><span class="th-hw-n">2</span>The coefficient of apparent expansion of a liquid in a copper vessel is 3.0 × 10⁻⁴ °C⁻¹. Find its REAL coefficient. α_copper = 1.7 × 10⁻⁵ °C⁻¹.</div>
+        <div class="th-hw-sol">
+          γ_copper = 3 × 1.7 × 10⁻⁵ = 5.1 × 10⁻⁵<br>
+          γ_real = γ_apparent + γ_container = 3.0 × 10⁻⁴ + 5.1 × 10⁻⁵ = <b>3.51 × 10⁻⁴ °C⁻¹</b><br>
+          <b>Sanity check:</b> real is BIGGER than apparent. Always. The container hides part of the expansion.
+        </div>
+      </div>
+
+      <div class="th-hw" role="button" tabindex="0">
+        <div class="th-hw-q"><span class="th-hw-n">3</span>The apparent expansion coefficient of a liquid is 2.4 × 10⁻⁴ in a glass vessel and 2.0 × 10⁻⁴ in a metal vessel. If γ_glass = 2.7 × 10⁻⁵, find γ_metal.</div>
+        <div class="th-hw-sol">
+          The LIQUID is the same in both, so γ_real is the same.<br>
+          In glass: γ_real = 2.4 × 10⁻⁴ + 2.7 × 10⁻⁵ = 2.67 × 10⁻⁴<br>
+          In metal: 2.67 × 10⁻⁴ = 2.0 × 10⁻⁴ + γ_metal → γ_metal = 0.67 × 10⁻⁴ = <b>6.7 × 10⁻⁵ °C⁻¹</b><br>
+          <b>Key insight:</b> γ_real is a bridge between the two situations. Find it once, use it twice.
+        </div>
+      </div>
+
+      <div class="th-hw" role="button" tabindex="0">
+        <div class="th-hw-q"><span class="th-hw-n">4</span>A glass vessel of volume 500 cm³ is filled to the brim with glycerine at 20 °C. On heating, 12 cm³ overflows. Find the final temperature. γ_glycerine = 4.9 × 10⁻⁴, α_glass = 9 × 10⁻⁶.</div>
+        <div class="th-hw-sol">
+          γ_glass = 2.7 × 10⁻⁵ → γ_apparent = 4.9 × 10⁻⁴ − 2.7 × 10⁻⁵ = 4.63 × 10⁻⁴<br>
+          V_spilt = V γ_app ΔT → 12 = 500 × 4.63 × 10⁻⁴ × ΔT = 0.2315 ΔT → ΔT = 51.8 °C<br>
+          Final temperature = 20 + 51.8 = <b>≈ 71.8 °C</b>
+        </div>
+      </div>
+
+      <div class="th-hw" role="button" tabindex="0">
+        <div class="th-hw-q"><span class="th-hw-n">5</span><i>Conceptual twist.</i> A liquid of γ_real = 5.4 × 10⁻⁵ is placed in a vessel made of a metal with α = 1.8 × 10⁻⁵. What happens to the liquid level on heating?</div>
+        <div class="th-hw-sol">
+          γ_metal = 3 × 1.8 × 10⁻⁵ = 5.4 × 10⁻⁵<br>
+          γ_apparent = γ_real − γ_container = 5.4 × 10⁻⁵ − 5.4 × 10⁻⁵ = 0<br>
+          <b>The level does NOT change at all.</b> The vessel grows precisely as fast as the liquid. This is not a trick - it is the middle case, and JEE likes it because students assume something must move.
+        </div>
+      </div>
+
+      <div class="th-hw" role="button" tabindex="0">
+        <div class="th-hw-q"><span class="th-hw-n">6</span>A vessel is filled with a liquid at 0 °C. On heating to 100 °C, 2% of the liquid overflows. Find the apparent coefficient of expansion of the liquid.</div>
+        <div class="th-hw-sol">
+          V_spilt / V = 0.02 and V_spilt = V γ_app ΔT<br>
+          0.02 V = V × γ_app × 100 → γ_app = 0.02 / 100 = <b>2 × 10⁻⁴ °C⁻¹</b><br>
+          <b>Note:</b> a PERCENTAGE overflow cancels V straight out. You never need the actual volume.
+        </div>
+      </div>
+
+      <div class="th-hw" role="button" tabindex="0">
+        <div class="th-hw-q"><span class="th-hw-n">7</span>A vessel of volume V is partly filled with a liquid. On heating, the volume of the EMPTY SPACE remains constant at all temperatures. If γ_L and γ_c are the coefficients for the liquid and container, find the volume of liquid.</div>
+        <div class="th-hw-sol">
+          Let the liquid volume be V_L. For the empty space to stay constant, the liquid and the container must expand by the SAME absolute amount:<br>
+          V_L γ_L ΔT = V γ_c ΔT → <b>V_L = V γ_c / γ_L</b><br>
+          <b>The reasoning is what matters.</b> Once you say "the liquid's expansion equals the whole container's expansion", the equation writes itself.
+        </div>
+      </div>
+    </div>
+
+    <div class="th-pane" id="aeDB">
+      <div class="th-hw" role="button" tabindex="0">
+        <div class="th-hw-q"><span class="th-hw-n">1</span>A glass flask of 200 cm³ is filled with mercury at 20 °C. How much overflows at 100 °C? γ_Hg = 1.8 × 10⁻⁴, α_glass = 9 × 10⁻⁶.</div>
+        <div class="th-hw-sol">γ_glass = 2.7 × 10⁻⁵<br>V_spilt = 200 × (1.8 × 10⁻⁴ − 2.7 × 10⁻⁵) × 80 = <b>2.45 cm³</b></div>
+      </div>
+      <div class="th-hw" role="button" tabindex="0">
+        <div class="th-hw-q"><span class="th-hw-n">2</span>The apparent coefficient of a liquid in a silver vessel is 3.2 × 10⁻⁴. Find γ_real. α_silver = 1.9 × 10⁻⁵.</div>
+        <div class="th-hw-sol">γ_silver = 5.7 × 10⁻⁵<br>γ_real = 3.2 × 10⁻⁴ + 5.7 × 10⁻⁵ = <b>3.77 × 10⁻⁴ °C⁻¹</b></div>
+      </div>
+      <div class="th-hw" role="button" tabindex="0">
+        <div class="th-hw-q"><span class="th-hw-n">3</span>A liquid has apparent coefficient 1.4 × 10⁻⁴ in vessel A and 1.5 × 10⁻⁴ in vessel B. If α_A = 2 × 10⁻⁵, find α_B.</div>
+        <div class="th-hw-sol">γ_A = 6 × 10⁻⁵ → γ_real = 1.4 × 10⁻⁴ + 6 × 10⁻⁵ = 2.0 × 10⁻⁴<br>γ_B = 2.0 × 10⁻⁴ − 1.5 × 10⁻⁴ = 5 × 10⁻⁵ → α_B = 5 × 10⁻⁵ / 3 = <b>1.67 × 10⁻⁵ °C⁻¹</b></div>
+      </div>
+      <div class="th-hw" role="button" tabindex="0">
+        <div class="th-hw-q"><span class="th-hw-n">4</span>A 250 cm³ glass vessel is full of a liquid at 10 °C. At 90 °C, 5 cm³ overflows. Find γ_real of the liquid. α_glass = 9 × 10⁻⁶.</div>
+        <div class="th-hw-sol">γ_app = 5 / (250 × 80) = 2.5 × 10⁻⁴<br>γ_real = 2.5 × 10⁻⁴ + 2.7 × 10⁻⁵ = <b>2.77 × 10⁻⁴ °C⁻¹</b></div>
+      </div>
+      <div class="th-hw" role="button" tabindex="0">
+        <div class="th-hw-q"><span class="th-hw-n">5</span>On heating from 0 °C to 100 °C, 1.5% of a liquid overflows from a vessel. Find its apparent coefficient.</div>
+        <div class="th-hw-sol">γ_app = 0.015 / 100 = <b>1.5 × 10⁻⁴ °C⁻¹</b></div>
+      </div>
+      <div class="th-hw" role="button" tabindex="0">
+        <div class="th-hw-q"><span class="th-hw-n">6</span>A vessel of volume V is filled with a liquid such that the empty space stays constant on heating. If γ_L = 3γ_c, find the fraction of the vessel that is filled.</div>
+        <div class="th-hw-sol">V_L = V γ_c / γ_L = V γ_c / (3γ_c) = V/3 → <b>one-third filled</b></div>
+      </div>
+      <div class="th-hw" role="button" tabindex="0">
+        <div class="th-hw-q"><span class="th-hw-n">7</span><i>Conceptual.</i> Can the level of a liquid in a container FALL on heating? Under what condition?</div>
+        <div class="th-hw-sol"><b>Yes</b> - if γ_container &gt; γ_real. The vessel outruns the liquid, so the level drops.</div>
+      </div>
+    </div>
+
+    <div class="th-pane" id="aeDC">
+      <div class="th-work">
+        <div class="th-work-lab">Everything in one box</div>
+        <div class="th-work-line" id="aeDBox1"></div>
+        <div class="th-work-line" id="aeDBox2"></div>
+        <div class="th-work-line" id="aeDBox3"></div>
+      </div>
+      <div class="th-keybox">
+        <b>Three things to walk out with.</b> One - you never see a liquid's real expansion, because your container is growing too; what you see is the difference. Two - circle whether each coefficient is α or γ before you write anything, and multiply the container's α by three. Three - real is always bigger than apparent; use that as your sanity check on every single answer.
+      </div>
+      <div class="th-keybox">
+        <b>Trap 2 - relative sizes.</b> Liquids have γ ~ 10⁻⁴; solids have γ ~ 10⁻⁵, about ten times smaller. So γ_apparent is CLOSE to γ_real but not equal to it. The container correction is small. It is also examinable. Never drop it.
+      </div>
+    </div>
+  </section>
+
+  <script>import '../../scripts/apparent-expansion';</script>
+</StudioLayout>
