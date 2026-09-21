@@ -45,4 +45,13 @@ export const chapters: Chapter[] = [
     status: 'ready',
     activities: 13,
   },
+  {
+    slug: 'heat-transfer',
+    num: '05',
+    title: 'Heat ',
+    titleAccent: 'Transfer',
+    blurb: 'Conduction, convection and radiation - pins falling off a heated rod, dye tracing the currents in boiling water, and a black can that beats a shiny one even in a vacuum.',
+    status: 'ready',
+    activities: 3,
+  },
 ];

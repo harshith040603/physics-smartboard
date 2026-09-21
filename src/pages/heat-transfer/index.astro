@@ -1,0 +1,230 @@
+---
+import StudioLayout from '../../layouts/StudioLayout.astro';
+import '../../styles/thermometry.css';
+import '../../styles/heat-transfer.css';
+---
+<StudioLayout title="Heat Transfer - Physics with Harshith" chapterChip="Physics · Heat Transfer">
+
+  <!-- =========== HOME =========== -->
+  <section id="home" class="screen active">
+    <div class="hero">
+      <h1>Heat <span class="accent">Transfer</span></h1>
+      <p>Heat always flows from hot to cold. The only question is how it travels - passed along from particle to particle, carried by a moving fluid, or thrown across empty space as a wave.</p>
+    </div>
+    <div class="grid">
+
+      <div class="tile" onclick="go('modes')">
+        <div class="tile-num">01</div>
+        <div class="tile-icon ic-modes"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7h9"/><path d="M4 7v3M7 7v3M10 7v3"/><path d="M14 11c0-2 2-2 2-4s-2-2-2-4"/><path d="M18 11c0-2 2-2 2-4s-2-2-2-4"/><circle cx="7" cy="18" r="2.5"/><path d="M11 18c1-1.5 2 1.5 3 0s2 1.5 3 0 2 1.5 3 0"/></svg></div>
+        <h3>Conduction, Convection &amp; Radiation</h3>
+        <p>Pins drop off a heated rod one by one, purple dye traces the currents in boiling water, and a black can beats a shiny one - even in a vacuum.</p>
+        <span class="tile-go">Start ›</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========== 1 · THREE WAYS HEAT TRAVELS =========== -->
+  <section id="modes" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">Conduction, Convection &amp; Radiation</div>
+        <div class="scr-sub">Three ways heat gets from a hot place to a cold one.</div>
+      </div>
+    </div>
+
+    <div class="th-chips" id="htTabs">
+      <button class="th-chip active" data-pane="htCond">1 · Conduction</button>
+      <button class="th-chip" data-pane="htConv">2 · Convection</button>
+      <button class="th-chip" data-pane="htRad">3 · Radiation</button>
+    </div>
+
+    <!-- ── conduction ── -->
+    <div class="th-pane active" id="htCond">
+      <div class="th-controls">
+        <div class="th-btns" id="htCMode">
+          <button class="th-btn on" data-mode="single">One rod</button>
+          <button class="th-btn" data-mode="race">Race: Cu vs Al vs Fe</button>
+        </div>
+        <div class="th-btns" id="htCMat">
+          <button class="th-btn on" data-mat="Cu">Copper</button>
+          <button class="th-btn" data-mat="Al">Aluminium</button>
+          <button class="th-btn" data-mat="Fe">Iron</button>
+          <button class="th-btn" data-mat="Glass">Glass</button>
+        </div>
+        <div class="th-btns">
+          <button class="th-btn primary" id="htCFlame">🔥 Light the flame</button>
+          <button class="th-btn" id="htCSpeed">⏩ 3× speed</button>
+          <button class="th-btn" id="htCReset">↺ Reset</button>
+        </div>
+      </div>
+
+      <div class="th-canvas" id="htCondCanvas"></div>
+
+      <div class="th-readouts">
+        <div class="th-readout"><small>Lab clock</small><div class="th-ro small" id="htCRo1">0 s</div></div>
+        <div class="th-readout"><small id="htCL2">Pins fallen</small><div class="th-ro" id="htCRo2">-</div></div>
+        <div class="th-readout"><small id="htCL3">Hot end</small><div class="th-ro small" id="htCRo3">-</div></div>
+        <div class="th-readout"><small id="htCL4">Conductivity</small><div class="th-ro small" id="htCRo4">-</div></div>
+      </div>
+
+      <div class="th-keybox">
+        <b>The pin nearest the flame drops first, then the next, then the next.</b> Heat is being passed along the rod, atom to atom - nothing flows down the rod except the jiggle. Now watch the graph: the pins stop falling where the curve crosses the 60 °C line, because further out the rod loses heat to the air as fast as it receives it. Try glass: not one pin falls.
+      </div>
+
+      <div class="th-notes">
+        <div class="th-notes-head">Copy this into your notes</div>
+        <div class="th-notes-body">
+          <h4>Conduction</h4>
+          <div class="th-nbox">
+            <b>Heat passed from particle to particle, with no particle moving from its place.</b> The hot end's atoms vibrate harder and knock their neighbours, who knock theirs. It needs a medium, and works best in solids.
+          </div>
+          <p><b>Why metals win:</b> they have free electrons that race through the metal and carry the energy far faster than vibrations alone. That is why good conductors of electricity are good conductors of heat.</p>
+          <p><b>Wax-and-pins race (Ingen-Hausz):</b> identical rods, same heating. When the pins stop falling, the melted length l tells you the conductivity.</p>
+          <div class="th-nf">K₁ / K₂ = l₁² / l₂²</div>
+          <div class="ht-egs">
+            <div class="ht-eg"><b>Steel spoon in hot tea</b> - the handle gets hot, a wooden spoon's does not.</div>
+            <div class="ht-eg"><b>Cooking pans</b> - metal body to let heat in, plastic or wooden handle to keep it out.</div>
+            <div class="ht-eg"><b>Ice box</b> - thermocol walls; trapped air is a very poor conductor.</div>
+            <div class="ht-eg"><b>Woollen clothes</b> - wool traps air between fibres, so your body heat can't leak out.</div>
+          </div>
+          <div class="th-eg" role="button" tabindex="0">
+            <span class="th-eglab">Think about it</span>
+            On a cold morning an iron chair feels much colder than a wooden chair in the same room. Which one is at the lower temperature?
+            <span class="th-eghint">Tap to reveal the answer</span>
+            <div class="th-egans">
+              Neither - both are at room temperature. Iron is a good conductor, so it pulls heat out of your hand fast, and your hand reads that as "cold". Wood conducts poorly, so your hand keeps its heat. Your skin feels the rate of heat flow, not the temperature.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── convection ── -->
+    <div class="th-pane" id="htConv">
+      <div class="th-controls">
+        <div class="th-btns">
+          <button class="th-btn primary" id="htVFlame">🔥 Light the flame</button>
+          <button class="th-btn" id="htVDye">Drop a KMnO₄ crystal</button>
+          <button class="th-btn" id="htVSpeed">⏩ 3× speed</button>
+          <button class="th-btn" id="htVReset">↺ Reset</button>
+        </div>
+      </div>
+
+      <div class="th-canvas" id="htConvCanvas"></div>
+
+      <div class="th-readouts">
+        <div class="th-readout"><small>Water temperature</small><div class="th-ro" id="htVRoT">25.0 °C</div></div>
+        <div class="th-readout"><small>Currents</small><div class="th-ro small" id="htVRoStr">none</div></div>
+        <div class="th-readout ht-wide"><small>What is happening</small><div class="th-ro small" id="htVRoPh">-</div></div>
+      </div>
+
+      <div class="th-keybox">
+        <b>Red dots are water a little warmer than the rest, blue a little cooler.</b> Water over the flame warms, expands, becomes less dense and rises; cooler, denser water sinks down the sides to take its place. Drop the purple crystal off-centre and watch the colour get dragged to the middle and up - the dye shows you the loop. Keep heating: first bubbles collapse before reaching the top, then they make it all the way, and the thermometer stops at 100 °C.
+      </div>
+
+      <div class="th-notes">
+        <div class="th-notes-head">Copy this into your notes</div>
+        <div class="th-notes-body">
+          <h4>Convection</h4>
+          <div class="th-nbox">
+            <b>Heat carried by the hot fluid itself moving from one place to another.</b> Heated fluid expands, gets less dense and rises; cooler, denser fluid sinks to replace it. The loop is a convection current. Only in liquids and gases - particles in a solid can't flow.
+          </div>
+          <p><b>Needs gravity:</b> "hot rises" is really "denser fluid sinks and pushes the lighter fluid up". In an orbiting spacecraft, natural convection doesn't happen.</p>
+          <p><b>Natural vs forced:</b> natural is driven by density differences alone; forced uses a pump or fan - a car radiator, a hair dryer, a ceiling fan.</p>
+          <div class="ht-egs">
+            <div class="ht-eg"><b>Sea breeze</b> - by day land heats faster, air above it rises, cool sea air blows in. At night it reverses: land breeze.</div>
+            <div class="ht-eg"><b>Room heater low, AC high</b> - hot air rises from a heater near the floor; cold air sinks from an AC near the ceiling.</div>
+            <div class="ht-eg"><b>Freezer at the top of a fridge</b> - cold air sinks and cools everything below it.</div>
+            <div class="ht-eg"><b>Chimneys and ventilators</b> - hot smoke and stale air rise out through openings high up.</div>
+          </div>
+          <div class="th-eg" role="button" tabindex="0">
+            <span class="th-eglab">Think about it</span>
+            The flame is still on, but once the water boils the thermometer stops rising. Where is the heat going?
+            <span class="th-eghint">Tap to reveal the answer</span>
+            <div class="th-egans">
+              Into turning water into steam. At 100 °C every joule the flame gives goes into breaking molecules free of the liquid (latent heat), not into making them faster, so the temperature stays flat until all the water has boiled away.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── radiation ── -->
+    <div class="th-pane" id="htRad">
+      <div class="th-controls">
+        <div class="th-btns">
+          <button class="th-btn primary" id="htRHeat">⚡ Switch the heater on</button>
+          <button class="th-btn" id="htRPump">Pump out the air</button>
+          <button class="th-btn" id="htRScreen">Hold a screen in front of the black can</button>
+          <button class="th-btn" id="htRSpeed">⏩ 3× speed</button>
+          <button class="th-btn" id="htRReset">↺ Reset</button>
+        </div>
+      </div>
+
+      <div class="th-canvas" id="htRadCanvas"></div>
+
+      <div class="th-readouts">
+        <div class="th-readout"><small>Black can</small><div class="th-ro" id="htRRoB">25.0 °C</div></div>
+        <div class="th-readout"><small>Shiny can</small><div class="th-ro" id="htRRoS">25.0 °C</div></div>
+        <div class="th-readout"><small>Inside the jar</small><div class="th-ro small" id="htRRoAir">normal air</div></div>
+        <div class="th-readout"><small>Heater</small><div class="th-ro small" id="htRRoSrc">off</div></div>
+      </div>
+
+      <div class="th-keybox">
+        <b>Heat reaches both cans without touching them and without the air carrying it.</b> Pump the air out - the rays don't care, both cans keep heating. Hold up the screen and the black can stops warming at that very instant: radiation goes in straight lines at the speed of light. Then switch the heater off and watch which can glows back hardest - the black can cools fastest. A good absorber is a good emitter.
+      </div>
+
+      <div class="th-notes">
+        <div class="th-notes-head">Copy this into your notes</div>
+        <div class="th-notes-body">
+          <h4>Radiation</h4>
+          <div class="th-nbox">
+            <b>Heat carried by electromagnetic waves - mostly infrared.</b> No medium needed: it crosses a vacuum. It travels in straight lines at 3 × 10⁸ m/s, so a screen blocks it instantly, and it does not warm the air it passes through.
+          </div>
+          <p><b>Every body above 0 K radiates.</b> Hotter bodies radiate far more - that is why the heater glows and the cans barely do.</p>
+          <p><b>Dull black surfaces</b> are good absorbers and good emitters. <b>Shiny white or silver surfaces</b> are poor absorbers (they reflect) and poor emitters.</p>
+          <div class="ht-egs">
+            <div class="ht-eg"><b>The Sun</b> - its heat crosses 150 million km of empty space to reach us, in about 8 minutes.</div>
+            <div class="ht-eg"><b>Sitting by a bonfire</b> - your face burns while your back stays cold; the air in between isn't carrying it.</div>
+            <div class="ht-eg"><b>White clothes in summer</b> - they reflect sunlight; dark clothes absorb it and get hot.</div>
+            <div class="ht-eg"><b>Solar cookers</b> - painted black inside to soak up the Sun's radiation.</div>
+          </div>
+          <div class="th-eg" role="button" tabindex="0">
+            <span class="th-eglab">Think about it</span>
+            A thermos flask has two glass walls with a vacuum between them, and both walls are silvered. What does each feature stop?
+            <span class="th-eghint">Tap to reveal the answer</span>
+            <div class="th-egans">
+              The vacuum stops conduction and convection - there are no particles to pass the heat on or carry it. The silvering stops radiation - the shiny inner wall is a poor emitter, and the shiny outer wall reflects any radiation back in. All three routes are blocked, so hot tea stays hot.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── summary, visible on every pane ── -->
+    <div class="th-notes">
+      <div class="th-notes-head">All three side by side</div>
+      <div class="th-notes-body">
+        <div class="ht-table-wrap">
+          <table class="ht-table">
+            <thead>
+              <tr><th></th><th>Conduction</th><th>Convection</th><th>Radiation</th></tr>
+            </thead>
+            <tbody>
+              <tr><th>How</th><td>Vibrations passed particle to particle</td><td>The hot fluid itself moves</td><td>Electromagnetic (infrared) waves</td></tr>
+              <tr><th>Medium needed?</th><td>Yes - best in solids</td><td>Yes - liquids and gases only</td><td>No - works in a vacuum</td></tr>
+              <tr><th>Do particles move along?</th><td>No, they vibrate in place</td><td>Yes, bulk flow</td><td>No particles involved</td></tr>
+              <tr><th>Speed</th><td>Slow</td><td>Faster</td><td>Speed of light, 3 × 10⁸ m/s</td></tr>
+              <tr><th>Direction</th><td>Hot end to cold end</td><td>Mostly upward (needs gravity)</td><td>Straight lines, every direction</td></tr>
+              <tr><th>Example</th><td>Pins falling off a heated rod</td><td>Boiling water, sea breeze</td><td>Heat from the Sun</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>import '../../scripts/heat-transfer-studio';</script>
+</StudioLayout>
