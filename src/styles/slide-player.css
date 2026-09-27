@@ -1,0 +1,43 @@
+/* ═══════════ Slide player - an exported deck in an iframe with big Prev / Next buttons ═══════════ */
+
+.sp{display:flex;flex-direction:column;align-items:center;gap:16px;}
+.sp-stage{
+  width:min(100%, calc((100vh - 360px) * 16 / 9));min-width:min(100%, 640px);
+  aspect-ratio:16/9;background:#000;border-radius:18px;overflow:hidden;box-shadow:var(--shadow-lg);
+}
+.sp-frame{display:block;width:100%;height:100%;border:0;}
+
+.sp-bar{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}
+.sp-btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  font-family:'Bricolage Grotesque';font-weight:700;font-size:20px;
+  padding:16px 34px;min-width:170px;border-radius:14px;cursor:pointer;
+  background:#fff;color:var(--nine-dark);border:2px solid rgba(41,89,144,.2);box-shadow:var(--shadow);
+  transition:transform .15s,background .15s,border-color .15s,opacity .15s;
+}
+.sp-btn:hover{border-color:var(--nine-accent);}
+.sp-btn:active{transform:scale(.95);}
+.sp-btn.primary{background:var(--nine-accent);color:#fff;border-color:var(--nine-accent);}
+.sp-btn:disabled{opacity:.35;cursor:default;transform:none;}
+.sp-btn.sp-fs{min-width:0;padding:16px;}
+.sp-btn.sp-fs svg{width:22px;height:22px;display:block;}
+.sp-count{
+  font-family:'Bricolage Grotesque';font-weight:800;font-size:22px;color:var(--nine-navy);
+  min-width:96px;text-align:center;font-variant-numeric:tabular-nums;
+}
+
+/* Slides-only fullscreen: the deck fills the screen, buttons sit in a slim bar underneath.
+   Kept as separate rules - an unknown pseudo-class in a selector list drops the whole rule. */
+.sp:fullscreen{background:#000;gap:0;justify-content:center;}
+.sp:fullscreen .sp-stage{flex:1;width:100%;min-width:0;aspect-ratio:auto;border-radius:0;box-shadow:none;}
+.sp:fullscreen .sp-bar{padding:10px 0 14px;}
+.sp:fullscreen .sp-count{color:#fff;}
+.sp:-webkit-full-screen{background:#000;gap:0;justify-content:center;width:100%;height:100%;}
+.sp:-webkit-full-screen .sp-stage{flex:1;width:100%;min-width:0;aspect-ratio:auto;border-radius:0;box-shadow:none;}
+.sp:-webkit-full-screen .sp-bar{padding:10px 0 14px;}
+.sp:-webkit-full-screen .sp-count{color:#fff;}
+
+@media (max-width:760px){
+  .sp-btn{font-size:16px;padding:12px 18px;min-width:0;}
+  .sp-count{font-size:18px;min-width:70px;}
+}

@@ -1,0 +1,35 @@
+---
+import StudioLayout from '../../layouts/StudioLayout.astro';
+import '../../styles/slide-player.css';
+---
+<StudioLayout title="Radiation - Physics with Harshith" chapterChip="Physics · Heat Transfer">
+
+  <section id="home" class="screen active">
+    <div class="scr-head">
+      <button class="back-btn" onclick="location.href='/heat-transfer'">‹ Back</button>
+      <div>
+        <div class="scr-title">Radiation</div>
+        <div class="scr-sub">Lecture 4, Parts 1 &amp; 2 - heat without a medium.</div>
+      </div>
+    </div>
+
+    <div class="sp" data-slide-player>
+      <div class="sp-stage">
+        <iframe class="sp-frame" src="/slides/radiation-lecture-4.html" title="Lecture 4 - Radiation slides" allowfullscreen></iframe>
+      </div>
+      <div class="sp-bar">
+        <button class="sp-btn" data-sp="prev">‹ Previous</button>
+        <div class="sp-count" data-sp="count">1 / -</div>
+        <button class="sp-btn primary" data-sp="next">Next ›</button>
+        <button class="sp-btn sp-fs" data-sp="fs" title="Slides fullscreen">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+</StudioLayout>
+
+<script>
+  import '../../scripts/slide-player';
+</script>

@@ -4,6 +4,7 @@
 
 /* ── tile icons ── */
 .ic-modes{background:linear-gradient(135deg,#9f1239,#f97316);}
+.ic-sun{background:linear-gradient(135deg,#b45309,#f59e0b);}
 
 /* a readout that needs room for a sentence */
 .th-readout.ht-wide{flex:1;min-width:280px;}
