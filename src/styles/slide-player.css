@@ -41,3 +41,6 @@
   .sp-btn{font-size:16px;padding:12px 18px;min-width:0;}
   .sp-count{font-size:18px;min-width:70px;}
 }
+
+/* Link to the other half of a lecture, pushed to the right end of the screen header. */
+.sp-btn.sp-link{margin-left:auto;min-width:0;font-size:17px;padding:13px 22px;}
