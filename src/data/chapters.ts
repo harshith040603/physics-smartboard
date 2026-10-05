@@ -54,4 +54,13 @@ export const chapters: Chapter[] = [
     status: 'ready',
     activities: 5,
   },
+  {
+    slug: 'kinetic-theory',
+    num: '06',
+    title: 'Kinetic Theory ',
+    titleAccent: 'of Gases',
+    blurb: 'Pressure, temperature and speed from nothing but molecules bouncing off walls - the gas laws rebuilt from Newton.',
+    status: 'ready',
+    activities: 1,
+  },
 ];
