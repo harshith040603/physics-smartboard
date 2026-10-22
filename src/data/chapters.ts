@@ -52,7 +52,7 @@ export const chapters: Chapter[] = [
     titleAccent: 'Transfer',
     blurb: 'Conduction, convection and radiation - pins falling off a heated rod, dye tracing the currents in boiling water, and a black can that beats a shiny one even in a vacuum.',
     status: 'ready',
-    activities: 5,
+    activities: 6,
   },
   {
     slug: 'kinetic-theory',

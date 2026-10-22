@@ -6,6 +6,7 @@
 .ic-modes{background:linear-gradient(135deg,#9f1239,#f97316);}
 .ic-sun{background:linear-gradient(135deg,#b45309,#f59e0b);}
 .ic-laws{background:linear-gradient(135deg,#7c2d12,#ea580c);}
+.ic-cool{background:linear-gradient(135deg,#1e3a8a,#0ea5e9);}
 
 /* a readout that needs room for a sentence */
 .th-readout.ht-wide{flex:1;min-width:280px;}

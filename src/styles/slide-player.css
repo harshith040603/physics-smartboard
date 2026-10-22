@@ -44,3 +44,5 @@
 
 /* Link to the other half of a lecture, pushed to the right end of the screen header. */
 .sp-btn.sp-link{margin-left:auto;min-width:0;font-size:17px;padding:13px 22px;}
+/* A second header link sits right next to the first instead of being pushed apart. */
+.sp-btn.sp-link + .sp-btn.sp-link{margin-left:10px;}
