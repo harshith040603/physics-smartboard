@@ -91,4 +91,13 @@ export const chapterResources: ChapterResources[] = [
     ],
     worksheets: [],
   },
+  {
+    slug: 'heat-transfer',
+    num: '07',
+    title: 'Heat ',
+    titleAccent: 'Transfer',
+    worksheets: [
+      { label: 'Heat Transfer Assignment', url: '/downloads/heat-transfer/assignment-1.pdf' },
+    ],
+  },
 ];
