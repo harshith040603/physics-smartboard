@@ -61,6 +61,6 @@ export const chapters: Chapter[] = [
     titleAccent: 'of Gases',
     blurb: 'Pressure, temperature and speed from nothing but molecules bouncing off walls - the gas laws rebuilt from Newton.',
     status: 'ready',
-    activities: 1,
+    activities: 2,
   },
 ];
