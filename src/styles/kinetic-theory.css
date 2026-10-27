@@ -1,0 +1,61 @@
+/* ═══════════ Kinetic Theory - chapter styles ═══════════
+   The page reuses the th-* controls, canvas, readout and notes classes
+   from thermometry.css; only what is new to this chapter lives here.  */
+
+/* ── tile icons ── */
+.ic-gas{background:linear-gradient(135deg,#0e7490,#22d3ee);}
+.ic-graphs{background:linear-gradient(135deg,#6d28d9,#a78bfa);}
+.ic-dof{background:linear-gradient(135deg,#047857,#34d399);}
+.ic-piston{background:linear-gradient(135deg,#9a3412,#f59e0b);}
+
+/* a tile that is a plain link (opens a PDF in a new tab) */
+a.tile{text-decoration:none;color:inherit;}
+
+/* a readout that needs room for a sentence */
+.th-readout.kt-wide{flex:1;min-width:280px;}
+
+/* ── the what-happens table: rows pick the case, answers appear once it settles ── */
+.kt-table-wrap{
+  overflow-x:auto;background:#fff;border-radius:16px;box-shadow:var(--shadow);
+  margin:16px 0 14px;
+}
+.kt-table{width:100%;border-collapse:collapse;font-size:19px;line-height:1.4;min-width:640px;}
+.kt-table th,.kt-table td{padding:13px 18px;text-align:left;border-bottom:1px solid rgba(41,89,144,.14);}
+.kt-table thead th{
+  font-family:'Bricolage Grotesque';font-weight:800;font-size:19px;color:#fff;
+  background:var(--nine-dark);
+}
+.kt-table tbody tr{cursor:pointer;transition:background .15s;}
+.kt-table tbody tr:last-child th,.kt-table tbody tr:last-child td{border-bottom:none;}
+.kt-table tbody th{
+  font-family:'Bricolage Grotesque';font-weight:700;font-size:18px;color:var(--nine-navy);
+  white-space:nowrap;
+}
+.kt-table tbody tr.cur{background:rgba(0,160,227,.1);box-shadow:inset 5px 0 0 var(--nine-accent);}
+.kt-q{color:#9aabbf;font-weight:700;}
+.kt-a{display:none;font-weight:600;}
+.kt-a.eq{color:var(--green);}
+.kt-a.chg{color:#b45309;}
+.kt-a.same{color:#64748b;}
+.kt-table tr.shown .kt-q{display:none;}
+.kt-table tr.shown .kt-a{display:inline;animation:fade .35s ease;}
+
+.kt-tablebar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px;}
+.kt-tablebar p{font-size:17px;color:#52647d;margin:0;}
+
+/* ── the two rules, shown once a run has proved them ── */
+.kt-rules{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:14px;}
+.kt-rule{
+  display:none;flex:1;min-width:260px;padding:13px 18px;border-radius:12px;
+  font-size:19px;line-height:1.45;color:var(--ink);
+}
+.kt-rule.shown{display:block;animation:fade .35s ease;}
+.kt-rule b{color:var(--nine-navy);}
+.kt-rule.cond{background:rgba(0,160,227,.1);border-left:5px solid var(--nine-accent);}
+.kt-rule.mov{background:rgba(245,158,11,.13);border-left:5px solid #f59e0b;}
+
+@media (max-width:640px){
+  .kt-table{font-size:16px;}
+  .kt-table tbody th{font-size:15.5px;}
+  .kt-rule{font-size:16.5px;}
+}
