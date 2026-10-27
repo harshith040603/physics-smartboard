@@ -100,4 +100,13 @@ export const chapterResources: ChapterResources[] = [
       { label: 'Heat Transfer Assignment', url: '/downloads/heat-transfer/assignment-1.pdf' },
     ],
   },
+  {
+    slug: 'kinetic-theory',
+    num: '08',
+    title: 'Kinetic Theory ',
+    titleAccent: 'of Gases',
+    worksheets: [
+      { label: 'Basic P, V, T Graphs - 10 Practice Problems', url: '/downloads/kinetic-theory/basic-pvt-graphs-practice.pdf' },
+    ],
+  },
 ];
