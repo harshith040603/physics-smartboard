@@ -7,6 +7,7 @@
 .ic-graphs{background:linear-gradient(135deg,#6d28d9,#a78bfa);}
 .ic-dof{background:linear-gradient(135deg,#047857,#34d399);}
 .ic-piston{background:linear-gradient(135deg,#9a3412,#f59e0b);}
+.ic-mano{background:linear-gradient(135deg,#9f1239,#fb7185);}
 
 /* a tile that is a plain link (opens a PDF in a new tab) */
 a.tile{text-decoration:none;color:inherit;}
