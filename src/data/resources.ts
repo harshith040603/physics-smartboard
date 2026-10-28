@@ -107,6 +107,7 @@ export const chapterResources: ChapterResources[] = [
     titleAccent: 'of Gases',
     worksheets: [
       { label: 'Basic P, V, T Graphs - 10 Practice Problems', url: '/downloads/kinetic-theory/basic-pvt-graphs-practice.pdf' },
+      { label: 'KTG & Cooling (30 Q) + Elasticity (24 Q) Assignment', url: '/downloads/kinetic-theory/elasticity-ktg-cooling-assignment.pdf' },
     ],
   },
 ];
