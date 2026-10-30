@@ -63,4 +63,13 @@ export const chapters: Chapter[] = [
     status: 'ready',
     activities: 5,
   },
+  {
+    slug: 'thermodynamics',
+    num: '07',
+    title: 'Thermo',
+    titleAccent: 'dynamics',
+    blurb: 'Heat in, work out, energy kept - isolated, closed and open systems, the zeroth law behind every thermometer, and the first law dQ = dU + dW.',
+    status: 'ready',
+    activities: 1,
+  },
 ];

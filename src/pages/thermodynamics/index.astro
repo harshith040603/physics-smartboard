@@ -1,0 +1,29 @@
+---
+import StudioLayout from '../../layouts/StudioLayout.astro';
+---
+<StudioLayout title="Thermodynamics - Physics with Harshith" chapterChip="Physics · Thermodynamics">
+
+  <!-- =========== HOME =========== -->
+  <section id="home" class="screen active">
+    <div class="hero">
+      <h1>Thermo<span class="accent">dynamics</span></h1>
+      <p>Heat a gas and it pushes a piston: heat turns into work. Thermodynamics keeps the books on that trade - where the heat goes, how much work comes out, and how much energy stays stored inside the gas.</p>
+    </div>
+    <div class="grid">
+
+      <div class="tile" onclick="location.href='/thermodynamics/zeroth-and-first-law'">
+        <div class="tile-num">01</div>
+        <div class="tile-icon ic-law"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="13" rx="1.5"/><path d="M4 12h16"/><path d="M12 12V3"/><path d="M9 16c1-1 2 1 3 0s2 1 3 0"/></svg></div>
+        <h3>Zeroth and First Law</h3>
+        <p>Slides. Isolated, closed and open systems, the zeroth law and temperature, then dQ = dU + dW, the work dW = P dV done by a gas, and internal energy.</p>
+        <span class="tile-go">Open slides &rsaquo;</span>
+      </div>
+
+    </div>
+  </section>
+
+</StudioLayout>
+
+<style>
+  .ic-law { background: linear-gradient(135deg, #b91c1c, #f97316); }
+</style>

@@ -18,7 +18,7 @@ import { chapters } from '../data/chapters';
             </div>
             <h3>{ch.title}<span class="accent">{ch.titleAccent}</span></h3>
             <p>{ch.blurb}</p>
-            <span class="tile-go">{ch.activities} activities - Open ›</span>
+            <span class="tile-go">{ch.activities} {ch.activities === 1 ? 'activity' : 'activities'} - Open ›</span>
           </a>
         ) : (
           <div class="tile tile-soon" aria-disabled="true">
