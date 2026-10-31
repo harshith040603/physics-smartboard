@@ -1,5 +1,8 @@
 ---
 import StudioLayout from '../../layouts/StudioLayout.astro';
+import '../../styles/thermometry.css';
+import '../../styles/kinetic-theory.css';
+import '../../styles/thermodynamics.css';
 ---
 <StudioLayout title="Thermodynamics - Physics with Harshith" chapterChip="Physics · Thermodynamics">
 
@@ -19,11 +22,256 @@ import StudioLayout from '../../layouts/StudioLayout.astro';
         <span class="tile-go">Open slides &rsaquo;</span>
       </div>
 
+      <div class="tile" onclick="go('systems')">
+        <div class="tile-num">02</div>
+        <div class="tile-icon ic-sys"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="5.5" height="12" rx="1"/><path d="M9.5 7v12h5.5V7"/><path d="M9.5 7h5.5"/><path d="M17 7v12h5V7"/><path d="M19.5 5V2"/></svg></div>
+        <h3>Three Kinds of System</h3>
+        <p>Animation. An isolated, a closed and an open system in the same surroundings. Watch which ones let heat in and which ones lose molecules.</p>
+        <span class="tile-go">Start &rsaquo;</span>
+      </div>
+
+      <div class="tile" onclick="go('zeroth')">
+        <div class="tile-num">03</div>
+        <div class="tile-icon ic-zero"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="18" rx="1.5"/><path d="M2 11h20"/><path d="M12 3v8"/><path d="M7 7h.01M17 7h.01M12 16h.01"/></svg></div>
+        <h3>The Zeroth Law</h3>
+        <p>Animation. A and B never touch - each only touches C. Watch all three settle to one temperature, then let A touch B and see that no heat flows.</p>
+        <span class="tile-go">Start &rsaquo;</span>
+      </div>
+
+      <div class="tile" onclick="go('firstlaw')">
+        <div class="tile-num">04</div>
+        <div class="tile-icon ic-first"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5v15h14V5"/><path d="M5 11h14"/><path d="M9 7h6"/><path d="M8 17l1.5-1.5L11 17l1.5-1.5L14 17l1.5-1.5"/></svg></div>
+        <h3>First Law: Where the Heat Goes</h3>
+        <p>Animation. Same gas, same heater, same rise in temperature - one piston free, one fixed. See why Q = &Delta;U + W makes the free one need more heat.</p>
+        <span class="tile-go">Start &rsaquo;</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =========== 2 · THREE KINDS OF SYSTEM =========== -->
+  <section id="systems" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">Three Kinds of System</div>
+        <div class="scr-sub">Same surroundings, three containers. What can get in or out of each?</div>
+      </div>
+    </div>
+
+    <div class="th-controls">
+      <div class="th-ctrl">
+        <label>Surroundings temperature <span class="th-val" id="tdSurrV">600 K</span></label>
+        <input type="range" id="tdSurr" min="200" max="700" step="50" value="600">
+      </div>
+      <div class="th-btns">
+        <button class="th-btn primary" id="tdSysGo">▶ Start</button>
+        <button class="th-btn" id="tdSysReset">↺ Reset</button>
+      </div>
+    </div>
+
+    <div class="th-canvas" id="tdSysCanvas"></div>
+
+    <div class="th-readouts">
+      <div class="th-readout"><small>Isolated</small><div class="th-ro small" id="tdSysRo0">-</div></div>
+      <div class="th-readout"><small>Closed</small><div class="th-ro small" id="tdSysRo1">-</div></div>
+      <div class="th-readout"><small>Open</small><div class="th-ro small" id="tdSysRo2">-</div></div>
+      <div class="th-readout kt-wide"><small>What is happening</small><div class="th-ro small" id="tdSysRoS">-</div></div>
+    </div>
+
+    <div class="kt-table-wrap">
+      <table class="kt-table" id="tdSysTable">
+        <thead>
+          <tr><th>System</th><th>Walls</th><th>Energy exchange</th><th>Mass exchange</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>Isolated</th><td>adiabatic, lid on</td>
+            <td><span class="kt-q">?</span><span class="kt-a same">No</span></td>
+            <td><span class="kt-q">?</span><span class="kt-a same">No</span></td>
+          </tr>
+          <tr>
+            <th>Closed</th><td>diathermic, lid on</td>
+            <td><span class="kt-q">?</span><span class="kt-a eq">Yes</span></td>
+            <td><span class="kt-q">?</span><span class="kt-a same">No</span></td>
+          </tr>
+          <tr>
+            <th>Open</th><td>diathermic, no lid</td>
+            <td><span class="kt-q">?</span><span class="kt-a eq">Yes</span></td>
+            <td><span class="kt-q">?</span><span class="kt-a eq">Yes</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="th-keybox">
+      <b>All three start at 400 K. Colour is temperature: blue is cold, purple is warm, red is hot.</b> The thick hatched walls are adiabatic - the orange heat arrows stop dead at them. The thin metal walls are diathermic, so heat crosses until the gas matches the surroundings. Only the cup with no lid loses molecules (and picks up a few from the air). Slide the surroundings below 400 K and the heat flows the other way.
+    </div>
+
+    <div class="th-notes">
+      <div class="th-notes-head">Copy this into your notes</div>
+      <div class="th-notes-body">
+        <h4>System and surroundings</h4>
+        <p><b>System:</b> the thing we study, for example the gas in a container. <b>Surroundings:</b> everything outside it.</p>
+        <div class="th-nbox">
+          <b>Isolated:</b> no energy exchange, no mass exchange - adiabatic walls. Hot tea in an ideal thermos.<br>
+          <b>Closed:</b> energy exchange yes, mass exchange no - diathermic walls, lid on. A sealed steel bottle in the sun.<br>
+          <b>Open:</b> energy exchange yes, mass exchange yes - no lid. Hot tea in an open cup.
+        </div>
+        <p><b>Adiabatic wall:</b> non-conducting, no heat through it. <b>Diathermic wall:</b> conducting, heat flows through it.</p>
+        <div class="th-eg" role="button" tabindex="0">
+          <span class="th-eglab">Think about it</span>
+          Is the human body an isolated, a closed or an open system?
+          <span class="th-eghint">Tap to reveal the answer</span>
+          <div class="th-egans">
+            Open. It exchanges energy (you give off heat) and mass (you breathe in air, breathe out CO₂ and water vapour, eat and drink).
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========== 3 · THE ZEROTH LAW =========== -->
+  <section id="zeroth" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">The Zeroth Law</div>
+        <div class="scr-sub">A and B are each in contact with C, but not with each other. Do they end up at the same temperature?</div>
+      </div>
+    </div>
+
+    <div class="th-controls">
+      <div class="th-ctrl">
+        <label>Start T<sub>A</sub> <span class="th-val" id="tdTAv">700 K</span></label>
+        <input type="range" id="tdTA" min="200" max="800" step="50" value="700">
+      </div>
+      <div class="th-ctrl">
+        <label>Start T<sub>B</sub> <span class="th-val" id="tdTBv">250 K</span></label>
+        <input type="range" id="tdTB" min="200" max="800" step="50" value="250">
+      </div>
+      <div class="th-ctrl">
+        <label>Start T<sub>C</sub> <span class="th-val" id="tdTCv">450 K</span></label>
+        <input type="range" id="tdTC" min="200" max="800" step="50" value="450">
+      </div>
+      <div class="th-btns">
+        <button class="th-btn primary" id="tdZGo">▶ Start</button>
+        <button class="th-btn" id="tdZTouch">Let A touch B</button>
+        <button class="th-btn" id="tdZReset">↺ Reset</button>
+      </div>
+    </div>
+
+    <div class="th-canvas" id="tdZeroCanvas"></div>
+
+    <div class="th-readouts">
+      <div class="th-readout"><small>T<sub>A</sub></small><div class="th-ro" id="tdZRoA">-</div></div>
+      <div class="th-readout"><small>T<sub>B</sub></small><div class="th-ro" id="tdZRoB">-</div></div>
+      <div class="th-readout"><small>T<sub>C</sub></small><div class="th-ro" id="tdZRoC">-</div></div>
+      <div class="th-readout kt-wide"><small>What is happening</small><div class="th-ro small" id="tdZRoS">-</div></div>
+    </div>
+
+    <div class="kt-rules">
+      <div class="kt-rule cond" id="tdZRule"><b>T<sub>A</sub> = T<sub>C</sub></b> and <b>T<sub>B</sub> = T<sub>C</sub></b> ⟹ <b>T<sub>A</sub> = T<sub>B</sub></b>. A and B are in thermal equilibrium without ever touching.</div>
+      <div class="kt-rule mov" id="tdZRule2"><b>A touches B: no heat flows.</b> They were already in thermal equilibrium with each other.</div>
+    </div>
+
+    <div class="th-keybox">
+      <b>The wall between A and B is adiabatic (hatched), the floor under them is diathermic (copper).</b> Heat can only go A ↔ C and B ↔ C. Watch the arrows: they shrink as each pair gets closer in temperature, and stop when all three match. Then press "Let A touch B" - the A-B wall turns to copper, but no arrow appears.
+    </div>
+
+    <div class="th-notes">
+      <div class="th-notes-head">Copy this into your notes</div>
+      <div class="th-notes-body">
+        <h4>Zeroth law of thermodynamics</h4>
+        <div class="th-nbox">
+          If two systems A and B are each separately in thermal equilibrium with a third system C, then A and B are in thermal equilibrium with each other.
+        </div>
+        <p><b>Thermal equilibrium:</b> two systems in contact with no heat flowing between them. They are at the same temperature.</p>
+        <div class="th-nf">T<sub>A</sub> = T<sub>C</sub>, &nbsp;T<sub>B</sub> = T<sub>C</sub> &nbsp;⟹&nbsp; T<sub>A</sub> = T<sub>B</sub></div>
+        <p>The zeroth law is what makes <b>temperature</b> a real, measurable quantity: two bodies are at the same temperature exactly when they would not exchange heat.</p>
+        <div class="th-eg" role="button" tabindex="0">
+          <span class="th-eglab">Think about it</span>
+          Where is the zeroth law hiding when you check a fever with a thermometer?
+          <span class="th-eghint">Tap to reveal the answer</span>
+          <div class="th-egans">
+            The thermometer is C. It reaches thermal equilibrium with your body (A), so it reads your temperature. Later it reaches equilibrium with a standard (B) when it is calibrated. Because both equal the thermometer's reading, your body and the standard can be compared without ever touching.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========== 4 · FIRST LAW =========== -->
+  <section id="firstlaw" class="screen">
+    <div class="scr-head">
+      <button class="back-btn" onclick="go('home')">‹ Back</button>
+      <div>
+        <div class="scr-title">First Law: Where the Heat Goes</div>
+        <div class="scr-sub">Same gas, same amount, same heater, same rise in temperature. A's piston is free, B's is held by stoppers. Which needs less heat?</div>
+      </div>
+    </div>
+
+    <div class="th-controls">
+      <div class="th-btns" id="tdFf">
+        <button class="th-btn on" data-f="3">Monatomic, f = 3</button>
+        <button class="th-btn" data-f="5">Diatomic, f = 5</button>
+        <button class="th-btn" data-f="6">Non-linear, f = 6</button>
+      </div>
+      <div class="th-ctrl">
+        <label>Raise the temperature by ΔT <span class="th-val" id="tdFdTv">100 K</span></label>
+        <input type="range" id="tdFdT" min="50" max="300" step="50" value="100">
+      </div>
+      <div class="th-btns">
+        <button class="th-btn primary" id="tdFGo">🔥 Switch both heaters on</button>
+        <button class="th-btn" id="tdFReset">↺ Reset</button>
+      </div>
+    </div>
+
+    <div class="th-canvas" id="tdFirstCanvas"></div>
+
+    <div class="th-readouts">
+      <div class="th-readout"><small>Heat into A</small><div class="th-ro" id="tdFRoA">-</div></div>
+      <div class="th-readout"><small>Heat into B</small><div class="th-ro" id="tdFRoB">-</div></div>
+      <div class="th-readout"><small>Work done by A</small><div class="th-ro" id="tdFRoW">-</div></div>
+      <div class="th-readout kt-wide"><small>What is happening</small><div class="th-ro small" id="tdFRoS">-</div></div>
+    </div>
+
+    <div class="kt-rules">
+      <div class="kt-rule cond" id="tdFRule"><b>B needs less heat.</b> Same ΔT means the same ΔU in both. B's piston cannot move, so W = 0 and Q<sub>B</sub> = ΔU. A also pushes its piston up, so Q<sub>A</sub> = ΔU + W.</div>
+    </div>
+
+    <div class="th-keybox">
+      <b>Both heaters give heat at exactly the same rate, so the one that finishes first needed less heat.</b> Watch the energy bars: red is ΔU, the energy that stays in the gas; blue is W, the energy that leaves as work on the piston. On the P-V graph, A moves sideways at constant pressure and the shaded area under its line is W. B goes straight up - no change in volume, no area, no work.
+    </div>
+
+    <div class="th-notes">
+      <div class="th-notes-head">Copy this into your notes</div>
+      <div class="th-notes-body">
+        <h4>First law of thermodynamics</h4>
+        <div class="th-nf">dQ = dU + dW</div>
+        <p><b>dQ</b> = heat given to the gas, <b>dU</b> = change in its internal energy, <b>dW</b> = work done by the gas. It is conservation of energy: the heat you put in is either stored or spent as work.</p>
+        <div class="th-nbox">
+          <b>ΔU = (f/2) nRΔT</b> - depends only on the change in temperature, not on the process.<br>
+          <b>dW = P dV</b> - depends on the process. It is the area under the P-V graph.
+        </div>
+        <h4>Piston free vs piston fixed</h4>
+        <p><b>Fixed piston (B):</b> V cannot change, so W = 0 and Q<sub>B</sub> = (f/2) nRΔT.</p>
+        <p><b>Free piston (A):</b> P stays constant, so W = PΔV = nRΔT (from PV = nRT) and Q<sub>A</sub> = (f/2) nRΔT + nRΔT.</p>
+        <div class="th-nf">Q<sub>A</sub> &gt; Q<sub>B</sub> &nbsp;- the extra heat is the work A does on its piston</div>
+        <div class="th-eg" role="button" tabindex="0">
+          <span class="th-eglab">Think about it</span>
+          A monatomic gas is heated with its piston free. What fraction of the heat is turned into work? What if the gas is diatomic?
+          <span class="th-eghint">Tap to reveal the answer</span>
+          <div class="th-egans">
+            W / Q = nRΔT / ((f/2 + 1) nRΔT) = 1 / (f/2 + 1). Monatomic (f = 3): 1 / 2.5 = 2/5, so 40 %. Diatomic (f = 5): 1 / 3.5 = 2/7, about 29 %. The more ways a molecule can store energy, the more of the heat stays inside as ΔU.
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
 </StudioLayout>
 
-<style>
-  .ic-law { background: linear-gradient(135deg, #b91c1c, #f97316); }
-</style>
+<script>
+  import '../../scripts/thermodynamics-studio';
+</script>

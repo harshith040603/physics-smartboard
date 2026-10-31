@@ -70,6 +70,6 @@ export const chapters: Chapter[] = [
     titleAccent: 'dynamics',
     blurb: 'Heat in, work out, energy kept - isolated, closed and open systems, the zeroth law behind every thermometer, and the first law dQ = dU + dW.',
     status: 'ready',
-    activities: 1,
+    activities: 4,
   },
 ];

@@ -1,0 +1,9 @@
+/* ═══════════ Thermodynamics - chapter styles ═══════════
+   The page reuses the th-* controls, canvas, readout and notes classes
+   from thermometry.css and the kt-* table, rule and wide-readout classes
+   from kinetic-theory.css; only the tile icons live here.              */
+
+.ic-law{background:linear-gradient(135deg,#b91c1c,#f97316);}
+.ic-sys{background:linear-gradient(135deg,#0f766e,#2dd4bf);}
+.ic-zero{background:linear-gradient(135deg,#1e3a8a,#60a5fa);}
+.ic-first{background:linear-gradient(135deg,#9a3412,#fbbf24);}
