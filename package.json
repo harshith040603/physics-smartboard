@@ -9,6 +9,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "test:piston": "node --experimental-strip-types --test tests/piston-physics.test.mjs",
     "astro": "astro",
     "formula-sheet": "node tools/build-formula-sheet.mjs"
   },

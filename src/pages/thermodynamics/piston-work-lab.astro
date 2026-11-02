@@ -1,0 +1,64 @@
+---
+import StudioLayout from '../../layouts/StudioLayout.astro';
+import '../../styles/piston-work.css';
+const processes = [
+  { id: 'isobaric', number: '01', name: 'Isobaric', fixed: 'Constant pressure', setup: 'Same load. Free piston.', equation: 'W = P(V₂ − V₁)', insight: 'The gas lifts the same load through a distance. A rectangle of work grows under the graph.' },
+  { id: 'isochoric', number: '02', name: 'Isochoric', fixed: 'Constant volume', setup: 'Piston locked. No travel.', equation: 'W = 0', insight: 'Pressure can rise without doing work. The gas pushes, but the locked piston moves zero distance.' },
+  { id: 'isothermal', number: '03', name: 'Isothermal', fixed: 'Constant temperature', setup: 'Water bath. Load changes slowly.', equation: 'W = nRT ln(V₂/V₁)', insight: 'As the gas expands, its pressure falls. Add up many thin strips under the curve to find the work.' },
+];
+---
+<StudioLayout title="Piston Work Lab - Physics with Harshith" chapterChip="Physics · Thermodynamics">
+  <header class="pw-heading">
+    <a class="back-btn" href="/thermodynamics">‹ Chapter</a>
+    <div><div class="pw-eyebrow">THE PISTON WORK LAB</div><h1>A push needs <span>some travel.</span></h1>
+    <p>Watch the piston. Follow the graph. Find where the energy goes.</p></div>
+  </header>
+
+  <div class="pw-controls">
+    <div class="pw-control-group"><span class="pw-label">Choose the experiment</span><div class="pw-buttons" aria-label="Experiment">
+      <button class="pw-btn selected" data-direction="expand" aria-pressed="true">Expand / heat</button>
+      <button class="pw-btn" data-direction="compress" aria-pressed="false">Compress / cool</button>
+    </div></div>
+    <div class="pw-control-group"><label class="pw-label" for="pw-target">Final V₂/V₁ <output id="pw-target-label">2.00×</output></label>
+      <input id="pw-target" type="range" min="1.2" max="2" step="0.1" value="2" />
+      <small>Locked cylinder: this sets T₂/T₁ instead.</small>
+    </div>
+    <div class="pw-buttons"><button class="pw-btn primary" id="pw-play">▶ Run experiment</button><button class="pw-btn" id="pw-reset">↺ Reset</button></div>
+  </div>
+
+  <div class="pw-timeline">
+    <label for="pw-progress">Experiment progress <output id="pw-progress-label">0%</output></label>
+    <input id="pw-progress" type="range" min="0" max="1000" step="1" value="0" />
+    <p id="pw-story" aria-live="polite">Predict first: which pistons will move? Which gas will do the most work?</p>
+  </div>
+  <div class="pw-view"><span class="pw-label">On the board</span><div class="pw-buttons" aria-label="Visible processes">
+    <button class="pw-btn selected" data-view="all" aria-pressed="true">Compare all three</button>
+    {processes.map(p => <button class="pw-btn" data-view={p.id} aria-pressed="false">{p.name}</button>)}
+  </div></div>
+
+  <div class="pw-grid" id="pw-grid">
+    {processes.map(p => <article class={`pw-card pw-${p.id}`} data-process={p.id}>
+      <div class="pw-card-head"><span class="pw-number">{p.number}</span><div><h2>{p.name}</h2><span class="pw-fixed">{p.fixed}</span></div></div>
+      <p class="pw-setup">{p.setup}</p>
+      <canvas width="440" height="570" role="img" aria-label={`${p.name}: animated piston above a pressure-volume graph. Numerical results below.`}></canvas>
+      <div class="pw-state"><div><small>Pressure</small><strong data-value="pressure">100 kPa</strong></div><div><small>Volume</small><strong data-value="volume">10.0 L</strong></div><div><small>Temperature</small><strong data-value="temperature">300 K</strong></div></div>
+      <div class="pw-work"><span>Work done by gas</span><strong data-value="work">0 J</strong></div>
+      <div class="pw-formula">{p.equation}</div>
+      <div class="pw-ledger" aria-label="Energy balance"><div><span>Heat in, Q</span><b data-value="heat">0 J</b></div><div><span>Stored, ΔU</span><b data-value="internal">0 J</b></div><div><span>Work out, W</span><b data-value="work">0 J</b></div></div>
+      <p class="pw-insight">{p.insight}</p>
+    </article>)}
+  </div>
+
+  <section class="pw-takeaway">
+    <div><span class="pw-eyebrow">THE BRIDGE FROM PISTON TO GRAPH</span><h2>Force × distance becomes pressure × volume change.</h2>
+    <p>Gas force = PA. Piston travel = dx. So dW = PA dx = P dV. Every little movement adds a thin strip of area to the P–V graph. No movement means no strip, even if the gas pushes hard.</p></div>
+    <div class="pw-equation">dW = F dx = P dV<br /><strong>W = ∫ P dV</strong><small>Expansion: W &gt; 0 · Compression: W &lt; 0</small></div>
+  </section>
+  <div class="pw-questions">
+    <details><summary>Same expansion: why does isobaric work win?</summary><p>Both start at the same pressure and volume and reach the same final volume. Isobaric pressure stays high, while isothermal pressure falls. The rectangle has more area than the region under the falling curve. Compare their work readouts.</p></details>
+    <details><summary>Isothermal gas does work. Why does it not cool?</summary><p>The bath supplies heat as the gas does work. For an ideal gas, constant temperature means ΔU = 0, so Q = W. During compression the gas gives heat back to the bath.</p></details>
+    <details><summary>What changes when you reverse the experiment?</summary><p>The compression experiment starts fresh from the same initial state. The piston goes down, ΔV is negative, and work done by the gas is negative. The surroundings do positive work on it. In the locked cylinder, cooling lowers pressure but still does no work.</p></details>
+  </div>
+  <p class="pw-assumptions">Model: fixed amount of monatomic ideal gas, initially 100 kPa, 10 L, 300 K (nR = 10/3 J K⁻¹). Slow, quasistatic processes with a frictionless piston; P<sub>gas</sub> ≈ P<sub>external</sub>. The load represents total external pressure; atmosphere is included. Molecules and heat pulses are illustrative. Energy convention: Q = ΔU + W, positive Q into the gas, positive W by the gas.</p>
+</StudioLayout>
+<script>import '../../scripts/piston-work';</script>
