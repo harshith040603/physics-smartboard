@@ -38,7 +38,7 @@ const processes = [
 
   <div class="pw-grid" id="pw-grid">
     {processes.map(p => <article class={`pw-card pw-${p.id}`} data-process={p.id}>
-      <div class="pw-card-head"><span class="pw-number">{p.number}</span><div><h2>{p.name}</h2><span class="pw-fixed">{p.fixed}</span></div></div>
+      <div class="pw-card-head"><span class="pw-number">{p.number}</span><div class="pw-card-title"><h2>{p.name}</h2><span class="pw-fixed">{p.fixed}</span></div><button class="pw-btn pw-card-play" data-card-play aria-label={`Start ${p.name.toLowerCase()} animation`}>▶ Start</button></div>
       <p class="pw-setup">{p.setup}</p>
       <canvas width="440" height="570" role="img" aria-label={`${p.name}: animated piston above a pressure-volume graph. Numerical results below.`}></canvas>
       <div class="pw-state"><div><small>Pressure</small><strong data-value="pressure">100 kPa</strong></div><div><small>Volume</small><strong data-value="volume">10.0 L</strong></div><div><small>Temperature</small><strong data-value="temperature">300 K</strong></div></div>

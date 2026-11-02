@@ -7,13 +7,14 @@ const play = $<HTMLButtonElement>('#pw-play');
 const colors: Record<Process, string> = { isobaric: '#009bd8', isochoric: '#7c3aed', isothermal: '#0e9483' };
 const cards = Array.from(document.querySelectorAll<HTMLElement>('[data-process]')).map(el => ({
   el, process: el.dataset.process as Process, canvas: el.querySelector('canvas')!, phase: 0,
+  progress: 0, running: false, button: el.querySelector<HTMLButtonElement>('[data-card-play]')!,
 }));
-let progress = 0, target = 2, running = false, lastTime = 0, frame = 0;
+let progress = 0, target = 2, synchronized = true, lastTime = 0, frame = 0;
 const energy = (v: number) => `${Math.abs(v) < 0.5 ? '0' : (v > 0 ? '+' : '−') + Math.abs(v).toFixed(0)} J`;
 
 function draw(card: typeof cards[number]) {
   if (card.el.hidden) return;
-  const { canvas, process } = card;
+  const { canvas, process, progress, running } = card;
   const ctx = canvas.getContext('2d')!;
   const width = canvas.getBoundingClientRect().width;
   if (!width) return;
@@ -137,35 +138,60 @@ function draw(card: typeof cards[number]) {
 
 function render() {
   cards.forEach(draw);
+  cards.forEach(card => {
+    const action = card.running ? 'Pause' : card.progress >= 1 ? 'Replay' : card.progress > 0 ? 'Continue' : 'Start';
+    card.button.textContent = `${card.running ? 'Ⅱ' : card.progress >= 1 ? '↻' : '▶'} ${action}`;
+    card.button.setAttribute('aria-label', `${action} ${card.process} animation`);
+  });
+  play.textContent = cards.some(card => card.running) ? 'Ⅱ Pause all' : !synchronized ? '▶ Run all together' : progress >= 1 ? '↻ Replay experiment' : progress > 0 ? '▶ Continue' : '▶ Run experiment';
   progressInput.value = String(Math.round(progress * 1000));
-  $('#pw-progress-label').textContent = `${Math.round(progress * 100)}%`;
-  const story = progress === 0 ? 'Predict first: which pistons will move? Which gas will do the most work?'
+  $('#pw-progress-label').textContent = synchronized ? `${Math.round(progress * 100)}%` : 'Individual playback';
+  const story = !synchronized ? 'Each heading button controls its own piston. Scrub the timeline to bring all three to the same progress.'
+    : progress === 0 ? 'Predict first: which pistons will move? Which gas will do the most work?'
     : target > 1 ? 'Two pistons rise. One stays locked. Isobaric work grows faster; isothermal heat becomes work without raising temperature.'
     : 'Two pistons fall: work by the gas is negative. Cooling the locked gas lowers pressure, but its work stays zero.';
   if ($('#pw-story').textContent !== story) $('#pw-story').textContent = story;
 }
 function pause() {
-  running = false; cancelAnimationFrame(frame); play.textContent = progress >= 1 ? '↻ Replay experiment' : progress > 0 ? '▶ Continue' : '▶ Run experiment';
+  cards.forEach(card => card.running = false); cancelAnimationFrame(frame); frame = 0; render();
 }
 function tick(time: number) {
-  if (!running) return;
+  frame = 0;
+  if (!cards.some(card => card.running)) return;
   const dt = Math.min((time - lastTime) / 1000, .05); lastTime = time;
-  progress = Math.min(1, progress + dt / 12);
-  cards.forEach(card => { card.phase += dt * Math.sqrt(pistonState(card.process, progress, target).temperature / 300); });
+  cards.forEach(card => {
+    if (!card.running) return;
+    card.progress = Math.min(1, card.progress + dt / 12);
+    card.phase += dt * Math.sqrt(pistonState(card.process, card.progress, target).temperature / 300);
+    if (card.progress >= 1) card.running = false;
+  });
+  if (synchronized) progress = cards[0].progress;
   render();
-  if (progress < 1) frame = requestAnimationFrame(tick); else pause();
+  if (cards.some(card => card.running)) frame = requestAnimationFrame(tick);
 }
-function reset() { progress = 0; cards.forEach(card => card.phase = 0); pause(); render(); }
+function schedule() {
+  if (!frame && cards.some(card => card.running)) { lastTime = performance.now(); frame = requestAnimationFrame(tick); }
+}
+function reset() { progress = 0; synchronized = true; cards.forEach(card => { card.phase = 0; card.progress = 0; }); pause(); }
 play.addEventListener('click', () => {
-  if (running) { pause(); return; }
-  if (progress >= 1) reset();
-  running = true; play.textContent = 'Ⅱ Pause'; lastTime = performance.now(); frame = requestAnimationFrame(tick);
+  if (cards.some(card => card.running)) { pause(); return; }
+  if (!synchronized || progress >= 1) reset();
+  synchronized = true; cards.forEach(card => card.running = true); render(); schedule();
 });
+cards.forEach(card => card.button.addEventListener('click', () => {
+  synchronized = false;
+  if (card.progress >= 1) { card.progress = 0; card.phase = 0; }
+  card.running = !card.running;
+  if (!cards.some(card => card.running)) { cancelAnimationFrame(frame); frame = 0; }
+  render(); schedule();
+}));
 $('#pw-reset').addEventListener('click', reset);
 progressInput.addEventListener('input', () => {
-  pause(); progress = Number(progressInput.value) / 1000;
-  cards.forEach(card => card.phase = progress * 12 * Math.sqrt(pistonState(card.process, progress, target).temperature / 300));
-  pause(); render();
+  // Read first: pause() renders the old slider position.
+  const nextProgress = Number(progressInput.value) / 1000;
+  pause(); progress = nextProgress; synchronized = true;
+  cards.forEach(card => { card.progress = progress; card.phase = progress * 12 * Math.sqrt(pistonState(card.process, progress, target).temperature / 300); });
+  render();
 });
 targetInput.addEventListener('input', () => { target = Number(targetInput.value); $('#pw-target-label').textContent = `${target.toFixed(2)}×`; reset(); });
 document.querySelectorAll<HTMLButtonElement>('[data-direction]').forEach(button => button.addEventListener('click', () => {
