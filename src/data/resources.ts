@@ -1,3 +1,4 @@
+import additions from './student-library.json';
 export interface Worksheet {
   label: string;
   url: string;
@@ -111,3 +112,20 @@ export const chapterResources: ChapterResources[] = [
     ],
   },
 ];
+
+for (const item of additions) {
+  let chapter = chapterResources.find(ch => ch.slug === item.slug);
+  if (!chapter) {
+    chapter = { slug: item.slug, num: '', title: item.chapter, titleAccent: '', worksheets: [] };
+    chapterResources.push(chapter);
+  }
+  const link = { label: item.title, url: item.url };
+  if (item.kind === 'Assignment') {
+    if (!chapter.worksheets.some(sheet => sheet.url === item.url)) chapter.worksheets.push(link);
+  } else if (!chapter.notes) {
+    chapter.notes = link;
+  } else if (chapter.notes.url !== item.url) {
+    chapter.sheets ??= [];
+    if (!chapter.sheets.some(sheet => sheet.url === item.url)) chapter.sheets.push(link);
+  }
+}

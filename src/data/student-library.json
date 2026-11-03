@@ -1,0 +1,90 @@
+[
+  {
+    "slug": "elasticity",
+    "chapter": "Elasticity",
+    "kind": "Assignment",
+    "title": "Elasticity - 24 questions",
+    "url": "/downloads/elasticity/elasticity-24-questions.pdf",
+    "detail": "2 pages"
+  },
+  {
+    "slug": "thermodynamics",
+    "chapter": "Thermodynamics",
+    "kind": "Assignment",
+    "title": "Thermodynamics - 40 JEE Main numericals",
+    "url": "/downloads/thermodynamics/thermodynamics-40-jee-main-numericals.pdf",
+    "detail": "12 pages · Includes answers"
+  },
+  {
+    "slug": "circular-motion",
+    "chapter": "Circular Motion",
+    "kind": "Assignment",
+    "title": "Circular Motion - DPP 01",
+    "url": "/downloads/circular-motion/circular-motion-dpp-01.pdf",
+    "detail": "2 pages"
+  },
+  {
+    "slug": "heat-transfer",
+    "chapter": "Heat Transfer",
+    "kind": "Assignment",
+    "title": "Thermal Conduction - illustrated practice",
+    "url": "/downloads/heat-transfer/thermal-conduction-illustrated-practice.pdf",
+    "detail": "14 pages"
+  },
+  {
+    "slug": "calorimetry",
+    "chapter": "Calorimetry",
+    "kind": "Assignment",
+    "title": "Calorimetry - 60 questions",
+    "url": "/downloads/calorimetry/calorimetry-60-questions.pdf",
+    "detail": "5 pages · Includes answers"
+  },
+  {
+    "slug": "heat-transfer",
+    "chapter": "Heat Transfer",
+    "kind": "Notes",
+    "title": "Radiation - quick revision notes",
+    "url": "/downloads/heat-transfer/radiation-quick-revision-notes.pdf",
+    "detail": "2 pages"
+  },
+  {
+    "slug": "heat-transfer",
+    "chapter": "Heat Transfer",
+    "kind": "Notes",
+    "title": "Radiation - detailed student notes",
+    "url": "/downloads/heat-transfer/radiation-detailed-student-notes.pdf",
+    "detail": "5 pages"
+  },
+  {
+    "slug": "calorimetry",
+    "chapter": "Calorimetry",
+    "kind": "Notes",
+    "title": "Calorimetry and latent heat",
+    "url": "/downloads/calorimetry/calorimetry-and-latent-heat.pdf",
+    "detail": "8 pages · Worked examples and practice"
+  },
+  {
+    "slug": "calorimetry",
+    "chapter": "Calorimetry",
+    "kind": "Notes",
+    "title": "Mechanical energy turning into heat",
+    "url": "/downloads/calorimetry/mechanical-energy-turning-into-heat.pdf",
+    "detail": "6 pages · Worked examples and practice"
+  },
+  {
+    "slug": "thermodynamics",
+    "chapter": "Thermodynamics",
+    "kind": "Notes",
+    "title": "Chemistry connection - heat capacity, work and enthalpy",
+    "url": "/downloads/thermodynamics/chemistry-connection-heat-capacity-work-and-enthalpy.pdf",
+    "detail": "8 pages · Worked examples and practice"
+  },
+  {
+    "slug": "kinetic-theory",
+    "chapter": "Kinetic Theory of Gases",
+    "kind": "Notes",
+    "title": "Gas processes and their graphs",
+    "url": "/downloads/kinetic-theory/gas-processes-and-their-graphs.pdf",
+    "detail": "4 pages"
+  }
+]

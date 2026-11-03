@@ -1,0 +1,96 @@
+---
+import StudioLayout from '../../layouts/StudioLayout.astro';
+import { chapterResources, satPapers } from '../../data/resources';
+import additions from '../../data/student-library.json';
+import slides from '../../data/student-slides.json';
+
+const resources = chapterResources.flatMap(ch => {
+  const common = { slug: ch.slug, chapter: ch.title + ch.titleAccent };
+  return [
+    ...ch.worksheets.map(ws => ({ ...common, kind: 'Assignment', title: ws.label, url: ws.url, detail: 'PDF practice sheet' })),
+    ...(ch.notes ? [{ ...common, kind: 'Notes', title: ch.notes.label, url: ch.notes.url, detail: 'PDF study notes' }] : []),
+    ...(ch.sheets ?? []).map(sheet => ({ ...common, kind: 'Notes', title: sheet.label, url: sheet.url, detail: 'PDF reference and practice' })),
+  ];
+});
+const all = [...resources, ...slides, ...satPapers.map(p => ({
+  slug: 'revision', chapter: 'Revision', kind: 'Assignment', title: p.label, url: p.url, detail: 'PDF test paper',
+}))].map(item => ({ ...item, ...additions.find(extra => extra.url === item.url) }));
+const unique = [...new Map(all.map(item => [item.url, item])).values()];
+const chapters = [...new Map(unique.map(item => [item.slug, item.chapter])).entries()].sort((a, b) => a[1].localeCompare(b[1]));
+const kinds = ['Assignment', 'Notes', 'Slides'];
+---
+<StudioLayout title="Student Library - Physics with Harshith" chapterChip="Student Library">
+  <section class="screen active">
+    <div class="hero">
+      <h1>Your study <span class="accent">library.</span></h1>
+      <p>Pick a chapter. Revise the lesson, open your assignment, and practise at your pace.</p>
+    </div>
+    <form class="library-filters" role="search" onsubmit="return false">
+      <label>Find a resource<input id="library-search" type="search" placeholder="Try radiation, work, or calorimetry…" /></label>
+      <label>Chapter<select id="library-chapter"><option value="">All chapters</option>{chapters.map(([slug, name]) => <option value={slug}>{name}</option>)}</select></label>
+      <label>What do you need?<select id="library-kind"><option value="">Everything</option>{kinds.map(kind => <option value={kind}>{kind === 'Assignment' ? 'Assignments' : kind}</option>)}</select></label>
+      <button type="reset">Clear filters</button>
+    </form>
+    <p id="library-count" role="status">{unique.length} resources ready to explore</p>
+    <div class="library-grid">
+      {unique.map(item => <article class="library-card" data-chapter={item.slug} data-kind={item.kind} data-search={(item.title + ' ' + item.chapter + ' ' + item.kind).toLowerCase()}>
+        <div class="library-meta"><span>{item.chapter}</span><span class="library-badge">{item.kind === 'Assignment' ? 'Assignment' : item.kind}</span></div>
+        <h2>{item.title}</h2>
+        <p>{item.detail}</p>
+        <div class="library-actions">
+          <a href={item.url} target={item.kind === 'Slides' ? undefined : '_blank'} rel="noopener">{item.kind === 'Slides' ? 'Open slides' : 'Open PDF'} ↗</a>
+          {item.kind !== 'Slides' && <a class="download" href={item.url} download>Download ↓</a>}
+        </div>
+      </article>)}
+    </div>
+    <p id="library-empty" hidden>No resources match these filters. Try another chapter or clear your search.</p>
+  </section>
+</StudioLayout>
+<script>
+  const form = document.querySelector<HTMLFormElement>('.library-filters')!;
+  const search = document.querySelector<HTMLInputElement>('#library-search')!;
+  const chapter = document.querySelector<HTMLSelectElement>('#library-chapter')!;
+  const kind = document.querySelector<HTMLSelectElement>('#library-kind')!;
+  const cards = [...document.querySelectorAll<HTMLElement>('.library-card')];
+  const params = new URLSearchParams(location.search);
+  if ([...chapter.options].some(option => option.value === params.get('chapter'))) chapter.value = params.get('chapter')!;
+  function filter() {
+    const words = search.value.toLowerCase().trim().split(/\s+/).filter(Boolean);
+    let count = 0;
+    cards.forEach(card => {
+      card.hidden = !!((chapter.value && card.dataset.chapter !== chapter.value) ||
+        (kind.value && card.dataset.kind !== kind.value) ||
+        !words.every(word => card.dataset.search!.includes(word)));
+      if (!card.hidden) count++;
+    });
+    document.querySelector('#library-count')!.textContent = count + (count === 1 ? ' resource' : ' resources');
+    document.querySelector<HTMLElement>('#library-empty')!.hidden = count !== 0;
+  }
+  form.addEventListener('input', filter);
+  form.addEventListener('change', filter);
+  form.addEventListener('reset', () => setTimeout(filter, 0));
+  filter();
+</script>
+<style>
+  .library-filters {display:grid;grid-template-columns:2fr 1fr 1fr auto;align-items:end;gap:16px;background:white;border:1px solid #d4e2ef;padding:24px;border-radius:22px;box-shadow:var(--shadow)}
+  label {display:grid;gap:8px;color:var(--nine-dark);font-size:14px;font-weight:700}
+  input,select,button {font:inherit;min-height:48px;border:1px solid #c4d4e5;border-radius:10px;padding:12px;width:100%;background:#fff;color:var(--nine-navy)}
+  input:focus-visible,select:focus-visible,button:focus-visible,a:focus-visible {outline:3px solid var(--nine-accent);outline-offset:3px}
+  button {cursor:pointer;background:var(--nine-navy);color:white}
+  #library-count {margin:24px 0 16px;color:var(--nine-dark);font-weight:700}
+  .library-grid {display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+  .library-card {display:flex;flex-direction:column;background:white;border:1px solid #d4e2ef;border-radius:20px;padding:24px;box-shadow:0 5px 18px #0f264708}
+  .library-card[hidden] {display:none}
+  .library-meta {display:flex;justify-content:space-between;align-items:center;gap:12px;color:var(--nine-dark);font-size:12px;font-weight:700}
+  .library-badge {border-radius:20px;background:#e5f6ff;padding:6px 10px;white-space:nowrap}
+  .library-card[data-kind="Assignment"] .library-badge {background:#fff1df;color:#985b0e}
+  .library-card[data-kind="Notes"] .library-badge {background:#e5f5ee;color:#176343}
+  h2 {font-family:'Bricolage Grotesque',sans-serif;font-size:24px;line-height:1.2;color:var(--nine-navy);margin:22px 0 12px}
+  .library-card p {font-size:14px;color:#526783;line-height:1.5;margin-bottom:24px}
+  .library-actions {display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:auto}
+  .library-actions a {text-decoration:none;font-weight:700;color:var(--nine-dark);padding:12px 0;min-height:44px}
+  .library-actions .download {color:#55718e;font-size:14px}
+  #library-empty {padding:36px;text-align:center;color:var(--nine-dark);background:#fff;border-radius:18px}
+  @media(max-width:950px){.library-filters{grid-template-columns:1fr 1fr}.library-filters label:first-child{grid-column:1/-1}}
+  @media(max-width:550px){.library-filters{grid-template-columns:1fr;padding:18px}.library-grid{grid-template-columns:1fr}}
+</style>

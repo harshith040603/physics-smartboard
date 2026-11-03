@@ -9,6 +9,14 @@ import { chapters } from '../data/chapters';
       <p>Your one stop for physics - interactives for the smartboard, chapter notes, and worksheets, all in one place.</p>
     </div>
     <div class="grid">
+      <a class="tile" href="/library" style="text-decoration:none;color:inherit;">
+        <div class="tile-num">STUDY</div>
+        <div class="tile-icon ic-sheet"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M4 3h16v18H4zM8 7h8M8 12h8M8 17h5"/></svg></div>
+        <h3>Student <span class="accent">Library</span></h3>
+        <p>Assignments, student notes and lesson slides. Filter by chapter, open a PDF, or download it for practice.</p>
+        <span class="tile-go">Find your study material ›</span>
+      </a>
+
       {chapters.map((ch) =>
         ch.status === 'ready' ? (
           <a class="tile" href={`/${ch.slug}`} style="text-decoration:none;color:inherit;">

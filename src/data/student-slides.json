@@ -1,0 +1,74 @@
+[
+  {
+    "slug": "heat-transfer",
+    "chapter": "Heat Transfer",
+    "kind": "Slides",
+    "title": "Radiation",
+    "url": "/heat-transfer/radiation",
+    "detail": "Interactive slides"
+  },
+  {
+    "slug": "heat-transfer",
+    "chapter": "Heat Transfer",
+    "kind": "Slides",
+    "title": "Newton's Law of Cooling",
+    "url": "/heat-transfer/newtons-law-of-cooling",
+    "detail": "Interactive slides"
+  },
+  {
+    "slug": "heat-transfer",
+    "chapter": "Heat Transfer",
+    "kind": "Slides",
+    "title": "The Radiation Laws",
+    "url": "/heat-transfer/radiation-laws",
+    "detail": "Interactive slides"
+  },
+  {
+    "slug": "thermodynamics",
+    "chapter": "Thermodynamics",
+    "kind": "Slides",
+    "title": "Zeroth and First Law of Thermodynamics",
+    "url": "/thermodynamics/zeroth-and-first-law",
+    "detail": "Interactive slides"
+  },
+  {
+    "slug": "thermodynamics",
+    "chapter": "Thermodynamics",
+    "kind": "Slides",
+    "title": "When No Heat Gets In",
+    "url": "/thermodynamics/when-no-heat-gets-in",
+    "detail": "Interactive slides"
+  },
+  {
+    "slug": "thermodynamics",
+    "chapter": "Thermodynamics",
+    "kind": "Slides",
+    "title": "How Much Heat Does a Gas Need?",
+    "url": "/thermodynamics/how-much-heat-does-a-gas-need",
+    "detail": "Interactive slides"
+  },
+  {
+    "slug": "kinetic-theory",
+    "chapter": "Kinetic Theory of Gases",
+    "kind": "Slides",
+    "title": "Equipartition, Manometer and Barometer",
+    "url": "/kinetic-theory/equipartition-manometer-and-barometer",
+    "detail": "Interactive slides"
+  },
+  {
+    "slug": "kinetic-theory",
+    "chapter": "Kinetic Theory of Gases",
+    "kind": "Slides",
+    "title": "Walls, Pistons and Degrees of Freedom",
+    "url": "/kinetic-theory/walls-pistons-and-degrees-of-freedom",
+    "detail": "Interactive slides"
+  },
+  {
+    "slug": "kinetic-theory",
+    "chapter": "Kinetic Theory of Gases",
+    "kind": "Slides",
+    "title": "Pressure of an Ideal Gas",
+    "url": "/kinetic-theory/pressure-of-an-ideal-gas",
+    "detail": "Interactive slides"
+  }
+]
