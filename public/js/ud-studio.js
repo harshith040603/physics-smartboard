@@ -309,7 +309,7 @@ document.getElementById('errSlider').addEventListener('input',updateError);
 
 /* ───────── MASTER DIMENSION SHEET ───────── */
 const DIM_SHEET=[
-  {cat:'Fundamental Quantities',color:'#295990',items:[
+  {cat:'Fundamental Quantities',color:'#2D5990',items:[
     ['Mass','[M]'],['Length','[L]'],['Time','[T]'],
     ['Electric Current','[A]'],['Temperature','[K]'],
     ['Amount of Substance','[mol]'],['Luminous Intensity','[cd]'],
@@ -319,7 +319,7 @@ const DIM_SHEET=[
     ['Velocity / Speed','[L T⁻¹]'],['Acceleration','[L T⁻²]'],
     ['Momentum','[M L T⁻¹]'],
   ]},
-  {cat:'Dynamics',color:'#1b3e66',items:[
+  {cat:'Dynamics',color:'#2D5990',items:[
     ['Force','[M L T⁻²]'],['Impulse','[M L T⁻¹]'],
     ['Work / Energy','[M L² T⁻²]'],['Power','[M L² T⁻³]'],
     ['Pressure / Stress','[M L⁻¹ T⁻²]'],['Torque','[M L² T⁻²]'],

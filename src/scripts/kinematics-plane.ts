@@ -15,8 +15,8 @@ import p5 from 'p5';
 import katex from 'katex';
 
 const C = {
-  navy: '#0f2647',
-  dark: '#295990',
+  navy: '#102757',
+  dark: '#2D5990',
   accent: '#00A0E3',
   red: '#e11d48',
   green: '#16a34a',
@@ -37,7 +37,7 @@ function chip(
   p: p5, txt: string, x: number, y: number,
   align: 'left' | 'right' | 'center' = 'left', size = 14, col = C.navy
 ) {
-  p.textFont('DM Sans');
+  p.textFont('Montserrat');
   p.textSize(size);
   const lines = txt.split('\n');
   const w = Math.max(...lines.map((l) => p.textWidth(l)));
@@ -122,7 +122,7 @@ const vecSketch = (p: p5) => {
     arrow(p, X(0), Y(0), X(0), Y(span));
     p.noStroke();
     p.fill(C.dark);
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
     p.textSize(13);
     p.textAlign(p.CENTER, p.TOP);
     p.text('x', X(span) - 6, Y(0) + 8);
@@ -232,7 +232,7 @@ const kinSketch = (p: p5) => {
     arrow(p, X(0), Y(0), X(0), Y(worldH));
     p.noStroke();
     p.fill(C.dark);
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
     p.textSize(13);
     p.text('x', X(worldW) - 8, Y(0) + 8);
     p.text('y', X(0) + 6, Y(worldH) - 4);
@@ -349,7 +349,7 @@ const indSketch = (p: p5) => {
     p.stroke(41, 89, 144, 30);
     p.strokeWeight(1);
     p.fill(C.dark);
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
     p.textSize(12);
     for (let h = 0; h <= IND_H; h += 15) {
       p.stroke(41, 89, 144, 30);
@@ -511,7 +511,7 @@ const eqnSketch = (p: p5) => {
     p.line(X(0), Y(ymin), X(0), Y(ymax));
     p.noStroke();
     p.fill(C.dark);
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
     p.textSize(12);
     p.text('x', X(xmax) - 8, Y(0) + 8);
     p.text('y', X(0) + 6, Y(ymax) - 2);

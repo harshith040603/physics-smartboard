@@ -26,8 +26,8 @@ import p5 from 'p5';
 import katex from 'katex';
 
 const C = {
-  navy: '#0f2647',
-  dark: '#295990',
+  navy: '#102757',
+  dark: '#2D5990',
   accent: '#00A0E3',
   red: '#e11d48',
   green: '#16a34a',
@@ -65,7 +65,7 @@ function label(
   p.push();
   p.translate(x, y);
   if (ang) p.rotate(ang);
-  p.textFont('DM Sans');
+  p.textFont('Montserrat');
   p.textSize(size);
   const lines = txt.split('\n');
   const w = Math.max(...lines.map((l) => p.textWidth(l)));
@@ -125,10 +125,10 @@ function arc(p: p5, cx: number, cy: number, r: number, sa: number, sb: number, c
 interface Row { text?: string; sw?: string; sep?: boolean; dim?: boolean }
 
 function panelSize(p: p5, title: string, rows: Row[]) {
-  p.textFont('Bricolage Grotesque');
+  p.textFont('Montserrat');
   p.textSize(12.5);
   let w = p.textWidth(title);
-  p.textFont('DM Sans');
+  p.textFont('Montserrat');
   p.textSize(13.5);
   for (const r of rows) if (r.text) w = Math.max(w, p.textWidth(r.text) + (r.sw ? 20 : 0));
   const h = rows.reduce((a, r) => a + (r.sep ? 11 : 20), 0);
@@ -146,11 +146,11 @@ function drawPanel(p: p5, x: number, y: number, title: string, rows: Row[]) {
   p.rect(x + 0.5, y + 0.5, m.w - 1, m.h - 1, 13);
   p.noStroke();
   p.fill(C.dark);
-  p.textFont('Bricolage Grotesque');
+  p.textFont('Montserrat');
   p.textSize(12.5);
   p.textAlign(p.LEFT, p.TOP);
   p.text(title, x + 15, y + 12);
-  p.textFont('DM Sans');
+  p.textFont('Montserrat');
   p.textSize(13.5);
   let ry = y + 34;
   for (const r of rows) {
@@ -1069,12 +1069,12 @@ const mxCurveSketch = (p: p5) => {
     p.stroke(C.navy); p.strokeWeight(2);
     p.line(M.l, py(0), p.width - M.r, py(0));
     p.line(M.l, M.t, M.l, py(0));
-    p.noStroke(); p.fill(C.ink); p.textFont('DM Sans'); p.textSize(12);
+    p.noStroke(); p.fill(C.ink); p.textFont('Montserrat'); p.textSize(12);
     p.textAlign(p.CENTER, p.TOP);
     for (let bd = 0; bd <= 90; bd += 15) p.text(`${bd}°`, px(bd), py(0) + 8);
     p.textAlign(p.RIGHT, p.CENTER);
     for (let r = rStep; r <= yTop; r += rStep) p.text(`${r}`, M.l - 8, py(r));
-    p.textFont('Bricolage Grotesque'); p.textSize(12);
+    p.textFont('Montserrat'); p.textSize(12);
     p.fill(C.dark);
     p.textAlign(p.LEFT, p.BOTTOM);
     p.text('RANGE  R (m)', M.l - 2, M.t - 10);

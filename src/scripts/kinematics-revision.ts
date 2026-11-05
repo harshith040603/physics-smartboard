@@ -11,8 +11,8 @@ import p5 from 'p5';
 import katex from 'katex';
 
 const C = {
-  navy: '#0f2647',
-  dark: '#295990',
+  navy: '#102757',
+  dark: '#2D5990',
   accent: '#00A0E3',
   red: '#e11d48',
   green: '#16a34a',
@@ -204,7 +204,7 @@ const lapSketch = (p: p5) => {
     p.fill(C.green);
     p.circle(sx, sy, 13);
     p.fill(C.navy);
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
     p.textSize(13);
     p.textAlign(p.CENTER, p.BOTTOM);
     p.text('START', sx, sy - 12);
@@ -262,7 +262,7 @@ const tanSketch = (p: p5) => {
     p.stroke(C.navy); p.strokeWeight(2);
     p.line(M.l, p.height - M.b, p.width - M.r, p.height - M.b);
     p.line(M.l, M.t, M.l, p.height - M.b);
-    p.noStroke(); p.fill(C.dark); p.textFont('DM Sans'); p.textSize(13);
+    p.noStroke(); p.fill(C.dark); p.textFont('Montserrat'); p.textSize(13);
     p.textAlign(p.CENTER, p.TOP); p.text('t (s)', p.width - M.r - 16, p.height - M.b + 8);
     p.textAlign(p.LEFT, p.BOTTOM); p.text('x (m)   x = 2t² + 3t', M.l + 8, M.t + 16);
     p.textAlign(p.CENTER, p.TOP);
@@ -344,7 +344,7 @@ const turnSketch = (p: p5) => {
     // number line
     p.stroke(C.navy); p.strokeWeight(3);
     p.line(X(0), ly, X(XMAX), ly);
-    p.textFont('DM Sans'); p.textSize(13); p.fill(C.dark); p.noStroke();
+    p.textFont('Montserrat'); p.textSize(13); p.fill(C.dark); p.noStroke();
     p.textAlign(p.CENTER, p.TOP);
     for (let x = 0; x <= XMAX; x += 3) {
       p.stroke(C.navy); p.strokeWeight(2); p.line(X(x), ly - 6, X(x), ly + 6);

@@ -23,8 +23,8 @@ import 'katex/dist/katex.min.css';
 
 /* ───────── brand palette (matches the tokens in global.css) ───────── */
 const C = {
-  navy: '#0f2647',
-  dark: '#295990',
+  navy: '#102757',
+  dark: '#2D5990',
   accent: '#00A0E3',
   red: '#e11d48',
   green: '#16a34a',
@@ -48,7 +48,7 @@ function chip(
   p: p5, txt: string, x: number, y: number,
   align: 'left' | 'right' | 'center' = 'left', size = 14, col = C.navy
 ) {
-  p.textFont('DM Sans');
+  p.textFont('Montserrat');
   p.textSize(size);
   const lines = txt.split('\n');
   const w = Math.max(...lines.map((l) => p.textWidth(l)));
@@ -169,7 +169,7 @@ const denSketch = (p: p5) => {
   p.draw = () => {
     p.background(C.paper);
     den.shown = ease(den.shown, den.dT, 4, dt(p));
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
 
     const M = DEN[den.mat];
     /* the real growth is invisible - exaggerate it, and say so */
@@ -292,7 +292,7 @@ const wcvSketch = (p: p5) => {
     const d = dt(p);
     wcv.shown = ease(wcv.shown, wcv.T, 5, d);
     wcv.normA = ease(wcv.normA, wcv.norm ? 1 : 0, 5, d);
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
 
     /* ── the beaker on the left, level tracking volume (exaggerated) ── */
     const bkX = 96, bkW = Math.min(p.width * 0.16, 150);
@@ -544,7 +544,7 @@ const lakeSketch = (p: p5) => {
     else if (lake.nudge > 0) { step = Math.min(d, lake.nudge); lake.nudge -= step; }
     if (step > 0) lakeStep(step);
     lakeReadouts();
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
 
     /* ── the lake cross-section ── */
     const lx = 60, lw = Math.min(p.width * 0.5, 520);
@@ -774,7 +774,7 @@ const flaskSketch = (p: p5) => {
     p.background(C.paper);
     const d = dt(p);
     flask.shown = ease(flask.shown, flask.T, 4, d);
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
 
     const L = FLQ[flask.liq];
     const MAG = 26;
@@ -930,7 +930,7 @@ const wghSketch = (p: p5) => {
   p.draw = () => {
     p.background(C.paper);
     wgh.shown = ease(wgh.shown, wgh.dT, 4, dt(p));
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
 
     const r = (1 + wgh.gS * wgh.shown) / (1 + wgh.gL * wgh.shown);
     const F = F0 * r;
@@ -1157,7 +1157,7 @@ const fltSketch = (p: p5) => {
   p.draw = () => {
     p.background(C.paper);
     flt.shown = ease(flt.shown, flt.dT, 4, dt(p));
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
 
     const f1now = flt.f0 * (1 + flt.gL * flt.shown) / (1 + flt.gS * flt.shown);
     /* exaggerate the CHANGE in f so it is visible */
@@ -1230,7 +1230,7 @@ const woodSketch = (p: p5) => {
     }
     wood.shown = ease(wood.shown, wood.T, 6, d);
     woodReadouts();
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
 
     const rho = rhoWater(wood.shown);
     const above = 1 - RHO_WOOD / rho;                  // ~0.4000 ± 2e-4

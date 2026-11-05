@@ -17,13 +17,13 @@
   flex-wrap: wrap;
   gap: 14px;
   margin-bottom: 18px;
-  font-family: 'Bricolage Grotesque', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: clamp(26px, 3vw, 36px);
   font-weight: 800;
   color: var(--nine-navy);
 }
 .td-section-title span {
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: 14px;
   font-weight: 500;
   color: var(--nine-dark);

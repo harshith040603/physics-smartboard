@@ -18,8 +18,8 @@ import 'katex/dist/katex.min.css';
 
 /* ───────── brand palette (matches the tokens in global.css) ───────── */
 const C = {
-  navy: '#0f2647',
-  dark: '#295990',
+  navy: '#102757',
+  dark: '#2D5990',
   accent: '#00A0E3',
   red: '#e11d48',
   green: '#16a34a',
@@ -43,7 +43,7 @@ function chip(
   p: p5, txt: string, x: number, y: number,
   align: 'left' | 'right' | 'center' = 'left', size = 14, col = C.navy
 ) {
-  p.textFont('DM Sans');
+  p.textFont('Montserrat');
   p.textSize(size);
   const lines = txt.split('\n');
   const w = Math.max(...lines.map((l) => p.textWidth(l)));
@@ -142,7 +142,7 @@ function wireSegmented(groupId: string, key: string, onPick: (v: string) => void
 /* ───────── the metals, in the order the lecture uses them ───────── */
 interface Metal { name: string; alpha: number; col: string; }
 const METALS: Record<string, Metal> = {
-  steel: { name: 'Steel', alpha: 1.2e-5, col: '#295990' },
+  steel: { name: 'Steel', alpha: 1.2e-5, col: '#2D5990' },
   copper: { name: 'Copper', alpha: 1.7e-5, col: '#b45309' },
   brass: { name: 'Brass', alpha: 2.0e-5, col: '#a16207' },
   alu: { name: 'Aluminium', alpha: 2.4e-5, col: '#7c3aed' },
@@ -203,7 +203,7 @@ const whySketch = (p: p5) => {
   p.draw = () => {
     p.background(C.paper);
     const d = dt(p);
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
 
     const [rIn, rOut] = turning(why.s, why.sym);
     const mid = (rIn + rOut) / 2;
@@ -432,7 +432,7 @@ const rodSketch = (p: p5) => {
   p.draw = () => {
     p.background(C.paper);
     rod.shown = ease(rod.shown, rod.dT, 4.5, dt(p));
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
 
     const M = METALS[rod.mat];
     const dl = rod.l * M.alpha * rod.shown;
@@ -534,7 +534,7 @@ const rodSketch = (p: p5) => {
     p.textAlign(p.LEFT, p.TOP);
     p.text('ON A 100 m BRIDGE', spanX, 68);
     p.fill(C.navy);
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
     p.textSize(27);
     const bridge = 100 * M.alpha * rod.shown * 1000;
     p.text(`${bridge >= 0 ? '' : '−'}${fmt(Math.abs(bridge), 0)} mm`, spanX, 92);
@@ -605,7 +605,7 @@ const sqSketch = (p: p5) => {
   p.draw = () => {
     p.background(C.paper);
     geo.gA = ease(geo.gA, geo.splitA ? 1 : 0, 5, dt(p));
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
 
     const x = geo.xA;
     const side = Math.min(p.height - 230, p.width * 0.36);
@@ -672,7 +672,7 @@ const sqSketch = (p: p5) => {
       p.fill(255);
       p.rect(tx - 14, 74, p.width - tx - 6, 216, 14);
       p.fill(C.navy);
-      p.textFont('DM Sans');
+      p.textFont('Montserrat');
       p.textAlign(p.LEFT, p.TOP);
       p.textSize(17);
       p.text('A′ = (l + Δl)²', tx, 92);
@@ -711,7 +711,7 @@ const cuSketch = (p: p5) => {
   p.draw = () => {
     p.background(C.paper);
     geo.gB = ease(geo.gB, geo.splitB ? 1 : 0, 5, dt(p));
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
 
     const x = geo.xB;
     const s = 1, d = x, gp = geo.gB * 0.1;
@@ -887,7 +887,7 @@ const metSketch = (p: p5) => {
     p.background(C.paper);
     const d = dt(p);
     met.prog = ease(met.prog, met.run ? 1 : 0, 2.2, d);
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
 
     const x0 = 132, maxW = p.width - 300;
     const top = 76, rowH = 54;
@@ -1030,7 +1030,7 @@ const holeSketch = (p: p5) => {
     hole.cut = ease(hole.cut, hole.step >= 2 ? 1 : 0, 3.4, d);
     hole.overlay = ease(hole.overlay, hole.step >= 4 ? 1 : 0, 3.4, d);
     holeReadouts();
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
 
     /* everything on the plate scales by the same factor - that is the point */
     const MAG = 260;
@@ -1201,7 +1201,7 @@ const ringSketch = (p: p5) => {
     const fits = ringHole(ring.shown) >= SHAFT_D;
     ring.pos = ease(ring.pos, ring.slide && fits ? 1 : 0, 2.6, d);
     ringReadouts();
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
 
     /* Head on. The shaft is drawn to size and only the clearance is
        magnified, so "bore equals shaft" really does look like it. */

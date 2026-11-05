@@ -21,8 +21,8 @@ import 'katex/dist/katex.min.css';
 
 /* ───────── brand palette (matches the tokens in global.css) ───────── */
 const C = {
-  navy: '#0f2647',
-  dark: '#295990',
+  navy: '#102757',
+  dark: '#2D5990',
   accent: '#00A0E3',
   red: '#e11d48',
   green: '#16a34a',
@@ -59,7 +59,7 @@ function chip(
   p: p5, txt: string, x: number, y: number,
   align: 'left' | 'right' | 'center' = 'left', size = 14, col = C.navy
 ) {
-  p.textFont('DM Sans');
+  p.textFont('Montserrat');
   p.textSize(size);
   const lines = txt.split('\n');
   const w = Math.max(...lines.map((l) => p.textWidth(l)));
@@ -205,7 +205,7 @@ function drawRig(p: p5, o: RigOpts) {
   const yBot = Y(-70), yTopL = Y(74), yTopR = Y(126);
   const [r, g, b] = heatRGB(tC);
 
-  p.textFont('DM Sans');
+  p.textFont('Montserrat');
 
   /* ── bath + bulb, sitting clear above the mark ── */
   const bx = x0 + w * 0.17, by = Y(104);
@@ -474,12 +474,12 @@ const gwSketch = (p: p5) => {
       p.rect(px, 46, pw, 6, 16);
 
       p.fill(C.dark);
-      p.textFont('DM Sans');
+      p.textFont('Montserrat');
       p.textSize(12.5);
       p.textAlign(p.LEFT, p.TOP);
       p.text(`STEP ${gw.step + 1} OF ${GW_STEPS.length}`, px + 20, 72);
       p.fill(C.navy);
-      p.textFont('DM Sans');
+      p.textFont('Montserrat');
       p.textSize(23);
       p.text(S.title, px + 20, 92);
       p.textSize(16);
@@ -585,7 +585,7 @@ const rigSketch = (p: p5) => {
     p.line(gx, gy, gx, gy + gh);
     p.noStroke();
     p.fill(C.dark);
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
     p.textSize(12);
     p.textAlign(p.CENTER, p.TOP);
     for (let t = -300; t <= 300; t += 100) p.text(`${t}`, X(t), gy + gh + 6);
@@ -803,7 +803,7 @@ const zeroSketch = (p: p5) => {
 
     p.noStroke();
     p.fill(C.dark);
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
     p.textSize(12.5);
     p.textAlign(p.CENTER, p.TOP);
     for (let t = -300; t <= 200; t += 100) p.text(`${t}`, X(t), Y(0) + 7);
@@ -966,7 +966,7 @@ const kelSketch = (p: p5) => {
     const X = (t: number) => gx + ((t - TA) / (TB - TA)) * gw;
     const yC = p.height * 0.38, yK = p.height * 0.78;
 
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
 
     /* ── the Celsius ruler (never moves) ── */
     const ruler = (y: number, label: string, col: string) => {
@@ -1238,7 +1238,7 @@ const tpSketch = (p: p5) => {
 
     p.noStroke();
     p.fill(ph === 'triple' ? C.green : C.navy);
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
     p.textSize(16);
     p.textAlign(p.CENTER, p.TOP);
     p.text(TP_NAMES[ph], cx, cb + 14);
@@ -1299,7 +1299,7 @@ const tpSketch = (p: p5) => {
     p.line(gx, gy, gx, gy + gh);
     p.noStroke();
     p.fill(C.dark);
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
     p.textSize(12);
     p.textAlign(p.CENTER, p.TOP);
     for (let T = 260; T <= 300; T += 10) p.text(`${T}`, X(T), gy + gh + 6);
@@ -1356,7 +1356,7 @@ const tpSketch = (p: p5) => {
     /* the 0.01 K trap, spelled out where it cannot be missed */
     p.noStroke();
     p.fill(C.navy);
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
     p.textSize(14.5);
     p.textAlign(p.LEFT, p.TOP);
     p.text('273.16 K = triple point      273.15 K = ice point      they differ by 0.01 K', 12, 12);
@@ -1444,7 +1444,7 @@ const cvSketch = (p: p5) => {
 
   p.draw = () => {
     p.background(C.paper);
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
 
     const pad = 26;
     const colW = (p.width - pad * 2) / SCALES.length;
@@ -1639,7 +1639,7 @@ const sameSketch = (p: p5) => {
 
     p.noStroke();
     p.fill(C.dark);
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
     p.textSize(12);
     p.textAlign(p.CENTER, p.TOP);
     for (let v = Math.ceil(xa / gstep) * gstep; v <= xb; v += gstep) {
@@ -1738,7 +1738,7 @@ const delSketch = (p: p5) => {
   p.draw = () => {
     p.background(C.paper);
     del.badA = ease(del.badA, del.bad ? 1 : 0, 5, dt(p));
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
 
     const yTop = 116, yBot = p.height - 46;
     const Y = (tC: number) => yBot - ((tC - DL_MIN) / (DL_MAX - DL_MIN)) * (yBot - yTop);
@@ -1895,7 +1895,7 @@ const hbSketch = (p: p5) => {
   p.draw = () => {
     p.background(C.paper);
     const d = dt(p);
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
 
     const eq = hbEq();
     if (hb.contact) {
@@ -2059,7 +2059,7 @@ const rainSketch = (p: p5) => {
   p.draw = () => {
     p.background(C.paper);
     const d = dt(p);
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
 
     const cx = p.width * 0.34, cyc = p.height * 0.23;
     const groundY = p.height - 92;

@@ -21,8 +21,8 @@ import 'katex/dist/katex.min.css';
 
 /* ───────── brand palette (matches the tokens in global.css) ───────── */
 const C = {
-  navy: '#0f2647',
-  dark: '#295990',
+  navy: '#102757',
+  dark: '#2D5990',
   accent: '#00A0E3',
   red: '#e11d48',
   green: '#16a34a',
@@ -46,7 +46,7 @@ function chip(
   p: p5, txt: string, x: number, y: number,
   align: 'left' | 'right' | 'center' = 'left', size = 14, col = C.navy
 ) {
-  p.textFont('DM Sans');
+  p.textFont('Montserrat');
   p.textSize(size);
   const lines = txt.split('\n');
   const w = Math.max(...lines.map((l) => p.textWidth(l)));
@@ -278,7 +278,7 @@ const whySketch = (p: p5) => {
 
     p.noStroke();
     p.fill(C.navy);
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
     p.textSize(15);
     p.textAlign(p.CENTER, p.TOP);
     p.text(`body at ${t} °C`, cx, bathB + 10);
@@ -357,7 +357,7 @@ const whySketch = (p: p5) => {
       p.fill(C.navy);
       p.rect(cx - bw / 2, by, bw, bh, 10);
       p.fill('#4ade80');
-      p.textFont('DM Sans');
+      p.textFont('Montserrat');
       p.textSize(21);
       p.textAlign(p.CENTER, p.CENTER);
       p.text(`${fmt(val, 2)} Ω`, cx, by + bh / 2 + 1);
@@ -401,7 +401,7 @@ const whySketch = (p: p5) => {
     p.line(gx, gy, gx, gy + gh);
     p.noStroke();
     p.fill(C.dark);
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
     p.textSize(12.5);
     p.textAlign(p.CENTER, p.TOP);
     for (let t = -50; t <= T_MAX; t += 50) p.text(`${t}`, X(t), gy + gh + 7);
@@ -478,7 +478,7 @@ const whySketch = (p: p5) => {
 
     p.noStroke();
     p.fill(C.dark);
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
     p.textSize(14);
     p.textAlign(p.LEFT, p.TOP);
     p.text(P.caption, 16, 12);
@@ -536,7 +536,7 @@ const calSketch = (p: p5) => {
 
   p.draw = () => {
     p.background(C.paper);
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
 
     /* ease the column and the fades */
     const d = dt(p);
@@ -717,7 +717,7 @@ const cmpSketch = (p: p5) => {
 
   p.draw = () => {
     p.background(C.paper);
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
 
     const [r, g, b] = heatRGB(cmp.t);
     const tubeT = 60, tubeB = p.height - 96, tubeW = 30;
@@ -890,7 +890,7 @@ const mstSketch = (p: p5) => {
 
   p.draw = () => {
     p.background(C.paper);
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
     const P = M();
     const span = P.x100 - P.x0;
 
@@ -1070,7 +1070,7 @@ const TTYPES: TType[] = [
     why: 'Mercury freezes at −39 °C. Once it is solid it cannot expand any more, so the low end stops around −30 °C - below that, use alcohol, which freezes only at −115 °C. The top end is set by mercury boiling at 357 °C.',
   },
   {
-    name: 'Constant volume gas', prop: 'pressure of a gas at fixed volume', lo: -268, hi: 1500, open: false, col: '#295990',
+    name: 'Constant volume gas', prop: 'pressure of a gas at fixed volume', lo: -268, hi: 1500, open: false, col: '#2D5990',
     why: 'This one goes lowest, and it is the thermometer every other thermometer is checked against. It works so far down because a gas stays a gas long after liquids have frozen solid. Remember it - the next lecture starts here.',
   },
   {
@@ -1130,7 +1130,7 @@ const typSketch = (p: p5) => {
 
   p.draw = () => {
     p.background(C.paper);
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
     typ.grow = Math.min(1, typ.grow + dt(p) * 1.2);
     const e = 1 - Math.pow(1 - typ.grow, 3);      // ease-out
 
@@ -1259,7 +1259,7 @@ const fltSketch = (p: p5) => {
 
   p.draw = () => {
     p.background(C.paper);
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
 
     const top = 92, bot = p.height - 46;
     const Y = (T: number) => bot - ((T - T_LO) / (T_HI - T_LO)) * (bot - top);

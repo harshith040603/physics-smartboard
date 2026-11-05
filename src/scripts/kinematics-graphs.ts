@@ -13,8 +13,8 @@
 import p5 from 'p5';
 
 const C = {
-  navy: '#0f2647',
-  dark: '#295990',
+  navy: '#102757',
+  dark: '#2D5990',
   accent: '#00A0E3',
   red: '#e11d48',
   green: '#16a34a',
@@ -124,7 +124,7 @@ const slopeSketch = (p: p5) => {
     p.line(M.l, M.t, M.l, p.height - M.b);
     p.noStroke();
     p.fill(C.dark);
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
     p.textSize(12);
     p.textAlign(p.CENTER, p.TOP);
     for (let t = 0; t <= SL_T; t += 2) p.text(`${t}`, GX(t), p.height - M.b + 8);
@@ -223,7 +223,7 @@ const pathSketch = (p: p5) => {
     }
 
     p.background(C.paper);
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
 
     /* ── top strip: the real world, a flat road ── */
     const roadY = 86;
@@ -430,7 +430,7 @@ const areaSketch = (p: p5) => {
     };
 
     p.background(C.paper);
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
 
     /* grid + axes */
     p.stroke(41, 89, 144, 30);
@@ -559,7 +559,7 @@ const ladderSketch = (p: p5) => {
 
     const D = LADDERS[ladder.mode];
     p.background(C.paper);
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
 
     /* three panels: x-t | v-t | a-t */
     const gapW = 64;
@@ -930,7 +930,7 @@ const workedSketch = (p: p5) => {
     };
 
     p.background(C.paper);
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
 
     /* grid + axes (time axis sits at v = 0) */
     p.stroke(41, 89, 144, 30);

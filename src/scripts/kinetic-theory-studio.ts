@@ -21,8 +21,8 @@ import p5 from 'p5';
 
 /* ───────── brand palette (matches the tokens in global.css) ───────── */
 const C = {
-  navy: '#0f2647',
-  dark: '#295990',
+  navy: '#102757',
+  dark: '#2D5990',
   accent: '#00A0E3',
   red: '#e11d48',
   green: '#16a34a',
@@ -43,7 +43,7 @@ function chip(
   p: p5, txt: string, x: number, y: number,
   align: 'left' | 'right' | 'center' = 'left', size = 14, col = C.navy
 ) {
-  p.textFont('DM Sans');
+  p.textFont('Montserrat');
   p.textSize(size);
   const lines = txt.split('\n');
   const w = Math.max(...lines.map((l) => p.textWidth(l)));
@@ -343,7 +343,7 @@ const pistonSketch = (p: p5) => {
     }
 
     /* gas names, tucked into the top corner of each side */
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
     p.textStyle(p.BOLD);
     p.textSize(fs);
     p.noStroke();
@@ -505,7 +505,7 @@ function plot(
   p.noStroke();
   p.fill(C.paper);
   p.rect(g.x, g.y, g.w, g.h, 12);
-  p.textFont('DM Sans');
+  p.textFont('Montserrat');
   p.textStyle(p.BOLD);
   p.textSize(fs);
   p.fill(C.navy);

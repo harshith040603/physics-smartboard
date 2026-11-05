@@ -24,12 +24,12 @@
 .ht-table{width:100%;border-collapse:collapse;font-size:18px;line-height:1.45;min-width:640px;}
 .ht-table th,.ht-table td{padding:11px 14px;text-align:left;border-bottom:1px solid rgba(41,89,144,.14);vertical-align:top;}
 .ht-table thead th{
-  font-family:'Bricolage Grotesque';font-weight:800;font-size:19px;color:#fff;
+  font-family:'Montserrat';font-weight:800;font-size:19px;color:#fff;
   background:var(--nine-dark);
 }
 .ht-table thead th:first-child{background:transparent;}
 .ht-table tbody th{
-  font-family:'Bricolage Grotesque';font-weight:700;font-size:16px;color:var(--nine-dark);
+  font-family:'Montserrat';font-weight:700;font-size:16px;color:var(--nine-dark);
   white-space:nowrap;
 }
 .ht-table tbody tr:nth-child(even) td{background:var(--paper-2);}

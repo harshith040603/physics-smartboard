@@ -19,8 +19,8 @@ import 'katex/dist/katex.min.css';
 
 /* ───────── brand palette (matches the tokens in global.css) ───────── */
 const C = {
-  navy: '#0f2647',
-  dark: '#295990',
+  navy: '#102757',
+  dark: '#2D5990',
   accent: '#00A0E3',
   red: '#e11d48',
   green: '#16a34a',
@@ -44,7 +44,7 @@ function chip(
   p: p5, txt: string, x: number, y: number,
   align: 'left' | 'right' | 'center' = 'left', size = 14, col = C.navy
 ) {
-  p.textFont('DM Sans');
+  p.textFont('Montserrat');
   p.textSize(size);
   const lines = txt.split('\n');
   const w = Math.max(...lines.map((l) => p.textWidth(l)));
@@ -134,7 +134,7 @@ function wireSegmented(groupId: string, key: string, onPick: (v: string) => void
 /* ───────── materials ───────── */
 interface Mat { name: string; alpha: number; Y: number; col: string; }
 const MATS: Record<string, Mat> = {
-  steel: { name: 'Steel', alpha: 1.2e-5, Y: 2.0e11, col: '#295990' },
+  steel: { name: 'Steel', alpha: 1.2e-5, Y: 2.0e11, col: '#2D5990' },
   copper: { name: 'Copper', alpha: 1.7e-5, Y: 1.2e11, col: '#b45309' },
   brass: { name: 'Brass', alpha: 2.0e-5, Y: 1.0e11, col: '#a16207' },
   alu: { name: 'Aluminium', alpha: 2.4e-5, Y: 0.7e11, col: '#7c3aed' },
@@ -184,7 +184,7 @@ const rulerSketch = (p: p5) => {
   p.draw = () => {
     p.background(C.paper);
     ruler.shown = ease(ruler.shown, ruler.t, 4, dt(p));
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
 
     const M = MATS[ruler.mat];
     const dT = ruler.shown - CAL_T;
@@ -391,7 +391,7 @@ const clockSketch = (p: p5) => {
   p.draw = () => {
     p.background(C.paper);
     const d = dt(p);
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
 
     if (clock.run && clock.days < 7) {
       clock.days = Math.min(7, clock.days + d * 1.4);        // a week in ~5 s
@@ -511,7 +511,7 @@ const perSketch = (p: p5) => {
     p.background(C.paper);
     const d = dt(p);
     if (per.run) per.t += d;
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
 
     const lose = driftPerDay('steel', per.dTh);
     const top = 62, maxL = p.height - 190;
@@ -610,7 +610,7 @@ const stripSketch = (p: p5) => {
     strip.shown = ease(strip.shown, strip.t, 3.4, d);
     strip.splitA = ease(strip.splitA, strip.split ? 1 : 0, 4, d);
     stripReadouts();
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
 
     const dT = strip.shown - CAL_T;
     const dA = MATS.brass.alpha - MATS.steel.alpha;
@@ -811,7 +811,7 @@ const thermoSketch = (p: p5) => {
   p.draw = () => {
     p.background(C.paper);
     const d = dt(p);
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
 
     /* advance the room, either continuously or one nudge at a time */
     let step = 0;
@@ -1061,7 +1061,7 @@ const ballSketch = (p: p5) => {
     const d = dt(p);
     ball.shown = ease(ball.shown, ball.t, 3.2, d);
     ballReadouts();
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
 
     const bD = ballD(ball.shown), hD = holeD(ball.shown);
     const fits = hD >= bD;
@@ -1231,7 +1231,7 @@ const stressSketch = (p: p5) => {
   p.draw = () => {
     p.background(C.paper);
     stress.shown = ease(stress.shown, stress.dT, 4, dt(p));
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
 
     const M = MATS[stress.mat];
     const sig = M.Y * M.alpha * stress.shown;

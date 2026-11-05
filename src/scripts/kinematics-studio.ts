@@ -16,8 +16,8 @@ import { inclineScreenInit } from './kinematics-incline';
 
 /* ───────── brand palette (matches global.css tokens) ───────── */
 const C = {
-  navy: '#0f2647',
-  dark: '#295990',
+  navy: '#102757',
+  dark: '#2D5990',
   accent: '#00A0E3',
   red: '#e11d48',
   green: '#16a34a',
@@ -99,7 +99,7 @@ const sketch = (p: p5) => {
     const step = niceStep(worldR);
     p.stroke(41, 89, 144, 26);
     p.strokeWeight(1);
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
     for (let gx = 0; gx <= worldR; gx += step) {
       p.line(X(gx), M.t, X(gx), p.height - M.b);
     }

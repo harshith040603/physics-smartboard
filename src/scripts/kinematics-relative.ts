@@ -15,8 +15,8 @@ import p5 from 'p5';
 import katex from 'katex';
 
 const C = {
-  navy: '#0f2647',
-  dark: '#295990',
+  navy: '#102757',
+  dark: '#2D5990',
   accent: '#00A0E3',
   red: '#e11d48',
   green: '#16a34a',
@@ -38,7 +38,7 @@ function chip(
   p: p5, txt: string, x: number, y: number,
   align: 'left' | 'right' | 'center' = 'left', size = 14, col = C.navy
 ) {
-  p.textFont('DM Sans');
+  p.textFont('Montserrat');
   p.textSize(size);
   const lines = txt.split('\n');
   const w = Math.max(...lines.map((l) => p.textWidth(l)));
@@ -109,7 +109,7 @@ function car(p: p5, cx: number, baseY: number, col: string, label: string, dir: 
   );
   /* label */
   p.fill(dim ? p.color(120, 120, 120) : p.color(C.navy));
-  p.textFont('Bricolage Grotesque');
+  p.textFont('Montserrat');
   p.textSize(15);
   p.textAlign(p.CENTER, p.CENTER);
   p.text(label, cx, bodyY + h / 2 + 1);

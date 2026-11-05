@@ -12,8 +12,8 @@ import p5 from 'p5';
 import katex from 'katex';
 
 const C = {
-  navy: '#0f2647',
-  dark: '#295990',
+  navy: '#102757',
+  dark: '#2D5990',
   accent: '#00A0E3',
   red: '#e11d48',
   green: '#16a34a',
@@ -142,7 +142,7 @@ function ruler(p: p5, worldH: number, Y: (wy: number) => number, ml: number) {
   }
   p.noStroke();
   p.fill(C.dark);
-  p.textFont('DM Sans');
+  p.textFont('Montserrat');
   p.textSize(12);
   p.textAlign(p.RIGHT, p.CENTER);
   for (let gy = 0; gy <= worldH; gy += step) {

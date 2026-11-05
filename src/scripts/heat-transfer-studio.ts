@@ -27,8 +27,8 @@ import p5 from 'p5';
 
 /* ───────── brand palette (matches the tokens in global.css) ───────── */
 const C = {
-  navy: '#0f2647',
-  dark: '#295990',
+  navy: '#102757',
+  dark: '#2D5990',
   accent: '#00A0E3',
   red: '#e11d48',
   green: '#16a34a',
@@ -45,7 +45,7 @@ function chip(
   p: p5, txt: string, x: number, y: number,
   align: 'left' | 'right' | 'center' = 'left', size = 14, col = C.navy
 ) {
-  p.textFont('DM Sans');
+  p.textFont('Montserrat');
   p.textSize(size);
   const lines = txt.split('\n');
   const w = Math.max(...lines.map((l) => p.textWidth(l)));
@@ -147,7 +147,7 @@ type MatKey = 'Cu' | 'Al' | 'Fe' | 'Glass';
 const MATS: Record<MatKey, { name: string; K: number; rc: number; rgb: RGB; line: string; kReal: number }> = {
   Cu: { name: 'Copper', K: 1, rc: 1, rgb: [196, 116, 62], line: '#c2410c', kReal: 400 },
   Al: { name: 'Aluminium', K: 0.59, rc: 0.70, rgb: [178, 186, 196], line: '#64748b', kReal: 235 },
-  Fe: { name: 'Iron', K: 0.2, rc: 1.01, rgb: [104, 110, 122], line: '#0f2647', kReal: 80 },
+  Fe: { name: 'Iron', K: 0.2, rc: 1.01, rgb: [104, 110, 122], line: '#102757', kReal: 80 },
   Glass: { name: 'Glass', K: 0.0025, rc: 0.58, rgb: [196, 222, 232], line: '#0891b2', kReal: 1 },
 };
 const NODES = 61;             // nodes on the rod you see
@@ -487,7 +487,7 @@ const condSketch = (p: p5) => {
     p.line(x0, gy0, x0, gy1);
     p.noStroke();
     p.fill(C.dark);
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
     p.textSize(13);
     p.textAlign(p.RIGHT, p.CENTER);
     for (const T of [30, 100, 200, 300]) p.text(`${T} °C`, x0 - 14, yT(T));
@@ -878,7 +878,7 @@ const convSketch = (p: p5) => {
     for (const T of [0, 50, 100]) p.line(thx + 6, tLev(T), thx + 13, tLev(T));
     p.noStroke();
     p.fill(C.dark);
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
     p.textSize(11.5);
     p.textAlign(p.LEFT, p.CENTER);
     for (const T of [0, 50, 100]) p.text(`${T}`, thx + 15, tLev(T));
@@ -1255,7 +1255,7 @@ const radSketch = (p: p5) => {
     p.line(gx0, gy0, gx0, gy1);
     p.noStroke();
     p.fill(C.dark);
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
     p.textSize(12);
     p.textAlign(p.RIGHT, p.CENTER);
     for (const T of [25, 50, 75]) p.text(`${T} °C`, gx0 - 8, gy(T));

@@ -25,8 +25,8 @@ import 'katex/dist/katex.min.css';
 
 /* ───────── brand palette (matches the tokens in global.css) ───────── */
 const C = {
-  navy: '#0f2647',
-  dark: '#295990',
+  navy: '#102757',
+  dark: '#2D5990',
   accent: '#00A0E3',
   red: '#e11d48',
   green: '#16a34a',
@@ -50,7 +50,7 @@ function chip(
   p: p5, txt: string, x: number, y: number,
   align: 'left' | 'right' | 'center' = 'left', size = 14, col = C.navy
 ) {
-  p.textFont('DM Sans');
+  p.textFont('Montserrat');
   p.textSize(size);
   p.textStyle(p.NORMAL);
   const lines = txt.split('\n');
@@ -254,7 +254,7 @@ const probSketch = (p: p5) => {
     const d = dt(p);
     heatTick(prob.run, p, slider('aePT'), (T) => { prob.T = T; el('aePTVal').textContent = `+${T} °C`; probReadouts(); });
     prob.shown = ease(prob.shown, prob.T, 5, d);
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
 
     const L = LIQ[prob.liq];
     const MAG = L.mag;
@@ -405,7 +405,7 @@ const casesSketch = (p: p5) => {
       if (cases.T >= 100) cases.run.on = false;
     }
     cases.shown = ease(cases.shown, cases.T, 5, d);
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
 
     const T = cases.shown;
     const gC = 3 * cases.a;
@@ -552,7 +552,7 @@ const overSketch = (p: p5) => {
     heatTick(over.run, p, slider('aeOT'), (T) => { over.T = T; el('aeOTVal').textContent = `+${T} °C`; overReadouts(); });
     const prev = over.shown;
     over.shown = ease(over.shown, over.T, 4, d);
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
 
     const P = OPRE[over.pre];
     const T = over.shown;
@@ -700,7 +700,7 @@ const gapSketch = (p: p5) => {
     const d = dt(p);
     heatTick(gap.run, p, slider('aeGT'), (T) => { gap.T = T; el('aeGTVal').textContent = `+${T} °C`; gapReadouts(); });
     gap.shown = ease(gap.shown, gap.T, 5, d);
-    p.textFont('DM Sans');
+    p.textFont('Montserrat');
 
     const T = gap.shown;
     const gL = gap.ratio * G_C;

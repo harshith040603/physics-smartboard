@@ -23,13 +23,13 @@ a.tile{text-decoration:none;color:inherit;}
 .kt-table{width:100%;border-collapse:collapse;font-size:19px;line-height:1.4;min-width:640px;}
 .kt-table th,.kt-table td{padding:13px 18px;text-align:left;border-bottom:1px solid rgba(41,89,144,.14);}
 .kt-table thead th{
-  font-family:'Bricolage Grotesque';font-weight:800;font-size:19px;color:#fff;
+  font-family:'Montserrat';font-weight:800;font-size:19px;color:#fff;
   background:var(--nine-dark);
 }
 .kt-table tbody tr{cursor:pointer;transition:background .15s;}
 .kt-table tbody tr:last-child th,.kt-table tbody tr:last-child td{border-bottom:none;}
 .kt-table tbody th{
-  font-family:'Bricolage Grotesque';font-weight:700;font-size:18px;color:var(--nine-navy);
+  font-family:'Montserrat';font-weight:700;font-size:18px;color:var(--nine-navy);
   white-space:nowrap;
 }
 .kt-table tbody tr.cur{background:rgba(0,160,227,.1);box-shadow:inset 5px 0 0 var(--nine-accent);}

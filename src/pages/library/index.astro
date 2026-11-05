@@ -22,7 +22,7 @@ const kinds = ['Assignment', 'Notes', 'Slides'];
 <StudioLayout title="Student Library - Physics with Harshith" chapterChip="Student Library">
   <section class="screen active">
     <div class="hero">
-      <h1>Your study <span class="accent">library.</span></h1>
+      <h1>Student <span class="accent">Library</span></h1>
       <p>Pick a chapter. Revise the lesson, open your assignment, and practise at your pace.</p>
     </div>
     <form class="library-filters" role="search" onsubmit="return false">
@@ -79,13 +79,13 @@ const kinds = ['Assignment', 'Notes', 'Slides'];
   button {cursor:pointer;background:var(--nine-navy);color:white}
   #library-count {margin:24px 0 16px;color:var(--nine-dark);font-weight:700}
   .library-grid {display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
-  .library-card {display:flex;flex-direction:column;background:white;border:1px solid #d4e2ef;border-radius:20px;padding:24px;box-shadow:0 5px 18px #0f264708}
+  .library-card {display:flex;flex-direction:column;background:white;border:1px solid #d4e2ef;border-radius:20px;padding:24px;box-shadow:0 5px 18px #10275708}
   .library-card[hidden] {display:none}
   .library-meta {display:flex;justify-content:space-between;align-items:center;gap:12px;color:var(--nine-dark);font-size:12px;font-weight:700}
   .library-badge {border-radius:20px;background:#e5f6ff;padding:6px 10px;white-space:nowrap}
   .library-card[data-kind="Assignment"] .library-badge {background:#fff1df;color:#985b0e}
   .library-card[data-kind="Notes"] .library-badge {background:#e5f5ee;color:#176343}
-  h2 {font-family:'Bricolage Grotesque',sans-serif;font-size:24px;line-height:1.2;color:var(--nine-navy);margin:22px 0 12px}
+  h2 {font-family:'Montserrat',sans-serif;font-size:24px;line-height:1.2;color:var(--nine-navy);margin:22px 0 12px}
   .library-card p {font-size:14px;color:#526783;line-height:1.5;margin-bottom:24px}
   .library-actions {display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:auto}
   .library-actions a {text-decoration:none;font-weight:700;color:var(--nine-dark);padding:12px 0;min-height:44px}

@@ -3,7 +3,7 @@
    class an activity needs lives here.                                    */
 
 /* ── tile icons ── */
-.ic-therm{background:linear-gradient(135deg,#0f2647,#e11d48);}
+.ic-therm{background:linear-gradient(135deg,#102757,#e11d48);}
 .ic-cal{background:linear-gradient(135deg,#0369a1,#38bdf8);}
 .ic-formula{background:linear-gradient(135deg,#7c3aed,#a855f7);}
 .ic-range{background:linear-gradient(135deg,#b45309,#f59e0b);}
@@ -11,7 +11,7 @@
 .ic-hw{background:linear-gradient(135deg,#0f766e,#14b8a6);}
 
 /* ── lecture 2 tile icons ── */
-.ic-gasth{background:linear-gradient(135deg,#0f2647,#00A0E3);}
+.ic-gasth{background:linear-gradient(135deg,#102757,#00A0E3);}
 .ic-zero{background:linear-gradient(135deg,#1e3a8a,#38bdf8);}
 .ic-kelvin{background:linear-gradient(135deg,#5b21b6,#a855f7);}
 .ic-ladder{background:linear-gradient(135deg,#0369a1,#22d3ee);}
@@ -19,7 +19,7 @@
 .ic-delta{background:linear-gradient(135deg,#b45309,#fbbf24);}
 .ic-heat{background:linear-gradient(135deg,#9f1239,#fb7185);}
 /* ── thermal expansion tile icons ── */
-.ic-atoms{background:linear-gradient(135deg,#0f2647,#7c3aed);}
+.ic-atoms{background:linear-gradient(135deg,#102757,#7c3aed);}
 .ic-rod{background:linear-gradient(135deg,#b45309,#f59e0b);}
 .ic-cube{background:linear-gradient(135deg,#0369a1,#22d3ee);}
 .ic-race{background:linear-gradient(135deg,#065f46,#10b981);}
@@ -33,14 +33,14 @@
 .ic-clamp{background:linear-gradient(135deg,#7f1d1d,#f97316);}
 
 /* ── liquids and floating tile icons ── */
-.ic-dens{background:linear-gradient(135deg,#0f2647,#38bdf8);}
+.ic-dens{background:linear-gradient(135deg,#102757,#38bdf8);}
 .ic-water{background:linear-gradient(135deg,#0369a1,#22d3ee);}
 .ic-flask{background:linear-gradient(135deg,#5b21b6,#a855f7);}
 .ic-weigh{background:linear-gradient(135deg,#b45309,#fbbf24);}
 .ic-float{background:linear-gradient(135deg,#065f46,#10b981);}
 
 /* ── apparent expansion tile icons ── */
-.ic-cup{background:linear-gradient(135deg,#0f2647,#00A0E3);}
+.ic-cup{background:linear-gradient(135deg,#102757,#00A0E3);}
 .ic-cases{background:linear-gradient(135deg,#5b21b6,#a855f7);}
 .ic-spill{background:linear-gradient(135deg,#9f1239,#fb7185);}
 .ic-gap{background:linear-gradient(135deg,#b45309,#fbbf24);}
@@ -49,7 +49,7 @@
 /* ── pane tabs ── */
 .th-chips{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:22px;}
 .th-chip{
-  font-family:'Bricolage Grotesque';font-weight:700;font-size:16.5px;
+  font-family:'Montserrat';font-weight:700;font-size:16.5px;
   padding:10px 18px;border-radius:999px;border:2px solid rgba(41,89,144,.25);
   background:var(--white);color:var(--nine-deep);cursor:pointer;transition:.15s;
 }
@@ -67,13 +67,13 @@
   display:flex;align-items:center;gap:10px;
   background:linear-gradient(90deg,var(--nine-navy),var(--nine-dark));
   color:#fff;padding:11px 22px;
-  font-family:'DM Sans';font-weight:700;font-size:13px;
+  font-family:'Montserrat';font-weight:700;font-size:13px;
   letter-spacing:1.6px;text-transform:uppercase;
 }
 .th-notes-head::before{content:"✎";font-size:16px;letter-spacing:0;}
 .th-notes-body{padding:20px 24px 22px;color:var(--ink);}
 .th-notes-body h4{
-  font-family:'Bricolage Grotesque';font-weight:800;font-size:23px;
+  font-family:'Montserrat';font-weight:800;font-size:23px;
   color:var(--nine-navy);letter-spacing:-.3px;margin:0 0 12px;
 }
 .th-notes-body h4:not(:first-child){margin-top:24px;}
@@ -125,10 +125,10 @@
   border:1px solid rgba(41,89,144,.16);
 }
 .th-prop .th-pn{
-  font-family:'Bricolage Grotesque';font-weight:800;font-size:14px;
-  letter-spacing:1.3px;text-transform:uppercase;color:var(--nine-accent);margin-bottom:5px;
+  font-family:'Montserrat';font-weight:800;font-size:14px;
+  letter-spacing:1.3px;text-transform:uppercase;color:var(--nine-dark);margin-bottom:5px;
 }
-.th-prop .th-pt{font-family:'Bricolage Grotesque';font-weight:800;font-size:19px;color:var(--nine-navy);line-height:1.25;}
+.th-prop .th-pt{font-family:'Montserrat';font-weight:800;font-size:19px;color:var(--nine-navy);line-height:1.25;}
 .th-prop .th-pd{font-size:16px;color:#52647d;margin-top:5px;line-height:1.45;}
 
 /* ── controls ── */
@@ -139,14 +139,14 @@
 }
 .th-ctrl{display:flex;flex-direction:column;gap:8px;min-width:220px;flex:1;}
 .th-ctrl label{
-  font-family:'Bricolage Grotesque';font-weight:700;font-size:18px;color:var(--nine-deep);
+  font-family:'Montserrat';font-weight:700;font-size:18px;color:var(--nine-deep);
   display:flex;justify-content:space-between;align-items:baseline;gap:12px;
 }
-.th-val{font-family:'DM Sans';font-weight:700;color:var(--nine-accent);font-size:19.5px;}
+.th-val{font-family:'Montserrat';font-weight:700;color:var(--nine-dark);font-size:19.5px;}
 .th-ctrl input[type=range]{width:100%;accent-color:var(--nine-accent);height:34px;cursor:pointer;}
 .th-btns{display:flex;gap:12px;align-items:center;flex-wrap:wrap;}
 .th-btn{
-  font-family:'Bricolage Grotesque';font-weight:700;font-size:16px;
+  font-family:'Montserrat';font-weight:700;font-size:16px;
   padding:14px 22px;border-radius:12px;cursor:pointer;transition:.15s;
   border:2px solid rgba(41,89,144,.2);background:#fff;color:var(--nine-dark);
 }
@@ -168,10 +168,10 @@
 .th-readouts{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:14px;}
 .th-readout{background:var(--paper-2);border-radius:14px;padding:11px 20px;min-width:170px;}
 .th-readout small{
-  display:block;font-family:'Bricolage Grotesque';font-weight:700;font-size:12.5px;
+  display:block;font-family:'Montserrat';font-weight:700;font-size:12.5px;
   letter-spacing:1.2px;color:var(--nine-dark);opacity:.72;margin-bottom:3px;text-transform:uppercase;
 }
-.th-ro{font-family:'Bricolage Grotesque';font-weight:800;font-size:25px;color:var(--nine-accent);}
+.th-ro{font-family:'Montserrat';font-weight:800;font-size:25px;color:var(--nine-dark);}
 .th-ro.good{color:var(--green);}
 .th-ro.bad{color:var(--red);}
 .th-ro.small{font-size:19px;color:var(--nine-navy);}
@@ -189,7 +189,7 @@
 }
 .th-work-line{font-size:21px;color:var(--nine-navy);margin:10px 0;overflow-x:auto;}
 .th-work-lab{
-  font-family:'Bricolage Grotesque';font-weight:700;font-size:13px;letter-spacing:1.4px;
+  font-family:'Montserrat';font-weight:700;font-size:13px;letter-spacing:1.4px;
   text-transform:uppercase;color:var(--nine-dark);opacity:.7;margin-bottom:8px;
 }
 
@@ -199,7 +199,7 @@
   padding:22px 26px;margin-bottom:16px;
 }
 .th-hw-q{
-  font-family:'Bricolage Grotesque';font-weight:700;font-size:21px;
+  font-family:'Montserrat';font-weight:700;font-size:21px;
   color:var(--nine-navy);line-height:1.45;
 }
 .th-hw-n{
@@ -216,10 +216,10 @@
 .th-hw-sol b{color:var(--nine-navy);}
 
 /* ── quick quiz ── */
-.th-q{font-family:'Bricolage Grotesque';font-weight:700;font-size:22px;color:var(--nine-navy);margin-bottom:12px;line-height:1.4;}
+.th-q{font-family:'Montserrat';font-weight:700;font-size:22px;color:var(--nine-navy);margin-bottom:12px;line-height:1.4;}
 .th-opts{display:flex;flex-wrap:wrap;gap:12px;margin:12px 0;}
 .th-opt{
-  font-family:'DM Sans';font-weight:700;font-size:19px;
+  font-family:'Montserrat';font-weight:700;font-size:19px;
   padding:14px 24px;border-radius:14px;cursor:pointer;transition:.15s;
   border:2px solid rgba(41,89,144,.3);background:var(--paper-2);color:var(--nine-deep);
 }

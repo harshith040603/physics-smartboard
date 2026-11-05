@@ -10,15 +10,15 @@
 }
 .asg-strip-main{flex:1;min-width:260px;}
 .asg-strip-title{
-  font-family:'Bricolage Grotesque';font-weight:800;font-size:20px;
+  font-family:'Montserrat';font-weight:800;font-size:20px;
   color:var(--nine-navy);letter-spacing:-.3px;
 }
-.asg-strip-title b{color:var(--nine-accent);}
+.asg-strip-title b{color:var(--nine-dark);}
 .asg-strip-line{font-size:14px;color:#6b7f97;font-weight:600;margin-top:3px;}
 .asg-strip-rule{font-size:14.5px;color:#435a72;font-weight:500;margin-top:8px;}
 .asg-dl{
   display:inline-flex;align-items:center;gap:8px;flex-shrink:0;
-  font-family:'Bricolage Grotesque';font-weight:600;font-size:14px;
+  font-family:'Montserrat';font-weight:600;font-size:14px;
   padding:11px 20px;border-radius:12px;text-decoration:none;
   background:var(--nine-navy);color:#fff;transition:.15s;
 }
@@ -26,7 +26,7 @@
 
 /* a one-line instruction inside a card, above the options */
 .pyq-hint{
-  font-size:13px;font-weight:600;color:var(--nine-accent);
+  font-size:13px;font-weight:600;color:var(--nine-dark);
   margin:0 0 10px;letter-spacing:.2px;
 }
 
@@ -35,7 +35,7 @@
 .pyq-opt-text{line-height:1.6;}
 .pyq-table th{
   background:var(--nine-dark);color:#fff;text-align:left;
-  font-family:'Bricolage Grotesque';font-weight:700;font-size:12px;
+  font-family:'Montserrat';font-weight:700;font-size:12px;
   letter-spacing:1px;text-transform:uppercase;padding:8px 14px;
   border:1px solid var(--nine-dark);
 }
@@ -47,7 +47,7 @@
   box-shadow:var(--shadow);padding:20px 26px;border-left:5px solid #f59e0b;
 }
 .asg-mark h3{
-  font-family:'Bricolage Grotesque';font-weight:800;font-size:19px;
+  font-family:'Montserrat';font-weight:800;font-size:19px;
   color:var(--nine-navy);margin-bottom:10px;
 }
 .asg-mark-row{display:flex;gap:14px;font-size:15px;line-height:1.6;margin:6px 0;flex-wrap:wrap;color:#435a72;}

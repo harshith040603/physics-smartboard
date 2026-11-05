@@ -23,8 +23,8 @@ import p5 from 'p5';
 
 /* ───────── brand palette (matches the tokens in global.css) ───────── */
 const C = {
-  navy: '#0f2647',
-  dark: '#295990',
+  navy: '#102757',
+  dark: '#2D5990',
   accent: '#00A0E3',
   red: '#e11d48',
   green: '#16a34a',
@@ -41,7 +41,7 @@ function chip(
   p: p5, txt: string, x: number, y: number,
   align: 'left' | 'right' | 'center' = 'left', size = 14, col = C.navy
 ) {
-  p.textFont('DM Sans');
+  p.textFont('Montserrat');
   p.textSize(size);
   const lines = txt.split('\n');
   const w = Math.max(...lines.map((l) => p.textWidth(l)));
@@ -184,7 +184,7 @@ function timePlot(
   p.noStroke();
   p.fill(C.paper);
   p.rect(g.x, g.y, g.w, g.h, 12);
-  p.textFont('DM Sans');
+  p.textFont('Montserrat');
   p.textStyle(p.BOLD);
   p.textSize(fs);
   p.fill(C.navy);
@@ -405,7 +405,7 @@ const sysSketch = (p: p5) => {
 
       /* labels */
       p.noStroke();
-      p.textFont('DM Sans');
+      p.textFont('Montserrat');
       p.textStyle(p.BOLD);
       p.textSize(fs + 3);
       p.fill(C.navy);
@@ -634,7 +634,7 @@ const zeroSketch = (p: p5) => {
     /* labels */
     const big = (k: string, b: Box, T: number) => {
       p.noStroke();
-      p.textFont('DM Sans');
+      p.textFont('Montserrat');
       p.textStyle(p.BOLD);
       p.textSize(fs + 10);
       p.fill(Z_COL[k as keyof typeof Z_COL]);
@@ -846,7 +846,7 @@ const firstSketch = (p: p5) => {
         p.fill(C.navy);
         p.rect(cx - cylW * 0.24, gTop - PIST - 30, cylW * 0.48, 30, 4);
         p.fill(255);
-        p.textFont('DM Sans');
+        p.textFont('Montserrat');
         p.textStyle(p.BOLD);
         p.textSize(fs - 2);
         p.textAlign(p.CENTER, p.CENTER);
@@ -861,7 +861,7 @@ const firstSketch = (p: p5) => {
 
       /* labels */
       p.noStroke();
-      p.textFont('DM Sans');
+      p.textFont('Montserrat');
       p.textStyle(p.BOLD);
       p.textSize(fs + 4);
       p.fill(C.navy);
@@ -890,7 +890,7 @@ const firstSketch = (p: p5) => {
       p.noStroke();
       p.fill(C.paper);
       p.rect(pv.x, pv.y, pv.w, pv.h, 12);
-      p.textFont('DM Sans');
+      p.textFont('Montserrat');
       p.textStyle(p.BOLD);
       p.textSize(fs);
       p.fill(C.navy);
@@ -957,7 +957,7 @@ const firstSketch = (p: p5) => {
       p.noStroke();
       p.fill(C.paper);
       p.rect(bars.x, bars.y, bars.w, bars.h, 12);
-      p.textFont('DM Sans');
+      p.textFont('Montserrat');
       p.textStyle(p.BOLD);
       p.textSize(fs);
       p.fill(C.navy);

@@ -168,7 +168,7 @@ function drawShells(sh: number[], v: number): string {
   return `<svg viewBox="0 0 220 220" role="img" aria-label="Electron shells coloured by Slater contribution">
     ${rings}
     <circle class="shell-nuc" cx="${cx}" cy="${cy}" r="14"/>
-    <text x="${cx}" y="${cy + 5}" text-anchor="middle" font-size="15" font-weight="800" fill="#0f2647" font-family="Bricolage Grotesque">+</text>
+    <text x="${cx}" y="${cy + 5}" text-anchor="middle" font-size="15" font-weight="800" fill="#102757" font-family="Montserrat">+</text>
     ${dots}
   </svg>`;
 }

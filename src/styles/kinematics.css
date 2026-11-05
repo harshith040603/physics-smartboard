@@ -8,13 +8,13 @@
 }
 .kin-ctrl{display:flex;flex-direction:column;gap:8px;min-width:210px;flex:1;}
 .kin-ctrl label{
-  font-family:'Bricolage Grotesque';font-weight:700;font-size:16px;color:var(--nine-deep);
+  font-family:'Montserrat';font-weight:700;font-size:16px;color:var(--nine-deep);
   display:flex;justify-content:space-between;align-items:baseline;gap:12px;
 }
-.kin-val{font-family:'DM Sans';font-weight:700;color:var(--nine-accent);font-size:17px;}
+.kin-val{font-family:'Montserrat';font-weight:700;color:var(--nine-dark);font-size:17px;}
 .kin-ctrl input[type=range]{width:100%;accent-color:var(--nine-accent);height:34px;cursor:pointer;}
 .kin-ctrl select{
-  font-family:'DM Sans';font-weight:600;font-size:16px;color:var(--ink);
+  font-family:'Montserrat';font-weight:600;font-size:16px;color:var(--ink);
   padding:10px 14px;border-radius:12px;border:2px solid rgba(41,89,144,.25);background:var(--paper-2);
 }
 .kin-btns{display:flex;gap:12px;align-items:center;}
@@ -31,12 +31,12 @@
   display:flex;flex-direction:column;gap:8px;align-items:flex-start;
 }
 .kin-stat-name{
-  font-family:'Bricolage Grotesque';font-weight:700;font-size:15px;letter-spacing:1.4px;
+  font-family:'Montserrat';font-weight:700;font-size:15px;letter-spacing:1.4px;
   text-transform:uppercase;color:var(--nine-dark);opacity:.75;
 }
 .kin-formula{font-size:20px;color:var(--nine-navy);min-height:44px;display:flex;align-items:center;}
 .kin-stat-val{
-  font-family:'Bricolage Grotesque';font-weight:800;font-size:34px;color:var(--nine-accent);
+  font-family:'Montserrat';font-weight:800;font-size:34px;color:var(--nine-dark);
   letter-spacing:-.5px;
 }
 @media (max-width:640px){
@@ -47,7 +47,7 @@
 /* ── Revision · Race Day story ── */
 .rev-chips{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:22px;}
 .rev-chip{
-  font-family:'Bricolage Grotesque';font-weight:700;font-size:14px;
+  font-family:'Montserrat';font-weight:700;font-size:14px;
   padding:9px 16px;border-radius:999px;border:2px solid rgba(41,89,144,.25);
   background:var(--white);color:var(--nine-deep);cursor:pointer;transition:.15s;
 }
@@ -68,12 +68,12 @@
   box-shadow:var(--shadow);margin-bottom:16px;
 }
 .rev-q{
-  font-family:'Bricolage Grotesque';font-weight:700;font-size:19px;
+  font-family:'Montserrat';font-weight:700;font-size:19px;
   color:var(--nine-navy);margin-bottom:12px;line-height:1.4;
 }
 .rev-opts{display:flex;flex-wrap:wrap;gap:12px;margin:12px 0;}
 .rev-opt{
-  font-family:'DM Sans';font-weight:700;font-size:17px;
+  font-family:'Montserrat';font-weight:700;font-size:17px;
   padding:13px 22px;border-radius:14px;cursor:pointer;transition:.15s;
   border:2px solid rgba(41,89,144,.3);background:var(--paper-2);color:var(--nine-deep);
 }
@@ -106,11 +106,11 @@
   background:var(--paper-2);border-radius:14px;padding:10px 18px;min-width:150px;
 }
 .rev-readout small{
-  display:block;font-family:'Bricolage Grotesque';font-weight:700;font-size:11.5px;
+  display:block;font-family:'Montserrat';font-weight:700;font-size:11.5px;
   letter-spacing:1.2px;color:var(--nine-dark);opacity:.7;margin-bottom:2px;
 }
 .ro-accent{
-  font-family:'Bricolage Grotesque';font-weight:800;font-size:22px;color:var(--nine-accent);
+  font-family:'Montserrat';font-weight:800;font-size:22px;color:var(--nine-dark);
 }
 .rev-note{font-size:15.5px;color:var(--ink);opacity:.8;margin-top:10px;}
 .rev-keybox{
@@ -120,10 +120,10 @@
 .rev-nav{display:flex;justify-content:space-between;gap:14px;margin-top:10px;}
 
 .duel-prompt{
-  font-family:'Bricolage Grotesque';font-weight:800;font-size:clamp(22px,3.4vw,34px);
+  font-family:'Montserrat';font-weight:800;font-size:clamp(22px,3.4vw,34px);
   color:var(--nine-navy);text-align:center;margin:22px 0 16px;
 }
-.duel-arrow{color:var(--nine-accent);}
+.duel-arrow{color:var(--nine-dark);}
 .duel-btn{font-size:19px;padding:16px 28px;}
 
 .tb-eqs{display:flex;flex-wrap:wrap;gap:20px;justify-content:space-around;align-items:center;}
@@ -133,7 +133,7 @@
 .nth-bars{display:flex;flex-direction:column;gap:9px;margin-bottom:16px;}
 .nth-row{display:flex;align-items:center;gap:12px;}
 .nth-lab{
-  font-family:'Bricolage Grotesque';font-weight:700;font-size:14px;
+  font-family:'Montserrat';font-weight:700;font-size:14px;
   color:var(--nine-deep);width:52px;text-align:right;flex-shrink:0;
 }
 .nth-bar{
@@ -142,14 +142,14 @@
   overflow:hidden;
 }
 .nth-bar span{
-  color:#fff;font-family:'Bricolage Grotesque';font-weight:800;font-size:15px;
+  color:#fff;font-family:'Montserrat';font-weight:800;font-size:15px;
   padding-right:10px;white-space:nowrap;
 }
 .nth-bar.grown{width:var(--w);}
 
 .rf-tag{
-  font-family:'Bricolage Grotesque';font-weight:700;font-size:14px;letter-spacing:1.4px;
-  text-transform:uppercase;color:var(--nine-accent);margin-bottom:10px;
+  font-family:'Montserrat';font-weight:700;font-size:14px;letter-spacing:1.4px;
+  text-transform:uppercase;color:var(--nine-dark);margin-bottom:10px;
 }
 .rf-text{font-size:19px;line-height:1.55;color:var(--nine-navy);min-height:60px;}
 .rf-ans{
@@ -164,7 +164,7 @@
   display:flex;align-items:center;justify-content:center;padding:20px;
 }
 .wall-card .wall-front{
-  font-family:'Bricolage Grotesque';font-weight:800;font-size:19px;color:#fff;
+  font-family:'Montserrat';font-weight:800;font-size:19px;color:#fff;
   text-align:center;letter-spacing:.3px;
 }
 .wall-card .wall-back{display:none;font-size:16.5px;line-height:1.5;color:var(--nine-navy);text-align:center;}
@@ -191,7 +191,7 @@
   border:1px solid rgba(41,89,144,.16);
 }
 .pl-eqhead{
-  font-family:'Bricolage Grotesque';font-weight:800;font-size:16px;
+  font-family:'Montserrat';font-weight:800;font-size:16px;
   letter-spacing:-.3px;margin-bottom:8px;
 }
 .pl-eqrow{
@@ -208,7 +208,7 @@
 }
 .pl-notes-body{padding:18px 22px 20px;color:var(--ink);}
 .pl-notes-body h4{
-  font-family:'Bricolage Grotesque';font-weight:800;font-size:19px;
+  font-family:'Montserrat';font-weight:800;font-size:19px;
   color:var(--nine-navy);letter-spacing:-.3px;margin:0 0 12px;
 }
 .pl-notes-body h4:not(:first-child){margin-top:22px;}
@@ -252,7 +252,7 @@
 
 /* ── Motion Graphs · homework + worked-example steps ── */
 .hw-head{
-  font-family:'Bricolage Grotesque';font-weight:800;font-size:20px;
+  font-family:'Montserrat';font-weight:800;font-size:20px;
   color:var(--nine-navy);letter-spacing:-.4px;margin:24px 0 14px;
 }
 .hw-head:first-child{margin-top:6px;}
@@ -275,7 +275,7 @@
 .pr-num{
   width:46px;height:46px;border-radius:10px;cursor:pointer;transition:.12s;
   border:2px solid rgba(41,89,144,.25);background:var(--paper-2);
-  font-family:'Bricolage Grotesque';font-weight:700;font-size:15px;color:var(--nine-deep);
+  font-family:'Montserrat';font-weight:700;font-size:15px;color:var(--nine-deep);
 }
 .pr-num:active{transform:scale(.94);}
 .pr-num.seen{border-color:rgba(22,163,74,.5);color:var(--green);}

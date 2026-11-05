@@ -28,7 +28,7 @@ function draw(card: typeof cards[number]) {
   const s = pistonState(process, progress, target), col = colors[process];
   const pistonY = 270 - s.volume * 8, initialY = 190;
   const text = (value: string, x: number, y: number, size = 13, color = '#526783', align: CanvasTextAlign = 'left', weight = 500) => {
-    ctx.fillStyle = color; ctx.font = `${weight} ${size}px "DM Sans", sans-serif`; ctx.textAlign = align; ctx.fillText(value, x, y);
+    ctx.fillStyle = color; ctx.font = `${weight} ${size}px "Montserrat", sans-serif`; ctx.textAlign = align; ctx.fillText(value, x, y);
   };
   const line = (x1: number, y1: number, x2: number, y2: number, color: string, weight = 2) => {
     ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.strokeStyle = color; ctx.lineWidth = weight; ctx.stroke();

@@ -10,7 +10,7 @@
 .sp-bar{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;}
 .sp-btn{
   display:inline-flex;align-items:center;justify-content:center;gap:8px;
-  font-family:'Bricolage Grotesque';font-weight:700;font-size:20px;
+  font-family:'Montserrat';font-weight:700;font-size:20px;
   padding:16px 34px;min-width:170px;border-radius:14px;cursor:pointer;
   background:#fff;color:var(--nine-dark);border:2px solid rgba(41,89,144,.2);box-shadow:var(--shadow);
   transition:transform .15s,background .15s,border-color .15s,opacity .15s;
@@ -22,7 +22,7 @@
 .sp-btn.sp-fs{min-width:0;padding:16px;}
 .sp-btn.sp-fs svg{width:22px;height:22px;display:block;}
 .sp-count{
-  font-family:'Bricolage Grotesque';font-weight:800;font-size:22px;color:var(--nine-navy);
+  font-family:'Montserrat';font-weight:800;font-size:22px;color:var(--nine-navy);
   min-width:96px;text-align:center;font-variant-numeric:tabular-nums;
 }
 
