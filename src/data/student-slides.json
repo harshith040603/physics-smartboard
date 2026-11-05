@@ -70,5 +70,13 @@
     "title": "Pressure of an Ideal Gas",
     "url": "/kinetic-theory/pressure-of-an-ideal-gas",
     "detail": "Interactive slides"
+  },
+  {
+    "slug": "thermodynamics",
+    "chapter": "Thermodynamics",
+    "kind": "Slides",
+    "title": "The Adiabatic Process",
+    "url": "/thermodynamics/the-adiabatic-process",
+    "detail": "Interactive slides"
   }
 ]
