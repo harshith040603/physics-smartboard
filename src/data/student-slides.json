@@ -78,5 +78,13 @@
     "title": "The Adiabatic Process",
     "url": "/thermodynamics/the-adiabatic-process",
     "detail": "Interactive slides"
+  },
+  {
+    "slug": "thermodynamics",
+    "chapter": "Thermodynamics",
+    "kind": "Slides",
+    "title": "Adiabatic Work, Slopes and Free Expansion",
+    "url": "/thermodynamics/adiabatic-work-slopes-and-free-expansion",
+    "detail": "Interactive slides"
   }
 ]
