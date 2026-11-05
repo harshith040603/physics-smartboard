@@ -27,7 +27,7 @@
     "slug": "thermodynamics",
     "chapter": "Thermodynamics",
     "kind": "Slides",
-    "title": "Zeroth and First Law of Thermodynamics",
+    "title": "Zeroth and First Laws",
     "url": "/thermodynamics/zeroth-and-first-law",
     "detail": "Interactive slides"
   },
@@ -35,7 +35,7 @@
     "slug": "thermodynamics",
     "chapter": "Thermodynamics",
     "kind": "Slides",
-    "title": "When No Heat Gets In",
+    "title": "State and Path Functions",
     "url": "/thermodynamics/when-no-heat-gets-in",
     "detail": "Interactive slides"
   },
@@ -43,7 +43,7 @@
     "slug": "thermodynamics",
     "chapter": "Thermodynamics",
     "kind": "Slides",
-    "title": "How Much Heat Does a Gas Need?",
+    "title": "Heat Capacity",
     "url": "/thermodynamics/how-much-heat-does-a-gas-need",
     "detail": "Interactive slides"
   },
@@ -75,7 +75,7 @@
     "slug": "thermodynamics",
     "chapter": "Thermodynamics",
     "kind": "Slides",
-    "title": "The Adiabatic Process",
+    "title": "Adiabatic Relations",
     "url": "/thermodynamics/the-adiabatic-process",
     "detail": "Interactive slides"
   },
@@ -83,7 +83,7 @@
     "slug": "thermodynamics",
     "chapter": "Thermodynamics",
     "kind": "Slides",
-    "title": "Adiabatic Work, Slopes and Free Expansion",
+    "title": "Adiabatic Work and Free Expansion",
     "url": "/thermodynamics/adiabatic-work-slopes-and-free-expansion",
     "detail": "Interactive slides"
   }

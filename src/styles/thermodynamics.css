@@ -1,9 +1,33 @@
 /* ═══════════ Thermodynamics - chapter styles ═══════════
    The page reuses the th-* controls, canvas, readout and notes classes
    from thermometry.css and the kt-* table, rule and wide-readout classes
-   from kinetic-theory.css; only the tile icons live here.              */
+   from kinetic-theory.css. Chapter tiles and section headings live here.              */
 
 .ic-law{background:linear-gradient(135deg,#b91c1c,#f97316);}
 .ic-sys{background:linear-gradient(135deg,#0f766e,#2dd4bf);}
 .ic-zero{background:linear-gradient(135deg,#1e3a8a,#60a5fa);}
 .ic-first{background:linear-gradient(135deg,#9a3412,#fbbf24);}
+
+.td-resource-link { margin: 0 0 30px; }
+.td-resource-link a { color: var(--nine-dark); font-weight: 700; }
+.td-topic-section + .td-topic-section { margin-top: 44px; }
+.td-section-title {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 18px;
+  font-family: 'Bricolage Grotesque', sans-serif;
+  font-size: clamp(26px, 3vw, 36px);
+  font-weight: 800;
+  color: var(--nine-navy);
+}
+.td-section-title span {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--nine-dark);
+}
+.td-topic { display: flex; flex-direction: column; text-decoration: none; color: inherit; }
+.td-topic .tile-go { margin-top: auto; padding-top: 22px; }
+.td-topic:focus-visible { outline: 3px solid var(--nine-accent); outline-offset: 4px; }

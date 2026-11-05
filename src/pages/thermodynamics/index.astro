@@ -3,6 +3,69 @@ import StudioLayout from '../../layouts/StudioLayout.astro';
 import '../../styles/thermometry.css';
 import '../../styles/kinetic-theory.css';
 import '../../styles/thermodynamics.css';
+
+const slides = [
+  {
+    "slug": "zeroth-and-first-law",
+    "title": "Zeroth and First Laws",
+    "description": "Systems, temperature, internal energy and work.",
+    "count": 36
+  },
+  {
+    "slug": "how-much-heat-does-a-gas-need",
+    "title": "Heat Capacity",
+    "description": "Molar heat capacities, \u03b3 and gas mixtures.",
+    "count": 45
+  },
+  {
+    "slug": "when-no-heat-gets-in",
+    "title": "State and Path Functions",
+    "description": "Energy changes, the first law and adiabatic basics.",
+    "count": 32
+  },
+  {
+    "slug": "the-adiabatic-process",
+    "title": "Adiabatic Relations",
+    "description": "Pressure, volume and temperature relations.",
+    "count": 31
+  },
+  {
+    "slug": "adiabatic-work-slopes-and-free-expansion",
+    "title": "Adiabatic Work and Free Expansion",
+    "description": "Work, P-V slopes and free expansion.",
+    "count": 37
+  }
+];
+const animations = [
+  {
+    "title": "Work in Gas Processes",
+    "description": "Isobaric, isochoric and isothermal pistons.",
+    "href": "/thermodynamics/piston-work-lab",
+    "screen": null,
+    "icon": "ic-first"
+  },
+  {
+    "title": "Thermodynamic Systems",
+    "description": "Isolated, closed and open systems.",
+    "href": null,
+    "screen": "systems",
+    "icon": "ic-sys"
+  },
+  {
+    "title": "Zeroth Law",
+    "description": "Thermal equilibrium between three bodies.",
+    "href": null,
+    "screen": "zeroth",
+    "icon": "ic-zero"
+  },
+  {
+    "title": "First Law",
+    "description": "How heat splits into internal energy and work.",
+    "href": null,
+    "screen": "firstlaw",
+    "icon": "ic-first"
+  }
+];
 ---
 <StudioLayout title="Thermodynamics - Physics with Harshith" chapterChip="Physics · Thermodynamics">
 
@@ -10,84 +73,39 @@ import '../../styles/thermodynamics.css';
   <section id="home" class="screen active">
     <div class="hero">
       <h1>Thermo<span class="accent">dynamics</span></h1>
-      <p>Heat a gas and it pushes a piston: heat turns into work. Thermodynamics keeps the books on that trade - where the heat goes, how much work comes out, and how much energy stays stored inside the gas.</p>
+      <p>Heat, work and internal energy. Choose a slide lesson or explore an animation.</p>
     </div>
-    <p style="margin:0 0 24px;"><a href="/library?chapter=thermodynamics" style="color:var(--nine-dark);font-weight:700;">Browse this chapter’s assignments and notes →</a></p>
-    <div class="grid">
+    <p class="td-resource-link"><a href="/library?chapter=thermodynamics">Assignments and notes →</a></p>
 
-      <a class="tile" href="/thermodynamics/piston-work-lab" style="text-decoration:none;color:inherit;">
-        <div class="tile-num">LAB</div>
-        <div class="tile-icon ic-first"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3v18h14V3M5 12h14M12 12V4M9 7l3-3 3 3M8 17h8"/></svg></div>
-        <h3>Piston Work Lab</h3>
-        <p>Isobaric, isochoric and isothermal, side by side. Lift a load, lock a piston, or use a water bath. Scrub the motion and watch work grow as area on the P-V graph. Then try compression.</p>
-        <span class="tile-go">Run the experiment &rsaquo;</span>
-      </a>
-
-      <div class="tile" onclick="location.href='/thermodynamics/zeroth-and-first-law'">
-        <div class="tile-num">01</div>
-        <div class="tile-icon ic-law"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="13" rx="1.5"/><path d="M4 12h16"/><path d="M12 12V3"/><path d="M9 16c1-1 2 1 3 0s2 1 3 0"/></svg></div>
-        <h3>Zeroth and First Law</h3>
-        <p>Slides. Isolated, closed and open systems, the zeroth law and temperature, then dQ = dU + dW, internal energy, and work and heat in isobaric, isochoric and isothermal processes, with work as the area under the P-V graph.</p>
-        <span class="tile-go">Open slides &rsaquo;</span>
+    <section class="td-topic-section" aria-labelledby="td-slides">
+      <h2 class="td-section-title" id="td-slides">Slides <span>{slides.length} lessons</span></h2>
+      <div class="grid">
+        {slides.map((lesson, index) => (
+          <a class="tile td-topic" href={`/thermodynamics/${lesson.slug}`}>
+            <div class="tile-num">{String(index + 1).padStart(2, '0')}</div>
+            <div class="tile-icon ic-law"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h18v13H3zM12 17v4M8 21h8"/></svg></div>
+            <h3>{lesson.title}</h3>
+            <p>{lesson.description}</p>
+            <span class="tile-go">Open {lesson.count} slides ›</span>
+          </a>
+        ))}
       </div>
+    </section>
 
-      <a class="tile" href="/thermodynamics/how-much-heat-does-a-gas-need" style="text-decoration:none;color:inherit;">
-        <div class="tile-num">05</div>
-        <div class="tile-icon ic-law"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h18v13H3zM12 17v4M8 21h8M7 13l4-4 3 2 3-4"/></svg></div>
-        <h3>How Much Heat Does a Gas Need?</h3>
-        <p>Why does the same gas need more heat to warm up at constant pressure than at constant volume? Explore molar heat capacities, their ratio γ, and gas mixtures.</p>
-        <span class="tile-go">Open 45 slides &rsaquo;</span>
-      </a>
-
-      <a class="tile" href="/thermodynamics/when-no-heat-gets-in" style="text-decoration:none;color:inherit;">
-        <div class="tile-num">06</div>
-        <div class="tile-icon ic-law"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h18v13H3zM12 17v4M8 21h8M7 7c1 4 4 6 10 6"/></svg></div>
-        <h3>When No Heat Gets In</h3>
-        <p>State and path functions, the first law beyond gases, and adiabatic expansion and compression. Follow the derivation of PVᵞ = constant and compare adiabatic and isothermal curves.</p>
-        <span class="tile-go">Open 32 slides &rsaquo;</span>
-      </a>
-
-      <a class="tile" href="/thermodynamics/the-adiabatic-process" style="text-decoration:none;color:inherit;">
-        <div class="tile-num">07</div>
-        <div class="tile-icon ic-law"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h18v13H3zM12 17v4M8 21h8M7 7c1 4 4 6 10 6"/></svg></div>
-        <h3>The Adiabatic Process</h3>
-        <p>Explore adiabatic expansion and compression, derive the pressure, volume and temperature relations, and practise identifying the process.</p>
-        <span class="tile-go">Open 31 slides &rsaquo;</span>
-      </a>
-
-      <a class="tile" href="/thermodynamics/adiabatic-work-slopes-and-free-expansion" style="text-decoration:none;color:inherit;">
-        <div class="tile-num">08</div>
-        <div class="tile-icon ic-law"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 4h18v13H3zM12 17v4M8 21h8M7 7c1 4 4 6 10 6"/></svg></div>
-        <h3>Adiabatic Work, Slopes and Free Expansion</h3>
-        <p>Explore work in adiabatic processes, compare P-V slopes and areas, and see what happens when a gas expands freely.</p>
-        <span class="tile-go">Open 37 slides &rsaquo;</span>
-      </a>
-
-      <div class="tile" onclick="go('systems')">
-        <div class="tile-num">02</div>
-        <div class="tile-icon ic-sys"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="5.5" height="12" rx="1"/><path d="M9.5 7v12h5.5V7"/><path d="M9.5 7h5.5"/><path d="M17 7v12h5V7"/><path d="M19.5 5V2"/></svg></div>
-        <h3>Three Kinds of System</h3>
-        <p>Animation. An isolated, a closed and an open system in the same surroundings. Watch which ones let heat in and which ones lose molecules.</p>
-        <span class="tile-go">Start &rsaquo;</span>
+    <section class="td-topic-section" aria-labelledby="td-animations">
+      <h2 class="td-section-title" id="td-animations">Animations <span>{animations.length} activities</span></h2>
+      <div class="grid">
+        {animations.map((activity, index) => (
+          <a class="tile td-topic" href={activity.href ?? `#${activity.screen}`} onclick={activity.screen ? `event.preventDefault(); go('${activity.screen}')` : undefined}>
+            <div class="tile-num">{String(index + 1).padStart(2, '0')}</div>
+            <div class={`tile-icon ${activity.icon}`}><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3v18h14V3M5 12h14M12 12V4M9 7l3-3 3 3"/></svg></div>
+            <h3>{activity.title}</h3>
+            <p>{activity.description}</p>
+            <span class="tile-go">Start animation ›</span>
+          </a>
+        ))}
       </div>
-
-      <div class="tile" onclick="go('zeroth')">
-        <div class="tile-num">03</div>
-        <div class="tile-icon ic-zero"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="18" rx="1.5"/><path d="M2 11h20"/><path d="M12 3v8"/><path d="M7 7h.01M17 7h.01M12 16h.01"/></svg></div>
-        <h3>The Zeroth Law</h3>
-        <p>Animation. A and B never touch - each only touches C. Watch all three settle to one temperature, then let A touch B and see that no heat flows.</p>
-        <span class="tile-go">Start &rsaquo;</span>
-      </div>
-
-      <div class="tile" onclick="go('firstlaw')">
-        <div class="tile-num">04</div>
-        <div class="tile-icon ic-first"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5v15h14V5"/><path d="M5 11h14"/><path d="M9 7h6"/><path d="M8 17l1.5-1.5L11 17l1.5-1.5L14 17l1.5-1.5"/></svg></div>
-        <h3>First Law: Where the Heat Goes</h3>
-        <p>Animation. Same gas, same heater, same rise in temperature - one piston free, one fixed. See why Q = &Delta;U + W makes the free one need more heat.</p>
-        <span class="tile-go">Start &rsaquo;</span>
-      </div>
-
-    </div>
+    </section>
   </section>
 
   <!-- =========== 2 · THREE KINDS OF SYSTEM =========== -->
@@ -95,7 +113,7 @@ import '../../styles/thermodynamics.css';
     <div class="scr-head">
       <button class="back-btn" onclick="go('home')">‹ Back</button>
       <div>
-        <div class="scr-title">Three Kinds of System</div>
+        <div class="scr-title">Thermodynamic Systems</div>
         <div class="scr-sub">Same surroundings, three containers. What can get in or out of each?</div>
       </div>
     </div>
@@ -177,7 +195,7 @@ import '../../styles/thermodynamics.css';
     <div class="scr-head">
       <button class="back-btn" onclick="go('home')">‹ Back</button>
       <div>
-        <div class="scr-title">The Zeroth Law</div>
+        <div class="scr-title">Zeroth Law</div>
         <div class="scr-sub">A and B are each in contact with C, but not with each other. Do they end up at the same temperature?</div>
       </div>
     </div>
@@ -247,7 +265,7 @@ import '../../styles/thermodynamics.css';
     <div class="scr-head">
       <button class="back-btn" onclick="go('home')">‹ Back</button>
       <div>
-        <div class="scr-title">First Law: Where the Heat Goes</div>
+        <div class="scr-title">First Law</div>
         <div class="scr-sub">Same gas, same amount, same heater, same rise in temperature. A's piston is free, B's is held by stoppers. Which needs less heat?</div>
       </div>
     </div>
