@@ -86,5 +86,13 @@
     "title": "Adiabatic Work and Free Expansion",
     "url": "/thermodynamics/adiabatic-work-slopes-and-free-expansion",
     "detail": "Interactive slides"
+  },
+  {
+    "slug": "thermodynamics",
+    "chapter": "Thermodynamics",
+    "kind": "Slides",
+    "title": "Thermodynamic Cycles",
+    "url": "/thermodynamics/thermodynamic-cycles",
+    "detail": "Interactive slides"
   }
 ]
