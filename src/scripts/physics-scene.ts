@@ -2,13 +2,17 @@ import { gsap } from 'gsap';
 
 const host = document.querySelector<HTMLElement>('[data-physics-scene]');
 if (host) {
+  host.dataset.sceneState = 'observing';
   const observer = new IntersectionObserver(async entries => {
     if (!entries.some(entry => entry.isIntersecting)) return;
     observer.disconnect();
     try {
+      host.dataset.sceneState = 'loading';
       const THREE = await import('three');
       startScene(THREE, host);
-    } catch {
+    } catch (error) {
+      host.dataset.sceneState = 'fallback';
+      console.warn('The motion studio could not start WebGL.', error);
       // The static illustration remains available when WebGL cannot start.
     }
   }, { rootMargin: '100px' });
@@ -182,6 +186,7 @@ function startScene(THREE: typeof import('three'), host: HTMLElement) {
   reducedMotion.addEventListener('change', () => { paused = reducedMotion.matches; schedule(); }, { signal: events.signal });
   update(); resize(); schedule();
   host.dataset.ready = 'true';
+  host.dataset.sceneState = 'ready';
   window.addEventListener('pageshow', event => { if (event.persisted) schedule(); }, { signal: events.signal });
   window.addEventListener('pagehide', event => {
     if (event.persisted) { renderer.setAnimationLoop(null); return; }
