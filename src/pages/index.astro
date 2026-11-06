@@ -2,6 +2,7 @@
 import StudioLayout from '../layouts/StudioLayout.astro';
 import { chapters } from '../data/chapters';
 import '../styles/home.css';
+import PhysicsScene from '../components/PhysicsScene.astro';
 const summaries: Record<string, string> = {
   'units-and-dimensions': 'Measurements, dimensional formulas and experimental errors.',
   'kinematics': 'Projectiles, motion graphs and relative motion.',
@@ -24,24 +25,7 @@ const summaries: Record<string, string> = {
           <a class="home-secondary" href="#chapters">Explore chapters <span aria-hidden="true">↓</span></a>
         </div>
       </div>
-      <div class="home-visual" aria-hidden="true">
-        <div class="home-disc">
-          <svg viewBox="0 0 400 400" fill="none">
-            <circle cx="200" cy="200" r="150" stroke="#102757" stroke-opacity=".18" />
-            <circle cx="200" cy="200" r="100" stroke="#102757" stroke-opacity=".18" />
-            <path d="M66 284H334M94 310V94" stroke="#102757" stroke-width="2" />
-            <path d="M94 284Q198 -20 312 284" stroke="#102757" stroke-width="3" stroke-dasharray="4 8" />
-            <path d="M94 284Q139 150 188 137" stroke="#fff" stroke-width="4" />
-            <circle cx="94" cy="284" r="8" fill="#102757" />
-            <circle cx="188" cy="137" r="14" fill="#fff" />
-            <circle cx="312" cy="284" r="8" fill="#102757" />
-            <path d="M188 137L244 131M244 131L232 123M244 131L234 142" stroke="#102757" stroke-width="2" />
-            <text x="312" y="326" fill="#102757" font-size="16" font-family="Montserrat">x</text>
-            <text x="68" y="99" fill="#102757" font-size="16" font-family="Montserrat">y</text>
-          </svg>
-        </div>
-        <span class="home-visual-caption">A CONCEPT. A CLEARER PICTURE.</span>
-      </div>
+      <PhysicsScene />
     </div>
 
     <div class="home-learning-strip" aria-label="Ways to learn">

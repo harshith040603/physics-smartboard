@@ -1,0 +1,27 @@
+<div class="home-visual" data-physics-scene>
+        <div class="scene-topline"><span class="scene-live-dot"></span> THE MOTION STUDIO <span>01 / EXPLORE</span></div>
+        <div class="scene-stage" role="img" aria-label="Interactive 3D physics illustration: select orbit, wave or pendulum below.">
+          <canvas class="scene-canvas" aria-hidden="true"></canvas>
+        <div class="home-disc">
+          <svg viewBox="0 0 400 400" fill="none">
+            <circle cx="200" cy="200" r="150" stroke="#102757" stroke-opacity=".18" />
+            <circle cx="200" cy="200" r="100" stroke="#102757" stroke-opacity=".18" />
+            <path d="M66 284H334M94 310V94" stroke="#102757" stroke-width="2" />
+            <path d="M94 284Q198 -20 312 284" stroke="#102757" stroke-width="3" stroke-dasharray="4 8" />
+            <path d="M94 284Q139 150 188 137" stroke="#fff" stroke-width="4" />
+            <circle cx="94" cy="284" r="8" fill="#102757" />
+            <circle cx="188" cy="137" r="14" fill="#fff" />
+            <circle cx="312" cy="284" r="8" fill="#102757" />
+            <path d="M188 137L244 131M244 131L232 123M244 131L234 142" stroke="#102757" stroke-width="2" />
+            <text x="312" y="326" fill="#102757" font-size="16" font-family="Montserrat">x</text>
+            <text x="68" y="99" fill="#102757" font-size="16" font-family="Montserrat">y</text>
+          </svg>
+        </div>
+        </div>
+        <div class="scene-controls" aria-label="Physics scene">
+          <div class="scene-modes"><button class="active" data-scene="orbit" aria-pressed="true">Orbit</button><button data-scene="wave" aria-pressed="false">Wave</button><button data-scene="pendulum" aria-pressed="false">Pendulum</button></div>
+          <button class="scene-pause" aria-label="Pause 3D animation" aria-pressed="false">Ⅱ</button>
+        </div>
+        <p class="scene-caption">A little curiosity goes a long way.</p>
+      </div>
+<script>import '../scripts/physics-scene';</script>

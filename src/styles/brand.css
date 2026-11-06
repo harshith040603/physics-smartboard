@@ -11,8 +11,8 @@
   --coral: #FF5E5B;
   --silver: #D7D7D7;
   --muted: #52627A;
-  --shadow: none;
-  --shadow-lg: none;
+  --shadow: 0 12px 40px rgba(16, 39, 87, .08);
+  --shadow-lg: 0 24px 64px rgba(16, 39, 87, .14);
 }
 html { scroll-behavior: smooth; scroll-padding-top: 24px; }
 body {
@@ -23,7 +23,7 @@ body {
   color: var(--ink);
   user-select: text;
 }
-body *, body *::before, body *::after { box-shadow: none !important; }
+
 body .wrap { max-width: 1376px; padding: 0 48px 64px; }
 a { color: var(--nine-dark); }
 button, input, select, textarea { font-family: inherit; }
@@ -141,7 +141,7 @@ body .sp-count { font-size: 16px; font-weight: 600; }
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }
 
-/* Flat treatments for the older lesson widgets. Semantic answer colours remain in the lesson styles. */
+/* Shared treatments for the older lesson widgets. Semantic answer colours remain in the lesson styles. */
 body :is(.win-banner, .err-bar, .pf-card.special, .forge-stage, .forge-result.locked, .nth-bar) { background: var(--paper); color: var(--ink); border-radius: 8px; }
 body .forge-stage::before { background: none; }
 body .th-notes-head { background: var(--nine-dark); color: #fff; }

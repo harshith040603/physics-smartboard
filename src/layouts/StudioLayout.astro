@@ -2,6 +2,7 @@
 import '../styles/fonts.css';
 import '../styles/global.css';
 import '../styles/brand.css';
+import '../styles/experience.css';
 
 interface Props {
   title: string;
@@ -27,7 +28,7 @@ const isPractice = path.startsWith('/jee-pyqs');
 <div class="wrap">
   <header class="topbar">
     <a class="brand-logo" href="/" aria-label="Nine Education home">
-      <img src="/brand/nine-logo-long.png" width="2024" height="320" alt="Nine Education" fetchpriority="high" />
+      <img src="/brand/nine-logo-stacked.png" width="1983" height="841" alt="Nine Education" fetchpriority="high" />
     </a>
     <nav class="site-nav" aria-label="Main navigation">
       <a href="/#chapters" aria-current={!isHome && !isLibrary && !isPractice ? 'page' : undefined}>Chapters</a>
@@ -47,7 +48,7 @@ const isPractice = path.startsWith('/jee-pyqs');
 
 <footer class="site-footer">
   <div class="footer-inner">
-    <a href="/" class="footer-logo" aria-label="Nine Education home"><img src="/brand/nine-logo-long.png" width="2024" height="320" alt="Nine Education" loading="lazy" /></a>
+    <a href="/" class="footer-logo" aria-label="Nine Education home"><img src="/brand/nine-logo-stacked.png" width="1983" height="841" alt="Nine Education" loading="lazy" /></a>
     <p>Physics with Harshith<span>Class 11 · JEE</span></p>
     <nav aria-label="Study resources"><a href="/notes">Notes</a><a href="/worksheets">Assignments</a><a href="/library">Student Library</a></nav>
   </div>
@@ -56,5 +57,6 @@ const isPractice = path.startsWith('/jee-pyqs');
 
 <script is:inline src="/js/studio-core.js"></script>
 <slot name="scripts" />
+<script>import '../scripts/brand-motion';</script>
 </body>
 </html>
