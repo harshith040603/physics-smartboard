@@ -5,7 +5,8 @@ media.add('(prefers-reduced-motion: no-preference)', () => {
   const context = gsap.context(() => {
     gsap.from('.topbar', { y: -12, opacity: .5, duration: .7, ease: 'power2.out' });
     gsap.from('.home-intro > *, .hero > *, .scr-head > *', { y: 18, opacity: .5, stagger: .07, duration: .8, ease: 'power3.out', clearProps: 'transform,opacity' });
-    gsap.from('.home-visual', { y: 24, scale: .95, duration: 1.1, ease: 'power3.out', clearProps: 'transform' });
+    const homeVisual = document.querySelector('.home-visual');
+    if (homeVisual) gsap.from(homeVisual, { y: 24, scale: .95, duration: 1.1, ease: 'power3.out', clearProps: 'transform' });
   });
   const cards = [...document.querySelectorAll<HTMLElement>('.experiment-card, .chapter-card, .tile, .library-card, .res-card, .home-resource-grid > a')];
   const observer = new IntersectionObserver(entries => {
