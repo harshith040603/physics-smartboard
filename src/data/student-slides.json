@@ -94,5 +94,13 @@
     "title": "Thermodynamic Cycles",
     "url": "/thermodynamics/thermodynamic-cycles",
     "detail": "Interactive slides"
+  },
+  {
+    "slug": "thermodynamics",
+    "chapter": "Thermodynamics",
+    "kind": "Slides",
+    "title": "Polytropic Processes and Heat Engines",
+    "url": "/thermodynamics/polytropic-processes-and-heat-engines",
+    "detail": "31 interactive slides"
   }
 ]
