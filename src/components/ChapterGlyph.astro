@@ -1,0 +1,13 @@
+---
+interface Props { slug: string }
+const { slug } = Astro.props;
+---
+<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true" focusable="false">
+  {slug === 'units-and-dimensions' && <><rect x="9" y="23" width="46" height="18" rx="4" transform="rotate(-26 32 32)"/><path d="M18 31l4 8m3-12 2 4m4-7 4 8m3-12 2 4m4-7 4 8"/></>}
+  {slug === 'kinematics' && <><path d="M12 48h43M12 48V15m2 28q20-40 39-1"/><circle cx="33" cy="23" r="4.5" fill="currentColor" stroke="none"/></>}
+  {slug === 'chemistry' && <><ellipse cx="32" cy="32" rx="23" ry="10" transform="rotate(35 32 32)"/><ellipse cx="32" cy="32" rx="23" ry="10" transform="rotate(-35 32 32)"/><circle cx="32" cy="32" r="5" fill="currentColor" stroke="none"/></>}
+  {slug === 'thermometry' && <><path d="M25 36V14a7 7 0 0 1 14 0v22a13 13 0 1 1-14 0Z"/><path d="M32 23v19m13-23h6m-6 8h4"/><circle cx="32" cy="47" r="5" fill="currentColor" stroke="none"/></>}
+  {slug === 'heat-transfer' && <><path d="M15 43h34m-34 7h34M21 35c-9-11 8-11 0-22m11 22c-9-11 8-11 0-22m11 22c-9-11 8-11 0-22"/></>}
+  {slug === 'kinetic-theory' && <><rect x="11" y="11" width="42" height="42" rx="8"/><circle cx="22" cy="25" r="4"/><circle cx="42" cy="22" r="3"/><circle cx="40" cy="43" r="4"/><path d="M20 41l8-7m-6 0h6v6m6-12 5 6"/></>}
+  {slug === 'thermodynamics' && <><path d="M14 14v37h40M21 44c-5-27 24-29 28-17 4 13-13 21-26 17l-2-1"/><path d="m39 19 6 2-3 5m-15 14-5 4 5 3"/></>}
+</svg>

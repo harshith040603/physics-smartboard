@@ -22,6 +22,7 @@ if (host) {
 function startScene(THREE: typeof import('three'), host: HTMLElement) {
   const canvas = host.querySelector<HTMLCanvasElement>('canvas')!;
   const stage = host.querySelector<HTMLElement>('.scene-stage')!;
+  const caption = host.querySelector<HTMLElement>('.scene-caption')!;
   const pauseButton = host.querySelector<HTMLButtonElement>('.scene-pause')!;
   const buttons = [...host.querySelectorAll<HTMLButtonElement>('[data-scene]')];
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
@@ -48,9 +49,9 @@ function startScene(THREE: typeof import('three'), host: HTMLElement) {
   const world = new THREE.Group();
   scene.add(world);
   const blue = new THREE.MeshPhysicalMaterial({ color: 0x00a0e3, metalness: .3, roughness: .16, clearcoat: 1 });
-  const navy = new THREE.MeshPhysicalMaterial({ color: 0x2d5990, metalness: .35, roughness: .2, clearcoat: 1 });
+  const mint = new THREE.MeshPhysicalMaterial({ color: 0xa5f1d2, metalness: .35, roughness: .2, clearcoat: 1 });
   const amber = new THREE.MeshPhysicalMaterial({ color: 0xf4a100, metalness: .3, roughness: .18, clearcoat: 1 });
-  const silver = new THREE.MeshStandardMaterial({ color: 0x8ca4c2, metalness: .6, roughness: .3 });
+  const silver = new THREE.MeshStandardMaterial({ color: 0xbacbee, metalness: .6, roughness: .3 });
   const ball = (radius: number, material = blue) => {
     const mesh = new THREE.Mesh(new THREE.SphereGeometry(radius, 40, 24), material);
     mesh.castShadow = true;
@@ -65,7 +66,7 @@ function startScene(THREE: typeof import('three'), host: HTMLElement) {
   const orbit = new THREE.Group();
   orbit.add(ball(.7));
   const paths = [new THREE.Group(), new THREE.Group()];
-  const satellites = [ball(.2, amber), ball(.13, navy)];
+  const satellites = [ball(.2, amber), ball(.13, mint)];
   paths.forEach((path, index) => {
     const ring = new THREE.Mesh(new THREE.TorusGeometry(1.55 + index * .38, .018, 12, 120), silver);
     path.add(ring, satellites[index]);
@@ -83,7 +84,7 @@ function startScene(THREE: typeof import('three'), host: HTMLElement) {
   });
   const waveGeometry = new THREE.BufferGeometry();
   waveGeometry.setAttribute('position', new THREE.Float32BufferAttribute(new Float32Array(75), 3));
-  wave.add(new THREE.Line(waveGeometry, new THREE.LineBasicMaterial({ color: 0x2d5990 })));
+  wave.add(new THREE.Line(waveGeometry, new THREE.LineBasicMaterial({ color: 0xa1c1ff })));
   wave.visible = false;
   world.add(wave);
 
@@ -167,6 +168,7 @@ function startScene(THREE: typeof import('three'), host: HTMLElement) {
       item.setAttribute('aria-pressed', String(item === button));
     });
     stage.setAttribute('aria-label', '3D ' + mode + ' illustration');
+    caption.textContent = button.dataset.caption ?? '';
     if (!reducedMotion.matches) {
       gsap.fromTo(groups[mode].scale, { x: .75, y: .75, z: .75 }, { x: 1, y: 1, z: 1, duration: .7, ease: 'back.out(1.4)', overwrite: true, onUpdate: render });
     }

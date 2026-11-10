@@ -8,6 +8,10 @@ function go(id){
   if(!el) return;
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   el.classList.add('active');
+  const linkedScreen = document.getElementById(location.hash.slice(1));
+  if (linkedScreen && linkedScreen !== el && linkedScreen.classList.contains('screen')) {
+    history.replaceState(history.state, '', location.pathname + location.search);
+  }
   window.scrollTo({top:0, behavior:'smooth'});
   const init = (window.SCREEN_INIT || {})[id];
   if(init) init();
@@ -30,3 +34,12 @@ function updateFSIcon(){
 }
 document.addEventListener('fullscreenchange',updateFSIcon);
 document.addEventListener('webkitfullscreenchange',updateFSIcon);
+
+// A link from the experiment gallery can open a studio screen directly.
+// Wait for chapter scripts to register their initializers before opening it.
+window.addEventListener('load', () => {
+  const linkedScreen = document.getElementById(location.hash.slice(1));
+  if (linkedScreen?.classList.contains('screen') && !linkedScreen.classList.contains('active')) {
+    go(linkedScreen.id);
+  }
+});

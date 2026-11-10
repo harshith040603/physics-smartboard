@@ -7,7 +7,7 @@ media.add('(prefers-reduced-motion: no-preference)', () => {
     gsap.from('.home-intro > *, .hero > *, .scr-head > *', { y: 18, opacity: .5, stagger: .07, duration: .8, ease: 'power3.out', clearProps: 'transform,opacity' });
     gsap.from('.home-visual', { y: 24, scale: .95, duration: 1.1, ease: 'power3.out', clearProps: 'transform' });
   });
-  const cards = [...document.querySelectorAll<HTMLElement>('.chapter-card, .tile, .library-card, .res-card, .home-resource-grid > a')];
+  const cards = [...document.querySelectorAll<HTMLElement>('.experiment-card, .chapter-card, .tile, .library-card, .res-card, .home-resource-grid > a')];
   const observer = new IntersectionObserver(entries => {
     const entering = entries.filter(entry => entry.isIntersecting).map(entry => entry.target);
     if (entering.length) context.add(() => gsap.from(entering, { y: 22, opacity: .6, stagger: .045, duration: .7, ease: 'power3.out', clearProps: 'transform,opacity' }));

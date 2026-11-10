@@ -31,8 +31,9 @@ const isPractice = path.startsWith('/jee-pyqs');
       <img src="/brand/nine-logo-stacked.png" width="1983" height="841" alt="Nine Education" fetchpriority="high" />
     </a>
     <nav class="site-nav" aria-label="Main navigation">
+      <a href="/#experiments">Labs</a>
       <a href="/#chapters" aria-current={!isHome && !isLibrary && !isPractice ? 'page' : undefined}>Chapters</a>
-      <a href="/library" aria-current={isLibrary ? 'page' : undefined}>Student Library</a>
+      <a href="/library" aria-current={isLibrary ? 'page' : undefined}>Library</a>
       <a href="/jee-pyqs" aria-current={isPractice ? 'page' : undefined}>JEE Practice</a>
     </nav>
     <button class="fs-btn" id="fsBtn" onclick="toggleFS()" title="Toggle fullscreen" aria-label="Toggle fullscreen">
@@ -41,7 +42,7 @@ const isPractice = path.startsWith('/jee-pyqs');
       </svg>
     </button>
   </header>
-  <div class="page-context"><span class="context-dot" aria-hidden="true"></span>{chapterChip ?? 'Class 11 · Physics'}<span class="context-end">LEARN · EXPLORE · PRACTISE</span></div>
+  {!isHome && <div class="page-context"><span class="context-dot" aria-hidden="true"></span>{chapterChip ?? 'Class 11 · Physics'}<span class="context-end">NINE EDUCATION CLASSROOM</span></div>}
   <main id="main-content"><slot /></main>
 
 </div>

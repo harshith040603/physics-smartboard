@@ -1,61 +1,106 @@
 ---
 import StudioLayout from '../layouts/StudioLayout.astro';
+import PhysicsScene from '../components/PhysicsScene.astro';
+import ExperimentArt from '../components/ExperimentArt.astro';
+import ChapterGlyph from '../components/ChapterGlyph.astro';
 import { chapters } from '../data/chapters';
 import '../styles/home.css';
-import PhysicsScene from '../components/PhysicsScene.astro';
+
+const experiments = [
+  { art: 'projectile', tag: 'Kinematics', title: 'Projectile Playground', text: 'Change the launch angle and see how far the ball flies.', href: '/kinematics#projectile' },
+  { art: 'piston', tag: 'Thermodynamics', title: 'Work in Gas Processes', text: 'Move a piston and see how work builds up on a P–V graph.', href: '/thermodynamics/piston-work-lab' },
+  { art: 'atom', tag: 'Chemistry', title: 'Effective Nuclear Charge', text: 'Explore how inner electrons shield the nucleus.', href: '/chemistry/effective-nuclear-charge#enc' },
+] as const;
+
 const summaries: Record<string, string> = {
-  'units-and-dimensions': 'Measurements, dimensional formulas and experimental errors.',
-  'kinematics': 'Projectiles, motion graphs and relative motion.',
-  'chemistry': 'The periodic table, shielding and atomic size.',
-  'thermometry': 'Temperature scales, thermal expansion and calibration.',
-  'heat-transfer': 'Conduction, convection, radiation and cooling.',
-  'kinetic-theory': 'Gas laws, molecular motion and degrees of freedom.',
-  'thermodynamics': 'Heat, work, internal energy and gas processes.',
+  'units-and-dimensions': 'Measurement, dimensions and errors',
+  'kinematics': 'Projectiles, motion graphs and frames',
+  'chemistry': 'The periodic table and atomic size',
+  'thermometry': 'Temperature and thermal expansion',
+  'heat-transfer': 'Conduction, convection and radiation',
+  'kinetic-theory': 'Molecules, gas laws and pressure',
+  'thermodynamics': 'Heat, work and internal energy',
 };
 ---
 <StudioLayout title="Nine Education - Physics with Harshith" chapterChip="Class 11 · Physics">
-  <section class="screen active">
+  <section class="screen active home">
     <div class="home-hero">
       <div class="home-intro">
-        <p class="home-eyebrow">NINE EDUCATION · CLASS 11 · JEE</p>
-        <h1>PHYSICS WITH<br /><span>HARSHITH</span></h1>
-        <p class="home-description">Build your understanding, one concept at a time. Explore lessons, see physics in motion, and put it into practice.</p>
+        <p class="home-kicker"><span></span> Physics with Harshith <span class="home-kicker-divider">/</span> Class 11 · JEE</p>
+        <h1>Make physics<br /><em>move.</em></h1>
+        <p class="home-description">Launch a projectile, push a piston, or set a pendulum swinging. Then take what you see into your next JEE problem.</p>
         <div class="home-actions">
-          <a class="home-primary" href="/library">Browse student library <span aria-hidden="true">↗</span></a>
-          <a class="home-secondary" href="#chapters">Explore chapters <span aria-hidden="true">↓</span></a>
+          <a class="home-primary" href="#experiments">Find an experiment <span aria-hidden="true">↓</span></a>
+          <a class="home-secondary" href="#chapters">Browse chapters <span aria-hidden="true">↗</span></a>
         </div>
       </div>
       <PhysicsScene />
+      <span class="hero-reference" aria-hidden="true">FIG. 01 &nbsp; / &nbsp; THE MOTION LAB</span>
     </div>
 
-    <div class="home-learning-strip" aria-label="Ways to learn">
-      <div><span>01</span><p><strong>Learn the concept</strong>Clear lessons and student notes.</p></div>
-      <div><span>02</span><p><strong>See it in motion</strong>Interactive physics, at your pace.</p></div>
-      <div><span>03</span><p><strong>Put it into practice</strong>Assignments and JEE questions.</p></div>
-    </div>
-
-    <section id="chapters" class="home-section" aria-labelledby="chapters-title">
-      <div class="home-section-head"><div><p class="home-eyebrow">THE CLASSROOM</p><h2 id="chapters-title">CHOOSE A CHAPTER</h2></div><span>{chapters.filter(ch => ch.status === 'ready').length} chapters to explore</span></div>
-      <div class="home-chapters">
-        {chapters.map(ch => ch.status === 'ready' ? (
-          <a class="chapter-card" href={`/${ch.slug}`}>
-            <div class="chapter-card-top"><span class="chapter-disc">{ch.num}</span><span class="chapter-arrow" aria-hidden="true">↗</span></div>
-            <h3>{ch.title}{ch.titleAccent}</h3>
-            <p>{summaries[ch.slug] ?? ch.blurb}</p>
-            <div class="chapter-card-bottom"><span>{ch.activities} activities</span><span>Explore chapter</span></div>
+    <section id="experiments" class="home-section home-experiments" aria-labelledby="experiments-title">
+      <div class="home-section-head">
+        <div><p class="home-eyebrow">01 / Interactive labs</p><h2 id="experiments-title">Pick an experiment</h2></div>
+        <a href="#chapters">See all chapters <span aria-hidden="true">↗</span></a>
+      </div>
+      <div class="experiment-grid">
+        {experiments.map((experiment, index) => (
+          <a class="experiment-card" data-experiment={experiment.art} href={experiment.href}>
+            <div class="experiment-figure">
+              <span class="figure-index" aria-hidden="true">0{index + 1}</span>
+              <ExperimentArt experiment={experiment.art} />
+              <span class="experiment-play" aria-hidden="true">▶</span>
+            </div>
+            <div class="experiment-info">
+              <p class="experiment-tag">{experiment.tag}</p>
+              <h3>{experiment.title}</h3>
+              <p>{experiment.text}</p>
+              <span class="experiment-link">Open lab <span aria-hidden="true">↗</span></span>
+            </div>
           </a>
-        ) : (
-          <div class="chapter-card chapter-soon"><span class="chapter-disc">{ch.num}</span><h3>{ch.title}{ch.titleAccent}</h3><p>Coming soon</p></div>
         ))}
       </div>
     </section>
 
+    <section id="chapters" class="home-section" aria-labelledby="chapters-title">
+      <div class="home-section-head">
+        <div><p class="home-eyebrow">02 / Course map</p><h2 id="chapters-title">Explore by chapter</h2></div>
+        <span>{chapters.filter(ch => ch.status === 'ready').length} chapters</span>
+      </div>
+      <div class="home-chapters">
+        {chapters.map(ch => ch.status === 'ready' ? (
+          <a class="chapter-card" href={`/${ch.slug}`} data-chapter={ch.slug}>
+            <span class="chapter-glyph"><ChapterGlyph slug={ch.slug} /></span>
+            <div class="chapter-copy">
+              <span class="chapter-meta">Chapter {ch.num} · {ch.activities} activities</span>
+              <h3>{ch.title}{ch.titleAccent}</h3>
+              <p>{summaries[ch.slug] ?? ch.blurb}</p>
+            </div>
+            <span class="chapter-arrow" aria-hidden="true">↗</span>
+          </a>
+        ) : (
+          <div class="chapter-card chapter-soon" data-chapter={ch.slug}>
+            <span class="chapter-glyph"><ChapterGlyph slug={ch.slug} /></span>
+            <div class="chapter-copy"><span class="chapter-meta">Coming soon</span><h3>{ch.title}{ch.titleAccent}</h3></div>
+          </div>
+        ))}
+        <a class="chapter-card chapter-library" href="/library">
+          <span class="chapter-glyph" aria-hidden="true">↗</span>
+          <div class="chapter-copy"><span class="chapter-meta">Slides, notes and PDFs</span><h3>Student Library</h3><p>Find resources for your chapter.</p></div>
+          <span class="chapter-arrow" aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </section>
+
     <section class="home-section home-resources" aria-labelledby="resources-title">
-      <div class="home-section-head"><div><p class="home-eyebrow">YOUR STUDY DESK</p><h2 id="resources-title">READY FOR REVISION</h2></div><a href="/library">All resources ↗</a></div>
+      <div class="home-section-head">
+        <div><p class="home-eyebrow">03 / Study desk</p><h2 id="resources-title">Ready to revise</h2></div>
+        <a href="/library">All resources <span aria-hidden="true">↗</span></a>
+      </div>
       <div class="home-resource-grid">
-        <a href="/notes"><span class="resource-code">01 / READ</span><h3>Student notes</h3><p>Chapter notes and reference sheets to revisit a concept.</p><span class="resource-link">Open notes ↗</span></a>
-        <a href="/worksheets"><span class="resource-code">02 / SOLVE</span><h3>Assignments</h3><p>Download a practice sheet and work through it at your pace.</p><span class="resource-link">Find an assignment ↗</span></a>
-        <a href="/jee-pyqs"><span class="resource-code">03 / CHECK</span><h3>JEE Main PYQs</h3><p>Solve previous-year questions, then check your answer.</p><span class="resource-link">Start practising ↗</span></a>
+        <a href="/notes"><span class="resource-code">01 / Review</span><h3>Student notes</h3><p>Revisit a concept with notes and reference sheets.</p><span class="resource-link">Open notes ↗</span></a>
+        <a href="/worksheets"><span class="resource-code">02 / Practise</span><h3>Assignments</h3><p>Work through a chapter practice sheet at your pace.</p><span class="resource-link">Find an assignment ↗</span></a>
+        <a href="/jee-pyqs"><span class="resource-code">03 / Check</span><h3>JEE Main PYQs</h3><p>Solve previous-year questions and check your answers.</p><span class="resource-link">Start practising ↗</span></a>
       </div>
     </section>
   </section>
