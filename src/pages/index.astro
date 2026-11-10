@@ -24,24 +24,19 @@ const summaries: Record<string, string> = {
 ---
 <StudioLayout title="Nine Education - Physics with Harshith" chapterChip="Class 11 · Physics">
   <section class="screen active home">
-    <div class="home-hero">
-      <div class="home-intro">
-        <p class="home-kicker"><span></span> Physics with Harshith <span class="home-kicker-divider">/</span> Class 11 · JEE</p>
-        <h1>Make physics <br /><em>move.</em></h1>
-        <p class="home-description">Launch a projectile, push a piston, or set a pendulum swinging. Then take what you see into your next JEE problem.</p>
-        <div class="home-actions">
-          <a class="home-primary" href="#experiments">Find an experiment <span aria-hidden="true">↓</span></a>
-          <a class="home-secondary" href="#chapters">Browse chapters <span aria-hidden="true">↗</span></a>
-        </div>
+    <header class="home-intro">
+      <div>
+        <p class="home-kicker">Class 11 <span aria-hidden="true">/</span> JEE</p>
+        <h1>Physics with Harshith</h1>
+        <p class="home-description">Explore a concept in the lab, then practise it with chapter assignments.</p>
       </div>
-      <PhysicsScene />
-      <span class="hero-reference" aria-hidden="true">FIG. 01 &nbsp; / &nbsp; THE MOTION LAB</span>
-    </div>
+      <a class="home-chapter-link" href="#chapters">Browse chapters <span aria-hidden="true">↓</span></a>
+    </header>
 
     <section id="experiments" class="home-section home-experiments" aria-labelledby="experiments-title">
       <div class="home-section-head">
-        <div><p class="home-eyebrow">01 / Interactive labs</p><h2 id="experiments-title">Pick an experiment</h2></div>
-        <a href="#chapters">See all chapters <span aria-hidden="true">↗</span></a>
+        <h2 id="experiments-title">Interactive experiments</h2>
+        <span class="home-eyebrow">01 / Labs</span>
       </div>
       <div class="experiment-grid">
         {experiments.map((experiment, index) => (
@@ -102,6 +97,15 @@ const summaries: Record<string, string> = {
         <a href="/worksheets"><span class="resource-code">02 / Practise</span><h3>Assignments</h3><p>Work through a chapter practice sheet at your pace.</p><span class="resource-link">Find an assignment ↗</span></a>
         <a href="/jee-pyqs"><span class="resource-code">03 / Check</span><h3>JEE Main PYQs</h3><p>Solve previous-year questions and check your answers.</p><span class="resource-link">Start practising ↗</span></a>
       </div>
+    </section>
+
+    <section class="home-section home-motion" aria-labelledby="motion-title">
+      <div class="home-motion-copy">
+        <p class="home-eyebrow">04 / 3D sandbox</p>
+        <h2 id="motion-title">Motion Lab</h2>
+        <p>Compare an orbit, a travelling wave and a swinging pendulum. Pause each scene to take a closer look.</p>
+      </div>
+      <PhysicsScene />
     </section>
   </section>
 </StudioLayout>
