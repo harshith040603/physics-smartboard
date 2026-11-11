@@ -102,5 +102,13 @@
     "title": "Polytropic Processes and Heat Engines",
     "url": "/thermodynamics/polytropic-processes-and-heat-engines",
     "detail": "31 interactive slides"
+  },
+  {
+    "slug": "thermodynamics",
+    "chapter": "Thermodynamics",
+    "kind": "Slides",
+    "title": "Carnot, Refrigerators and the Second Law",
+    "url": "/thermodynamics/carnot-refrigerators-and-the-second-law",
+    "detail": "37 interactive slides"
   }
 ]
