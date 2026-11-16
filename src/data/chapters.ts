@@ -72,4 +72,13 @@ export const chapters: Chapter[] = [
     status: 'ready',
     activities: 12,
   },
+  {
+    slug: 'gravitation',
+    num: '08',
+    title: 'Gravi',
+    titleAccent: 'tation',
+    blurb: 'Explore Newton’s law of gravitation and the fields created by mass.',
+    status: 'ready',
+    activities: 1,
+  },
 ];
