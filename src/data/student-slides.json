@@ -118,5 +118,13 @@
     "title": "Newton’s Law of Gravitation and Gravitational Field",
     "url": "/gravitation/newtons-law-of-gravitation-and-gravitational-field",
     "detail": "29 interactive slides"
+  },
+  {
+    "slug": "gravitation",
+    "chapter": "Gravitation",
+    "kind": "Slides",
+    "title": "Variation of Acceleration due to Gravity",
+    "url": "/gravitation/variation-of-acceleration-due-to-gravity",
+    "detail": "27 interactive slides"
   }
 ]
