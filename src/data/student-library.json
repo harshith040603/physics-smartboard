@@ -110,5 +110,13 @@
     "title": "Thermodynamics and KTG SAT Guide",
     "url": "/downloads/thermodynamics/thermodynamics-and-ktg-sat-guide-colour.pdf",
     "detail": "6 pages · Colour edition"
+  },
+  {
+    "slug": "gravitation",
+    "chapter": "Gravitation",
+    "kind": "Notes",
+    "title": "Gravitation 2",
+    "url": "/downloads/gravitation/gravitation-2.pdf",
+    "detail": "3 pages"
   }
 ]
