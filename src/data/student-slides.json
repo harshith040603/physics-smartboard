@@ -126,5 +126,13 @@
     "title": "Variation of Acceleration due to Gravity",
     "url": "/gravitation/variation-of-acceleration-due-to-gravity",
     "detail": "36 interactive slides"
+  },
+  {
+    "slug": "gravitation",
+    "chapter": "Gravitation",
+    "kind": "Slides",
+    "title": "Gravitational Field",
+    "url": "/gravitation/gravitational-field",
+    "detail": "37 interactive slides"
   }
 ]
