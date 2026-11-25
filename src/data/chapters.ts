@@ -79,6 +79,6 @@ export const chapters: Chapter[] = [
     titleAccent: 'tation',
     blurb: 'Explore Newton’s law of gravitation and the fields created by mass.',
     status: 'ready',
-    activities: 3,
+    activities: 4,
   },
 ];
