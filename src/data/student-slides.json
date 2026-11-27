@@ -150,5 +150,13 @@
     "title": "Gravitational Potential Energy & Potential",
     "url": "/gravitation/gravitational-potential-energy-and-potential",
     "detail": "33 interactive slides"
+  },
+  {
+    "slug": "gravitation",
+    "chapter": "Gravitation",
+    "kind": "Slides",
+    "title": "Escape Velocity & Satellites",
+    "url": "/gravitation/escape-velocity-and-satellites",
+    "detail": "23 interactive slides"
   }
 ]
