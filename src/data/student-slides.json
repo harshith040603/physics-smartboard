@@ -142,5 +142,13 @@
     "title": "Gravitational Field of Spheres",
     "url": "/gravitation/gravitational-field-of-spheres",
     "detail": "30 interactive slides"
+  },
+  {
+    "slug": "gravitation",
+    "chapter": "Gravitation",
+    "kind": "Slides",
+    "title": "Gravitational Potential Energy & Potential",
+    "url": "/gravitation/gravitational-potential-energy-and-potential",
+    "detail": "34 interactive slides"
   }
 ]
